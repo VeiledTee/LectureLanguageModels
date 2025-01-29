@@ -1,0 +1,84 @@
+## **1. Search Algorithms (16 points)**
+
+### **1.1 Games**
+
+1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.
+
+2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.
+
+### **1.2 Algorithms**
+
+1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relatively short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.
+
+2. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relatively short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.
+
+---
+
+## **2. Constraints (16 points)**
+
+Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows:
+
+1 | 2 | 3
+4 | 5 |
+  |   |
+
+Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B }.
+
+1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?
+
+2. Say, instead, the initial domain of variable 5 is restricted to { B }, with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?
+
+3. If in the initial state (all variables have domains { R, B }), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?
+
+4. Assume that during backtracking we first attempt assigning variables to R and then to B. Assume, also, that we examine the variables in numerical order, starting with 1. Also, let the domain of variable 5 be { B }, the other domains are { R, B }. In the following tree, which shows the space of assignments to the 5 variables we care about, indicate how pure backtracking (BT) would proceed by placing a check mark next to any assignment that would be attempted during the search and crossing out the nodes where a constraint test would fail. Leave unmarked those nodes that would never be explored.
+
+5. If we use backtracking with forward checking (BT-FC) in this same situation, give a list of all the assignments attempted, in sequence. Use the notation variable = color for assignments, for example, 1=R.
+
+6. If we use backtracking with forward checking (BT-FC) but with dynamic variable ordering, using the most-constrained-variable strategy, give a list of all the variable assignments attempted, in sequence. If there is a tie between variables, use the lowest-numbered one first. Use the notation variable = color for assignments, for example, 1=R.
+
+---
+
+## **3. Constraint Satisfaction (24 points)**
+
+You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time.
+
+The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints:
+
+1. Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution).
+2. At most one observation per instrument per time slot is scheduled.
+3. The observations scheduled for a single time slot must have the same target.
+
+For each of the following three problem formulations, specify:
+
+1. The value domain for the variables.
+2. The size of the domain for the variables (in terms of k, m, and n).
+3. Which of the constraints are necessarily satisfied because of the formulation.
+4. Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample.
+
+---
+
+## **4. Search Problem Formulation (23 points)**
+
+Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration.
+
+1. Use a set of variables to describe the rover's state. Do not include extraneous information.
+2. Specify the goal test.
+3. Specify the actions. Indicate how they modify the state and any preconditions for being used.
+4. Specify a function that determines the cost of each action.
+5. This can be treated as a path search problem. We would like to find a heuristic. Say whether each of these possible heuristics would be useful in finding the optimal path or, if not, what’s wrong with them:
+   - The sum of the distances from the rover to the 10 − l closest locations for the missing types of rocks.
+   - The length of the shortest tour through the 10−l closest locations for the missing types of rocks.
+   - The distance back to the lander.
+
+---
+
+## **5. Search Traces (21 points)**
+
+Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each tree (labeled G1 through G7) was generated by searching this graph, but with a different algorithm.
+
+For each tree, indicate:
+
+1. Which algorithm was used (Depth First Search, Breadth First Search, Uniform Cost Search, A* Search, Best-first Search).
+2. If a heuristic was used, specify which heuristic.
+3. Whether the result was an optimal path (measured by sum of link costs). If not, explain why.
+

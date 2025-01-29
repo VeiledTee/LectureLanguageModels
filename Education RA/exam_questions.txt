@@ -1,0 +1,159 @@
+1.1 Games**
+
+1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.
+
+2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.
+
+1.2 Algorithms**
+
+- 1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.
+
+2. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.
+
+1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?
+
+2. Say, instead, the initial domain of variable 5 is restricted to { B }, with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?
+
+$$\begin{array}{l l l}{{1=\{B\}}}&{{}}&{{2=\{R\}}}\\ {{4=\{R\}}}&{{}}&{{5=\{B\}}}\end{array}\qquad{\mathrm{3=\{B\}}}$$
+
+- 3. If in the initial state (all variables have domains { R, B }), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?
+
+4. Assume that during backtracking we first attempt assigning variables to R and then to B. Assume, also, that we examine the variables in numerical order, starting with 1. Also, let the domain of variable 5 be { B }, the other domains are { R, B }. In the following tree, which shows the space of assignments to the 5 variables we care about, indicate how pure backtracking (BT) would proceed by placing a check mark next to any assignment that would be attempted during the search and crossing out the nodes where a constraint test would fail. Leave unmarked those nodes that would never be explored.
+![](_page_3_Figure_1.jpeg)
+
+- 5. If we use backtracking with forward checking (BT-FC) in this same situation, give a list of all the assignments attempted, in sequence. Use the notation variable = color for assignments, for example, 1=R.
+
+1. When this happens, we restore the domains from** *before* **variable 1 was assigned, i.e. the ones listed above under "None".**
+
+- 6. If we use backtracking with forward checking (BT-FC) but with dynamic variable ordering, using the most-constrained-variable strategy, give a list of all the variable assignments attempted, in sequence. If there is a tie between variables, use the lowest-numbered one first. Use the notation variable = color for assignments, for example, 1=R.
+
+5. Since variable 2 has the lowest index, it is assigned next. And so on, as shown below:**
+
+| Assignment:        | None      | 5<br>=<br>B | 2<br>=<br>R | 1<br>=<br>B | 3<br>=<br>B | 4<br>=<br>R |
+|--------------------|-----------|-------------|-------------|-------------|-------------|-------------|
+| Domain<br>of<br>1: | {R,<br>B} | {R,<br>B}   | {B}         | B           | B           | B           |
+| Domain<br>of<br>2: | {R,<br>B} | {R}         | R           | R           | R           | R           |
+| Domain<br>of<br>3: | {R,<br>B} | {R,<br>B}   | {B}         | {B}         | B           | B           |
+| Domain<br>of<br>4: | {R,<br>B} | {R}         | {R}         | {R}         | {R}         | R           |
+| Domain<br>of<br>5: | {B}       | B           | B           | B           | B           | B           |
+
+# **3 Constraint satisfaction (24 points)**
+
+1. Domain: **for each instrument/time slot, the set of observations requesting that instrument and time slot and the value "empty"**
+
+- 2. Size of domain: **at most m*n+1 per variable**
+- 3. Satisfied constraints: **C2, since each variable (instrument/time) gets at most one value, an observation.**
+
+4. Binary constraints?:
+
+- *•* **C1 is not a binary constraint in this formulation. It requires checking all the variable assignments at once to make sure that exactly two observations from each scientist's list are made.**
+- *•* **C3 is a binary constraint in this formulation. Place a constraint between the 3 variables with the same time slot and require that the targets of the assigned observation be equal if they are both non-empty.**
+
+1. Domain: **for each scientist, the set of all pairs of observations that scientist requested.**
+- � � n 2. Size of domain: **, approximately** n2/2**.** 2
+
+3. Satisfied constraints: **C1, since we will guarantee that exactly two of the scientist's observations are scheduled.**
+
+- 4. Binary constraints?:
+	- *•* **C2 is a binary constraint in this formulation. Place a constraint between every pair of variables and require that the instrument/time slot requests don't conflict.**
+	- *•* **C3 is a binary constraint in this formulation. Place a constraint between every pair of variables and require that the targets for observations with the same time slot don't conflict.**
+
+1. Domain: {Granted, Rejected}
+- 2. Size of domain: 2
+- 3. Satisfied constraints: None
+- 4. Binary constraints?:
+	- *•* **C1 is not a binary constraint in this formulation. It requires checking all the variable assignments of Granted observations at once to make sure that exactly two observations from each scientist's list are granted.**
+	- *•* **C2 is a binary constraint in this formulation. Place a constraint between every pair of variables and require that the instrument/time slot requests don't conflict between any two Granted requests.**
+	- *•* **C3 is a binary constraint in this formulation. Place a constraint between every pair of variables and require that the targets of the Granted observations with the same time slot don't conflict.**
+
+# **4 Search Problem formulation (23 points)**
+
+1. Use a set of the variables above to describe the rover's state. Do not include extraneous information.
+	- *•* **types of rocks already collected**
+	- *•* **current rover location (square on map)**
+	- *•* **time since departure from lander**
+	- *•* **current battery charge level**
+	- *•* **total weight of currently collected rocks (optional, depending on your choice of cost function)**
+- 2. Specify the goal test.
+	- *•* **All types of rocks have been collected**
+	- *•* **rover at lander location**
+	- *•* **time since departure less than 3 days**
+- 3. Specify the actions. Indicate how they modify the state and any preconditions for being used.
+	- charge **: precondition: none; effects: increases battery voltage by 1 unit, increases time-since-departure by 1 hour**
+	- move **: precondition: enough battery voltage to cross square; effects: decreases battery voltage by amount specified in map; increases time by amount specified in map; changes rover location**
+	- pick-up-rock **: precondition: enough battery voltage; effects: decreases battery voltage by 1 unit; changes types of rocks already collected**
+- 4. Specify a function that determines the cost of each action.
+
+charge **: 0**
+
+move **: 10 meters**
+
+pick-up-rock **:** α *** weight-of-rocks-at-current-location**
+
+- 5. This can be treated as a path search problem. We would like to find a heuristic. Say whether each of these possible heuristics would be useful in finding the optimal path or, if not, what's wrong with them. Let l be the number of rocks already collected.
+	- **H1**: The sum of the distances (in the map) from the rover to the 10 − l closest locations for the missing types of rocks.
+
+1. Depth first search
+- 2. Breadth first search
+- 3. Uniform cost search
+- 4. A* search
+- 5. Best-first (greedy) search
+
+1. Algorithm: **Breadth First Search**
+
+2. Heuristic (if any): **None**
+
+3. Did it find least-cost path? If not, why? **No. Breadth first search is only guaranteed to find a path with the shortest number of links; it does not consider link cost at all.**
+
+1. Algorithm: **Best First Search**
+
+2. Heuristic (if any): **H1**
+
+3. Did it find least-cost path? If not, why?
+
+1. Algorithm: **A***
+
+2. Heuristic (if any): **H1**
+
+3. Did it find least-cost path? If not, why? **No. A* is only guaranteed to find an optimal path when the heuristic is admissible (or consistent with a strict expanded list). H1 is neither: the heuristic value for C is not an underestimate of the optimal cost to goal.**
+
+#### **G4**: 1. Algorithm: **Best First Search**
+
+2. Heuristic (if any): **H2**
+
+3. Did it find least-cost path? If not, why? **Yes. Though best first search is not guaranteed to find an optimal path, in this case it did.**
+
+### **G5**: 1. Algorithm: **Depth First Search**
+
+2. Heuristic (if any): **None**
+
+3. Did it find least-cost path? If not, why? **No. Depth first search is an any-path search; it does not consider link cost at all.**
+
+1. Algorithm: **A***
+
+2. Heuristic (if any): **H2**
+
+3. Did it find least-cost path? If not, why? **Yes. A* is guaranteed to find an optimal path when the heuristic is admissible (or consistent with a strict expanded list). H2 is admissible but not consistent, since the link from D to C decreases the heuristic cost by 2, which is greater than the link cost of 1. Still, the optimal path was found.**
+
+#### **G7**: 1. Algorithm: **Uniform Cost Search**
+
+2. Heuristic (if any): **None**
+
+3. Did it find least-cost path? If not, why? **Yes. Uniform Cost is guaranteed to find a shortest path.**
+
+![](_page_13_Figure_0.jpeg)
+
+![](_page_13_Figure_1.jpeg)
+
+![](_page_13_Figure_2.jpeg)
+
+![](_page_13_Figure_3.jpeg)
+
+![](_page_13_Figure_4.jpeg)
+
+5.jpeg)
+
+![](_page_13_Figure_6.jpeg)
+
+![](_page_13_Figure_7.jpeg)
+
