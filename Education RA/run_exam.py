@@ -1,7 +1,8 @@
-from transformers import pipeline
 import os
-import modal
 import re
+
+import modal
+from transformers import pipeline
 
 MODEL_NAME = "distilgpt2"  # or "gpt2"
 MODEL_CACHE = "/vol/cache"
@@ -21,22 +22,20 @@ image = (
         "bitsandbytes",
     )
     .run_function(
-        create_cache_dir,
-        secrets=[modal.Secret.from_name("huggingface-secret")]
+        create_cache_dir, secrets=[modal.Secret.from_name("huggingface-secret")]
     )
     # Add the file to the image with explicit paths
     .add_local_file(
-        local_path=QUESTION_FILE,
-        remote_path="/root/q1_soln_answerless.txt"
+        local_path=QUESTION_FILE, remote_path="/root/q1_soln_answerless.txt"
     )
 )
 
 
 def extract_questions(extract_from) -> list[str]:
     extracted_questions = []
-    for line in extract_from.split('\x1E'):  # split by delimiter
-        for query in line.split('\x1F'):  # split questions
-            if line != '':
+    for line in extract_from.split("\x1e"):  # split by delimiter
+        for query in line.split("\x1f"):  # split questions
+            if line != "":
                 extracted_questions.append(query.strip())
     return extracted_questions
 
@@ -46,14 +45,14 @@ def load_markdown_sections(file_path):
         text = file.read()
 
     # Splitting sections by headers (##) while keeping them
-    sections = re.split(r'(## .*\n)', text)
+    sections = re.split(r"(## .*\n)", text)
 
     extracted_sections = {}
     for i in range(1, len(sections), 2):
         header = sections[i].strip("# \n")
         content = sections[i + 1].strip()
         # Replace only actual section breaks with \x1E, keep the rest as is
-        extracted_sections[header] = content.replace('\n', ' ') + '\x1E'
+        extracted_sections[header] = content.replace("\n", " ") + "\x1e"
 
     return extracted_sections
 
@@ -80,17 +79,13 @@ def process_quiz_file(input_file: str) -> list[list[str]]:
     return question_list  # Return the list
 
 
-
 @app.function(gpu="any")  # Request any available GPU type
 def generate_answer(prompt: str) -> str:
     generator = pipeline(
-        'text-generation',
-        model=MODEL_NAME,
-        truncation=True,
-        max_length=2048
+        "text-generation", model=MODEL_NAME, truncation=True, max_length=2048
     )
     result = generator(prompt)
-    return result[0]['generated_text']
+    return result[0]["generated_text"]
 
 
 @app.local_entrypoint()
@@ -103,4 +98,4 @@ def main():
         for query in q:
             full_prompt = prompt + query
             response = generate_answer.remote(full_prompt)
-            print(response + '\n---')
+            print(response + "\n---")
