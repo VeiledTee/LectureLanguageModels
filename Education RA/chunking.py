@@ -352,6 +352,9 @@ class RAGChunking:
 
 
 if __name__ == "__main__":
+    DBSCAN_EPSILON: float = 0.6
+    COSINE_THRESHOLD: float = 0.9
+
     chunker = RAGChunking()
     with open("AI Course/Lecture Notes/ch3_csp_games1_parsed.txt", "r") as f:
         markdown_content = f.read()
@@ -367,9 +370,9 @@ if __name__ == "__main__":
         "Markdown Header": chunker.markdown_header_chunk(markdown_content),
         "Hybrid Markdown": chunker.hybrid_markdown_chunk(markdown_content),
         # Semantic strategies
-        "Semantic Similarity (0.78)": chunker.semantic_chunk(markdown_content, 0.78),
-        "DBSCAN Semantic (eps=0.8)": chunker.dbscan_semantic_chunk(
-            markdown_content, eps=0.8
+        f"Semantic Similarity ({COSINE_THRESHOLD})": chunker.semantic_chunk(markdown_content, COSINE_THRESHOLD),
+        f"DBSCAN Semantic ({DBSCAN_EPSILON})": chunker.dbscan_semantic_chunk(
+            markdown_content, eps=DBSCAN_EPSILON
         ),
         # Window/Overlap strategies
         "Sliding Window (100/50)": chunker.sliding_window_chunk(
