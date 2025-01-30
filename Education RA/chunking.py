@@ -6,7 +6,7 @@ from langchain.text_splitter import (CharacterTextSplitter,
                                      RecursiveCharacterTextSplitter)
 from nltk.tokenize import sent_tokenize
 from sklearn.cluster import DBSCAN
-from transformers import AutoModel, AutoTokenizer
+from transformers import AutoModel, AutoTokenizer, pipeline
 
 
 class RAGChunking:
