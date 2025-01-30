@@ -16,7 +16,7 @@ def pdf_to_text(pdf_path, output_txt_path):
     print(f"Extracted text from {pdf_path} and saved to {output_txt_path}")
 
 
-pdf_path = "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI Course/Lecture Notes/ch2_search1.pdf"
+pdf_path = "AI Course/Lecture Notes/ch2_search1.pdf"
 out_path = 'output.md'
 from marker.converters.pdf import PdfConverter
 from marker.models import create_model_dict

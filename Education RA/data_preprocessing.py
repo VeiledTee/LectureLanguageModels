@@ -80,8 +80,8 @@ def load_markdown_sections(file_path):
 
 if __name__ == '__main__':
     # Directory containing the PDF files
-    # DIRECTORY = "/home/penguins/Documents/PhD/Education RA/AI Course/Exams"
-    DIRECTORY = "/home/penguins/Documents/PhD/Education RA/AI Course/Lecture Notes"
+    # DIRECTORY = "AI Course/Exams"
+    DIRECTORY = "AI Course/Lecture Notes"
 
     # Create a converter instance
     converter = DocumentConverter()
