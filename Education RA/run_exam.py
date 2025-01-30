@@ -3,6 +3,7 @@ import re
 
 import modal
 from transformers import pipeline
+# TO EXECUTE: modal run run_exam.py
 
 MODEL_NAME = "distilgpt2"  # or "gpt2"
 MODEL_CACHE = "/vol/cache"
@@ -65,7 +66,7 @@ app = modal.App(
 
 
 @app.function()
-def process_quiz_file(input_file: str) -> list[list[str]]:
+def process_quiz_file() -> list[list[str]]:
     question_list: list[list[str]] = []
     with open("/root/q1_soln_answerless.txt", "r") as f:
         sections = load_markdown_sections("/root/q1_soln_answerless.txt")
@@ -81,11 +82,28 @@ def process_quiz_file(input_file: str) -> list[list[str]]:
 
 @app.function(gpu="any")  # Request any available GPU type
 def generate_answer(prompt: str) -> str:
-    generator = pipeline(
-        "text-generation", model=MODEL_NAME, truncation=True, max_length=2048
-    )
-    result = generator(prompt)
-    return result[0]["generated_text"]
+    try:
+        generator = pipeline(
+            "text-generation",
+            model=MODEL_NAME,
+            truncation=True,
+            max_length=1024,
+            max_new_tokens=512
+        )
+        # Explicitly truncate input
+        inputs = generator.tokenizer(
+            prompt,
+            return_tensors="pt",
+            truncation=True,
+            max_length=512  # Leaves room for generation
+        ).to(generator.device)
+
+        result = generator.model.generate(**inputs, max_new_tokens=512)
+        return generator.tokenizer.decode(result[0])
+    except RuntimeError as e:
+        if "device-side assert" in str(e):
+            return f"Error: Input too long for model. Please shorten your prompt (max 1024 tokens)."
+        raise
 
 
 @app.local_entrypoint()
@@ -94,8 +112,9 @@ def main():
     # Get questions remotely
     question_list = process_quiz_file.remote()
     # Query the LLM remotely for each question
-    for q in question_list:
-        for query in q:
+    for i, q in enumerate(question_list):
+        for j, query in enumerate(q):
             full_prompt = prompt + query
             response = generate_answer.remote(full_prompt)
-            print(response + "\n---")
+            print(f"|||## {i}, {j} ##|||")
+            print(f"Query: {query}\nReply: {response}\n---")
