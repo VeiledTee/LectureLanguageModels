@@ -370,7 +370,9 @@ if __name__ == "__main__":
         "Markdown Header": chunker.markdown_header_chunk(markdown_content),
         "Hybrid Markdown": chunker.hybrid_markdown_chunk(markdown_content),
         # Semantic strategies
-        f"Semantic Similarity ({COSINE_THRESHOLD})": chunker.semantic_chunk(markdown_content, COSINE_THRESHOLD),
+        f"Semantic Similarity ({COSINE_THRESHOLD})": chunker.semantic_chunk(
+            markdown_content, COSINE_THRESHOLD
+        ),
         f"DBSCAN Semantic ({DBSCAN_EPSILON})": chunker.dbscan_semantic_chunk(
             markdown_content, eps=DBSCAN_EPSILON
         ),
