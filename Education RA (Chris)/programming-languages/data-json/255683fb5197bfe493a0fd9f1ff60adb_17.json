@@ -1,0 +1,59 @@
+[
+  {
+    "problem_number": "2",
+    "question": "**Problem 2: Operational Semantics [35 points]**\n\nAfter completing 6.821, you get a job working for Ben Bitdiddle, whose company sells commercial implementations of PostFix (without dup). After several focus-group studies, Ben has decided that PostFix needs a macro facility. Below is Ben's sketch of the informal semantics of the facility.\n\nMacros are specified as part of a PostFix program, as follows:\n\n```scheme\n(program ((I_1 V_1) ... (I_n V_n)) Q)\n```\n\n\\(I_{i}\\) through \\(I_{n}\\) are identifiers. Each macro (\\(I_{i}\\)\\(V_{i}\\)) creates a command, \\(I_{i}\\), that pushes the value \\(V_{i}\\) (which can be an integer or a command sequence) onto the stack. It is illegal to give macros the names of existing PostFix commands, or to use an identifier more than once in a list of macros. The behavior of programs that do so is undefined.\n\nHere are some examples Ben has come up with:\n\n```scheme\n(program ((inc (1 add))) (0 inc exec inc exec)) \\(\\Rightarrow\\) 2\n(program ((A 1) (B (2 mul))) (A B exec)) \\(\\Rightarrow\\) 2\n(program ((A 1) (B (C mul)) (C 2)) (A B exec)) \\(\\Rightarrow\\) 2\n(program ((A pop)) (1 A)) ; Ill-formed program (The body of a macro must be a value, it cannot be a command.)\n```\n\nBen started writing an SOS for PostFix with macros, but had to go make a presentation for some venture capitalists. It is your job to complete the SOS.\n\nNew (or modified) domains:\n\n\\[I \\in \\text{Identifier}\\]\n\\[M \\in \\text{Macro-list = (Identifier \\(\\times\\) Value)}^{*}\\]\n\\[C \\in \\text{CommandPostFix+macros = CommandPostFix + Identifier}\\]\n\\[P \\in \\text{Program = Commands \\(\\times\\) Macro-list}\\]\n\\[\\text{Definition} = \\text{Value}\\]\n\\[\\text{Value} = \\text{Intlit + Commands}\\]\n\nBen's notes describe a helper function, lookup, that you can use to figure out what identifiers have been defined as. The function has the signature:\n\n_lookup_: Identifier \\(\\times\\) Macro-list \\(\\rightarrow\\) Definition\n\nIf lookup is given an identifier and a macro list, it returns a value if the identifier is defined to be that value in the macro list. Otherwise lookup gets stuck.",
+    "subquestions": [
+      {
+        "problem_number": "2a",
+        "question": "Ben's notes begin the SOS for PostFix+macros as follows:\n\n\\[\\mathcal{C} = \\text{Commands \\(\\times\\) Stack \\(\\times\\) Macro-list}\\]\n\\[\\Rightarrow : \\frac{\\langle Q,\\ S\\rangle\\Rightarrow_{P}\\langle Q^{\\prime},\\ S^{ \\prime}\\rangle}{\\langle Q,\\ S,\\ M\\rangle\\Rightarrow\\langle Q^{\\prime},\\ S^{ \\prime},\\ M\\rangle}\\] where \\(\\Rightarrow_{P}\\) is the original transition relation for PostFix\n\nComplete the transition relation for PostFix+macros. Your completed SOS should handle the first four of Ben's examples. It should not handle the ill-formed program. Model errors in the SOS as stuck states (and do not handle them explicitly).",
+        "answer": "\\[\\Rightarrow :\\]\n\\[\\langle I.Q,\\ S,\\ M\\rangle\\Rightarrow\\langle Q,\\ V.S,\\ M\\rangle\\]\n\\[\\text{where }V=\\langle\\textit{lookup}\\ I\\ M\\rangle\\]"
+      },
+      {
+        "problem_number": "2b",
+        "question": "Louis Reasoner finds out that you have completed an SOS for PostFix+macros. He sees that your SOS handles macros that depend on other macros. He wants to launch a new advertising campaign with the slogan: \"Guaranteed to terminate: PostFix with mutually recursive macros!\" Show that Louis' new campaign is a bad idea by writing a nonterminating program in PostFix+macros (without dup).",
+        "answer": "A simple nonterminating program is:\n\n```scheme\n(program ((I (I exec))) (I exec))\n```"
+      },
+      {
+        "problem_number": "2c",
+        "question": "Extend the PostFix energy function so that it assigns an energy to configurations that include macros. Fill in the definitions of the functions \\(\\mathcal{E}_{\\text{com}}[C,M]\\), \\(\\mathcal{E}_{\\text{seq}}[Q,M]\\) and \\(\\mathcal{E}_{\\text{stack}}[S,M]\\) and use these functions to define your extended energy function. _(Hint: If a command pushes a value, V, onto the stack, how does the energy of the configuration change?)_",
+        "answer": "Completing the energy function we have:\n\n\\[\\mathcal{E}_{\\text{com}}[I,M] = \\mathcal{E}_{\\text{com}}[V,M]\\] where \\[V=(lookup~{}I~{}M)\\] This is all that is necessary because if an undefined I is ever encountered, the program will immediately get stuck (and terminate).\n\n\\[\\mathcal{E}_{\\text{seq}}[C.Q,M] = 1+\\mathcal{E}_{\\text{com}}[C,M]+\\mathcal{E}_{\\text{seq}}[Q,M]\\]\n\n\\[\\mathcal{E}_{\\text{stack}}[V.S,M] = \\mathcal{E}_{\\text{com}}[V,M]+\\mathcal{E}_{\\text{stack}}[S,M]\\]\n\n\\[\\mathcal{E}_{\\text{config}}[(Q,~{}~{}S,~{}~{}M)] = \\mathcal{E}_{\\text{seq}}[Q,M]+\\mathcal{E}_{\\text{stack}}[S,M]\\]"
+      },
+      {
+        "problem_number": "2d",
+        "question": "Use the extended energy function (for the restricted form of PostFix+macros) to show that executing a macro decreases the energy of a configuration. Since it is possible to show all the other commands decrease the energy of a configuration (by adapting the termination proof for PostFix without macros), this will show that the restricted form of PostFix+macros terminates.",
+        "answer": "\\[{\\langle}I.Q,~{}S,~{}M{\\rangle} \\Rightarrow {\\langle}Q,~{}V.S,~{}M{\\rangle}\\] where \\[V=(lookup~{}I~{}M)\\]\n\n\\[\\mathcal{E}_{\\text{config}}[(I.Q,~{}~{}S,~{}~{}M)] = \\mathcal{E}_{\\text{seq}}[I.Q,M]+\\mathcal{E}_{\\text{stack}}[S,M]\\]\n\n\\[= 1+\\mathcal{E}_{\\text{com}}[I,M]+\\mathcal{E}_{\\text{seq}}[Q,M]+ \\mathcal{E}_{\\text{stack}}[S,M]\\]\n\n\\[= 1+\\mathcal{E}_{\\text{com}}[V,M]+\\mathcal{E}_{\\text{seq}}[Q,M]+ \\mathcal{E}_{\\text{stack}}[S,M]\\]\n\n\\[= 1+\\mathcal{E}_{\\text{seq}}[Q,M]+\\mathcal{E}_{\\text{stack}}[V.S ,M]\\]\n\n\\[= 1+\\mathcal{E}_{\\text{config}}[(Q,\\ V.S,\\ M)]\\]\n\nThus, after executing a macro, the energy of a configuration decreases by one unit, proving PostFix with macros terminates."
+      }
+    ]
+  },
+  {
+    "problem_number": "3",
+    "question": "**Problem 3: Control [50 points]**\n\nBen Bitdiddle, whose company also sells FLK!, has decided to improve FLK! with new facilities for exception handling. Ben's idea is to allow users to store exceptions in variables. Other exception facilities are also included, in the form of handle and exception. Ben also adds let-x to allow either an exception or a value to be bound to an identifier:\n\n```scheme\n(exception E) ; creates an exception with value E\n(handle E1 E2) ; handler procedure E1 handles exceptions\n; from E2. If E2 does not raise an exception,\n; E2 is the value of the HANDLE. If E2 raises\n; an exception, the value of the HANDLE is the\n; result of calling the handler procedure E1 on\n; the value of the exception.\n\n(let-x I E1 E2) ; binds an exception or value from E1\n; to I in E2.\n```\n\nFor example:\n\n```scheme\n(handle (lambda (x) (+ 1 x)) (let-x a (exception 4) (let ((b 2)) (+ a b)))) \\(\\Rightarrow\\)_5_\n```\n\nAny attempt to reference a variable that is bound to an exception will result in the immediate raising of the exception. Thus, the above example will evaluate to 5 because the reference to a in (+ a b) will cause an exception to be raised.\n\nBen had begun to develop a new semantics for FLK!, but was called away to work for a new Internet startup that was about to have an IPO event. You find on Ben's desk the following sheet of paper:\n\n\\(\\mathcal{E}:\\text{Exp}\\rightarrow\\text{Environment}\\rightarrow\\text{Computation}\\)\n\n\\[\\begin{array}[]{l}\\text{Computation}=\\text{ExceptionCont}\\rightarrow\\text{ExpCont }\\rightarrow\\text{CmdCont}\\\\ \\text{CmdCont}=\\text{Store}\\rightarrow\\text{Answer}\\\\ k\\in\\text{ExpCont}=\\text{Value}\\rightarrow\\text{CmdCont}\\\\ w\\in\\text{ExceptionCont}=\\text{ExpCont}\\\\ \\\\ \\text{Procedure}=\\text{Value}\\rightarrow\\text{Computation}\\\\ \\delta\\in\\text{Denotable}=\\text{Value}+\\text{Exception}\\\\ \\text{Exception}=\\text{Value}\\\\ \\\\ \\mathcal{E}[\\text{L}]=\\lambda\\mathit{e}wk.\\ (\\mathit{k}\\ \\mathcal{L}[ \\text{L}])\\\\ \\mathcal{E}[\\text{(handle E1 E2)}]=\\lambda\\mathit{e}wk.\\ (\\mathcal{E}[ \\text{E1}]\\ e\\ w\\ (\\mathit{test-procedure}\\ \\lambda p.\\ (\\mathcal{E}[ \\text{E2}]\\ e\\ (\\lambda v.\\ (p\\ v\\ w\\ k))\\ k)))\\\\ \\mathcal{E}[\\text{(proc I E})]=\\lambda\\mathit{e}wk.\\ (\\mathit{k}\\ (\\text {Procedure}\\mapsto\\text{Value}\\ (\\lambda vw^{\\prime}k^{\\prime}.\\ (\\mathcal{E}[ \\text{E}]\\ [\\text{I}:\\text{(Value}\\mapsto\\text{Denotable}\\ v)]e\\ w^{\\prime}\\ k^{ \\prime}))))\\\\ \\mathcal{E}[\\text{(call E1 E2)}]=\\lambda\\mathit{e}wk.\\ \\mathcal{E}[ \\text{E1}]\\ e\\ w\\ (\\mathit{test-procedure}\\ \\lambda p.\\ \\mathcal{E}[ \\text{E2}]\\mathit{e}\\ w\\ (\\lambda v.\\ (p\\ v\\ w\\ k)))\\end{array}\\]",
+    "subquestions": [
+      {
+        "problem_number": "3a",
+        "question": "Ben wants to add a new kernel form (exception? I) that tests whether or not an identifier I is bound to an exception and returns a boolean. Alyssa insists that the form can be desugared into the other exception-handling forms, but does not have time to provide the desugaring. Prove Alyssa correct by writing a desugaring for (exception? I).",
+        "answer": "\\(\\mathcal{D}[\\text{(exception? I)}]=\\text{(handle (lambda (x) #t) (begin I #f)})\\)"
+      },
+      {
+        "problem_number": "3b",
+        "question": "Write the meaning function clause for (exception E).",
+        "answer": "\\(\\mathcal{E}[\\texttt{(exception E)}]=\\lambda_{e}wk.\\ (\\mathcal{E}[\\texttt{E}] \\ e\\ w\\ w)\\)"
+      },
+      {
+        "problem_number": "3c",
+        "question": "Write the meaning function clause for I.",
+        "answer": "\\(\\mathcal{E}[\\texttt{I}]=\\lambda_{e}wk.\\ \\ \\ \\textbf{matching}\\ (lookup\\ e\\ I)\\)\n\n\\(\\triangleright\\) (Denotable\\(\\rightarrow\\)Binding \\(d\\)) \\(\\parallel\\) **matching \\(d\\)**\n\n\\(\\triangleright\\) (Value\\(\\rightarrow\\)Denotable \\(v\\)) \\(\\parallel\\) (\\(k\\ v\\))\n\n\\(\\triangleright\\) (Exception\\(\\rightarrow\\)Denotable \\(v\\)) \\(\\parallel\\) (\\(w\\ v\\))\n\n\\(\\textbf{endmatching}\\)\n\n\\(\\triangleright\\)\\(else\\)\\(\\parallel\\)\\(\\lambda s.\\ (\\texttt{Error}\\rightarrow\\texttt{Answer}\\ error)\\)\n\n\\(\\textbf{endmatching}\\)"
+      },
+      {
+        "problem_number": "3d",
+        "question": "Write the meaning function clause for (let-x I E1 E2).",
+        "answer": "\\(\\mathcal{E}[\\texttt{(let-x I E1 E2)}]=\\lambda_{e}wk.\\ (\\ \\mathcal{E}[\\texttt{E1}]\\ e\\ (\\lambda v.\\ (\\mathcal{E}[\\texttt{E2}]\\ [I:\\texttt{(Exception$\\rightarrow$Denotable $v$)}|e\\ w\\ k)) (\\lambda v.\\ (\\mathcal{E}[\\texttt{E2}]\\ [I:\\texttt{(Value$\\rightarrow$Denotable $v$)}|e\\ w\\ k)))\\)"
+      },
+      {
+        "problem_number": "3e",
+        "question": "Fill in the BOLTCOLA splotch for rec-handle.",
+        "answer": "\\(\\mathsf{\\#X}_{ExceptionCont}\\ \\lambda w_{3}\\cdot\\lambda v\\cdot(p\\ v\\ w_{3}\\ k)\\)"
+      }
+    ]
+  }
+]
