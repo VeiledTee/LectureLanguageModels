@@ -1,0 +1,91 @@
+[
+    {
+      "problem_number": "1",
+      "question": "Evaluate the following expressions in the given models.\n\n```scheme\n(let (a 1)\n  (g (lambda (x) 25)))\n(let ((f (lambda (y) (if (< a y)\n                          (g (/ 2 0))\n                          ((lambda (x) 15) (g g))))))\n  (let ((a 4)\n        (y 5)\n        (g (lambda (x) (x x))))\n    (f 2)))))\n```",
+      "subquestions": [
+        {
+          "problem_number": "1a",
+          "question": "static scoping, call by value",
+          "answer": "error (divide by 0)"
+        },
+        {
+          "problem_number": "1b",
+          "question": "dynamic scoping, call by value",
+          "answer": "\\(\\bot\\) (infinite loop)"
+        },
+        {
+          "problem_number": "1c",
+          "question": "static scoping, call by name",
+          "answer": "25"
+        },
+        {
+          "problem_number": "1d",
+          "question": "dynamic scoping, call by name",
+          "answer": "15"
+        }
+      ]
+    },
+    {
+        "problem_number": "2",
+        "question": "Alyssa P. Hacker extended the PostFix language with a new command called sdup: smart dup. This allows us to compute \\(square(x)=x^{2}\\) without hurting the termination property of PostFix programs. The informal semantics for sdup is as follows: duplicate the top of the stack if it is a number or a command sequence that doesn't contain sdup; otherwise, report an error.\n\nFormally, the operational semantics has been extended with the following two transition rules:\n\n\\\\[\\\\langle\\\\textsf{sdup}\\\\cdot Q_{rest},\\\\ N\\\\cdot S\\\\rangle \\\\Rightarrow\\\\langle Q_{rest},\\\\ N\\\\cdot N\\\\cdot S\\\\rangle\\\\] _[sdup-numeral]_ \n\n\\\\[\\\\langle\\\\textsf{sdup}\\\\cdot Q_{rest},\\\\ Q\\\\cdot S\\\\rangle \\\\Rightarrow\\\\langle Q_{rest},\\\\ Q\\\\cdot Q\\\\cdot S\\\\rangle\\\\] _[sdup-sequence]_ \n\n\\\\[\\\\text{where }\\\neg(contains\\\\_sdup\\\\ Q)\\\\]\n\n\\(contains\\\\_sdup\\) : \\(Command^{*}\\\\rightarrow\\\\textsf{Bool}\\) is a helper function that takes a sequence of commands and checks whether it contains sdup or not (yes, \\(contains\\\\_sdup\\) handles even nested sequences of commands)\n\nAs a new graduate student in Alyssa's AHRG (Advanced Hacking Research Group), you were assigned to give a proof that all PostFix + {sdup} programs terminate. However, you are not alone! Alyssa already took care of most of the mathematical weaponry:\n\nConsider the product domain \\(P=Nat\\\\times Nat\\) (as usual, \\(Nat\\) is the set of natural numbers, starting with \\(0\\)). On this domain, we define the relation \\(<_{P}\\) as follows:\n\n**Definition 1** (lexicographic order): \\(\\\\langle a_{1},b_{1}\\\\rangle\\)\\(<_{P}\\\\langle a_{2},b_{2}\\\\rangle\\) _iff:_\n\n* a.\\(a_{1}<a_{2}\\) _or_\n\n* b.\\(a_{1}=a_{2}\\) _and_ \\(b_{1}<b_{2}\\)_._\n\nE.g. \\(\\\\langle 3,10000\\\\rangle\\)\\(<_{P}\\\\langle 4,0\\\\rangle\\)_,_ \\(\\\\langle 5,2\\\\rangle\\)\\(<_{P}\\\\langle 5,3\\\\rangle\\)_._\n\n**Definition 2**: _A strictly decreasing chain in \\(P\\) is a finite or infinite sequence of elements \\(p_{1},p_{2},\\\\ldots\\) such that \\(p_{i}\\\\in P,\\\\forall i\\) and \\(p_{i+1}<_{P}p_{i},\\\\forall i\\)._\n\nAfter a long struggle, Alyssa proved the following lemma for you:\n\n**Lemma 1**: _There is no infinite strictly decreasing chain in \\(P\\)._\n\nGive a rigorous proof that each PostFix + {sdup} program terminates by using a cleverly defined energy function \\({\\\\cal ES}_{config}\\). _Hint_: Each transition of Postfix reduces the energy function \\({\\\\cal E}_{config}\\) you saw in class. Try to see what is reduced by the two new rules, and how you can combine these two things into a single energy function.\n\n_Note:_ If you need to use some helper functions that are intuitively easy to describe but tedious to define (e.g. \\(contains\\\\_sdup\\)), just give an informal description of them.\n\n_Grading scheme:_\n\n* *[10 points] \\({\\\\cal ES}_{config}\\)_;_\n\n* *[10 points] Termination proof.__",
+        "subquestions": [
+          {
+            "problem_number": "2a",
+            "question": "Define the energy function \\({\\\\cal ES}_{config}\\).",
+            "answer": "Consider the following energy function:\n\n\\\\[{\\\\cal ES}_{config}:{\\\\cal C}\\\\to Nat\\\\times Nat=\\\\lambda\\\\langle Q,S\\\\rangle\\\\cdot \\\\langle sdup\\\\_count[[\\\\langle Q,S\\\\rangle]],{\\\\cal E}_{config}[[\\\\langle Q,S\\\\rangle]]\\\\rangle\\\\]\n\nwhere \\(sdup\\\\_count\\) is a helper function that computes the number of times sdup appears in a configuration and \\({\\\\cal E}_{config}\\) is the energy function shown in class."
+          },
+          {
+            "problem_number": "2b",
+            "question": "Prove termination using the energy function \\({\\\\cal ES}_{config}\\).",
+            "answer": "Let's first prove that for any transition \\(c_{old}\\\\Rightarrow c_{new}\\), \\({\\\\cal ES}_{config}[c_{new}]\\)\\(<_{P}{\\\\cal ES}_{config}[c_{old}]\\).\n\n_Old transitions:_ None of them introduces new sdup commands but they all strictly decrease \\({\\\\cal E}_{config}\\). So, the first component of \\({\\\\cal ES}_{config}\\) doesn't increase and the second one strictly decreases which implies \\({\\\\cal ES}_{config}[c_{new}]<_{P}{\\\\cal ES}_{config}[c_{old}]\\).\n\n_New transitions:_ Each of the new sdup related rules \"consumes\" exactly one sdup: this is clearly true for \\([sdup-numeral]\\) and \\([sdup-sequence]\\) doesn't duplicate sequences containing sdup. So the first component of \\({\\\\cal ES}_{config}\\) is strictly decreased by these transitions which implies that no matter what happens with the second component (note that \\([sdup-sequence]\\) might actually increase it), \\({\\\\cal ES}_{config}[c_{new}]<_{P}{\\\\cal ES}_{config}[c_{old}]\\) for the new transitions too.\n\nSuppose now for the sake of contradiction that there is some PostFix + {sdup} program with an infinite execution \\(c_{1}\\\\Rightarrow c_{2}\\\\Rightarrow c_{3}\\\\Rightarrow\\\\ldots\\). This implies \\({\\\\cal ES}_{config}[c_{2}]<_{P}{\\\\cal ES}_{config}[c_{1}]\\), \\({\\\\cal ES}_{config}[c_{3}]<_{P}{\\\\cal ES}_{config}[c_{2}]\\), \\(\\\\ldots\\) and we've just constructed an infinite strictly decreasing chain in P! Contradiction with Lemma 1."
+          }
+        ]
+      },
+      {
+        "problem_number": "3",
+        "question": "Ben Bitdiddle introduced a new undo-once! instruction to roll the store back one operation at a time. Informally speaking, undo-once! undoes the last store operation (cell or cell-set!). If there is no store operation to undo, undo-once! does nothing.\n\n\\\\[E ::= \\\\ldots [\\\\text{Classic FLK! expressions}]\\\\] \\\\[|\\\\quad(\\\\text{undo-once!})\\\\quad[\\\\text{Undo last store operation}]\\\\]\n\nInitially, Ben thought of modifying the meaning function to use a stack of stores (as it did in the fall-98 midterm), but the implementors refused to work on such an idea and threatened to quit Ben's company _en masse_. So, Ben had to turn to a more efficient idea: maintain the current store and a stack of undo functions. An undo function takes a store and reverses a specific store operation (one done with cell or cell-set!) to obtain the store before the operation.\n\nPursuing this idea, Ben modified the Cmdcont semantic domain and the top level function as follows:\n\n\\\\[\\\\text{Cmdcont = Store $\\\\rightarrow$ StoreTransformStack $\\\\rightarrow$ Expressible}\\\\] \\\\[h \\\\in \\\\text{StoreTransformStack = StoreTransform}^{*}\\\\] \\\\[t \\\\in \\\\text{StoreTransform = Store $\\\\rightarrow$ Store}\\\\] \\\\[\\\\mathcal{T}\\\\mathcal{L}[E] = (\\\\mathcal{E}[E]\\\\textit{ empty-env top-level-cont empty-store }[|_{\\\\text{StoreTransform}})\\\\]\n\nAs each store operation (cell or cell-set!) consists of assigning a Storable to a Location, it can be reversed by putting the old Assignment into that Location. Ben even wrote the following undo function producer for you:\n\n\\\\[\\\\textit{make-undofun}: \\\\text{Location $\\\\rightarrow$ Assignment $\\\\rightarrow$ StoreTransform}\\\\] \\\\[=\\\\lambda l\\\\alpha.\\\\;\\\\;\\\\lambda s.\\\\;\\\\;(assign^{\\\\prime}\\\\;l\\\\;\\\\alpha\\\\;s)\\\\]\n\n_assign\\({}^{\\prime}\\)_ is a function similar to _assign_ which allows us to assign even _unassigned_:\n\n\\\\[\\\\textit{assign}^{\\\\prime}: \\\\text{Location $\\\\rightarrow$ Assignment $\\\\rightarrow$ Store $\\\\rightarrow$ Store}\\\\] \\\\[=\\\\lambda l_{1}\\\\alpha s.\\\\;\\\\;\\\\lambda l_{2}.\\\\;\\\\;\\\\text{if ($same-location$? $ $l_{1}$ $ $l_{2}$) then $\\\\alpha$ else ($fetch $ $l_{2}$ $ $s)$ fi}\\\\]\n\nIf a store operation modified location \\(l\\), the undo function for it can be obtained by calling _make-undofun_ on \\(l\\) and the old assignment for \\(l\\). **All the undo functions that you write in this problem must be obtained by calling** _make-undofun_ **with the appropriate arguments.**\n\nNow, guess what?, Ben went away to deliver a better Internet and grab some more billions, and you were assigned to finish his job.",
+        "subquestions": [
+          {
+            "problem_number": "3a",
+            "question": "Write the meaning function clause for \\(\\\\mathcal{E}[\\\\text{(undo-once!\\\\,)}]\\).",
+            "answer": "\\\\[\\\\mathcal{E}[\\\\text{(undo-once!\\\\,)}]=\\\\lambda eksh.\\\\;\\\\;\\\\textbf{matching}\\\\,h\\\\quad\\\\triangleright t.h_{\\\\text{rest}}\\\\parallel(k\\\\;\\\\text{(Unit$\\\\mapsto$Value unit)}\\\\;\\\\;(t\\\\;s)\\\\;h_{\\\\text{rest}})\\\\quad\\\\triangleright\\\\parallel\\\\text{StoreTransform}\\\\parallel(k\\\\;\\\\text{(Unit$\\\\mapsto$Value unit)}\\\\;s\\\\;h)\\\\quad\\\\textbf{endmatching}\\\\]\n\nWe specially treat the case of an empty stack of undo functions: when there is nothing to undo, undo-once! does nothing."
+          },
+          {
+            "problem_number": "3b",
+            "question": "Write a revised version for \\(\\\\mathcal{E}[\\\\text{(primop cell-set! $E_{1}$ $E_{2}$)}]\\).",
+            "answer": "\\\\[\\\\mathcal{E}[\\\\{\\\\texttt{primop cell-set! $E_{1}$ $E_{2}$}\\\\}]=\\\\lambda ek.\\\\ (\\\\mathcal{E}[E_{1}]\\\\ \\\\ e\\\\ (test-location\\\\ (\\\\lambda l.\\\\ (\\\\mathcal{E}[E_{2}]\\\\ \\\\ e\\\\quad\\\\langle\\\\lambda vsh.\\\\ (k\\\\ (\\\\texttt{Unit}\\\\mapsto\\\\texttt{Value}\\\\ unit)\\\\quad\\\\langle assign\\\\ l\\\\ v\\\\ s\\\\quad\\\\langle make-undofun\\\\ l\\\\ (fetch\\\\ l\\\\ s)\\\\}.h\\\\ )))))))\\\\]"
+          },
+          {
+            "problem_number": "3c",
+            "question": "Write a revised version for \\(\\\\mathcal{E}[\\\\{\\\\texttt{cell}\\\\ E\\\\}]\\). _Note_: we want to be able to undo even cell creation operations. That is, the following program must end with an error: (c (cell 0)) (begin (undo-once!) (primop cell-ref c)))",
+            "answer": "\\\\[\\\\mathcal{E}[\\\\{\\\\texttt{cell}\\\\ E\\\\}]=\\\\lambda ek.\\\\ (\\\\mathcal{E}[E]\\\\ \\\\ e\\\\ (\\\\lambda vsh.\\\\ ((\\\\lambda l.\\\\ (k\\\\ (\\\\texttt{Location}\\\\mapsto\\\\texttt{Value}\\\\ l)\\\\quad\\\\langle assign\\\\ l\\\\ v\\\\ s\\\\quad\\\\langle make-undofun\\\\ l\\\\ (\\\\texttt{Unassigned}\\\\mapsto\\\\texttt{Assignment}\\\\ unassigned)).h\\\\ ))\\\\quad\\\\langle fresh-loc\\\\ s\\\\ )))))\\\\]"
+          }
+        ]
+      },
+      {
+        "problem_number": "4",
+        "question": "Sam Antics of eFLK.com wants to cash in on the election year media bonanza by introducing a new feature into standard FLK:\n\n```scheme\n(elect E_{pres} E_{vp})\n```\n\n: evaluates to \\(E_{pres}\\) unless _impeach_ is evaluated within \\(E_{pres}\\), in which case evaluates to \\(E_{vp}\\). If _impeach_ is evaluated within \\(E_{vp}\\), signals an error.\n\n```scheme\n(reelect)\n```\n\n: if evaluated within \\(E_{pres}\\) of \\((elect E_{pres} E_{vp})\\), goes back to the beginning of elect. Otherwise, signals an error.\n\n```scheme\n(impeach)\n```\n\n: if evaluated within \\(E_{pres}\\) of \\((elect E_{pres} E_{vp})\\), causes the expression to evaluate to \\(E_{vp}\\). Otherwise, signals an error.\n\nFor example:\n\n```scheme\n(let ((scandals (primop cell 0)))\n  (elect (if (< (primop cell-ref scandals) 5)\n            (begin (primop cell-set! scandals (+ (primop cell-ref scandals) 1))\n                   (reelect))\n            (impeach))\n         (* (primop cell-ref scandals) 2)))\n```\n\n\\(\\Rightarrow\\) _10_\n\nYou are hired by eFLK.com to modify the standard denotational semantics of FLK! to produce FLK! 2000 _Presidential Edition (TM)_. To get you started, Sam tells you that he has added the following domains:\n\n\\(r\\in\\text{Prescont}=\\text{Cmdcont}\\)\n\n\\(i\\in\\text{Vpcont}=\\text{Cmdcont}\\)\n\nHe also changed the signature of the meaning function:\n\n\\(\\mathcal{E}:\\text{Exp}\\rightarrow\\text{Environment}\\rightarrow\\text{Prescont}\\rightarrow\\text{Vpcont}\\rightarrow\\text{Expcont}\\rightarrow\\text{Cmdcont}\\)",
+        "subquestions": [
+          {
+            "problem_number": "4a",
+            "question": "Give the meaning function for \\((elect E_{pres} E_{vp})\\).",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{elect E}_{pres}\\\\;\\\\texttt{E}_{vp})]=\\\\lambda erik.\\\\;\\\\;(\\\\texttt{fix}_{\\\\text{Cmdcont}}\\\\; (\\\\lambda r_{1}.\\\\;\\\\mathcal{E}[E_{pres}]\\\\;e\\\\;r_{1}\\\\;(\\\\lambda s.\\\\;\\\\mathcal{E}[E_{vp}]\\\\;e\\\\;(error-cont\\\\;cannot-reelect-vp)\\\\;(error-cont\\\\;cannot-impeach-vp)\\\\;k)\\\\;) k)\\\\]"
+          },
+          {
+            "problem_number": "4b",
+            "question": "Give the meaning function for \\((reelect)\\).",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{reelect})]=\\\\lambda erik.\\\\;r\\\\]"
+          },
+          {
+            "problem_number": "4c",
+            "question": "Give the meaning function for \\((impeach)\\).",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{impeach})]=\\\\lambda erik.\\\\;i\\\\]"
+          },
+          {
+            "problem_number": "4d",
+            "question": "Using the meaning functions you defined, show that \\((elect (reelect) 1)\\) is equivalent to \\(\\\\bot\\).",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{elect (reelect) 1})]=\\\\lambda erik.\\\\;\\\\;(\\\\texttt{fix}_{\\\\text{Cmdcont}}\\\\; (\\\\lambda r_{1}.\\\\;\\\\mathcal{E}[(\\\\texttt{reelect})]\\\\;e\\\\;r_{1}\\\\;(\\\\lambda s.\\\\;\\\\mathcal{E}[1]\\\\;e\\\\;(error-cont\\\\;cannot-reelect-vp)\\\\;(error-cont\\\\;cannot-impeach-vp)\\\\;k)\\\\;) k)\\\\]\n\n\\(\\Rightarrow\\)\n\n\\\\[\\\\mathcal{E}[(\\\\texttt{elect (reelect) 1})]=\\\\lambda erik.\\\\;\\\\;(\\\\texttt{fix}_{\\\\text{Cmdcont}}\\\\; (\\\\lambda r_{1}.\\\\; (\\\\lambda erik.\\\\;r)\\\\;e\\\\;r_{1}\\\\;(\\\\lambda s.\\\\;\\\\mathcal{E}[1]\\\\;e\\\\;(error-cont\\\\;cannot-reelect-vp)\\\\;(error-cont\\\\;cannot-impeach-vp)\\\\;k)\\\\;) k)\\\\]\n\n\\(\\Rightarrow\\)\n\n\\\\[\\\\mathcal{E}[(\\\\texttt{elect (reelect) 1})]=\\\\lambda erik.\\\\;\\\\;(\\\\texttt{fix}_{\\\\text{Cmdcont}}\\\\; (\\\\lambda r_{1}.\\\\;r_{1})\\\\)\n\n\\(\\Rightarrow\\)\n\n\\\\[\\\\mathcal{E}[(\\\\texttt{elect (reelect) 1})]=\\\\bot\\\\]"
+          }
+        ]
+      }               
+  ]
