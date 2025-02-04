@@ -16,7 +16,7 @@ for filename in volume.iterdir(path="/root/", recursive=True):
 
         # Construct the local path where you want to save the file
         local_path = os.path.join(
-            "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI Course",
+            "/Education RA/AI_Course",
             os.path.basename(filename.path),
         )
 

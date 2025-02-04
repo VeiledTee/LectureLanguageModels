@@ -6,7 +6,7 @@ from transformers import pipeline
 
 MODEL_NAME = "distilgpt2"  # or "gpt2"
 MODEL_CACHE = "/vol/cache"
-QUESTION_FILE: str = "AI Course/Exams/q1_soln_answerless.txt"
+QUESTION_FILE: str = "AI_Course/Exams/q1_soln_answerless.txt"
 
 
 def create_cache_dir():

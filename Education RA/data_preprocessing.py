@@ -111,8 +111,8 @@ def load_markdown_sections(file_path: str) -> dict[str, str]:
 
 if __name__ == "__main__":
     # Directory containing the PDF files
-    # DIRECTORY = "AI Course/Exams"
-    DIRECTORY = "AI Course/Lecture Notes"
+    # DIRECTORY = "AI_Course/Exams"
+    DIRECTORY = "AI_Course/Lecture_Notes"
 
     # Create a converter instance
     converter = DocumentConverter()
@@ -133,7 +133,7 @@ if __name__ == "__main__":
             with open(source_path, "r", encoding="utf-8") as f:
                 input_text = f.read()
                 sections = load_markdown_sections(
-                    "AI Course/Exams/q1_soln_answerless.txt"
+                    "AI_Course/Exams/q1_soln_answerless.txt"
                 )
 
                 # Print all sections
