@@ -1,10 +1,12 @@
 import re
+
+import torch
+from langchain.text_splitter import (CharacterTextSplitter,
+                                     MarkdownTextSplitter,
+                                     RecursiveCharacterTextSplitter)
 from nltk.tokenize import sent_tokenize
-from langchain.text_splitter import (
-    CharacterTextSplitter,
-    RecursiveCharacterTextSplitter,
-    MarkdownTextSplitter
-)
+from sklearn.cluster import DBSCAN
+from transformers import AutoModel, AutoTokenizer, pipeline
 
 
 class RAGChunking:
@@ -22,7 +24,9 @@ class RAGChunking:
         pass
 
     @staticmethod
-    def fixed_size_chunk(text: str, chunk_size: int = 512, overlap: int = 50) -> list[str]:
+    def fixed_size_chunk(
+        text: str, chunk_size: int = 512, overlap: int = 50
+    ) -> list[str]:
         """
         Split text into fixed-size chunks with specified overlap.
 
@@ -41,7 +45,7 @@ class RAGChunking:
             separator="\n",
             chunk_size=chunk_size,
             chunk_overlap=overlap,
-            length_function=len
+            length_function=len,
         )
         return splitter.split_text(text)
 
@@ -63,7 +67,7 @@ class RAGChunking:
         sentences = sent_tokenize(text)
         chunks = []
         for i in range(0, len(sentences), sentences_per_chunk):
-            chunk = " ".join(sentences[i:i + sentences_per_chunk])
+            chunk = " ".join(sentences[i : i + sentences_per_chunk])
             chunks.append(chunk)
         return chunks
 
@@ -81,7 +85,7 @@ class RAGChunking:
         Note:
             Splits on two or more consecutive newlines, markdown-friendly
         """
-        paragraphs = re.split(r'\n{2,}', text)
+        paragraphs = re.split(r"\n{2,}", text)
         return [p.strip() for p in paragraphs if p.strip()]
 
     @staticmethod
@@ -101,9 +105,7 @@ class RAGChunking:
             paragraph/sentence boundaries
         """
         splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=20,
-            length_function=len
+            chunk_size=chunk_size, chunk_overlap=20, length_function=len
         )
         return splitter.split_text(text)
 
@@ -125,7 +127,9 @@ class RAGChunking:
         return splitter.split_text(text)
 
     @staticmethod
-    def semantic_chunk(text: str, threshold: float = 0.85, model_name: str = 'all-MiniLM-L6-v2') -> list[str]:
+    def semantic_chunk(
+        text: str, threshold: float = 0.85, model_name: str = "all-MiniLM-L6-v2"
+    ) -> list[str]:
         """
         Split text into semantically coherent chunks using sentence embeddings.
 
@@ -141,8 +145,8 @@ class RAGChunking:
             Requires sentence-transformers and numpy packages installed.
             Uses cosine similarity between consecutive sentence embeddings.
         """
-        from sentence_transformers import SentenceTransformer
         import numpy as np
+        from sentence_transformers import SentenceTransformer
 
         model = SentenceTransformer(model_name)
         sentences = sent_tokenize(text)
@@ -163,7 +167,9 @@ class RAGChunking:
         return chunks
 
     @staticmethod
-    def sliding_window_chunk(text: str, window_size: int = 512, stride: int = 256) -> list[str]:
+    def sliding_window_chunk(
+        text: str, window_size: int = 512, stride: int = 256
+    ) -> list[str]:
         """
         Split text using sliding window approach with specified stride.
 
@@ -179,9 +185,7 @@ class RAGChunking:
             Implemented using CharacterTextSplitter with space separator
         """
         splitter = CharacterTextSplitter(
-            chunk_size=window_size,
-            chunk_overlap=stride,
-            separator=" "
+            chunk_size=window_size, chunk_overlap=stride, separator=" "
         )
         return splitter.split_text(text)
 
@@ -203,26 +207,26 @@ class RAGChunking:
         sections = []
         current_section = []
 
-        for line in text.split('\n'):
-            if line.startswith('#'):
+        for line in text.split("\n"):
+            if line.startswith("#"):
                 if current_section:
-                    sections.append('\n'.join(current_section))
+                    sections.append("\n".join(current_section))
                     current_section = []
                 sections.append(line)
             else:
                 current_section.append(line)
 
         if current_section:
-            sections.append('\n'.join(current_section))
+            sections.append("\n".join(current_section))
 
         return sections
 
     @staticmethod
     def dbscan_semantic_chunk(
-            text: str,
-            model_name: str = 'sentence-transformers/all-MiniLM-L6-v2',
-            eps: float = 0.75,
-            min_samples: int = 1
+        text: str,
+        model_name: str = "sentence-transformers/all-MiniLM-L6-v2",
+        eps: float = 0.75,
+        min_samples: int = 1,
     ) -> list[str]:
         """
         Cluster sentences using DBSCAN based on semantic embeddings.
@@ -243,26 +247,30 @@ class RAGChunking:
         model = AutoModel.from_pretrained(model_name)
 
         sentences = RAGChunking.sentence_chunk(text, sentences_per_chunk=1)
-        inputs = tokenizer(sentences, return_tensors='pt', padding=True, truncation=True)
+        inputs = tokenizer(
+            sentences, return_tensors="pt", padding=True, truncation=True
+        )
 
         with torch.no_grad():
             outputs = model(**inputs)
 
         embeddings = outputs.last_hidden_state.mean(dim=1).numpy()
-        clustering = DBSCAN(eps=eps, min_samples=min_samples, metric='cosine').fit(embeddings)
+        clustering = DBSCAN(eps=eps, min_samples=min_samples, metric="cosine").fit(
+            embeddings
+        )
 
         clusters: dict[int, list[str]] = {}
         for idx, label in enumerate(clustering.labels_):
             clusters.setdefault(label, []).append(sentences[idx])
 
-        return [' '.join(cluster) for cluster in clusters.values()]
+        return [" ".join(cluster) for cluster in clusters.values()]
 
     @staticmethod
     def summarization_adaptive_chunk(
-            text: str,
-            model_name: str = "sshleifer/distilbart-cnn-12-6",
-            max_length: int = 50,
-            min_length: int = 25
+        text: str,
+        model_name: str = "sshleifer/distilbart-cnn-12-6",
+        max_length: int = 50,
+        min_length: int = 25,
     ) -> list[str]:
         """
         Create chunks through content-aware summarization.
@@ -286,12 +294,9 @@ class RAGChunking:
         for chunk in base_chunks:
             try:
                 summary = summarizer(
-                    chunk,
-                    max_length=max_length,
-                    min_length=min_length,
-                    do_sample=False
+                    chunk, max_length=max_length, min_length=min_length, do_sample=False
                 )
-                summaries.append(summary[0]['summary_text'])
+                summaries.append(summary[0]["summary_text"])
             except Exception as e:
                 summaries.append(chunk[:min_length])
 
@@ -299,9 +304,7 @@ class RAGChunking:
 
     @staticmethod
     def enhanced_overlap_chunk(
-            text: str,
-            chunk_size: int = 512,
-            overlap: int = 128
+        text: str, chunk_size: int = 512, overlap: int = 128
     ) -> list[str]:
         """
         Improved overlap chunking with edge case handling.
@@ -344,13 +347,16 @@ class RAGChunking:
         Returns:
             list of cleaned context-based chunks
         """
-        cleaned = re.sub(r'\n{2,}', '\n', text).replace('<!-- image -->', '')
+        cleaned = re.sub(r"\n{2,}", "\n", text).replace("<!-- image -->", "")
         return RAGChunking.paragraph_chunk(cleaned)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    DBSCAN_EPSILON: float = 0.6
+    COSINE_THRESHOLD: float = 0.9
+
     chunker = RAGChunking()
-    with open("AI Course/Lecture Notes/ch2_search1_parsed.txt", "r") as f:
+    with open("AI_Course/Lecture_Notes/ch3_csp_games1_parsed.txt", "r") as f:
         markdown_content = f.read()
 
     # Create strategy demonstrations with different parameter combinations
@@ -359,28 +365,36 @@ if __name__ == '__main__':
         "Fixed Size (200c/50o)": chunker.fixed_size_chunk(markdown_content, 200, 50),
         "Sentence-Based (3 sent)": chunker.sentence_chunk(markdown_content, 3),
         "Paragraph-Based": chunker.paragraph_chunk(markdown_content),
-
         # Structural strategies
         "Recursive (150c)": chunker.recursive_chunk(markdown_content, 150),
         "Markdown Header": chunker.markdown_header_chunk(markdown_content),
         "Hybrid Markdown": chunker.hybrid_markdown_chunk(markdown_content),
-
         # Semantic strategies
-        "Semantic Similarity (0.78)": chunker.semantic_chunk(markdown_content, 0.78),
-        "DBSCAN Semantic (eps=0.8)": chunker.dbscan_semantic_chunk(markdown_content, eps=0.8),
-
+        f"Semantic Similarity ({COSINE_THRESHOLD})": chunker.semantic_chunk(
+            markdown_content, COSINE_THRESHOLD
+        ),
+        f"DBSCAN Semantic ({DBSCAN_EPSILON})": chunker.dbscan_semantic_chunk(
+            markdown_content, eps=DBSCAN_EPSILON
+        ),
         # Window/Overlap strategies
-        "Sliding Window (100/50)": chunker.sliding_window_chunk(markdown_content, 100, 50),
-        "Enhanced Overlap (300/100)": chunker.enhanced_overlap_chunk(markdown_content, 300, 100),
-
+        "Sliding Window (100/50)": chunker.sliding_window_chunk(
+            markdown_content, 100, 50
+        ),
+        "Enhanced Overlap (300/100)": chunker.enhanced_overlap_chunk(
+            markdown_content, 300, 100
+        ),
         # Adaptive strategies
-        "Summarization Adaptive": chunker.summarization_adaptive_chunk(markdown_content),
-        "Context Aware": chunker.context_aware_chunk(markdown_content)
+        "Summarization Adaptive": chunker.summarization_adaptive_chunk(
+            markdown_content
+        ),
+        "Context Aware": chunker.context_aware_chunk(markdown_content),
     }
 
     # Display formatted results
     for strategy_name, chunks in strategies.items():
-        print(f"\n{'-' * 60}\n🏷️ {strategy_name} Chunks ({len(chunks)} total)\n{'-' * 60}")
+        print(
+            f"\n{'-' * 60}\n🏷️ {strategy_name} Chunks ({len(chunks)} total)\n{'-' * 60}"
+        )
         for i, chunk in enumerate(chunks[:3], 1):  # Show first 3 chunks
             preview = chunk[:150] + "..." if len(chunk) > 150 else chunk
             print(f"📦 Chunk {i} [Length: {len(chunk):,} chars]\n{preview}\n")
