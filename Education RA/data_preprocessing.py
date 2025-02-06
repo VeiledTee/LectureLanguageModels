@@ -112,32 +112,32 @@ def load_markdown_sections(file_path: str) -> dict[str, str]:
 if __name__ == "__main__":
     # Directory containing the PDF files
     # DIRECTORY = "AI_Course/Exams"
-    DIRECTORY = "AI_Course/Lecture_Notes"
+    # DIRECTORY = "AI_Course/Lecture_Notes"
+    for directory in ["AI_Course/Lecture_Notes", "AI_Course/Exams"]:
+        # Create a converter instance
+        converter = DocumentConverter()
 
-    # Create a converter instance
-    converter = DocumentConverter()
+        for filename in os.listdir(directory):
+            source_path = os.path.join(directory, filename)  # found for every file
+            print(source_path)
 
-    for filename in os.listdir(DIRECTORY):
-        source_path = os.path.join(DIRECTORY, filename)  # found for every file
-        print(source_path)
-
-        if filename.endswith(".pdf"):  # filter by .pdf extension
-            output_path = os.path.join(
-                DIRECTORY, filename.split(".")[0] + "_parsed.txt"
-            )
-            pdf_to_markdown(
-                source_path, output_path
-            )  # convert pdf to markdown file and save in DIRECTORY with '_parsed' suffix
-
-        elif filename.endswith("_answerless.txt"):  # find edited quizzes for parsing
-            with open(source_path, "r", encoding="utf-8") as f:
-                input_text = f.read()
-                sections = load_markdown_sections(
-                    "AI_Course/Exams/q1_soln_answerless.txt"
+            if filename.endswith(".pdf"):  # filter by .pdf extension
+                output_path = os.path.join(
+                    directory, filename.split(".")[0] + "_parsed.txt"
                 )
+                pdf_to_markdown(
+                    source_path, output_path
+                )  # convert pdf to markdown file and save in directory with '_parsed' suffix
 
-                # Print all sections
-                for header, content in sections.items():
-                    if len(content) >= len(header):
-                        questions = extract_questions(content)
-                        print(f"## {header}: {questions}")
+            elif filename.endswith("_answerless.txt"):  # find edited quizzes for parsing
+                with open(source_path, "r", encoding="utf-8") as f:
+                    input_text = f.read()
+                    sections = load_markdown_sections(
+                        "AI_Course/Exams/q1_soln_answerless.txt"
+                    )
+
+                    # Print all sections
+                    for header, content in sections.items():
+                        if len(content) >= len(header):
+                            questions = extract_questions(content)
+                            print(f"## {header}: {questions}")
