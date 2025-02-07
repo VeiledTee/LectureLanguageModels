@@ -27,7 +27,7 @@ The constraints we need to represent and enforce are as follows:
 - ● Some courses are only offered in the Fall or the Spring term.
 - ● We want to limit the schedule to a feasible load such as 4 courses a term.
 - ● And, we want to avoid time conflicts where we cannot sign up for two courses offered at the same time.
-Given 40 courses (8.01,8.02 6.840) & 10 terms (Fall 1, Spring 1 Spring 5)Find a legal schedule.
+Given 40 courses (8.01,8.02 6.840) & 10 terms (Fall 1, Spring 1 Spring 5)Find a legal schedule .
 Constraints
 Pre-requisites
 Courses offered on limited terms Limited number of courses per term Avoid time conflicts
@@ -45,7 +45,7 @@ subdivide terms into slots e.9 4 of them (Fall 1,1) (Fall 1,2) (Fall1,3) (Fall 1
 C. Courses?
 Legal combinations of for example 4 courses (but this is huge set of values) .
 Courses offered during that term
-Terms or term slots (Term slots allow expressing constraint on limited number of of courses /term:)
+Terms or term slots (Term slots allow expressing constraint on limited number of of courses /term.)
 One constraint that must be represented is that the pre-requisites of a class must be taken before the actual class. This is easy to represent in this formulation. We introduce types of constraints called "term before" and "term after" which check that the values assigned to the variables, for example, 6.034 and 6.001, satisfy the correct ordering.
 Note that the undirected links shown in prior constraint graphs are now split into two directed links, each with complementary constraints.
 The constraint that some courses are only offered in some terms simply filters illegal term values from the domains of the variables.
@@ -54,12 +54,13 @@ Avoiding time conflicts is also easily represented. If two courses occur at over
 We now turn our attention to solving CSPs. We will see that the approaches to solving CSPs are some combination of constraint propagation and search. We will look at these in turn and then look at how they can be profitably combined.
 ## Constraint Propagation [aka Arc Consistency)
 Arc consistency eliminates values from domain of variable that can never be of a consistent solution. part
+Directed arc (Vi. V) is arc consistent if
 VxeD HyeD; such that (x,y) is allowed by the constraint on the arc
 The great success of Waltz's constraint propagation algorithm focused people's attention on CSPs. The basic idea in constraint propagation is to enforce what is known as "ARC CONSISTENCY", that is, if one looks at a directed arc in the constraint graph, say an arc from V i to V , we say that this j arc is consistent if for every value in the domain of V i , there exists some value in the domain of V j that will satisfy the constraint on the arc.
 ## Constraint Propaqation laka\_Arc Consistency
 Suppose there are some values in the domain at the tail of the constraint arc (for V i ) that do not have any consistent partner in the domain at the head of the arc (for V j ). We achieve arc consistency by dropping those values from D i . Note, however, that if we change D i , we now have to check to make sure that any other constraint arcs that have D i at their head are still consistent. It is this phenomenon that accounts for the name "constraint propagation".
 Arc consistency eliminates values from domain of variable that can never be of a consistent solution. part
-Directed arc (Vi. V) is arc consistent if VxeD; HyeD; such that (x,y) is allowed by the constraint on the arc
+Directed arc (V. V) is arc consistent if VxeD; HyeD; such that (x,y) is allowed by the constraint on the arc
 We can achieve consistency on arc by deleting values form D; (domain of variable at tail of constraint arc) that fail this condition.
 What is the cost of this operation? In what follows we will reckon cost in terms of "arc tests": the number of times we have to check (evaluate) the constraint on an arc for a pair of values in the variable domains of that arc. Assuming that domains have at most d elements and that there are at most e binary constraints (arcs), then a simple constraint propagation algorithm takes O( ed 3 ) arc tests in the worst case.
 It is easy to see that checking for consistency of each arc for all the values in the corresponding domains takes O( d 2 ) arc tests, since we have to look at all pairs of values in two domains. Going through and checking each arc once requires O( ed 2 ) arc tests. But, we may have to go through and look at the arcs more than once as the deletions to a node's domain propagate. However, if we look at an arc only when one of its variable domains has changed (by deleting some entry), then no arc can require checking more than d times and we have the final cost of O( ed 3 ) arc tests in the worst case.
@@ -150,7 +151,20 @@ GSAT's performance is nothing short of remarkable. It can solve SAT problems of 
 - Heuristic: The number of satisfied clauses (constraints); we want to maximize this Alternatively , minimize the number of unsatisfied clauses (constraints).
 Spang 02
 Here we see the GSAT algorithm, which is very simple in sketch. The critical implementation challenge is that of finding quickly the variable whose flip maximizes the score. Note that there are two user-specified variables: the number of times the outer loop is executed (MAXTRIES) and the number of times the inner loop is executed (MAXFLIPS). These parameters guard against local minima in the search, simply by starting with a new, randomly chosen assignment and trying a different sequence of flips. As we have mentioned, this works surprisingly well.
-## WALKSAIIE)
+GSAT can be framed as a heuristic search strategy. Its state space is the space of all full assignments to the variables. The initial state is a random assignment, while the goal state is any assignment that satisfies the formula. The actions available to GSAT are simply to flip one variable in the assignment from true to false or vice-versa. The heuristic value used for the search, which GSAT tries to maximize, is the number of satisfied clauses (constraints). Note that this is equivalent to minimizing the number of conflicts, that is, violated constraints.
+Spning 02 -12
+## Min-conflict heuristic
+The pure hill climber (without backtracking) can get stuck in local minima Can add random moves to attempt getting out of minima generally quite effective. Can also use weights on violated constraints & increase weight it remains violated. cycle every
+## GSAI
+Randomized hill climber used to solve SAT problems One of the most effective methods ever found for this problem
+Spnng02
+- For i=1 to Maxtries
+- Select a complete random assignment A
+- Score number of satisfied clauses
+- For j=1 to Maxflips
+- ~If (A satisfies all clauses in F) return A
+- Else flip a variable that maximizes score
+- ~Flip a randomly chosen variable if no variable flip increases the score
 - For i=1 to Maxtries
 - Select a complete random assignment A
 - Score number of satisfied clauses
@@ -165,16 +179,3 @@ Here we see the GSAT algorithm, which is very simple in sketch. The critical imp
 - Flip a randomly chosen variable in €
 An even more effective strategy turns out to add even more randomness. WALKSAT basically performs the GSAT algorithm some percentage of the time and the rest of the time it does a random walk in the space of assignments by randomly flipping variables in unsatisfied clauses (constraints).
 It's a bit depressing to think that such simple randomized strategies can be so much more effective than clever deterministic strategies. There are signs at present that some of the clever deterministic strategies are becoming competitive or superior to the randomized ones. The story is not over.
-GSAT can be framed as a heuristic search strategy. Its state space is the space of all full assignments to the variables. The initial state is a random assignment, while the goal state is any assignment that satisfies the formula. The actions available to GSAT are simply to flip one variable in the assignment from true to false or vice-versa. The heuristic value used for the search, which GSAT tries to maximize, is the number of satisfied clauses (constraints). Note that this is equivalent to minimizing the number of conflicts, that is, violated constraints.
-## Min-conflict heuristic
-The pure hill climber (without backtracking) can get stuck in local minima Can add random moves to attempt getting out of minima generally quite effective. Can also use weights on violated constraints & increase weight it remains violated. cycle every
-## GSAI
-Randomized hill climber used to solve SAT problems One of the most effective methods ever found for this problem
-Spnng02
-- For i=1 to Maxtries
-- Select a complete random assignment A
-- Score number of satisfied clauses
-- For j=1 to Maxflips
-- ~If (A satisfies all clauses in F) return A
-- Else flip a variable that maximizes score
-- ~Flip a randomly chosen variable if no variable flip increases the score

@@ -1,6 +1,5 @@
 ## 5 Learning  hypothesis  classes  (16  points)
 Consider  a  classification  problem  with  two  real-valued  inputs. For  each  of  the  following algorithms,  specify  all  of  the  separators  below  that  it  could  have  generated  and  explain  why. If  it  could  not  have  generated  any  of  the  separators,  explain  why  not.
-<!-- image -->
 D
 ## 1.  1-nearest  neighbor
 A  -  this  is  a  Voronoi  partition  of  the  space,  which  describes  the  decision  boundary produced  by  the  1-nearest  neighbor  algorithm
@@ -32,7 +31,6 @@ So  the  equation  of  the  separating  line  is
 -2 x 1 +  5 x 2 -2 x 3 -8  = 0
 ## 7 SVMs  (12  points)
 Assume  that  we  are  using  an  SVM  with  a polynomial  kernel  of  degree  2 . You  are  given the  following  support  vectors:
-<!-- image -->
 The α values  for  each  of  these  support  vectors  are  equal  to  0.05.
 - 1.  What  is  the  value  of ?  Explain  your  approach  to  getting  the  answer.
 - b Answer:  0
@@ -65,14 +63,10 @@ where
 ## 4 Machine  Learning  - Continuous  Features  (20  points)
 In  all  the  parts  of  this  problem  we  will  be  dealing  with  one-dimensional  data,  that  is,  a  set of  points  ( x i )  with  only  one  feature  (called  simply x ). The  points  are  in  two  classes  given by the  value  of y i . We  will  show  you  the  points  on  the x axis,  labeled  by  their  class  values; we  also  give  you  a  table  of  values.
 ## 4.1 Nearest  Neighbors
-<!-- image -->
 - 1.  In  the  figure  below,  draw  the  output  of  a  1-Nearest-Neighbor  classifier  over  the  range indicated  in  the  figure.
-<!-- image -->
 - 2.  In  the  figure  below,  draw  the  output  of  a  5-Nearest-Neighbor  classifier  over  the  range indicated  in  the  figure.
-<!-- image -->
 ## 4.2 Decision  Trees
 Answer  this  problem  using  the  same  data  as  in  the  Nearest  Neighbor  problem  above.
-<!-- image -->
 Which  of  the  following  three  tests  would  be  chosen  as  the  top  node  in  a  decision  tree?
 x ≤ 1 . 5 x ≤ 5 x ≤ 10 . 5
 Justify  your  answer.
@@ -111,20 +105,16 @@ Assume  that  each  of  the  units  of  a  neural  net  uses  one  of  the  the 
 - · Linear: This  just  outputs  the  total  activation:
 l ( z ) = z
 - · Non-Linear: This  looks  like  a  linearized  form  of  the  usual  sigmoid  funtion:
-<!-- image -->
 f ( z ) = 0 if z < -1
 f ( z ) = 1 if z > 1
 f ( z )  = 0 . 5( z +  1) otherwise
 Consider  the  following  output  from  a  neural  net  made  up  of  units  of  the  types  described above.
-<!-- image -->
 - 1.  Can  this  output  be  produced  using  only  linear  units?  Explain.
 No.  Linear  units  can  only  generate  a  linear  separator.
 - 2.  Construct  the  simplest  neural  net  out  of  these  two  type  of  units  that  would  have  the output  shown  above. When  possible,  use  weights  that  have  magnitude  of  1. Label each  unit  as  either  Linear  or  Non-Linear.
-<!-- image -->
 x
 ## 4.4 SVM
 What  are  the  values  for  the α i and  the  offset b that  would  give  the  maximal  margin  linear classifier  for  the  two  data  points  shown  below?  You  should  be  able  to  find  the  answer  without deriving  it  from  the  dual  Lagrangian.
-<!-- image -->
 ∑ i We  know  that  the w = i α i x i y .  Thus:
 1 2 w = α 1 x 1 y + α 2 x 2 y w = α 1 (0)(1)  + α 2 (4)( -1) w = -4 α 2
 ∑ We  know  further  that i y i α i = 0 ,  so  the  alphas  must  be  equal. Lastly,  we  know  that the  margin  for  the  support  vectors  is  1,  so wx 1 + b = 1 ,  which  tells  us  that b = 1 ,  and wx 2 + b = -1 ,  which  tells  us  that w = -0 . 5 .  Thus  we  know  that α 1 = α 2 = 1 . 8
@@ -137,9 +127,7 @@ i where y ( x i , w ) = s ( x w )  with s ( z ) = 1+ 1 e -z being  our  usual  s
 - 2.  What  update  should  be  made  to  weight w j given  a  single  training  example < x , y ∗ > . Your  answer  should  not  involve  derivatives.
 w ' = w j -η (( y -y ∗ )( y )(1 -y )( x j ) +  ( βw j )) j
 - ∑ 3.  Here  are  two  graphs  of  the  output  of  the  sigmoid  unit  as  a  function  of  a  single  feature x .  The  unit  has  a  weight  for x and  an  offset.  The  two  graphs  are  made  using  different values  of  the  magnitude  of  the  weight  vector  ( ‖ w ‖ 2 = j w j 2 ).
-<!-- image -->
 Which  of  the  graphs  is  produced  by  the  larger ‖ w ‖ 2 ?  Explain.
-<!-- image -->
 Graph  B  because  for  a  given  input x ,  the  larger  the  magnitude  of  the  weight  vector,  the greater  the  change  in  the  output  of  the  sigmoid  relative  to  that x .
 - 4.  Why  might  penalizing  large ‖ w ‖ 2 ,  as  we  could  do  above  by  choosing  a  positive β ,  be desirable?
 Penalizing  large  weight  vectors  would  be  desirable  so  that  we  avoid  saturation.  If  the magnitude  of  the  weight  vector  is  too  large,  gradient  descent  will  not  work  because  the derivative  of  the  sigmoid  for  large  values  is  nearly  0.
@@ -165,11 +153,9 @@ For  each  possible  definition  of  the  score below,  explain  whether  or  no
 ## Part A: (5 Points)
 Since the cost of using a nearest neighbor classifier grows with the size of the training set, sometimes one tries to eliminate redundant points from the training set.  These are points whose removal does not affect the behavior of the classifier for any possible new point.
 1. In the figure below, sketch the decision boundary for a 1-nearest-neighbor rule and circle the redundant points.
-<!-- image -->
 - 2. What is the general condition(s) required for a point to be declared redundant for a 1nearest-neighor rule?  Assume we have only two classes (+, -).  Restating the definition of redundant ("removing it does not change anything") is not an acceptable answer.  Hint - think about the neighborhood of redundant points.
 Let the Voronoi cell for a training point be the set of points that are closest to that point (as opposed to some other training point).  The  Voronoi cell of a redundant  point touches only on other Voronoi cells of points of the same class.
 Part B: (5 Points)
-<!-- image -->
 | +  + +   | - - - -   |
 |----------|-----------|
 |          | -         |
@@ -199,7 +185,6 @@ So, V is chosen
 |   7 |             0.35 |     |        |                  |
 |   7 |             0.19 |     |        |                  |
 ## Part C: (10 Points)
-<!-- image -->
 In this network, all the units are sigmoid except unit 5 which is linear (its output is simply the weighted sum of its inputs).  All the bias weights are zero.  The dashed connections have weights of -1, all the other connections (solid lines) have weights of 1.
 - 1. Given X=0 and Y=0, what are the output values of each of the units?
 - 2. What are the δ values for each unit (as computed by backpropagation defined for squared error) assume that the desired output for the network is 4.
@@ -219,10 +204,7 @@ w2,3 = (-1) - (1)(1)(0.5) = -1.5
 - 1. Consider the simple one-dimensional classification problem shown below. Imagine attacking this problem with an SVM using a radial-basis function kernel. Assume that we want the classifier to return a positive output for the + points and a negative output for the - points.
 Draw a plausible classifier output curve for a trained SVM, indicating the classifier output for every feature value in the range shown.  Do this twice, once assuming that the standard deviation ( σ ) is very small relative to the distance between adjacent training points and again assuming that the standard deviation ( σ )  is about double the distance between adjacent training points.
 Small standard deviation ( σ ):
-<!-- image -->
 Large standard deviation ( σ ):
-<!-- image -->
-<!-- image -->
 - 2. Would you expect that a polynomial kernel with d=1 would be successful in carrying out the classification shown above?  Explain.
 No, a first degree polynomial is a line and this is not linearly separable.
 - 3. Assume we use an SVM with a radial-basis function kernel to classify these same data points. We repeat the classification for different values of the the standard deviation ( σ ) used in the kernel.  What would you expect to be the relationship between the standard deviation used in the kernel and the value of the largest Lagrange multiplier (ai) needed to carry out the classification?  That is, would you expect that the max ai would increase or decrease as the standard deviation decreases?  Explain your answer.
@@ -236,13 +218,10 @@ Given a validation set (a set of samples which is separate from the training set
 ## 2.  For a decision (identification) tree
 Use the validation set for pruning the tree - that is, drop tests that do not improve the performance on validation set.
 ## Problem 1:  Classification (40 points)
-<!-- image -->
 The picture above shows a data set with 8 data points, each with only one feature value, labeled f.  Note that there are two data points with the same feature value of 6.  These are shown as two X's one above the other, but they really should have been drawn as two X's on top of each other, since they have the same feature value.
 ## Part A: (10 Points)
 - 1. Consider using 1-Nearest Neighbors to classify unseen data points.  On the line below, darken the segments of the line where the 1-NN rule would predict an O given the training data shown in the figure above.
-<!-- image -->
 - 2. Consider using 5-Nearest Neighbors to classify unseen data points.  On the line below, darken the segments of the line where the 5-NN rule would predict an O given the training data shown in the figure above.
-<!-- image -->
 - 3. If we do 8-fold cross-validation using 1-NN on this data set, what would be the predicted performance?  Settle ties by choosing the point on the left.  Show how you arrived at your answer.
 The point at 1 would be correct, nearest neighbor is at 2
 The point at 2 would be correct, nearest neighbor is at 1 (tie)
@@ -253,9 +232,7 @@ The point at 10 would be correct, nearest neighbor is 11
 The point at 11 would be correct, nearest neighbor is 10
 So,6 correct, 2 incorrect => 75% would be predicted performance
 Part B: (8 Points)
-<!-- image -->
 Using this same data set, show the decision tree that would be built from this data. Assume that the tests in the tree are of the form f ≤ c.  For each test show the approximate value of the average disorder for that test.  To help you compute this, there's a small table of values of -(x/y)*log(x/y) for small integer x and y.
-<!-- image -->
 The top node as average disorder = 5/8[-2/5lg(2/5)-3/5lg(3/5)] + 3/8*0 = 0.61 The other decision node has 0 average disorder.
 |   y |   -(x/y)*lg(x/y) | x   | y   | -(x/y)*lg(x/y)   |
 |-----|------------------|-----|-----|------------------|
@@ -278,13 +255,10 @@ The top node as average disorder = 5/8[-2/5lg(2/5)-3/5lg(3/5)] + 3/8*0 = 0.61 Th
 |   7 |             0.35 |     |     |                  |
 |   7 |             0.19 |     |     |                  |
 Part C: (12 Points)
-<!-- image -->
 Construct the simplest neural net (using sigmoid units) that can accurately classify this data.  Pick a set of appropriate weights for the network.  Assume that we will predict O when the network's output is less than 0.5 and X when the output is above 0.5.
 Whenever possible use weights that are either 1, -1, 10 or -10.
 -1
-<!-- image -->
 Part D: (10 Points)
-<!-- image -->
 Consider the simplified data set above and consider using an SVM with a polynomial kernel with d=2.  Let's say the data points are specified as:
 X1 = [-2]  Y1= -1
 X5=[-3]  Y5= -1
@@ -303,7 +277,6 @@ X4 = [ 2]  Y4= -1
 - b. label the data points,
 - c. show the separating line that would be found by the SVM,
 - d. circle the support vectors.
-<!-- image -->
 ## Problem 2:  Overfitting (20 points)
 For each of the supervised learning methods that we have studied, indicate how the method could overfit the training data (consider both your design choices as well as the training) and what you can do to minimize this possibility.  There may be more than one mechanism for overfitting, make sure that you identify them all.
 ## Part A: Nearest Neighbors (5 Points)

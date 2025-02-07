@@ -5,7 +5,7 @@ But, in lots of cases, when we don't have direct access to a formal description 
 - memorizing something
 - learning facts through observation and exploration
 - improving motor and/or cognitive skills through practice
-- organizing new knowledge into general , effective representations
+- organizing new knowledge into general, effective representations
 Herb Simon (an important historical figure in AI and in Economics) gave us this definition of learning:
 Learning denotes changes in the system that are adaptive in the sense that they enable the system to do the task or tasks drawn from the same population more efficiently and more effectively the next time.
 This is not entirely precise, but it gives us the idea that learning systems have to acquire some information from examples of a problem, and perform better because of it (so we wouldn't call a system that simply logs all the images it has ever seen a learning system, because, although, in some sense, it knows a lot, it can't take advantage of its knowledge).
@@ -70,9 +70,9 @@ The problem of learning a function from examples, is complicated. You can think 
 ## Example problem
 When to drive the car? Depends on:
 - temperature
+- of the week day
 - expected precipitation
 - whether she needs to on the way home shop
-- of the week day
 - what she's wearing
 We'll do this in the context of a silly example problem. Imagine that I'm trying predict whether my neighbor is going to drive into work tomorrow, so I can ask for a ride. Whether she drives into work seems to depend on the following attributes of the day: the temperature, what kind of precipitation is expected, the day of the week, whether she needs to shop on the way home, and what she's wearing.
 ## Learning a Function
@@ -81,13 +81,13 @@ Okay. Let's say we observe our neighbor on three days, which are described in th
 Now, we find ourselves on a snowy 19-degree Monday, when the neighbor is wearing casual clothes and going shopping. Do you think she's going to drive?
 The standard answer in this case is "yes". This day is just like one of the ones we've seen before, and so it seems like a good bet to predict "yes." This is about the most rudimentary form of learning, which is just to memorize the things you've seen before. Still, it can help you do a better job in the future, if those same cases arise again.
 Things are not always as easy as they were in the previous case. What if you get this set of data?
-|    | none   | sat   | no   | casua   | walk   |
-|----|--------|-------|------|---------|--------|
-|    | none   | sat   | no   | casua   | drive  |
-|    | none   | sat   | no   | casua   | drive  |
-|    | none   | sat   | no   | casua   | walk   |
-|    | none   | sat   | no   | casua   | walk   |
-| 80 | none   | sat   | no   | casua   | walk   |
+|    | none   | sat   |    | casua   | walk   |
+|----|--------|-------|----|---------|--------|
+|    | none   | sat   | no | casua   | drive  |
+|    | none   | sat   | no | casua   | drive  |
+|    | none   | sat   | no | casua   | walk   |
+|    | none   | sat   | no | casua   | walk   |
+| 80 | none   | sat   | no | casua   | walk   |
 |    |      |      | yes   | casual   | drive   |
 |----|------|------|-------|----------|---------|
 | 65 | none | tues | no    | casua    | walk    |
@@ -115,16 +115,16 @@ In this course, we'll give a treatment of machine learning that doesn't really r
 | 21 | none | sat   | no | casua  | drive |
 | 78 | none | sat   | no | casua  | drive |
 | 19 | none | sat   | no | formal | drive |
-|    | none | sat   | no | casua  | drive |
+|    | none | sat   | no | casua  |       |
 ## Sensor noise
 Dealing with noise in the data
-|    |      | dax   |    |       |       |
-|----|------|-------|----|-------|-------|
-|    | none | sat   | no | casua | drive |
-|    | none | sat   | no | casua | drive |
-|    | none | sat   | no | forma | drive |
-| #  | none | sat   | no | casua | drive |
-|    | none |       | no | casua | drive |
+|     |      | dax   |    |       |       |
+|-----|------|-------|----|-------|-------|
+|     | none | sat   | no | casua | drive |
+|     | none | sat   | no | casua | drive |
+|     | none | sat   | no | forma | drive |
+| #   | none | sat   | no | casua | drive |
+| [2o | none |       | no | casua | drive |
 In this case, we'd like to recognize that the day that we're asked to do the prediction for is apparently similar to cases we've seen before. It is ultimately impossible to tell whether this day is really different from those other days, or whether our sensors are just acting up. We'll just have to accept that uncertainty.
 So, we'll have to treat this as an instance of the more general problem of generalization.
 Take a good look at this data set.
@@ -142,7 +142,7 @@ Imagine that you were given all these points, and you needed to guess a function
 |----|------|-------|------|----------|---------|
 | 55 | none | sal   | no   | formal   | drive   |
 | 80 | none | sat   | no   | casual   | walk    |
-| 19 |      | mon   | yes  | casual   | drive   |
+| 19 | snow | mon   | yes  | casual   | drive   |
 | 65 | none | tues  | no   | casual   | walk    |
 Now, consider this day. It's 58 degrees and raining on a Monday. The neighbor is wearing casual clothing and doesn't need to shop. Will she walk or drive?
 The first thing to observe is that there's no obviously right answer. We have never seen this case before. We could just throw up our hands and decline to make a prediction. But ultimately, we have to decide whether or not to call the neighbor. So, we might fall back on some assumptions about the domain. We might assume, for instance, that there's a kind of smoothness property: similar situations will tend to have similar categories.
@@ -306,8 +306,8 @@ We also haven't said how to pick which feature to add to r. It's trickier here, 
 Let v j be n + j / n -j , where n + j is the total number of so-far uncovered positive examples that are covered by rule r ^ f j and n -j is the total number of thus-far not-ruled-out negative examples that are covered by rule r ^ f j . The intuition here is that we'd like to add features that cover a lot of positive examples and exclude a lot of negative examples, because that's our overall goal.
 There's one additional problem about what to do when n -is 0. In that case, this is a really good feature, because it covers positives and doesn't admit any negatives. We'll prefer features with zero in the denominator over all others; if we have multiple such features, we'll prefer ones with bigger numerator. To make this fit easily into our framework, if the denominator is zero, we just return as a score 1 million times the numerator.
 ## Choosing a Feature
-Heuristic: max(n;,0.001)
-#not yet covered positive examples covered by r ^f;
+Heuristic: n; max(n;,0.001)
+n; #not yet covered positive examples covered by r ^f;
 n; #not yet ruled out negative examples covered by r ^f;
 Choose feature with largest value of V;
 Then we can replace this line in the code with one that says: Select the feature f j with the highest value of v j to add to r. And now we have a whole algorithm.
@@ -394,13 +394,13 @@ Repcat
 has
 nn
 elements
-Solect fcaturc { to add to
+fcaturc { to add to
 oxanplos
 1n N
-elenentb
+1n
 ## No Free Lunch
 - Unless you know something about the distribution of problems your learning algorithm will encounter, any hypothesis that agrees with all your data is as good as any other.
-- You can't learn anything unless you already know something.
+- You can't learn anything unless you already know something:
 We also have to add further conditions for stopping both loops. If there is no feature that can be added that reduces the size of N, then the inner loop must terminate. If the inner loop cannot generate a rule that reduces the size of P, then the outer loop must terminate and fail.
 Now we have a new parameter, epsilon, which is the percentage of examples we're allowed to get wrong. (Well, we'll actually get more wrong, because each disjunct is allowed to get epsilon percent of the negatives wrong).
 Although it is not exactly equivalent to manipulating the alpha parameter in our ideal criterion, it is a way to trade off accuracy for complexity. The higher the epsilon, the simpler and more error-prone our hypothesis.

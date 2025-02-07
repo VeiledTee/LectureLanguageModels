@@ -202,13 +202,13 @@ Given: Data set, desired outputs and a neural net with m weights Find a setting 
 - Training set used for picking weights
 - Valldation set used to stop training
 - used to evaluate performance
-- Pick random, small weights as initial values
+- Pick random , small weights as initial values
 Then we pick a set of random small weights as the initial values of the weights. As we explained earlier, this reduces the chance that we will saturate any of the units initially.
 ## Training Neural Nets without overfitting, hopefully
 Given: Data set, desired outputs and a neural net with m weights Find a setting for the weights that will give good predictive performance on new data. Estimate expected performance on new data.
 - Split data set (randomly) into three subsets:
 - Training set used for picking weights
-- Valldatlon set used to stop training
+- Valldation set used to stop training
 - Test set used to evaluate performance
 - Pick random, small weights as initial values
 - Perform Iterative minimization of error over training set.
@@ -233,7 +233,7 @@ Given: Data set, desired outputs and a neural net with m weights Find a setting 
 - Pick random, small weights as initial values
 - Perform Iterative minimization of error over training set.
 - error on validation set reaches a minimum (to avoid
-- ReReas fraining (from step 2) several times (avoid local
+- Repeas fraining (from step 2) several times (avoid local
 Once we have a final set of weights, we can use them once on a held out test set to estimate the expected behavior on new data. Note the emphasis on doing this once. If we change the weights to improve this behavior, then we no longer have a held out set.
 In neural nets we do not have the luxury that we had in SVMs of knowing that we have found the global optimum after we finished learning. In neural nets, there are many local optima and backprop (or any other minimization strategy) can only guarantee finding a local optimum (and even this guarantee depends on careful choice of learning rate). So, it is often useful to repeat the training several times to see if a better result can be found. However, even a single round of training can be very expensive so this may not be feasible.
 ## Training Neural Nets without overfitting, hopefully
@@ -250,7 +250,7 @@ Given: Data set, desired outputs and a neural net with m weights Find a setting 
 Given: Data set, desired outputs and a neural net with m weights Find a setting for the weights that will give good predictive performance on new data. Estimate expected performance on new data.
 - Split data set (randomly) into three subsets:
 - Training set used for picking weights
-- Valldatlon set used to stop training
+- Valldation set used to stop training
 - Test set used to evaluate performance
 - Pick random, small weights as initial values
 - Perform Iterative minimizatlon of error over training set.
@@ -284,7 +284,7 @@ Momentum is not that popular a technique anymore; people will tend to use more c
 Standard backprop descent
 w;; Aw' , w; ,
 Rewrite to define change in weights at time t
-Adding a momentum term which adds in a fraction of the weight change at the previous iteration.
+Adding a momentum term which adds in a fraction of the weight change at the previous Iteration.
 Aw' ,
 - Momentum can gradually increase step size when gradient Is unchanging.
 - Can help step through shallow local minima
@@ -328,7 +328,7 @@ The researchers considered having the vehicle drive in a wobbly path during trai
 Now, you don't want to generate simulated images from scratch, as in a video game, since they are insufficiently realistic. What they did, instead, is transform the real images and fill in the few missing pixels by a form of "interpolation" on the actual pixels. The results were amazingly good.
 However, it turned out that once one understood that this whole project was possible and one
 Neural nets can also do regression, that is, produce an output which is a real number outside the range of 0 to 1, for example, predicting the age of death as a function of packs of cigarettes smoked. However, to do regression, it is important that one does not try to predict a continuous value using an output sigmoid unit. The sigmoid is basically a soft threshold with a limited dynamic range. When doing regression, we want the output unit to be linear, that is, simply remove the sigmoid non­ linearity and have the unit returned a weighted sum of its inputs.
-## ALVINN steers on highways http: / /www.ri.cmu.edu/ projects/ project\_160.html
+## ALVINN steers on highways http: / / www.ri.cmu.edu/ projects/ project\_160.html
 Image removed due to copyright restrictions.
 - Problem: Getting enough diversity in training set
 - Answer: Transform sensor image and steering direction

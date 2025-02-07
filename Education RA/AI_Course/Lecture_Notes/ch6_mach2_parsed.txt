@@ -46,7 +46,7 @@ In order to say what point is nearest, we have to define what we mean by "near".
 ## What do we mean by "Nearest"?
 - Need a distance function on inputs
 - Typically use Euclidean distance (length of a straight line between the points)
-D(x' , xk) Z(x; - x;) 1
+D(x' , xk) 1
 - Distance between character strings might be number of edits required to turn one into the other
 If we just use Euclidean distance in this space, the number of cylinders will have essentially no influence on nearness. A difference of 4 pounds in a car's weight will swamp a difference between 4 and 8 cylinders.
 One standard method for addressing this problem is to re-scale the features.
@@ -219,7 +219,6 @@ Lucky for us, the statistics folks have a good measure of how spread out a set o
 ## Variance
 - Measure of how much a set of numbers is spread out
 - Mean of m values, Z1 through Zm
-=
 ## Variance
 - Measure of how much a set of numbers is spread out
 - Mean of m values, Z1 through Zm
