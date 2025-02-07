@@ -79,32 +79,46 @@ def extract_questions(extract_from: str) -> list[str]:
     return extracted_questions
 
 
-def load_markdown_sections(file_path: str) -> dict[str, str]:
+def load_markdown_sections(file_text: str) -> dict[str, str]:
     """
-    Loads a Markdown file and splits it into sections based on headers.
-
-    Sections are identified by '##' headers. Content between headers is processed to
-    replace newlines with spaces and marked with record separators (\\x1e).
+    Processes a Markdown string and splits it into sections while preserving header hierarchy.
 
     Args:
-        file_path (str): Path to the Markdown file to process.
+        file_text (str): Markdown content as a string.
 
     Returns:
-        dict[str, str]: dictionary where keys are section headers and values are
-            processed content with newlines replaced by spaces and section breaks
-            marked with \\x1e.
+        dict[str, str]: Dictionary where keys are hierarchical headers (e.g., "[H1] Main > [H2] Sub")
+                        and values are the corresponding content.
     """
-    with open(file_path, "r", encoding="utf-8") as file:
-        text: str = file.read()
+    lines = file_text.splitlines()
+    header_stack = []
+    extracted_sections = {}
+    current_content = []
+    current_header_path = ""
 
-    # Splitting sections by headers (##) while keeping them
-    split_sections = re.split(r"(## .*\n)", text)
-    extracted_sections: dict[str, str] = {}
+    for line in lines:
+        header_match = re.match(r"^(#{1,6})\s+(.*)", line)  # Match Markdown headers
+        if header_match:
+            if current_content:
+                # Store the previous section before moving to a new one
+                extracted_sections[current_header_path] = " ".join(current_content).strip() + "\x1e"
+                current_content = []
 
-    for i in range(1, len(split_sections), 2):
-        section_header: list[str] = split_sections[i].strip("# \n")
-        section_content: list[str] = split_sections[i + 1].strip()
-        extracted_sections[section_header] = section_content.replace("\n", " ") + "\x1e"
+            level, header_text = len(header_match.group(1)), header_match.group(2).strip()
+
+            # Adjust stack to match current level
+            while len(header_stack) >= level:
+                header_stack.pop()
+
+            header_stack.append(f"[H{level}] {header_text}")
+            current_header_path = " > ".join(header_stack)
+
+        else:
+            current_content.append(line.strip())
+
+    # Add last section
+    if current_content:
+        extracted_sections[current_header_path] = " ".join(current_content).strip() + "\x1e"
 
     return extracted_sections
 
@@ -113,7 +127,7 @@ if __name__ == "__main__":
     # Directory containing the PDF files
     # DIRECTORY = "AI_Course/Exams"
     # DIRECTORY = "AI_Course/Lecture_Notes"
-    for directory in ["AI_Course/Lecture_Notes", "AI_Course/Exams"]:
+    for directory in ["AI_Course/Exams"]:
         # Create a converter instance
         converter = DocumentConverter()
 
@@ -133,7 +147,7 @@ if __name__ == "__main__":
                 with open(source_path, "r", encoding="utf-8") as f:
                     input_text = f.read()
                     sections = load_markdown_sections(
-                        "AI_Course/Exams/q1_soln_answerless.txt"
+                        input_text
                     )
 
                     # Print all sections
