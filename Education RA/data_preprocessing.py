@@ -79,19 +79,24 @@ def extract_questions(extract_from: str) -> list[str]:
     return extracted_questions
 
 
-def load_markdown_sections(file_text: str) -> dict[str, str]:
+import re
+
+def load_markdown_sections(file_path: str) -> dict[str, str]:
     """
-    Processes a Markdown string and splits it into sections while preserving header hierarchy.
+    Loads a Markdown file and splits it into sections while preserving header hierarchy.
 
     Args:
-        file_text (str): Markdown content as a string.
+        file_path (str): Path to the Markdown file.
 
     Returns:
         dict[str, str]: Dictionary where keys are hierarchical headers (e.g., "[H1] Main > [H2] Sub")
                         and values are the corresponding content.
     """
-    lines = file_text.splitlines()
-    header_stack = []
+    with open(file_path, "r", encoding="utf-8") as file:
+        text: str = file.read()
+
+    lines = text.splitlines()
+    header_stack = []  # Each element is a tuple (level, header_string)
     extracted_sections = {}
     current_content = []
     current_header_path = ""
@@ -104,24 +109,27 @@ def load_markdown_sections(file_text: str) -> dict[str, str]:
                 extracted_sections[current_header_path] = " ".join(current_content).strip() + "\x1e"
                 current_content = []
 
-            level, header_text = len(header_match.group(1)), header_match.group(2).strip()
+            current_level = len(header_match.group(1))
+            header_text = header_match.group(2).strip()
 
-            # Adjust stack to match current level
-            while len(header_stack) >= level:
+            # Pop headers from the stack with level >= current_level
+            while header_stack and header_stack[-1][0] >= current_level:
                 header_stack.pop()
 
-            header_stack.append(f"[H{level}] {header_text}")
-            current_header_path = " > ".join(header_stack)
+            # Append the current header to the stack
+            header_stack.append((current_level, f"[H{current_level}] {header_text}"))
+
+            # Build the current header path
+            current_header_path = " > ".join([h[1] for h in header_stack])
 
         else:
             current_content.append(line.strip())
 
-    # Add last section
+    # Add the last section
     if current_content:
         extracted_sections[current_header_path] = " ".join(current_content).strip() + "\x1e"
 
     return extracted_sections
-
 
 if __name__ == "__main__":
     # Directory containing the PDF files
@@ -135,23 +143,23 @@ if __name__ == "__main__":
             source_path = os.path.join(directory, filename)  # found for every file
             print(source_path)
 
-            if filename.endswith(".pdf"):  # filter by .pdf extension
-                output_path = os.path.join(
-                    directory, filename.split(".")[0] + "_parsed.txt"
-                )
-                pdf_to_markdown(
-                    source_path, output_path
-                )  # convert pdf to markdown file and save in directory with '_parsed' suffix
+            # if filename.endswith(".pdf"):  # filter by .pdf extension
+            #     output_path = os.path.join(
+            #         directory, filename.split(".")[0] + "_parsed.txt"
+            #     )
+            #     pdf_to_markdown(
+            #         source_path, output_path
+            #     )  # convert pdf to markdown file and save in directory with '_parsed' suffix
 
-            elif filename.endswith("_answerless.txt"):  # find edited quizzes for parsing
+            if filename.endswith("_answerless.txt"):  # find edited quizzes for parsing
                 with open(source_path, "r", encoding="utf-8") as f:
-                    input_text = f.read()
+                    # input_text = f.read()
                     sections = load_markdown_sections(
-                        input_text
+                        file_path=f"{directory}/{filename}"
                     )
 
-                    # Print all sections
+                    # print sections
                     for header, content in sections.items():
                         if len(content) >= len(header):
                             questions = extract_questions(content)
-                            print(f"## {header}: {questions}")
+                            print(f"{header} | {questions}")
