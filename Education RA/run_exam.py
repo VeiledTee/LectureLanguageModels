@@ -4,7 +4,7 @@ import re
 from data_preprocessing import extract_questions, load_markdown_sections
 import torch
 
-MODEL_NAME = "HuggingFaceTB/SmolLM-360M-Instruct"
+MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
 LOCAL_EXAM_DIR = Path("/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams").resolve()
 LOCAL_NOTES_DIR = Path(
     "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Lecture_Notes").resolve()
