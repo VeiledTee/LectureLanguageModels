@@ -164,23 +164,25 @@
 
 ### Rogue L Scores per Question
 
-| Question ID | RogueL Score |
-|-------------|--------------|
-|request_S14_ps1_0_0|Score = 14.54%|
-|request_S14_ps1_0_1|Score = 10.09%|
-|request_S14_ps1_1_0|Score = 18.81%|
-|request_S14_ps1_1_1|Score = 9.43%|
-|request_S14_ps1_1_2|Score = 14.85%|
-|request_S14_ps2_0_0|Score = 19.67%|
-|request_S14_ps2_0_1|Score = 12.67%|
-|request_S14_ps2_0_2|Score = 17.62%|
-|request_S14_ps2_0_3|Score = 15.84%|
-|request_S14_ps2_0_4|Score = 17.39%|
-|request_S14_ps3_0_0|Score = 15.45%|
-|request_S14_ps3_1_0|Score = 18.60%|
-|request_S14_ps3_1_1|Score = 16.97%|
-|request_S14_ps3_1_2|Score = 9.22%|
-|**Average**| 15.08%|
+| Question ID       | ROUGE-L Score | BLEU Score | BERTScore | F1 Score |
+|--------------------|---------------|------------|-----------|----------|
+| request_S14_ps1_0_0 | 14.54% | 0.35% | 82.39% | 15.25% |
+| request_S14_ps1_0_1 | 10.09% | 0.23% | 78.37% | 12.24% |
+| request_S14_ps1_1_0 | 18.81% | 2.27% | 84.68% | 24.74% |
+| request_S14_ps1_1_1 | 9.43% | 0.15% | 82.38% | 15.12% |
+| request_S14_ps1_1_2 | 14.85% | 2.82% | 82.62% | 21.91% |
+| request_S14_ps2_0_0 | 19.67% | 2.04% | 84.62% | 22.37% |
+| request_S14_ps2_0_1 | 12.67% | 0.63% | 81.28% | 18.84% |
+| request_S14_ps2_0_2 | 17.62% | 4.57% | 83.92% | 31.38% |
+| request_S14_ps2_0_3 | 15.84% | 3.79% | 83.05% | 20.41% |
+| request_S14_ps2_0_4 | 17.39% | 3.91% | 83.75% | 29.29% |
+| request_S14_ps3_0_0 | 15.45% | 0.34% | 81.23% | 18.82% |
+| request_S14_ps3_1_0 | 18.60% | 0.46% | 83.64% | 22.22% |
+| request_S14_ps3_1_1 | 16.97% | 0.44% | 82.49% | 21.14% |
+| request_S14_ps3_1_2 | 9.22% | 0.21% | 78.52% | 9.83% |
+|--------------------|---------------|------------|-----------|----------|
+| Average            | 15.08% | 1.59% | 82.35% | 20.25% |
+
 
 
 ### Evaluation Score Distribution
