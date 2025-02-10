@@ -81,6 +81,7 @@ def extract_questions(extract_from: str) -> list[str]:
 
 import re
 
+
 def load_markdown_sections(file_path: str) -> dict[str, str]:
     """
     Loads a Markdown file and splits it into sections while preserving header hierarchy.
@@ -106,7 +107,9 @@ def load_markdown_sections(file_path: str) -> dict[str, str]:
         if header_match:
             if current_content:
                 # Store the previous section before moving to a new one
-                extracted_sections[current_header_path] = " ".join(current_content).strip() + "\x1e"
+                extracted_sections[current_header_path] = (
+                    " ".join(current_content).strip() + "\x1e"
+                )
                 current_content = []
 
             current_level = len(header_match.group(1))
@@ -127,9 +130,12 @@ def load_markdown_sections(file_path: str) -> dict[str, str]:
 
     # Add the last section
     if current_content:
-        extracted_sections[current_header_path] = " ".join(current_content).strip() + "\x1e"
+        extracted_sections[current_header_path] = (
+            " ".join(current_content).strip() + "\x1e"
+        )
 
     return extracted_sections
+
 
 if __name__ == "__main__":
     # Directory containing the PDF files
