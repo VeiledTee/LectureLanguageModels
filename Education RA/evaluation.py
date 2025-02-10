@@ -1,7 +1,6 @@
+from collections import Counter
+
 from datasets import Dataset
-from ragas import evaluate
-from ragas.metrics import AnswerCorrectness, ContextRecall, Faithfulness  # import metric classes
-import nltk
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 from rouge import Rouge
 
@@ -75,16 +74,9 @@ test_data = {
 # Create a Hugging Face Dataset.
 dataset = Dataset.from_dict(test_data)
 
-# # Pass metric objects, not strings.
-# metrics = [AnswerCorrectness(), ContextRecall(), Faithfulness()]
-# scores = evaluate(dataset, metrics=metrics)
-#
-# print("RAGAS Metrics:")
-# print(f"Answer matches rubric: {scores['answer_correctness']:.2f}")
-# print(f"Key points retrieved: {scores['context_recall']:.2f}")
-# print(f"Minimal hallucinations: {scores['faithfulness']:.2f}")
+# ... [existing commented-out ragas evaluation code] ...
 
-# Optional: Compute BLEU and ROUGE metrics.
+# Optional: Compute BLEU, ROUGE, and Token F1 metrics.
 smoothing = SmoothingFunction().method1
 candidate_tokens = candidate_answer.split()
 gold_tokens = gold_standard_answer.split()
@@ -92,8 +84,40 @@ bleu = sentence_bleu([gold_tokens], candidate_tokens, smoothing_function=smoothi
 rouge = Rouge()
 rouge_scores = rouge.get_scores(candidate_answer, gold_standard_answer)[0]
 
+
+# Define Token F1 calculation function
+def compute_token_f1(candidate, gold):
+    candidate_counts = Counter(candidate.split())
+    gold_counts = Counter(gold.split())
+
+    common = 0
+    for token in candidate_counts:
+        common += min(candidate_counts[token], gold_counts.get(token, 0))
+
+    total_candidate = sum(candidate_counts.values())
+    total_gold = sum(gold_counts.values())
+
+    if total_candidate == 0 or total_gold == 0:
+        return 0.0
+
+    precision = common / total_candidate
+    recall = common / total_gold
+
+    if (precision + recall) == 0:
+        return 0.0
+    f1 = 2 * (precision * recall) / (precision + recall)
+    return f1
+
+
+# Compute Token F1 scores
+answers = dataset["answer"]
+ground_truths = dataset["ground_truth"]
+f1_scores = [compute_token_f1(ans, gt) for ans, gt in zip(answers, ground_truths)]
+average_f1 = sum(f1_scores) / len(f1_scores)
+
 print("\nOverlap Metrics:")
 print(f"BLEU: {bleu:.4f}")
 print(f"ROUGE-1: {rouge_scores['rouge-1']['f']:.4f}")
 print(f"ROUGE-2: {rouge_scores['rouge-2']['f']:.4f}")
 print(f"ROUGE-L: {rouge_scores['rouge-l']['f']:.4f}")
+print(f"Token F1: {average_f1:.4f}")  # Added line
