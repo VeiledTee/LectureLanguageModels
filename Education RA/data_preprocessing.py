@@ -61,80 +61,101 @@ def pdf_to_markdown(pdf_path: str, output_txt_path: str) -> None:
 def extract_questions(extract_from: str) -> list[str]:
     """
     Extracts individual questions from a string using specific delimiters.
-
-    The input string is first split by the record separator (\\x1e), then each resulting
-    substring is split by the unit separator (\\x1f) to extract individual questions.
-
-    Args:
-        extract_from (str): Input string containing questions separated by delimiters.
-
-    Returns:
-        list[str]: list of extracted and stripped questions.
+    First it attempts to split using the record (\x1e) and unit (\x1f) separators.
+    If those aren’t present, it falls back to using a regex to pick out question lines.
     """
-    extracted_questions: list[str] = []
-    for line in extract_from.split("\x1e"):  # split by delimiter
-        for query in line.split("\x1f"):  # split questions
-            if line != "":
-                extracted_questions.append(query.strip())
-    return extracted_questions
+    # Try using the expected delimiters.
+    if "\x1e" in extract_from or "\x1f" in extract_from:
+        questions = []
+        for block in extract_from.split("\x1e"):
+            for query in block.split("\x1f"):
+                if query.strip():
+                    questions.append(query.strip())
+        if questions:
+            return questions
 
-
-import re
+    pattern = re.compile(r"^#{3,6}\s*(\d+\.\s+.+)$", re.MULTILINE)
+    matches = pattern.findall(extract_from)
+    if matches:
+        return [m.strip() for m in matches]
+    else:
+        # Final fallback: return all nonempty lines.
+        return [line.strip() for line in extract_from.splitlines() if line.strip()]
 
 
 def load_markdown_sections(file_path: str) -> dict[str, str]:
     """
-    Loads a Markdown file and splits it into sections while preserving header hierarchy.
+    Processes a Markdown file line by line and splits it into sections using header tags.
+
+    Rule:
+      - When a header is found, all subsequent lines fall under its section until a header
+        of the same or higher level (i.e. with the same or fewer '#' characters) is encountered.
+      - For example, if a section starts with a "##" header, lines will be added to that section
+        until another "##" or a top-level "#" header is found.
+
+    This function generalizes the logic for any header level and returns a dictionary mapping
+    each hierarchical header path (e.g., "[H2] Section > [H3] Subsection") to its associated content.
 
     Args:
         file_path (str): Path to the Markdown file.
 
     Returns:
-        dict[str, str]: Dictionary where keys are hierarchical headers (e.g., "[H1] Main > [H2] Sub")
-                        and values are the corresponding content.
+        dict[str, str]: A dictionary where keys are hierarchical header paths and values are the content.
     """
-    with open(file_path, "r", encoding="utf-8") as file:
-        text: str = file.read()
+    # Regex to match header lines. This pattern accepts headers with or without a space after the '#'s.
+    header_regex = re.compile(r"^(#{1,6})\s*(.*)$")
 
-    lines = text.splitlines()
-    header_stack = []  # Each element is a tuple (level, header_string)
-    extracted_sections = {}
-    current_content = []
-    current_header_path = ""
+    sections = {}
+    # We'll use a stack to keep track of the current section hierarchy.
+    # Each element is a dict with: 'level' (int), 'title' (str), 'content' (list of lines).
+    stack = []
 
-    for line in lines:
-        header_match = re.match(r"^(#{1,6})\s+(.*)", line)  # Match Markdown headers
-        if header_match:
-            if current_content:
-                # Store the previous section before moving to a new one
-                extracted_sections[current_header_path] = (
-                    " ".join(current_content).strip() + "\x1e"
-                )
-                current_content = []
+    # Use a default "root" section for any content before the first header.
+    default_section = {'level': 0, 'title': 'No Header', 'content': []}
+    stack.append(default_section)
 
-            current_level = len(header_match.group(1))
-            header_text = header_match.group(2).strip()
+    with open(file_path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.rstrip("\n")
+            m = header_regex.match(line)
+            if m:
+                # Found a header line.
+                level = len(m.group(1))
+                title = m.group(2).strip()
 
-            # Pop headers from the stack with level >= current_level
-            while header_stack and header_stack[-1][0] >= current_level:
-                header_stack.pop()
+                # While the top section has a level that is the same or higher (i.e. level number <= current header level),
+                # finish that section by popping it off the stack.
+                while stack and stack[-1]['level'] >= level:
+                    popped = stack.pop()
+                    # Build a hierarchical key from the remaining stack and the popped section.
+                    key_parts = []
+                    # We skip the default section ("No Header") in the key.
+                    for sec in stack[1:]:
+                        key_parts.append(f"[H{sec['level']}] {sec['title']}")
+                    if popped['title'] != "No Header":
+                        key_parts.append(f"[H{popped['level']}] {popped['title']}")
+                    key = " > ".join(key_parts) if key_parts else "No Header"
+                    sections[key] = "\n".join(popped['content']).strip()
 
-            # Append the current header to the stack
-            header_stack.append((current_level, f"[H{current_level}] {header_text}"))
+                # Start a new section for the current header.
+                new_section = {'level': level, 'title': title, 'content': []}
+                stack.append(new_section)
+            else:
+                # Not a header; add the line to the content of the current (top) section.
+                stack[-1]['content'].append(line)
 
-            # Build the current header path
-            current_header_path = " > ".join([h[1] for h in header_stack])
+    # At end of file, flush all remaining sections.
+    while stack:
+        popped = stack.pop()
+        key_parts = []
+        for sec in stack[1:]:
+            key_parts.append(f"[H{sec['level']}] {sec['title']}")
+        if popped['title'] != "No Header":
+            key_parts.append(f"[H{popped['level']}] {popped['title']}")
+        key = " > ".join(key_parts) if key_parts else "No Header"
+        sections[key] = "\n".join(popped['content']).strip()
 
-        else:
-            current_content.append(line.strip())
-
-    # Add the last section
-    if current_content:
-        extracted_sections[current_header_path] = (
-            " ".join(current_content).strip() + "\x1e"
-        )
-
-    return extracted_sections
+    return sections
 
 
 if __name__ == "__main__":
@@ -159,13 +180,10 @@ if __name__ == "__main__":
 
             if filename.endswith("_answerless.txt"):  # find edited quizzes for parsing
                 with open(source_path, "r", encoding="utf-8") as f:
-                    # input_text = f.read()
+                    input_text = f.read()
                     sections = load_markdown_sections(
                         file_path=f"{directory}/{filename}"
                     )
-
-                    # print sections
-                    for header, content in sections.items():
-                        if len(content) >= len(header):
-                            questions = extract_questions(content)
-                            print(f"{header} | {questions}")
+                    print(len(sections.items()))
+                    # for header, content in sections.items():
+                    #     print(f"{header}:\n{content}\n{'-' * 40}")

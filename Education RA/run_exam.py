@@ -1,8 +1,10 @@
 import logging
+import time
+
 from pathlib import Path
 from transformers import pipeline
 import re
-from data_preprocessing import extract_questions, load_markdown_sections
+from data_preprocessing import load_markdown_sections
 import torch
 
 MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
@@ -20,21 +22,42 @@ print(f"LOCAL_EXAM_DIR exists: {LOCAL_EXAM_DIR.exists()}")
 print(f"LOCAL_NOTES_DIR exists: {LOCAL_NOTES_DIR.exists()}")
 
 
-def process_quiz_files() -> list[list[str]]:
+def process_quiz_files() -> list[str]:
+    """
+    Processes all answerless quiz files in the exam directory by splitting each Markdown file
+    into sections using header tags (via split_markdown_sections) and combining the header and
+    associated content to form the full question.
+
+    The hierarchical header path (the key) is combined with the section content (the value).
+    For example:
+        [H1] 6.034 Quiz 1, Spring 2005 > [H2] 1 Search Algorithms (16 points) > [H3] 1.1 Games
+        > [H4] 1. Can alpha-beta be generalized to do a breadth-first exploration ...:
+
+    Returns:
+        list[str]: A list of question strings.
+    """
     question_list = []
 
-    # Process all answerless quiz files in exam directory
+    # Process all answerless quiz files in the exam directory.
     for file_path in LOCAL_EXAM_DIR.glob("*_answerless.txt"):
         print(f"Processing file: {file_path}")
-        start_count: int = len(question_list)
-        with open(file_path, "r") as f:
-            sections = load_markdown_sections(str(file_path))
-            for header, content in sections.items():
-                if len(content) >= len(header):
-                    question_list.append(extract_questions(content))
-        print(
-            f"Processed {len(question_list) - start_count} questions from {file_path}"
-        )
+        start_count = len(question_list)
+
+        # Use the new function to split the Markdown file into sections.
+        sections = load_markdown_sections(str(file_path))
+        for header, content in sections.items():
+            # Combine the hierarchical header (key) and its content (if any) to form the question.
+            if content:
+                question = f"{header} > {content}"
+            else:
+                question = header
+
+            # Append a colon at the end if not already present.
+            if not question.endswith(":"):
+                question += ":"
+            question_list.append(question)
+
+        print(f"Processed {len(question_list) - start_count} questions from {file_path}")
 
     return question_list
 
@@ -56,9 +79,15 @@ def generate_answer(query: str) -> str:
                 "role": "user",
                 "content": f"""
                 Please provide a comprehensive answer to the following question.
-                Answer in detail while maintaining accuracy. No code - English only.
+                Answer succinctly but in detail. Maintain accuracy. 
+                Do not provide code. 
+                English only.
+                Begin answering immediately.
+                Answer as succinctly as possible.
+                Do not repeat the question
 
                 Question: {query}
+                Answer: 
             """,
             }
         ]
@@ -94,22 +123,32 @@ def generate_answer(query: str) -> str:
         return f"Error: {str(e)}"
 
 
-def main(lm: str, output_directory: Path):
+def main(lm: str, output_directory: Path) -> dict:
     question_list = process_quiz_files()
+    model_name = lm.split('/')[-1]
+    output_path = output_directory / f"{model_name}_combined_answers.txt"
 
-    for i, questions in enumerate(question_list):
-        output_path = output_directory / f"output_{i}_{lm.split('/')[-1]}.txt"
-        with open(output_path, "w", encoding="utf-8") as f:
-            for j, query in enumerate(questions):
-                print(f"Generating answer for question {i + 1}")
-                response = generate_answer(query)
-                f.write(f"Q: {query}\nA: {response}\n\n")
+    start_time = time.time()  # Start timing
+
+    with open(output_path, "w", encoding="utf-8") as f:
+        for i, question in enumerate(question_list):
+            print(f"Generating answer for question {i + 1}")
+            if '[H2]' in question:
+                response = generate_answer(question)
+                f.write(f"//// ANSWER: {response}\n\n")
+
+    total_time = time.time() - start_time
+
+    return {
+        "model": model_name,
+        "total_time": total_time,
+        "questions": len(question_list),
+        "avg_time_per_question": total_time/len(question_list)
+    }
 
 
 if __name__ == "__main__":
-    # question = "What's the capital of France?"
-    # answer = generate_answer(question)
-    # print(f"Q: {question}\nA: {answer}")
+    timing_report = {}
 
     for model in [
         "HuggingFaceTB/SmolLM-135M-Instruct",
@@ -119,13 +158,24 @@ if __name__ == "__main__":
         "bigscience/bloom",
         "Qwen/Qwen2.5-VL-3B-Instruct",
     ]:
-
-        # Configure logging
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+        model_name = model.split('/')[-1]
 
-        # Log messages
-        logging.warning(f"{model} has started the exam")
-        output_dir = LOCAL_EXAM_DIR / model.split('/')[-1] / "generated_answers"
+        logging.warning(f"{model_name} has started the exam")
+        output_dir = LOCAL_EXAM_DIR / "generated_answers"
         output_dir.mkdir(exist_ok=True, parents=True)
-        main(lm=model, output_directory=output_dir)
-        logging.warning(f"{model} has finished the exam")
+
+        # Run main and collect timing data
+        metrics = main(lm=model, output_directory=output_dir)
+        timing_report[model_name] = metrics
+
+        logging.warning(f"{model_name} has finished the exam in {metrics['total_time']:.2f}s")
+
+    # Print final report
+    print("\n=== Timing Report ===")
+    for model, data in timing_report.items():
+        print(f"""Model: {model}
+                Total time: {data['total_time']:.2f} seconds
+                Questions answered: {data['questions']}
+                Average time per question: {data['avg_time_per_question']:.2f}s
+                """)
