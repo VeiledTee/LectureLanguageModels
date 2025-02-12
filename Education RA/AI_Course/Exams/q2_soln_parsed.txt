@@ -1,4 +1,3 @@
-## 6.034  Quiz  2,  Spring  2005 Open  Book,  Open  Notes
 ## Name:
 | Problem      | Score   |
 |--------------|---------|
@@ -21,11 +20,9 @@
 | Total        |         |
 | (100  pts)   |         |
 ## 1 Decision  Trees  (13  pts)
-<!-- image -->
 Data  points  are:  Negative:  (-1,  0)  (2,  1)  (2,  -2)  Positive:  (0,  0)  (1,  0)
 Construct  a  decision  tree  using  the  algorithm  described  in  the  notes  for  the  data  above.
 - 1.  Show  the  tree  you  constructed  in  the  diagram  below.  The  diagram  is  more  than  big enough,  leave  any  parts  that  you  don't  need  blank.
-<!-- image -->
 - 2.  Draw  the  decision  boundaries  on  the  graph  at  the  top  of  the  page.
 - 3.  Explain  how  you  chose  the  top-level  test  in  the  tree.  The  following  table  may  be  useful.
 |   x |   y |   -(x/y)*lg(x/y) | x   | y   | -(x/y)*lg(x/y)   |
@@ -42,7 +39,6 @@ where q < is  the  fraction  of  points  below  the  decision  boundary,  and p 
 - 4.  What  class  does  the  decision  tree  predict  for  the  new  point:  (1,  -1.01)
 Positive  (+)
 ## 2 Nearest  Neighbors  (8  pts)
-<!-- image -->
 Data  points  are:  Negative:  (-1,  0)  (2,  1)  (2,  -2)  Positive:  (0,  0)  (1,  0)
 - 1.  Draw  the  decision  boundaries  for  1-Nearest  Neighbors  on  the  graph  above. Try  to  get the  integer-valued  coordinate  points  in  the  diagram  on  the  correct  side  of  the  boundary lines.
 - 2.  What  class  does  1-NN  predict  for  the  new  point:  (1,  -1.01)  Explain  why.
@@ -50,7 +46,6 @@ Positive  (+)  since  this  is  the  class  of  the  closest  data  point  (1,0)
 - 3.  What  class  does  3-NN  predict  for  the  new  point:  (1,  -1.01)  Explain  why.
 Positive  (+)  since  it  is  the  majority  class  of  the  three  closest  data  points (0,0),  (1,0)  and  (2,-2).
 ## 3 Perceptron  (7  pts)
-<!-- image -->
 Data  points  are: Negative: (-1,  0)  (2,  -2)  Positive: (1,  0). Assume  that  the  points  are examined  in  the  order  given  here.  Recall  that  the  perceptron  algorithm  uses  the  extended form  of  the  data  points  in  which  a  1  is  added  as  the  0th  component.
 - 1.  The  linear  separator  obtained  by  the  standard  perceptron  algorithm  (using  a  step  size of  1.0  and  a  zero  initial  weight  vector)  is  (0  1  2).  Explain  how  this  result  was  obtained.
 The  perceptron  algorithm  cycles  through  the  augmented  points,  updating weights  according  to  the  update  rule w new = w + y x after  misclassifying · points.  The  intermediate  weights  are  given  in  the  table  below.
@@ -71,11 +66,9 @@ The  margin  of  the  point  is  -0.01,  so  it  would  be  classified  as  nega
 - 3.  Imagine  we  apply  the  perceptron  learning  algorithm  to  the  5  point  data  set  we  used  on Problem  1:  Negative:  (-1,  0) (2,  1)  (2,  -2),  Positive:  (0,  0) (1,  0).  Describe  qualitatively what  the  result  would  be.
 The  perceptron  algorithm  would  not  converge  since  the  5  point  data  set  is not  linearly  separable.
 ## 4 Neural  Net  (9  pts)
-<!-- image -->
 Data  points  are:  Negative:  (-1,  0)  (2,  -2)  Positive:  (1,  0)
 Recall  that  for  neural  nets,  the  negative  class  is  represented  by  a  desired  output  of  0  and  the positive  class  by  a  desired  output  of  1.
 ## 1.  Assume  we  have  a  single  sigmoid  unit:
-<!-- image -->
 Assume  that  the  weights  are w 0 = 0 , w 1 = 1 , w 2 =  1.  What  is  the  computed y value for  each  of  the  points  on  the  diagram  above?
 - (a) x = ( -1 , 0), y = 0 ) = s ( -1 ) = 0 . 27 s ( 0 · -1 + 1 · -1 + 1 ·
 - (b) x = (2 , -2), y = 2 ) = s ( 0 ) = 0 . 5 s ( 0 · -1 + 1 · -2 + 1 ·
@@ -132,15 +125,10 @@ For  each  of  the  following  algorithms,  specify  which  approach  it  uses  
 ## 8 Regression  (12  pts)
 Consider  a  one-dimensional  regression  problem  (predict y as  a  function  of x ). For  each  of the  algorithms  below,  draw  the  approximate  shape  of  the  output  of  the  algorithm,  given  the data  points  shown  in  the  graph.
 - 1.  2-nearest-neighbor  (equally  weighted  averaging)
-<!-- image -->
 - 2.  regression  trees  (with  leaf  size  1)
-<!-- image -->
 ## 3.  one  linear  neural-network  unit
 4.  multi-layer  neural  network  (with  linear  output  unit)
-<!-- image -->
-<!-- image -->
 ## 9 SVM
-<!-- image -->
 Data  points  are:  Negative:  (-1,  0)  (2,  -2)  Positive:  (1,  0)
 Recall  that  for  SVMs,  the  negative  class  is  represented  by  a  desired  output  of  -1  and  the positive  class  by  a  desired  output  of  1.
 - 1.  For  each  of  the  following  separators  (for  the  data  shown  above),  indicate  whether  they satisfy  all  the  conditions  required  for  a  support  vector  machine,  assuming  a  linear kernel.  Justify  your  answers  very  briefly.
@@ -157,4 +145,3 @@ No.  The  margin  for  the  points  is  2,  not  1
 - (b)  Polynomial  kernel,  degree  3  : B
 - (c)  Radial  basis  kernel,  sigma  =  0.5  : A
 - (d)  Radial  basis  kernel,  sigma  =  1.0  : C
-<!-- image -->

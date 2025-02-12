@@ -28,9 +28,7 @@ We will build the tree from the top down. Here is pseudocode for the algorithm. 
 ## Algorithm
 - Developed in parallel in AI by Quinlan and in statistics by Breiman, Friedman, Olsen and Stone
 (Data)
-- elements Data have the value , then MakoLoafNode (y)
-## Algorithm
-- Developed in parallel in AI by Quinlan and in statistics by Breiman, Friedman, Olsen and Stone
+- elements Data have the samc value , then MakoLoafNode (y)
 If we have a mixture of different y values, we choose a feature to use to make a new internal node. Then we divide the data into two sets, those for which the value of the feature is 0 and those for which the value is 1. Finally, we call the algorithm recursively on each of these data sets. We use the selected feature and the two recursively created subtrees to build our new internal node.
 So, how should we choose a feature to split the data? Our goal, in building this tree, is to separate the negative instances from the positive instances with the fewest possible tests. So, for instance, if there's a feature we could pick that has value 0 for all the positive instances and 1 for all the negative instances, then we'd be delighted, because that would be the last split we'd have to make. On the other hand, a feature that divides the data into two groups that have the same proportion of positive and negative instances as we started with wouldn't seem to have helped much.
 In this example, it looks like the split based on f 7 will be more helpful. To formalize that intuition, we need to develop a measure of the degree of uniformity of the subsets of the data we'd get by splitting on a feature.
@@ -54,7 +52,7 @@ What should we do if we have to stop and make a leaf node when the data points a
 ## Algorithm
 - Developed in parallel in AI by Quinlan and in statistics by Breiman, Friedman, Olshen and Stone
 (Data)
-- elenents Data have the value , then
+- elenents Data have the samc value , then MakoLoafNode (y)
 ## clac
 fcaturo MakeIntcrnalNode({caturc
 fcaturc) )
@@ -93,6 +91,7 @@ Image removed due to copyright restrictions.
 - Stop recursion if data contains only multiple instances of the same x with different Y values
 - Make leaf node with output equal to the Y value that occurs in the majority of the cases in the data
 - Consider stopping to avoid overfitting when: entropy of a data set is below some threshold
+04
 Let's see how our tree-learning algorithm behaves on the example we used to demonstrate the DNFlearning algorithm. Our data set has a starting entropy of .92. Then, we can compute, for each feature, what the average entropy of the children would be if we were to split on that feature.
 In this case, the best feature to split on is f 3 .
 So, if we make that split, we have these two data sets. The one on the left has only a single output (in fact, only a single point).
@@ -204,7 +203,7 @@ Since the denominator is independent of Y, we can ignore it in figuring out whet
 ## Probabilistic Inference
 - Think of features and output as random variables
 - Learn Pr(Y
-- Given new example, compute probability it has value 1
+- Given new example; compute probability it has value 1
 - Generate answer 1 if that value is 0.5, else 0
 - Concentrate on estimating this distribution from data
 Pr(Y = 16- f)
@@ -227,5 +226,5 @@ Now, we'll move on to considering the situation in which the inputs and outputs 
 ## Prediction Algorithm
 - Given a new X,
 if X, = 1
-otherwise =1lY = 0) if X, =1 otherwise R(f,
+otherwise =1lY = 0) otherwise R(f,
 - Output 1 if

@@ -1,4 +1,3 @@
-## 6.034 Quiz 1, Spring 2005
 ## 1 Search Algorithms (16 points)
 ## 1.1 Games
 The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.
@@ -30,7 +29,6 @@ Forward checking is defined as a single iteration of constraint propagation only
 1= { R } 2= { B } 3= { R, B } 4= { B } 5= { R, B }
 Forward checking only does one step of propagation, only to the immediate neighbors of the assigned variable.
 - 4. Assume that during backtracking we first attempt assigning variables to R and then to B. Assume, also, that we examine the variables in numerical order, starting with 1. Also, let the domain of variable 5 be { B } , the other domains are { R, B } . In the following tree, which shows the space of assignments to the 5 variables we care about, indicate how pure backtracking (BT) would proceed by placing a check mark next to any assignment that would be attempted during the search and crossing out the nodes where a constraint test would fail. Leave unmarked those nodes that would never be explored.
-<!-- image -->
 - 5. If we use backtracking with forward checking (BT-FC) in this same situation, give a list of all the assignments attempted, in sequence. Use the notation variable = color for assignments, for example, 1=R.
 We must keep track of the variable domains as we search since forward checking modifies these domains based on the current assignment, and we will need to restore the domain of earlier search nodes if we have to backtrack to them. We fail at a node if (1) the current assignments violate some constraint, or (2) if forward checking after the present assignment causes the domain of some variable to become empty. The following lists (in order from left to right) each attempted assignments and the resulting variable domains after forward checking.
 | Assignment:   | None    | 1 = R   | 2= B   | 1= B    | 2= R   | 3= B   | 4= R   | 5= B   |
@@ -242,7 +240,6 @@ B
 D
 C
 G
-<!-- image -->
 B
 0
 A

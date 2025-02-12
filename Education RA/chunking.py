@@ -1,9 +1,11 @@
 import re
 
 import torch
-from langchain.text_splitter import (CharacterTextSplitter,
-                                     MarkdownTextSplitter,
-                                     RecursiveCharacterTextSplitter)
+from langchain.text_splitter import (
+    CharacterTextSplitter,
+    MarkdownTextSplitter,
+    RecursiveCharacterTextSplitter,
+)
 from nltk.tokenize import sent_tokenize
 from sklearn.cluster import DBSCAN
 from transformers import AutoModel, AutoTokenizer, pipeline

@@ -11,15 +11,15 @@ Now, we will look at the first algorithm that searches for optimal paths, as def
 This is the simple algorithm we have been using to illustrate the various searches. As before, we will see that the key issues are picking paths from Q and adding extended paths back in.
 ## Simple Search Algorithm
 state of the path; e Let S be the start state recent 9 X
-- If Q is empty, fail. Else, pick some search node N from Q
-- If state(N) is 'goal, return N (we 've reached a goal)
+- If Q is empty, fail. Else; pick some search node N from Q
+- If state(N) is goal, return N (we 've reached a goal)
 - (Othenwvise) Remove N from Q
-Don't use Visited for Optimal Search
-- Find all the children of state(N) not in Vicitod and -create all the one-step extensions of Nto each descendant.
-- Vioited
+- extensions of N to each descendant.
 - Go to step 2
 ## Critical decisions:
 Step 2: picking N from Q adding extensions of N to Q Step
+Don't use Visited for Optimal Search
+- Vioited
 Spnng
 Why can't we use a Visited list in connection with optimal searching? In the earlier searches, the use of the Visited list guaranteed that we would not do extra work by re-visiting or re-expanding states. It did not cause any failures then (except possibly of intuition).
 ## not a Visited list? Why
@@ -28,7 +28,7 @@ Why can't we use a Visited list in connection with optimal searching? In the ear
 But, using the Visited list can cause an optimal search to overlook the best path. A simple example will illustrate this.
 We will continue to use the algorithm but (as we will see) the use of the Visited list conflicts with optimal searching, so we will leave it out for now and replace it with something else later.
 ## Simple Search Algorithm
-Let $ be Ihe slart slate 9 X
+A search node is a palh from some slate X to the start slale; Let $ be Ihe slart slate 9 X
 - Initialize Q with search node (S) as only entry; set Visited = ( $ )
 - If Q is empty; fail. Else, pick some partial path N from Q
 - If statefN) is a goal, return N (we've reached 'goal)
@@ -48,7 +48,7 @@ Pick best (measured by path length) element of Q Add path extensions anywhere in
 ## Why not a Visited list?
 - For the any-path algorithms, the Visited list would not cause us to fail to find a path when one existed, since the state did not matter. path
 - However; the Visited list in connection with UC can cause us to miss the best 'path.
-- (S A D G)
+- The shortest path from S to G is (S A D G)
 - But; on extending (S), A and D would be added to Visited list and so (S A) would not be extended to (S A D)
 ## Uniform Cost
 - Like best-first except that it uses the "total length (cost)" of instead of a heuristic value for the state. path
@@ -73,14 +73,14 @@ And we have found our shortest path (S A D G) whose length is 8.
 This adds a new path to G and a new path to C. The new path to G is the best on the Q (at least tied for best) so we pull it off Q.
 Note that once again we are not stopping on first visiting (placing on Q) the goal. We stop when the goal gets expanded (pulled off Q).
 In uniform-cost search, it is imperative that we only stop when G is expanded and not just when it is visited. Until a path is first expanded, we do not know for a fact that we have found the shortest path to the state.
-## Why not on first ~ visiting goal? stop
+## Why not visiting goal? stop
 - When doing Uniform Cost; it is not correct to stop the search when the first path to a node whose state is a goal is added to Q. goal
 - We must wait until such path is off the Q and tested in step 3. It is only at this that we are sure it is the shortest path to a goal since there are no other shorter paths that remain unexpanded. pulled
 - This contrasts with the non-optimal searches where the choice of where to test for a goal was matter of convenience efficiency; not correctness. and
 In the any-path searches we chose to do the same thing, but that choice was motivated at the time simply by consistency with what we HAVE to do now. In the earlier searches, we could have chosen to stop when visiting a goal state and everything would still work fine (actually better).
 ## Why not on first visiting goal? stop
 - When Uniform Cost; it is not correct to stop the search when the first path to a goal is generated, that is, when node whose state is a goal is added to Q. doing
-- We must wait until such pulled off the Q tested in It is only at this that we are sure it is the shortest to a goal since there are no other shorter paths that remain unexpanded. path and step point , path
+- We must wait until such pulled off the Q tested in It is only at this that we are sure it is the shortest to a goal since there are no other shorter paths that remain unexpanded. path and step path
 - This contrasts with the Any Path searches where the choice of where to test for a goal was matter of convenience and efficiency; not correctness.
 - In the previous example\_ path to G was generated at 5, but it was a different; shorter; path at step that we accepted.
 Note that the first path that visited G was not the eventually chosen optimal path to G. This explains our unwillingness to stop on first visiting G in the example we just did.
@@ -102,11 +102,11 @@ This gives us the path we found. Note that the sequence of expansion corresponds
 Now, we will turn our attention to what is probably the most popular search algorithm in AI, the A* algorithm. A* is an informed, optimal search algorithm. We will spend quite a bit of time going over A*; we will start by contrasting it with uniform-cost search.
 Uniform-cost search as described so far is concerned only with expanding short paths; it pays no particular attention to the goal (since it has no way of knowing where it is). UC is really an algorithm for finding the shortest paths to all states in a graph rather than being focused in reaching a particular goal.
 We can bias UC to find the shortest path to the goal that we are interested in by using a heuristic estimate of remaining distance to the goal. This, of course, cannot be the exact path distance (if we knew that we would not need much of a search); instead, it is a stand-in for the actual distance that can give us some guidance.
-| Classes of Search   | Classes of Search   | Classes of Search                                              |
-|---------------------|---------------------|----------------------------------------------------------------|
-|                     |                     | g estimated distance to goal                                   |
-| Optimal Uninformed  | Uniform-Cost        | Uses path "length" measure. Finds "shortest" path              |
-| Optimal Informed    |                     | path "length" measure and heuristic Finds "shorlest" palh Uses |
+| Classes of Search   | Classes of Search   | Classes of Search                                 |
+|---------------------|---------------------|---------------------------------------------------|
+|                     |                     | g estimated distance to goal                      |
+| Optimal Uninformed  | Uniform-Cost        | Uses path "length" measure. Finds "shortest" path |
+| Optimal Informed    |                     | path "length" measure and heuristic Uses          |
 ## Goal Direction
 - UC is really trying to identify the shortest state in the graph in order It has no particular bias to finding a pathto goal early in the search. path every
 - We can introduce such bias by means of heuristic function h(N), which is an estimate (h) of the distance from state to the goal.
@@ -121,13 +121,13 @@ We call an estimate that always under estimates the remaining distance from any 
 - An estimate that always underestimates the real path length to the goal is called admissible: For example an estimate of 0 is admissible (but useless). Straight line distance is admissible estimate for length in Euclidean space. path
 - Use of an admissible estimate guarantees that UC will still find the shortest path.
 In order to preserve the guarantee that we will find the shortest path by expanding the partial paths based on the estimated total path length to the goal (like in UC without an expanded list), we must ensure that our heuristic estimate is admissible. Note that straight-line distance is always an underestimate of path-length in Euclidean space. Of course, by our constraint on distances, the constant function 0 is always admissible (but useless).
-- UC is really trying to identify the shortest to every state in the graph in order It has no particular bias to finding a pathto goal early in the search: path
+- UC is really trying to identify the shortest to every state in the graph in order It has no particular bias to finding a pathto goal early in the search. path
 - We can introduce such a bias by means of heuristic function h(N), which is an estimate (h) of the distance from a state to the goal.
 - Instead of enumerating paths in order of just length (g) , enumerate paths in terms of f estimated total path length 9+h
 - An estimate that always underestimates the real length to the goal is called admissible For example, an estimate of 0 is admissible (but useless) Straight line distance is admissible estimate for path length in Euclidean space
 ## Goal Direction
 UC using an admissible heuristic is known as A* (A star). It is a very popular search method in AI.
-- UC is really trying to identify the shortest path to every state in the graph in order. It has no particular bias to finding a to a early in the search: path
+- UC is really trying to identify the shortest path to every state in the graph in order. It has no particular bias to finding a to a early in the search: path goal\_
 - We can introduce such bias by means of heuristic function h(N), which is an estimate (h) of the distance from a state n to a goal.
 - Instead of enumerating paths in order of just length (g), enumerate paths in terms of f estimated total path length
 - An estimate that  always underestimates the real path length to the goal is Straight line distance is admissible estimate for path length in Euclidean space.

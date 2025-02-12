@@ -1,15 +1,15 @@
 In our discussion of uniform-cost search and A* so far, we have ignored the issue of revisiting states. We indicated that we could not use a Visited list and still preserve optimality, but can we use something else that will keep the worst-case cost of a search proportional to the number of states in a graph rather than to the number of non-looping paths? The answer is yes. We will start looking at uniform-cost search, where the extension is straightforward and then tackle A*, where it is not.
 ## Dynamic Programming Optimality Principle and the Expanded list
-- Given that length is additive; the shortest path from $ to G via a state Xis made up of the shortest path from $ to Xand the shortest path from Xto G. This is the "dynamic programming optimality principle" . path
+- Given that length is additive; the shortest path from $ to G via a state Xis This is the "dynamic programming optimality principle" . path
 Given this, we know that there is no reason to compute any path except the shortest path to any state, since that is the only path that can ever be part of the answer. So, if we ever find a second path to a previously visited state, we can discard the longer one. So, when adding nodes to Q, check whether another node with the same state is already in Q and keep only the one with shorter path length.
 What will come to our rescue is the so-called "Dynamic Programming Optimality Principle", which is fairly intuitive in this context. Namely, the shortest path from the start to the goal that goes through some state X is made up of the shortest path to X followed by the shortest path from X to G. This is easy to prove by contradiction, but we won't do it here.
 ## Dynamic Programming Optimality Principle and the Expanded list
-- Given that path length is additive, the shortest path from $ to G via a state Xis made up of the shortest from $ to Xand the shortest from Xto G This is the "dynamic programming optimality principle" path path
+- Given that path length is additive; the shortest path from $ to G via a state Xis made up of the shortest from $ to Xand the shortest from Xto G This is the "dynamic programming optimality principle" path path
 - This means that we only need to keep the single best from $ to state X; if we find a new path to a state already in Q, discard the longer one. path any
 ## Dynamic Programming Optimality Principle and the Expanded list
 - Given that path length is additive; the shortest path from $ to G via a state Xis made up of the shortest path from $ to Xand the shortest from Xto G This is the "dynamic programming optimality principle' path
 - This means that we only need to keep the single best from $ to any state X; if we find new to a state already in Q, discard the longer one. path path
-- Note that the first time UC pulls search node off of Q whose state is X, this path is the shortest path from $ to X This follows from the fact that UC expands nodes in order of actual path length.
+- Note that the first time UC pulls search node off of Q whose state is X, this path is the shortest path from S to X This follows from the fact that UC expands nodes in order of actual path length.
 We have observed that uniform-cost search pulls nodes off Q (expands them) in order of their actual path length. So, the first time we expand a node whose state is X, that node represents the shortest path to that state. Any subsequent path we find to that state is a waste of effort, since it cannot have a shorter path.
 ## Dynamic Programming Optimality Principle and the Expanded list
 - Given that path length is additive; the shortest path from $ to G via a state Xis made up of the shortest path from $ to Xand the shortest from Xto G This is the "dynamic programming optimality principle' path
@@ -27,7 +27,7 @@ Note that when using a strict Expanded list, any visited state will either be in
 The correctness of uniform-cost search does not depend on using an expanded list or even on discarding longer paths to the same state (the Q will just be longer than necessary). We can use UC with or without these optimizations and it is still correct. Exploiting the optimality principle by discarding longer paths to states in Q and not re-visiting expanded states can, however, make UC much more efficient for densely connected graphs.
 So, now, we need to modify our simple algorithm to implement uniform-cost search to take advantage of the Optimality Principle. We start with our familiar algorithm...
 ## Simple Optimal Search Algorithm Uniform Cost Stict Expanded List
-A search node is a path from some state X to the startstate, The state ofa search node is the most recentstate of the path; e
+The state of a search node is the most recentstate of the path; e 'g X
 - Initialize Q with search node (S) as only entry; set Expanded = ( )
 - If Q is empty, fail. Else, pick least cost search node N from Q
 - If state(N) is a goal, return N (we've reached the goal)
@@ -39,7 +39,7 @@ A search node is a path from some state X to the startstate, The state ofa searc
 Let's step through the operation of this algorithm on our usual example. We start with a node for S, having a 0-length path, as usual.
 ... and modify it. First we initialize the Expanded list in step 1. Since this is uniform-cost search, the algorithm picks the best element of Q, based on path length, in step 2. Then, in step 5, we check whether the state of the new node is on the Expanded list and if so, we discard it. Otherwise, we add the state of the new node to the Expanded list. In step 6, we avoid visiting nodes that are Expanded since that would be a waste of time. In step 7, we check whether there is a node in Q corresponding to each newly visited state, if so, we keep only the shorter path to that state.
 ## Simple Optimal Search Algorithm Uniform Cost
-A search node is a path from some state X to the start state, eg , (XBA $) Let S be the slart slate
+eg , (XBA $) Let S be the slart slate
 - Initialize Q with search node (S) as only entry;
 - If Q is empty; fail.  Else, pick least cost search node N from Q
 - If stateiN) is 'goal, return N (we've reached the goal)
@@ -55,8 +55,8 @@ The node corresponding to the (S A D) path is now the shortest path, so we expan
 This node corresponds to the optimal path that is returned. It is easy to show that the use of an Expanded list, as well as keeping only the shortest path to any state in Q, preserve the optimality guarantee of uniform-cost search and can lead to substantial performance improvements. Will this hold true for A* as well?
 ## A* (without expanded list)
 - Let g(N) be the path cost of n; where n is a search tree node, i.e partial path
-- Let h(N) be h(state(N)) , the heuristic estimate of the remaining path length to the goal from state(N)
-- Let ffN) = g(N) + h(state(N)) be the total estimated cost of a node, i.e. the estimate of a to a goal that starts with the path given by N. path path
+- Let h(N) be h(state(N)) ; the heuristic estimate of the remaining path length to the goal from state(N).
+- Let ffN) = g(N) + h(state(N)) be the total estimated cost of a node; i.e. the estimate of a to a goal that starts with the path given by N. path path
 - A* picks the node with lowest f value to expand
 First, let's review A* and the notation that we have been using. The important notation to remember is that the function g represents actual path length along a partial path to a node's state. The function h represents the heuristic value at a node's state and f is the total estimated path length (to a goal) and is the sum of the actual length (g) and the heuristic estimate (h). A* picks the node with the smallest value of f to expand.
 ## A* (without expanded list)
@@ -79,10 +79,10 @@ You can see the operation of A* in detail here, confirming that it finds the inc
 ## Consistency
 The stronger conditions on a heuristic that enables us to implement A* just the same way we implemented uniform-cost search with a strict Expanded list are known as the consistency conditions. They are also called monotonicity conditions by others. The first condition is simple, namely that goal states have a heuristic estimate of zero, which we have already been assuming. The next condition is the critical one. It indicates that the difference in the heuristic estimate between one state and its descendant must be less than or equal to the actual path cost on the edge connecting them.
 - To enable imple menting A* using the strict Expanded list; H needs to satisfy the following consistency (also known as monotonicity) conditions
-- h(s;) = O,if n; is a goal
+- h(s;) = O, if n; is a goal
 - h(s;) - h(s;) c(si,s;) , for n; child of n
 - The strict Expanded list (also known as a Closed list) is commonly used in implementations of A* but; to guarantee implementation requires stronger condition heuristic than simply being an underestimate
-- Here's a counterexample:   The heuristic values listed below are all underestimates but A using an Expanded list will not find the optimal path. The estimate at B throws the algorithm off, C is expanded before the optimal to it is found.
+- Here's a counterexample:   The heuristic values listed below are all underestimates but A using an Expanded list will not find the optimal path. The estimate at B throws the algorithm off, C is expanded before the optimal opislnadiag to it is found.
 G-0
 ## Consistency
 - To enable implementing A* using the strict Expanded list; H needs to satisfy the following consistency (also known as monotonicity) conditions
@@ -91,8 +91,8 @@ G-0
 Here is a simple example of a (gross) violation of consistency. If you believe goal is 100 units from n i , then moving 10 units to n  should not bring you to a distance of 10 units from the goal. These j heuristic estimates are not consistent.
 ## A* (without expanded list)
 - Let g(N) be the path cost of n; where n is a search tree node, i.e partial path
-- Let h(N) be h(state(N)) , the heuristic estimate of the remaining path length to the goal from state(N)
-- Let ffN) = g(N) + h(state(N)) be the total estimated cost of a node, i.e. the estimate of a to a goal that starts with the given by n. path path path
+- Let h(N) be h(state(N)) ; the heuristic estimate of the remaining path length to the goal from state(N).
+- Let ffN) = g(N) + h(state(N)) be the total estimated cost of a node; i.e. the estimate of a to a goal that starts with the given by n. path path path
 - A* picks the node with lowest f value to expand
 - A* (without expanded list) and with admissible heuristic is guaranteed to find optimal paths those with the smallest path cost
 - This is true even if heuristic is NOT consistent
@@ -122,15 +122,15 @@ Assume that we are adding a node, call it node 1 , to Q when using an Expanded l
 ## Dealing with inconsistent heuristic
 - What can we do if we have an inconsistent heuristic but we still want optimal paths?
 - Modify A* so that it detects and corrects when inconsistency has led us astray:
-- Assume we are 'adding node, to Q and nodez is present in Expanded list with nodez state
+- Assume we are ' adding node, to Q and nodez is present in Expanded list with nodez state
 - Strict =
 - do not add node, to Q
 With a strict Expanded list, we simply discard node 1 ; we do not add it to Q.
 ## Dealing with inconsistent heunstic
 - What can we do if we have an inconsistent heuristic but we still want optimal paths?
 - Modify A* so that it detects corrects when inconsistency has led us astray: and
-- Assume we are adding node, to Q and nodez is present in Expanded list with node -state nodezstate \_
-- Strict -
+- Assume we are adding node, to Q and nodez is present in Expanded list with nodezstate \_
+- Strict
 - do not add to Q node,
 - Non-Strict Expanded list =
 - If node,path\_length nodez path\_length; then
@@ -160,7 +160,7 @@ A search algorithm that does not keep a visited or expanded list will do exponen
 - All the searches, with or without visited or expanded lists, may have to visit (or expand)   each state in the worst case.
 - So, all searches will have worst case complexities that are at least proportional to the number of states and therefore exponential in the "depth" parameter.
 - This is the bottom-line irreducible worst case cost of systematic searches.
-- Without memory of what states have visited (expanded), searches can do (much) worse than visit every state . been
+- Without memory of what states have visited (expanded), searches can do (much) worse than visit every state. been
 6.034 Artificial Intelligence. Copyright © 2004 by Massachusetts Institute of Technology.
 ## Optimality & Worst Case Complexity
 |    |            |            | Yes   |    |
@@ -186,8 +186,8 @@ Here we summarize the optimality and complexity of the various algorithms we hav
 Then, we know from the operation of A* that it has expanded all nodes N whose cost f(N) is strictly less than the cost of G. We also know that since the heuristic is admissible, its value at a goal node must be 0 and thus, f(G) = g(G)+h(G) = g(G). Therefore, every unexpanded node N must have f(N) greater or equal to the actual path length to G.
 Since h is admissible, we know that any path through an unexpanded node N that reaches some alternate goal node G' must have a total cost estimate f(N) that is not larger than the actual cost to G', that is, g(G').
 ## Optimality of A*
-- Assume A* has expanded a path to goal node G
-- Then; A* has expanded all nodes N where f(N) < f(G) Since h is admissible; fG)
+- Assume A' has expanded a path to goal node G
+- Then; A" has expanded all nodes N where f(N) < f(G) Since h is admissible; fG)
 - Since h is admissible; we know that any path through N that reaches a
 Combining these two statements we see that the path length to any other goal node G' must be greater or equal to the path length of the goal node A* found, that is, G.
 Next topic:
@@ -195,12 +195,13 @@ We can also show that a better heuristic in general leads to improved performanc
 Let's postulate a "perfect" heuristic which computes the actual optimal path length to a goal. Call this heuristic h*.
 ## Optimality of A*
 - Assume A' has expanded a path to node G goal
-- Then; A* has expanded all nodes N where f(N) < f(G)   Since h is admissible, fG) = g(G).  So, every
+- admissible; fG) = g(G).  So, unexpanded node has f(N) 2 g(G): every
 ## Optimality of A*
 - Assume A* has expanded a path to goal node G
-- Then; A* has expanded all nodes N where f(N) < f(G)   Since h is
+- Then; A' has expanded all nodes N where f(N) < f(G)   Since h is
 - Since h is admissible, we know that path through N that reaches a goal node Go has value g(G9) 2 f(N) any
 - That 'goal reachable from those nodes has a path that is at least as long as the one we found. any
+Spnng 02*$
 Then, assume we have a heuristic h 1 that is always numerically less than another heuristic h 2 , which is (by admissibility) less than or equal to h*.
 The key observation is that if we have two versions of A*, one using h 1 and the other using h 2 , then every node expanded by the second one is also expanded by the first.
 This follows from the observation we have made earlier that at a goal, the heuristic estimates all agree (they are all 0) and so we know that both versions will expands all nodes whose value of f is less than the actual path length of G.
@@ -208,23 +209,22 @@ Now, every node expanded by A* 2 , will have a path cost no greater than the act
 ## Impact of better heuristic
 ## Impact of better heuristic
 - Let h" be the "perfect' heuristic retums actual path cost to goal.
-- If h (N) < h(N) < h'(N) for all non-goal nodes; then h is a better heuristic than h,
-- uses h, then every node expanded by A2* is also expanded by A
+- If h (N) < h,(N) < h'(N) for all non-goal nodes; then h is a better
+- uses h, then every node expanded by A2* is also
 So, A* 1 expands at least as many nodes as A* 2 . We say that A* 2 is better informed than A* 1 to refer to this situation.
 ## Impact of better heuristic
-- retums actual path cost to goal.
+- Let h" be the "perfect' heuristic retums actual path cost to goal.
 - If h (N) < h(N) < h'(N) for all non-goal nodes; then h is a better heuristic than h
 - expanded by A;
 - is better informed than A ;
 - Note that A" with any non-zero admissible heuristic is better informed (and therefore typically expands fewer nodes) than Uniform Cost search.
 Since uniform-cost search is simply A* with a heuristic of 0, we can say that A* is generally better informed than UC and we expect it to expand fewer nodes. But, A* will expend additional effort computing the heuristic value -- a good heuristic can more than pay back that extra effort.
-- Let h* be the "perfect' heuristic retums actual cost to goal. path
-- If h (N) < h(N) < h'(N) for all non-goal nodes; then h is a better heuristic than h
+- Let h" be the "perfect' heuristic retums actual cost to goal. path
+- heuristic than h
 - expanded by Aj
 - is better informed than A*
 ## Impact of better heunstic
 - Let h' be the "perfect' heuristic retums actual path cost to goal.
-- heuristic than hi
 - and A2' expand all nodes with f < g(G)
 New topic:
 Why does consistency allow us to guarantee that A* will find optimal paths? The key insight is that consistency ensures that the f values of expanded nodes will be non-decreasing over time.
@@ -232,17 +232,17 @@ Consider two nodes N i and N  such that the latter is a descendant of the former
 ## Consistency Non-decreasing f
 By consistency of the heuristic estimates, we know that the heuristic estimate cannot decrease more than the edge cost. So, the value of f in the descendant node cannot go down; it must stay the same or go up.
 By this reasoning we can conclude that whenever A* expands a node, the new nodes' f values must be greater or equal to that of the expanded node. Also, since the expanded node must have had an f value that was a minimum of the f values in Q, this means that no nodes in Q after this expansion can have a lower f value than the most recently expanded node. That is, if we track the series of f values of expanded nodes over time, this series is non-decreasing.
-## Non-decreasing f \_ > first path is optimal
+## Non-decreasing f  \_> first path is optimal
 Now we can show that if we have nodes expanded in non-decreasing order of f, then the first time we expand a node whose state is s, then we have found the optimal path to the state. If you recall, this was the condition that enabled us to use the strict Expanded list, that is, we never need to re­ visit (or re-expand) a state.
 ## Non-decreasing f \_> first path is optimal
-- A' with consistent heuristic expands nodes N in non-decreasing order of f(N)
-- corresponding s-state(N)
+- A' with consistent heuristic expands nodes N in non-decreasing order of f{N)
+- Then; when a node N is expanded; we have found the shortest path to the corresponding s-state(N)
 - Imagine that we later found another node NO with the same corresponding state then we know that
 - f{N) = g(N) + h(s)
 - 'g(NP) + h(s)
 To prove this, let's assume that we later found another node N' that corresponds to the same state as a previously expanded node N. We have shown that the f value of N' is greater or equal that of N. But, since the heuristic values of these nodes must be the same - since they correspond to the same underlying graph state - the difference in f values must be accounted by a difference in actual path length.
 - A' with consistent heuristic expands nodes N in non-decreasing order of ffN)
-- Then; when a node N is expanded, we have found the shortest path to the corresponding s=state(N)
+- Then; when a node N is expanded; we have found the shortest path to the
 - N; is a descendant of N in the search tree
 - Then; f(N;) - f(N;)
 - Thus, when A , with a consistent heuristic, expands node, all of its descendants have values greater or equal to the expanded node (as do all the nodes left on Q).  So, the f values of expanded nodes can never decrease\_
@@ -270,18 +270,18 @@ Our simple algorithm can be summarized as follows:
 - Are we there yet?
 - Add path extensions to Q
 Assume strict Expanded "list" is implemented as a hash table; which gives constant time access Q also implemented as hash table
-Assume we have a graph with N nodes and L links.  Graphs where nodes have O(N) links are dense\_ Graphs where the nodes have a nearly constant number of links
+Assume we have a graph with N nodes and L links.  Graphs where nodes have O(N) links are dense\_ Graphs where the nodes have a nearly constant number of links are sparse. For dense graphs; L is O(N?).
 ## Non-decreasing f \_> first path is optimal
 - A' with consistent heuristic expands nodes N in non-decreasing order of f(N)
 - Then, when a node N is expanded, we have found the shortest path to the corresponding s=state(N)
-- Imagine that we later found another node NO with the same corresponding state $ then we know that
+- Imagine that we later found another node NO with the same corresponding state s then we know that
 - gíN) + h(s)
 - 'g(NP) + h(s)
 - So, we can conclude that g(NO) 2 g(N)
 - And we can safely ignore the second path to $ as we with the strict Expanded list. would
 So, let's ask the question, how many nodes are taken from Q (expanded) over the life of the algorithm (in the worst case)? Here we assume that when we add a node to Q, we check whether a node already exists for that state and keep only the node with the shorter path. Given this and the use of a strict Expanded list, we know that the worst-case number of expansions is N, the total number of states.
 What's the cost of expanding a node? Assume we scan Q to pick the best paths. Then the cost is of the order of the number of paths in Q, which is O(N) also, since we only keep the best path to a state.
-## Uniform Cost + Stnict Expanded List
+## Uniform Cost + Stnct Expanded List
 (order of time growth in worst case)
 Our simple algorithm can be summarized as follows:
 - Take the best search node from Q
@@ -313,9 +313,9 @@ Adding to the Q, assuming it is a hash table, as we have been assuming here, can
 (order of time growth in worst case)
 Our simple algorithm can be summarized as follows:
 - Take the best search node from Q
-- Are we there yet?
+- Are we there 'yet?
 - Add path extensions to Q
-Assume strict Expanded "list" is implemented as a hash table; which gives constant time access Q also implemented as hash table
+Assume strict Expanded "list" is implemented as a hash table;, which gives constant time access Q also implemented as hash table
 Assume we have a graph with N nodes links are dense\_ Graphs where the nodes have a nearly constant number of links are sparse. For dense graphs, L is O(N?). and
 Nodes taken from Q ?
 Cost of picking node from Q linear scan? using
@@ -326,7 +326,6 @@ Cost of adding node to Q ?
 O(N)
 Nodes taken from Q ?
 Cost of picking a node from Q using linear scan?
-O(N)
 Attempts to add nodes to Q (many are rejected)?
 O(L)
 Cost of adding node to Q ?
@@ -344,18 +343,18 @@ For a dense graph, where L is O(N 2 ), then the priority queue will not be worth
 - The time to find best element in a PQ grows as N) for set of size N. This is very much better than N for large N. Also; note that even if we don't discard paths to Expanded nodes; the access is still N), since O(log
 - However; adding elements to a PQ also has time that grows as N)
 - Our algorithm does up to N "find best" operations and it does up to L "add" operations. If Q is a PQ, then cost is N) Llog
-- If graph is dense; and L is O(N?), then a PQ is not advisable.
-- If graph is sparse (the more common case), highly desirable. and
-- A priority queue is data structure that makes it efficient to identify the "best' element of a set.  A PQ is typically implemented as a balanced tree
-- The time to find best element in PQ grows as N) for set of size N. This is very much better than N for large N. Also, note that even if we don't discard to Expanded nodes, the access is still O(log N), since O(log Oflog paths
-Putting it all together gives us a total cost on the order of O(N 2 +L) which, since L is at worst O(N 2 ) is essentially O(N 2 ).
+- If graph is dense; and L is O(N?); then a PQ is not advisable.
+- If graph is sparse (the more common case), Lis O(N), then a PQ is highly desirable. and
 Spnng 02 * 25
+- A priority queue is data structure that makes it efficient to identify the "best' element of a set.  A PQ is typically implemented as a balanced tree
+- The time to find best element in PQ grows as N) for set of size N. This is very much better than N for large N. Also; note that even if we don't discard to Expanded nodes, the access is still O(log N), since O(log paths
+Putting it all together gives us a total cost on the order of O(N 2 +L) which, since L is at worst O(N 2 ) is essentially O(N 2 ).
 ## Cost and Performance
 ## Searching a tree with N nodes and L links
 | O(N?)   |            | O(N)   | Yes   |
 |---------|------------|--------|-------|
 |         | O(N log N) |        |       |
-Searching a tree with branching factor b and depth d
+Searching a tree with branching factor b and depth d L =N=b d+
 Worst case time is proportional to number of nodes created Worst case space is proportional to maximal length of Q (and Expanded)
 Here we summarize the worst-case performance of UC (and A*, which is the same). Note, however, that we expect A* with a good heuristic to outperform UC in practice since it will expand at most as many nodes as UC. The worst case cost (with an uninformative heuristic) remains the same.
 By the way, in talking about space we have focused on the number of entries in Q but have not mentioned the length of the paths. One might think that this would actually be the dominant factor. But, recall that we are unrolling the graph into the search tree and each node only needs to have a link to its unique ancestor in the tree and so a node really requires constant space.

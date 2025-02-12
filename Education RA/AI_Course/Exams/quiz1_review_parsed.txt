@@ -1,6 +1,5 @@
 ## 1 Tree Search (12 points)
 Consider the tree shown below. The numbers on the arcs are the arc lengths.
-<!-- image -->
 Assume that the nodes are expanded in alphabetical order when no other order is specified by the search, and that the goal is state G . No visited or expanded lists are used. What order would the states be expanded by each type of search? Stop when you expand G. Write only the sequence of states expanded by each search.
 | Search Type                  | List of states   |
 |------------------------------|------------------|
@@ -10,7 +9,6 @@ Assume that the nodes are expanded in alphabetical order when no other order is 
 | Uniform Cost Search          |                  |
 ## 2 Graph Search (10 points)
 Consider the graph shown below where the numbers on the links are link costs and the numbers next to the states are heuristic estimates. Note that the arcs are undirected. Let A be the start state and G be the goal state.
-<!-- image -->
 Simulate A* search with a strict expanded list on this graph. At each step, show the path to the state of the node that's being expanded, the length of that path, the total estimated cost of the path (actual + heuristic), and the current value of the expanded list (as a list of states). You are welcome to use scratch paper or the back of the exam pages to simulate the search. However, please transcribe (only) the information requested into the table given below.
 | Path to State Expanded   |   Length of Path |   TotalEstimatedCost | Expanded List   |
 |--------------------------|------------------|----------------------|-----------------|
@@ -57,15 +55,12 @@ Let's assume that we attack the problem by using the jobs as variables and using
 - 7. What are some disadvantages of this formulation (using machines as variables)?
 ## 6 Game Search (10 points)
 Consider the game tree shown below. The top node is a max node. The labels on the arcs are the moves. The numbers in the bottom layer are the values of the different outcomes of the game to the max player.
-<!-- image -->
 - 1. What is the value of the game to the max player?
 - 2. What first move should the max player make?
 - 3. Assuming the max player makes that move, what is the best next move for the min player, assuming that this is the entire game tree?
 - 4. Using alpha-beta pruning, consider the nodes from right to left , which nodes are cut off? Circle the nodes that are not examined.
-<!-- image -->
 ## 1 Tree Search (10 points)
 Consider the tree shown below. The numbers on the arcs are the arc lengths; the numbers near states B, C, and D are the heuristic estimates; all other states have a heuristic estimate of 0.
-<!-- image -->
 Assume that the children of a node are expanded in alphabetical order when no other order is specified by the search, and that the goal is state J . No visited or expanded lists are used. What order would the states be expanded by each type of search. Write only the sequence of states expanded by each search.
 | Search Type                  | List of states   |
 |------------------------------|------------------|
@@ -76,7 +71,6 @@ Assume that the children of a node are expanded in alphabetical order when no ot
 | A* Search                    |                  |
 ## 2 Graph Search (8 points)
 Consider the graph shown below. Note that the arcs are undirected. Let A be the start state and G be the goal state.
-<!-- image -->
 Simulate uniform cost search with a strict expanded list on this graph. At each step, show the state of the node that's being expanded, the length of that path, and the current value of the expanded list (as a list of states).
 | State Expanded   |   Length of Path | Expanded List   |
 |------------------|------------------|-----------------|
@@ -111,13 +105,11 @@ Yes No
 Justify your answer very briefly.
 ## 4 Game Search (5 points)
 Consider the game tree shown below. Assume the top node is a max node. The labels on the arcs are the moves. The numbers in the bottom layer are the values of the different outcomes of the game to the max player.
-<!-- image -->
 - 1. What is the value of the game to the max player?
 - 2. What first move should the max player make?
 - 3. Assuming the max player makes that move, what is the best next move for the min player, assuming that this is the entire game tree?
 ## 5 Alpha-Beta Pruning (5 points)
 In the following game tree, are there any alpha-beta cutoffs?
-<!-- image -->
 - · Consider the nodes from left to right, which nodes are cutoff? Circle the nodes that are not examined and label them with L.
 - · Consider the nodes from right to left, which nodes are cutoff? Circle the nodes that are not examined and label them with R.
 ## 6 CSP Methods (15 points)
@@ -152,7 +144,6 @@ Yes
 No
 ## Problem 1 - Search
 Below is a graph to be searched (starting at S and ending at G).  Link/edge costs are shown as well as heuristic estimates at the states.  You may not need all the information for every search.
-<!-- image -->
 Draw the complete search tree for this graph.  Label each node in the tree with the cost of the path to that node and the heuristic cost at that node. When you need to refer to a node, use the name of the corresponding state and the length of the path to that node.
 For each of the searches below, just give a list of node names (state name, length of path) drawn from the tree above.  Break ties using alphabetical order.
 - 1.  Perform a depth-first search using a visited list. Assume children of a state are ordered in alphabetical order.  Show the sequence of nodes that are expanded by the search.
@@ -169,10 +160,8 @@ For each of the following situations, pick the search that is most appropriate (
 - 3.  Our search space is a tree of fixed depth and all the goals are the leaves of the tree.  We have a heuristic and we want to find any goal as quickly as possible.
 - 4.  We have a space with a manageable number of states but lots of cycles in the state graph.  We have links of varying costs and an admissible heuristic and we want to find shortest paths.
 ## Problem 1: Search (25 points)
-<!-- image -->
 A. Construct the search tree for the graph above, indicate the path length to each node. The numbers shown above are link lengths.  Pay careful attention to the arrows; some are bi-directional (shown thick) while some are uni-directional.
 - B. Using the following search tree (different from Part A), perform the searches indicated below (always from S to G).  Each node shows both the total path cost to the node as well as the heuristic value for the corresponding state.
-<!-- image -->
 For each of the searches below, write the sequence of nodes expanded by the search. Specify a node by writing the name of the state and the length of the path (shown as C=x above), e.g. S0, B3, etc.  Break ties using alphabetical order.
 - 1. Depth First Search (no visited list)
 - 2. Breadth First Search (with visited list)
@@ -208,7 +197,6 @@ Assume you do full constraint propagation in this problem.  Show the legal value
 -  D :
 Here's the search tree (as in the PS):
 |
-<!-- image -->
 Assume that you do the backtracking with forward checking.  Show the assignments in order as they are generated during the search.
 What is the first solution found in the search?
 -------------------------------------------------------------------------------------------------------------------------------------------
@@ -231,9 +219,6 @@ The constraints - repeated for easy reference:
 | D2 |      | X    |      | X    | X    |      |      |      |
 ## Problem 5: CSP (15 points)
 Consider the following constraint graph for a graph coloring problem (the constraints indicate that connected nodes cannot have the same color).  The domains are shown in the boxes next to each variable node.
-<!-- image -->
 - A. What are the variable domains after a full constraint propagation?
-<!-- image -->
 B. Show the sequence of variable assignments during a pure backtracking search (do not assume that the propagation above has been done), assume that the variables are examined in numerical order and the values are assigned in the order shown next to each node.  Show assignments by writing the variable number and the value, e.g. 1R. Don't write more than 10 assignments, even if it would take more to find a consistent answer.
 C. Show the sequence of variable assignments during backtracking with forward checking, assume that the variables are examined in numerical order and the values are assigned in the order shown next to each node.  Show assignments by writing the variable number and the value, e.g. 1R.
-<!-- image -->

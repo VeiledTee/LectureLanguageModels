@@ -1,25 +1,123 @@
+from collections import Counter
+
 from datasets import Dataset
-from ragas import evaluate
+from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
+from rouge import Rouge
 
-# Sample exam question test case
-test_data = {
-    "question": ["Explain gradient descent with momentum vs. Nesterov acceleration"],
-    "answer": ["Gradient descent with momentum applies..."],  # System's answer
-    "contexts": [
-        ["Lecture 8 Slides: Momentum helps accelerate..."]
-    ],  # Retrieved chunks
-    "ground_truth": [
-        "Nesterov momentum evaluates gradient at lookahead position..."
-    ],  # Professor's rubric
-}
-
-dataset = Dataset.from_dict(test_data)
-
-# RAGAS metrics for academic context
-score = evaluate(
-    dataset, metrics=["answer_correctness", "context_recall", "faithfulness"]
+# Define your texts.
+question_text = (
+    "The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree. "
+    "1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? "
+    "Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application. "
+    "2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? "
+    "Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application."
 )
 
-print(f"Answer matches rubric: {score['answer_correctness']:.2f}")
-print(f"Key points retrieved: {score['context_recall']:.2f}")
-print(f"Minimal hallucinations: {score['faithfulness']:.2f}")
+candidate_answer = (
+    "Q: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree. "
+    "1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? "
+    "Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application. "
+    "Some answers suggested that min-max inherently needs to go all the way down to the leaves of the game tree, where the outcome of the game is known. "
+    "This is not true. Typically one picks some depth of look-ahead and searches to that depth, using the static evaluator to compute a score for the board position at that depth. "
+    "2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? "
+    "Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.\n\n"
+    "A: 1. Yes, alpha-beta can be generalized to do a breadth-first exploration of the game tree and still get the optimal answer. "
+    "In fact, alpha-beta can be used as a component in a breadth-first search algorithm. This is because alpha-beta can be used to determine the best move at each level of the search tree, "
+    "which is similar to the way breadth-first search works.\n\n"
+    "Alpha-beta is typically used to evaluate the best move at a given depth of the search tree, but it can also be used to determine the best move at a higher level of the search tree. "
+    "This is because alpha-beta is designed to evaluate the best move at a given depth, so it can be used to determine the best move at a higher level of the search tree.\n\n"
+    "The advantages of using alpha-beta in this application include:\n"
+    "* The ability to use alpha-beta to evaluate the best move at a given depth, which can be more efficient than using a separate search algorithm.\n"
+    "* The ability to use alpha-beta to determine the best move at a higher level of the search tree, which can be more efficient than using a separate search algorithm.\n\n"
+    "The disadvantages of using alpha-beta in this application include:\n"
+    "* The need to use alpha-beta to evaluate the best move at a given depth, which can be more complex than using a separate search algorithm.\n"
+    "* The need to use alpha-beta to determine the best move at a higher level of the search tree, which can be more complex than using a separate search algorithm.\n\n"
+    "2. Yes, alpha-beta can be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer. "
+    "In fact, alpha-beta can be used as a component in a progressive-deepening search algorithm. This is because alpha-beta can be used to evaluate the best move at a given depth of the search tree, "
+    "which is similar to the way progressive-deepening search works.\n\n"
+    "Progressive-deepening search is a type of search algorithm that uses a combination of depth and breadth to explore the game tree. "
+    "The idea is to start with a small number of nodes and gradually increase the depth of the search tree as you explore the game tree. "
+    "This allows you to explore the game tree in a more efficient way.\n\n"
+    "The advantages of using alpha-beta in a progressive-deepening search algorithm include:\n"
+    "* The ability to use alpha-beta to evaluate the best move at a given depth, which can be more efficient than using a separate search algorithm.\n"
+    "* The ability to use alpha-beta to determine the best move at a higher level of the search tree, which can be more efficient than using a separate search algorithm.\n\n"
+    "The disadvantages of using alpha-beta in a progressive-deepening search algorithm include:\n"
+    "* The need to use alpha-beta to evaluate the best move at a given depth, which can be more complex than using a separate search algorithm.\n"
+    "* The need to use alpha-beta to determine the best move at a higher level of the search tree, which can be more complex than using a separate search algorithm."
+)
+
+gold_standard_answer = (
+    "The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.\n"
+    "- 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? "
+    "Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.\n"
+    "- No. The alpha-beta algorithm is an optimization on min-max. Min-max inherently needs to look at the game-tree nodes below the current node "
+    "(down to some pre-determined depth) in order to assign a value to that node. A breadth-first version of min-max does not make much sense. "
+    "Thinking about alpha-beta instead of min-max only makes it worse, since the whole point of alpha-beta is to use min-max values from one of the earlier "
+    "(left-most) sub-trees to decide that we do not need to explore some later (right-most) subtrees.\n"
+    "Some answers suggested that min-max inherently needs to go all the way down to the leaves of the game tree, where the outcome of the game is known. "
+    "This is not true. Typically one picks some depth of look-ahead and searches to that depth, using the static evaluator to compute a score for the board position at that depth.\n"
+    "- 2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? "
+    "Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.\n"
+    "- Yes. Progressive-deepening involves repeated depth-first searches to increasing depths. This can be done trivially with min-max and alpha-beta as well, "
+    "which also involve picking a maximum depth of lookahead in the tree. PD does waste some work, but as we saw in the notes, the extra work is a small fraction of the work "
+    "that you would do anyways, especially when the branching factor is high, as it is in game trees. The advantage is that in timed situations you guarantee that you always have a reasonable move available."
+)
+
+# Build the test data dictionary.
+test_data = {
+    "question": [question_text],
+    "answer": [candidate_answer],
+    "ground_truth": [gold_standard_answer],
+    "contexts": [[]],  # Optional: include supporting context if needed.
+}
+
+# Create a Hugging Face Dataset.
+dataset = Dataset.from_dict(test_data)
+
+# ... [existing commented-out ragas evaluation code] ...
+
+# Optional: Compute BLEU, ROUGE, and Token F1 metrics.
+smoothing = SmoothingFunction().method1
+candidate_tokens = candidate_answer.split()
+gold_tokens = gold_standard_answer.split()
+bleu = sentence_bleu([gold_tokens], candidate_tokens, smoothing_function=smoothing)
+rouge = Rouge()
+rouge_scores = rouge.get_scores(candidate_answer, gold_standard_answer)[0]
+
+
+# Define Token F1 calculation function
+def compute_token_f1(candidate, gold):
+    candidate_counts = Counter(candidate.split())
+    gold_counts = Counter(gold.split())
+
+    common = 0
+    for token in candidate_counts:
+        common += min(candidate_counts[token], gold_counts.get(token, 0))
+
+    total_candidate = sum(candidate_counts.values())
+    total_gold = sum(gold_counts.values())
+
+    if total_candidate == 0 or total_gold == 0:
+        return 0.0
+
+    precision = common / total_candidate
+    recall = common / total_gold
+
+    if (precision + recall) == 0:
+        return 0.0
+    f1 = 2 * (precision * recall) / (precision + recall)
+    return f1
+
+
+# Compute Token F1 scores
+answers = dataset["answer"]
+ground_truths = dataset["ground_truth"]
+f1_scores = [compute_token_f1(ans, gt) for ans, gt in zip(answers, ground_truths)]
+average_f1 = sum(f1_scores) / len(f1_scores)
+
+print("\nOverlap Metrics:")
+print(f"BLEU: {bleu:.4f}")
+print(f"ROUGE-1: {rouge_scores['rouge-1']['f']:.4f}")
+print(f"ROUGE-2: {rouge_scores['rouge-2']['f']:.4f}")
+print(f"ROUGE-L: {rouge_scores['rouge-l']['f']:.4f}")
+print(f"Token F1: {average_f1:.4f}")  # Added line

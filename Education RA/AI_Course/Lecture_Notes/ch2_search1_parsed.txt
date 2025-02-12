@@ -17,7 +17,7 @@ We are assuming that the actions are deterministic , that is, we know exactly th
 - Positions of trucks (to plan package distribution)
 - City (to plan a trip)
 - Set of facts (e g to prove geometry theorem)
-- What are the actions (operalors)? (Deterministic and discrete)
+- What are the actions (operators)? (Deterministic and discrete)
 - Assemble two parls
 - Move a truck to a new position
 - Flyto a new cily
@@ -40,7 +40,7 @@ Also note, however, that even though we avoided loops, some nodes (the colored o
 The issue of how much effort to place in avoiding loops and avoiding extra visits to nodes is an important one that we will revisit later when we discuss the various search algorithms.
 ## Terinology
 - State Used to refer to the vertices of the underlying graph that is being searched that is, states in the problem domain; for example, a city; an arrangement of blocks or the arrangement of parts in a puzzle.
-- Search Node Refers to the verlices of the search tree which is being generaled by the search algorithm.  Each node refers to a state of the world; many nodes may refer to the state . Importantly; a node implicitly represents a palh (from the start state of the search to the state associated with the node) . Because search nodes are part of search tree, they have a unique ancestor node (except for the root node). same
+- Search Node Refers to the verlices of the search tree which is being generaled by the search algorithm.  Each node refers to a stale of the world; many nodes may refer to the state . Importantly; a node implicitly represents a palh (from the start state of the search to the state associated with the node) . Because search nodes are part of search tree, they have a unique ancestor node (except for the root node). same
 One important distinction that will help us keep things straight is that between a state and a search node .
 A state is an arrangement of the real world (or at least our model of it). We assume that there is an underlying "real" state graph that we are searching (although it might not be explicitly represented in the computer; it may be implicitly defined by the actions). We assume that you can arrive at the same real world state by multiple routes, that is, by different sequences of actions.
 A search node, on the other hand, is a data structure in the search algorithm, which constructs an explicit tree of nodes while searching. Each node refers to some state, but not uniquely. Note that a node also corresponds to a path from the start state to the state associated with the node. This follows from the fact that the search algorithm is generating a tree . So, if we return a node, we're returning a path.
@@ -62,7 +62,7 @@ state of the path; e g X Let S be the start state recent
 - If Q is empty; fail.  Else, pick some search node N from Q
 - If state(N) is 'goal, return N (we've reached the goal)
 - (Othenwvise) Remove N from Q
-- Find all the children of state(N) not in Visited and create all the one-step extensions of Nto each descendant.
+- Find all the children of state(N) not in Visited and create all the one-step extensions of N to each descendant.
 - Add the extended paths to Q; children of state(N) to Visited add
 - Go to step 2
 ## Critical decisions:
@@ -81,7 +81,7 @@ Pick first element of Q Add palh extensions to front of Q
 ## Breadth-first
 Pick first element of Q Add palh extensions to end of Q
 ## Simple Search Algorithm
-Let $ be Ihe slart slate 9 X
+A search node is a palh from some slate X to the start slale; Let $ be Ihe slart slate 9 X
 - Initialize Q with search node (S) as only entry; set Visited = ( $ )
 - If Q is empty; fail. Else, pick some search node N from Q
 - If statefN) is a goal, return N (we've reached the goal)
@@ -89,19 +89,18 @@ Let $ be Ihe slart slate 9 X
 - Find all the descendants of state(N) not in Visited create all the onestep extensions of Nto each descendant. and
 - Add the extended paths to Q; add children of state(N) to Visited
 - Go to step
-Spnng 02*$
 One subtle point is where in the algorithm one tests for success (that is, the goal test). There are two plausible points: one is when a path is extended and it reaches a goal, the other is when a path is pulled off of Q. We have chosen the latter (testing in step 3 of the algorithm) because it will generalize more readily to optimal searches. However, testing on extension is correct and will save some work for any-path searches.
 At this point, we need to agree on more terminology that will play a key role in the rest of our discussion of search.
 Let's start with the notion of Visited as opposed to Expanded . We say a state is visited when a path that reaches that state (that is, a node that refers to that state) gets added to Q. So, if the state is anywhere in any node in Q, it has been visited. Note that this is true even if no path to that state has been taken off of Q.
 A state M is Expanded when a path to that state is pulled off of Q. At that point, the descendants of M are visited and the paths to those descendants added to the Q.
 ## Terinology
 - Visited state M is first visited when a to M first gets added to Q. In general, state is said to have been visited if it has ever shown up in search node in Q. The intuition is that we have briefly "visited" them to place them on Q, but we have not yet examined them carefully. path
-- Expanded state M is expanded when it is the state of a search node that is pulled off of Q. Atthat point; the descendants of M are visited and the path that led to M is extended to the eligible descendants\_ principle state may be expanded multiple times We sometimes refer to the search node that led to M (instead of M itself) as being expanded. However; once a node is expanded we are done with it; we will not need to expand it again.  In fact; we discard it from Q.
+- Expanded state M is expanded when it is the state of a search node that is pulled off of Q. Atthat point; the descendants of M are visited and the path that led to M is extended to the eligible descendants\_ principle state may be expanded multiple times We sometimes refer to the search node that led to M (instead of M itself) as being expanded. However; once a node is expanded we are done with it; we will not need to expand it again:  In fact; we discard it from Q.
 - This distinction plays key role in our discussion of the various search algorithms; study it carefully.
 Please try to get this distinction straight; it will save you no end of grief.
 ## Terminology
 - Visited a state M is first visited when to M first gets added to Q. In general, state is said to have been visited if it has ever shown up in search node in Q. The intuition is that we have briefly "visited" them to place them on Q, but we have not yet generated its descendants. path
-- Expanded state M is expanded when it is the state of a search node that is pulled off of Q. Atthat point; the descendants of M are visited and the that led to M is extended to the eligible descendants principle state may be expanded multiple times We sometimes refer to the search node that led to M (instead of M itself) as being expanded. However; once a node is expanded we are done with it; we will not need to expand it again.  In fact; we discard it from Q. path
+- Expanded state M is expanded when it is the state of a search node that is pulled off of Q. Atthat point; the descendants of M are visited and the that led to M is extended to the eligible descendants principle state may be expanded multiple times We sometimes refer to the search node that led to M (instead of M itself) as being expanded. However; once a node is expanded we are done with it; we will not need to expand it again:  In fact; we discard it from Q. path
 ## Testing for the Goal
 - This algorithm stops (in step 3) when state(N) = G or, in general, when state(N) satisfies the goal test.
 - We could have performed this test in step 6 as each extended path is added to Q. This would catch termination earlier and be perfectly correct for the searches we have covered so far.
@@ -118,7 +117,7 @@ A word on implementation: Although we speak of a "Visited list", it is never a g
 - Note that, in any case, the incremental space cost of Visited list will be proportional to the number of states which can be very high in some problems.
 Another key concept to keep straight is that of a heuristic value for a state. The word heuristic generally refers to a "rule of thumb", something that's helpful but not guaranteed to work.
 ## Terinology
-- Heuristic The word generally refers to "rule of thumb," something that may be helpful in some cases but not always.  Generally held to be in contrast to "guaranteed" or "optimal.
+- Heuristic The word generally refers to "rule of thumb," something that may be helpful in some cases but not always.  Generally held to be in contrast to "guaranteed" or "optimal
 - Heuristic function In search termsfunction that computes a value for a state (but does not depend on any to that state) that may be helpful in guiding the search. There are two related forms of heuristic guidance that one sees: path
 A heuristic function has similar connotations. It refers to a function (defined on a state - not on a path) that may be helpful in guiding search but which is not guaranteed to produce the desired outcome. Heuristic searches generally make no guarantees on shortest paths or best anything (even when they are called best-first). Nevertheless, using heuristic functions may still provide help by speeding up, at least on average, the process of finding a goal.
 ## Visited States
@@ -136,7 +135,7 @@ Add palh extensions to front of Q
 Pick first element of Q
 Add palh extensions to end of Q
 ## Best-first:
-Pick "best"' (measured by heuristic value ofstale) element of Q Add path extensions anywhere in Q (it may be more efficient to keep the
+Pick "best"' (measured by heuristic value ofstale) element of Q Add palh extensions anywhere in Q (it may be more efficient to keep the ordered in some way so as to make it easier to find the "best" element) .
 Best-first (also known as "greedy") search is a heuristic (informed) search that uses the value of a heuristic function defined on the states to guide the search. This will not guarantee finding a "best" path, for example, the shortest path to a goal. The heuristic is used in the hope that it will steer us to a quick completion of the search or to a relatively good goal state.
 Best-first search can be implemented as follows: pick the "best" path (as measured by heuristic value of the node's state) from all of Q and add the extensions somewhere on Q. So, at any step, we are always examining the pending node with the best heuristic value.
 Note that, in the worst case, this search will examine all the same paths that depth or breadth first would examine, but the order of examination may be different and therefore the resulting path will generally be different. Best-first has a kind of breadth-first flavor and we expect that Q will tend to grow more than in depth-first search.
@@ -146,14 +145,14 @@ Note that, in the worst case, this search will examine all the same paths that d
 - Q and picking the first element Sorting
 - Keeping Q as a priority queue
 - Keeping the Q sorted by doing "sorted" insertions
-- Which of these is best will depend among other things on how many children nodes have on average .  We will look at this in more detail later.
+- Which of these is best will depend among other things on how many children nodes have on average.  We will look at this in more detail later.
 Note that best-first search requires finding the best node in Q. This is a classic problem in computer science and there are many different approaches that are appropriate in different circumstances. One simple method is simply to scan the Q completely, keeping track of the best element found. Surprisingly, this simple strategy turns out to be the right thing to do in some circumstances. A more sophisticated strategy, such as keeping a data structure called a "priority queue", is more often the correct approach. We will pursue this issue further when we talk about optimal searches.
 Let's think a bit about the worst case running time of the searches that we have been discussing. The actual running time, of course, will depend on details of the computer and of the software implementation. But, we can roughly compare the various algorithms by thinking of the number of nodes added to Q. The running time should be roughly proportional to this number.
 In AI we usually think of a "typical" search space as being a tree with uniform branching factor b and depth d. The depth parameter may represent the number of steps in a plan of action or the number of moves in a game. The branching factor reflects the number of different choices that we have at each step. It is easy to see that the number of states in such a tree grows exponentially with the depth.
 ## Terminology
 - Heuristic The word generally refers to "rule of thumb," something that may be helpful in some cases but not always.  Generally held to be in contrast to "guaranteed" or "optimal
 - Heuristic function In search termsfunction that computes value for a state (but does not depend on any path to that state) that may be helpful in guiding the search.
-- Estimated distance to goal\_ this type of heuristic function depends on the state and the goal. The classic example is straight-line distance used as an estimate for actual distance in road network   This type of information can help increase the efficiency of a search.
+- Estimated distance to goal this type of heuristic function depends on the state and the goal. The classic example is straight-line distance used as an estimate for actual distance in road network   This type of information can help increase the efficiency of a search.
 In a tree-structured search space, the nodes added to the search Q will simply correspond to the visited states. In the worst case, when the states are arranged in the worst possible way, all the search methods may end up having to visit or expand all of the states (up to some depth). In practice, we should be able to avoid this worst case but in many cases one comes pretty close to this worst case.
 In addition to thinking about running time, we should also think about the memory space required for searches. The dominant factor in the space requirements for these searches is the maximum size of the search Q. The size of the search Q in a tree-structured search space is simply the number of visited states minus the number of expanded states.
 For a depth-first search, we can see that Q holds the unexpanded "siblings" of the nodes along the path that we are currently considering. In a tree, the path length cannot be greater than d and the number of unexpanded siblings cannot be greater than b-1, so this tells us that the length of Q is always less than b*d, that is, the space requirements are linear in d.
@@ -177,7 +176,7 @@ If you do a back of the envelope calculation on the amount of space required to 
 - In large search problems, me 'mory is often the limiting factor.
 - Imagine searching tree with branching factor 8 and depth 10. Assume node requires just 8 bytes of storage.  Then; breadth-first search might require up to
 ## Cost and Performance of Any-Path Methods Searching tree with branching factor b and depth d (using a Visited list)
-- #If there are no infinitely long in the search space [paths
+- #If there are no infinitely long in the search space
 - Best-First needs more time to locale the best node in Q
 Worst case time is proportional to number of nodes added to Q Worst case space is proportional to maximal length of Q (and Visited list)
 ## Space (the final frontier)
@@ -185,8 +184,8 @@ Worst case time is proportional to number of nodes added to Q Worst case space i
 - Imagine searching tree with branching factor 8 and depth 10. Assume node requires just 8 bytes of storage . Then, breadth-first search might require up to
 - One strategy is to trade time for memory. For example; we can emulate breadth-first search by repeated applications of depth-first search; each up preset depth limit.  This is called progressive deepening search (PDS):
 - C-1
-- Do DFS to max depth C\_ If path found, return it
-- Otherwise; increment C and go to 2.
+- Do DFS to max depth C If path found, return it
+- Otherwise; increment C and go to 2
 One strategy for enabling such open-ended searches, which may run for a very long time, is Progressive Deepening Search (aka Iterative Deepening Search). The basic idea is to simulate searches with a breadth-like component by a succession of depth-limited depth-first searches. Since depth-first has negligible storage requirements, this is a clean tradeoff of time for space.
 Interestingly, PDS is more than just a performance tradeoff. It actually represents a merger of two algorithms that combines the best of both. Let's look at that a little more carefully.
 ## Progressive Deepening Search Best of Both Worlds
@@ -198,7 +197,7 @@ Depth-first search has one strong point - its limited space requirements, which 
 - Depth-First Search (DFS) has small space requirements (linear in depth), but has major problems:
 - DFS can run forever in search spaces with infinite length paths
 - DFS does not guarantee of finding shallowest goal
-- Breadth-First Search (BFS) guarantees finding shallowest goal, even in the presence of infinite paths, but is has one great problem:
+- Breadth-First Search (BFS) guarantees finding shallowest goal, even in the presence of infinite paths; but is has one great problem:
 - BFS requires a great deal of space (exponential in depth)
 Breadth-first search on the other hand, does guarantee finding the shallowest goal, but at the expense of space requirements that are exponential in the depth of the search tree.
 ## Progressive Deepening Search Best of Both Worlds

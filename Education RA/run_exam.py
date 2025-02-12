@@ -1,113 +1,131 @@
+import logging
 from pathlib import Path
-import os
-import subprocess
-
-import modal
 from transformers import pipeline
-
+import re
 from data_preprocessing import extract_questions, load_markdown_sections
+import torch
 
-VOLUME_NAME: str = "llm-volume"
+MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
+LOCAL_EXAM_DIR = Path(
+    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams"
+).resolve()
+LOCAL_NOTES_DIR = Path(
+    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Lecture_Notes"
+).resolve()
+OUTPUT_DIR = LOCAL_EXAM_DIR / "generated_answers"
+OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 
-MODEL_NAME: str = "distilgpt2"
-MODEL_CACHE: str = "/vol/cache"
-MODAL_EXAM_DIR: str = "/root/AI_Course/Exams"
-MODAL_NOTES_DIR: str = "/root/AI_Course/Lecture_Notes"
-
-LOCAL_EXAM_DIR: Path = Path("/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams").resolve()
-LOCAL_NOTES_DIR: Path = Path("/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Lecture_Notes").resolve()
-print(f"LOCAL_EXAM_DIR exists: {os.path.isdir(LOCAL_EXAM_DIR)}")
-print(f"LOCAL_NOTES_DIR exists: {os.path.isdir(LOCAL_NOTES_DIR)}")
-
-
-def create_cache_dir() -> None:
-    os.makedirs(MODEL_CACHE, exist_ok=True)
-
-
-def validate_paths():
-    exam_dir = Path(LOCAL_EXAM_DIR)
-    if not exam_dir.exists():
-        exam_dir.mkdir(parents=True, exist_ok=True)
-    print(f"Volume contains: {volume.listdir('/')}")
-
-image = (
-    modal.Image.debian_slim(python_version="3.10")
-    .pip_install("torch", "transformers", "accelerate", "bitsandbytes", "docling")
-    .run_function(create_cache_dir, secrets=[modal.Secret.from_name("huggingface-secret")])
-)
-
-app = modal.App(
-    name="huggingface-testing",
-    image=image,
-    secrets=[modal.Secret.from_name("huggingface-secret")],
-)
-# Upload local files to volume (before app definition)
-volume = modal.Volume.from_name(VOLUME_NAME, create_if_missing=True)
-validate_paths()
+# Verify directories exist
+print(f"LOCAL_EXAM_DIR exists: {LOCAL_EXAM_DIR.exists()}")
+print(f"LOCAL_NOTES_DIR exists: {LOCAL_NOTES_DIR.exists()}")
 
 
-if LOCAL_EXAM_DIR.is_dir() and LOCAL_NOTES_DIR.is_dir():  # will only run when executing locally
-    with volume.batch_upload(force=True) as batch:
-        batch.put_directory(local_path=str(LOCAL_EXAM_DIR), remote_path=MODAL_EXAM_DIR, recursive=True)
-        batch.put_directory(local_path=str(LOCAL_NOTES_DIR), remote_path=MODAL_NOTES_DIR, recursive=True)
+def process_quiz_files() -> list[list[str]]:
+    question_list = []
 
-
-@app.function(volumes={MODAL_EXAM_DIR: volume})
-def process_quiz_file() -> list[list[str]]:
-    question_list: list[list[str]] = []
-
-    for entry in volume.iterdir(""):
-        print(f"Found: {entry.path}")  # Debugging
-
-    for entry in volume.iterdir(""):
-        print(f"Attempting to open: {entry.path}")  # Debugging
-
-        if entry.path.endswith("_answerless.txt"):
-            print(f"Opening file: {entry.path}")  # Debugging
-
-            with open(f"/{entry.path}", "r") as f:
-                sections = load_markdown_sections(f"/{entry.path}")
-                for header, content in sections.items():
-                    if len(content) >= len(header):
-                        question_list.append(extract_questions(content))
+    # Process all answerless quiz files in exam directory
+    for file_path in LOCAL_EXAM_DIR.glob("*_answerless.txt"):
+        print(f"Processing file: {file_path}")
+        start_count: int = len(question_list)
+        with open(file_path, "r") as f:
+            sections = load_markdown_sections(str(file_path))
+            for header, content in sections.items():
+                if len(content) >= len(header):
+                    question_list.append(extract_questions(content))
+        print(
+            f"Processed {len(question_list) - start_count} questions from {file_path}"
+        )
 
     return question_list
 
 
-@app.function(gpu="any", volumes={MODAL_EXAM_DIR: volume})
-def generate_answer(prompt: str) -> str:
+def generate_answer(query: str) -> str:
+    # Initialize pipeline once
+    if not hasattr(generate_answer, "pipe"):
+        generate_answer.pipe = pipeline(
+            "text-generation",
+            model=MODEL_NAME,
+            device=0 if torch.cuda.is_available() else -1,
+            torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float32,
+        )
+
     try:
-        generator = pipeline("text-generation", model=MODEL_NAME, max_length=1024)
-        inputs = generator.tokenizer(prompt, return_tensors="pt", truncation=True, max_length=512)
-        result = generator.model.generate(**inputs, max_new_tokens=512)
-        return generator.tokenizer.decode(result[0])
-    except RuntimeError as e:
+        # Format using chat template
+        messages = [
+            {
+                "role": "user",
+                "content": f"""
+                Please provide a comprehensive answer to the following question.
+                Answer in detail while maintaining accuracy. No code - English only.
+
+                Question: {query}
+            """,
+            }
+        ]
+
+        # Generate with optimized parameters
+        response = generate_answer.pipe(
+            messages,
+            max_new_tokens=2048,
+            do_sample=True,
+            temperature=0.6,
+            top_p=0.9,
+            truncation=True,
+            pad_token_id=generate_answer.pipe.tokenizer.eos_token_id,
+            return_full_text=False,
+        )[0]["generated_text"]
+
+        # Clean up the response
+        cleaned = re.sub(
+            r"(<|endoftext|>|<\/s>|\[.*?\]|�+)",
+            "",
+            response.split("assistant")[-1].strip(),
+        )
+
+        # Ensure proper sentence boundaries
+        if not cleaned.endswith((".", "!", "?")):
+            last_punct = max(cleaned.rfind("."), cleaned.rfind("!"), cleaned.rfind("?"))
+            if last_punct != -1:
+                cleaned = cleaned[: last_punct + 1]
+
+        return cleaned.strip()
+
+    except Exception as e:
         return f"Error: {str(e)}"
 
 
-@app.local_entrypoint()
-def main() -> None:
+def main(lm: str, output_directory: Path):
+    question_list = process_quiz_files()
 
-    for directory in volume.iterdir('root/'):
-        print(f"In root/: {directory.path}")
-
-    # Process files
-    question_list = process_quiz_file.remote()
-
-    # Write outputs directly to volume
-    output_dir = Path(MODAL_EXAM_DIR)
     for i, questions in enumerate(question_list):
-        output_path = output_dir / f"output_{i}.txt"
+        output_path = output_directory / f"output_{i}_{lm.split('/')[-1]}.txt"
         with open(output_path, "w", encoding="utf-8") as f:
             for j, query in enumerate(questions):
-                response = generate_answer.remote(f"Answer: {query}")
-                f.write(f"Q{j + 1}: {query}\nA: {response}\n\n")
+                print(f"Generating answer for question {i + 1}")
+                response = generate_answer(query)
+                f.write(f"Q: {query}\nA: {response}\n\n")
 
-    # Commit changes and download
-    volume.commit()
-    subprocess.run([
-        "modal", "volume", "get",
-        VOLUME_NAME,
-        MODAL_EXAM_DIR,
-        LOCAL_EXAM_DIR
-    ], check=True)
+
+if __name__ == "__main__":
+    # question = "What's the capital of France?"
+    # answer = generate_answer(question)
+    # print(f"Q: {question}\nA: {answer}")
+
+    for model in [
+        "HuggingFaceTB/SmolLM-135M-Instruct",
+        "HuggingFaceTB/SmolLM-360M-Instruct",
+        "HuggingFaceTB/SmolLM-1.7B-Instruct",
+        "mistralai/Mistral-7B-Instruct-v0.3",
+        "bigscience/bloom",
+        "Qwen/Qwen2.5-VL-3B-Instruct",
+    ]:
+
+        # Configure logging
+        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+        # Log messages
+        logging.warning(f"{model} has started the exam")
+        output_dir = LOCAL_EXAM_DIR / model.split('/')[-1] / "generated_answers"
+        output_dir.mkdir(exist_ok=True, parents=True)
+        main(lm=model, output_directory=output_dir)
+        logging.warning(f"{model} has finished the exam")
