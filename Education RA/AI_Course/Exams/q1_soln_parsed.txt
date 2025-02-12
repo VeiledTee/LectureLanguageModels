@@ -67,33 +67,33 @@ You are trying to schedule telescope observations. There are m scientists each w
 Three formulations are considered:
 
 ### Formulation A: Variables are the 3k instrument/time slots.
-1. What is the value domain for the variables
+#### 1. What is the value domain for the variables
 //// ANSWER: For each instrument/time slot, the domain is the set of observations requesting that instrument/time slot plus an 'empty' value.
-2. What is the size of the domain for the variables (in terms of k, m, and n)
+#### 2. What is the size of the domain for the variables (in terms of k, m, and n)
 //// ANSWER: The domain size is at most m·n + 1 per variable.
-3. Which constraints are necessarily satisfied because of the formulation
+#### 3. Which constraints are necessarily satisfied because of the formulation
 //// ANSWER: Constraint C2 is automatically satisfied because each instrument/time slot can have at most one observation.
-4. Can the constraints be specified as binary constraints in this formulation? Explain
+#### 4. Can the constraints be specified as binary constraints in this formulation? Explain
 //// ANSWER: C1 cannot be expressed as a binary constraint because it requires checking all assignments simultaneously to ensure exactly two observations per scientist. C3 can be modeled as a binary constraint by enforcing that for variables in the same time slot, if two observations are assigned, their targets must match.
 
 ### Formulation B: Variables are the m scientists.
-1. What is the value domain for the variables
+#### 1. What is the value domain for the variables
 //// ANSWER: For each scientist, the domain is all possible pairs of observations from their list.
-2. What is the size of the domain for the variables
+#### 2. What is the size of the domain for the variables
 //// ANSWER: Approximately (n²)/2 per scientist.
-3. Which constraints are necessarily satisfied because of the formulation
+#### 3. Which constraints are necessarily satisfied because of the formulation
 //// ANSWER: Constraint C1 is satisfied by construction, as each scientist is assigned exactly two observations.
-4. Can the constraints be specified as binary constraints in this formulation? Explain
+#### 4. Can the constraints be specified as binary constraints in this formulation? Explain
 //// ANSWER: Yes. C2 can be enforced by placing binary constraints between scientists to prevent instrument/time conflicts, and C3 can be enforced by requiring that if observations from different scientists occur at the same time slot, their targets do not conflict.
 
 ### Formulation C: Variables are the m·n scientists' requests.
-1. What is the value domain for the variables
+#### 1. What is the value domain for the variables
 //// ANSWER: The domain for each request is {Granted, Rejected}.
-2. What is the size of the domain for the variables
+#### 2. What is the size of the domain for the variables
 //// ANSWER: The domain size is 2.
-3. Which constraints are necessarily satisfied because of the formulation
+#### 3. Which constraints are necessarily satisfied because of the formulation
 //// ANSWER: None are automatically satisfied.
-4. Can the constraints be specified as binary constraints in this formulation? Explain
+#### 4. Can the constraints be specified as binary constraints in this formulation? Explain
 //// ANSWER: C1 cannot be specified as a binary constraint because it requires global counting of Granted assignments per scientist. However, C2 and C3 can be expressed as binary constraints by enforcing that any two Granted requests do not conflict in instrument/time or target within the same time slot.
 
 ## 4 Search Problem Formulation (23 points)
@@ -133,12 +133,13 @@ Given a list of potential state variables:
 - **pick-up-rock:** Cost is α times the weight of the rock at the current location.
 
 #### 5. Evaluate the following heuristics (with l = number of rocks already collected):
+//// ANSWER:
 - **H1:** Sum of distances from the rover to the 10–l closest locations for missing rock types
-//// ANSWER: H1 is inadmissible because it may overestimate the true minimal cost.
+H1 is inadmissible because it may overestimate the true minimal cost.
 - **H2:** Length of the shortest tour through the 10–l closest locations for missing rock types
-//// ANSWER: H2 is computationally impractical and is also inadmissible.
+H2 is computationally impractical and is also inadmissible.
 - **H3:** Distance from the rover back to the lander
-//// ANSWER: H3 is admissible but very weak.
+H3 is admissible but very weak.
 
 ## 5 Search Traces (21 points)
 
@@ -147,7 +148,7 @@ For the following search trees (G1 through G7), identify:
 2. The heuristic (if any) applied.
 3. Whether the least-cost path was found, and if not, why.
 
-### G1
+#### G1
 Search Tree:
 A → B
 A → D
@@ -159,7 +160,7 @@ B → G
 2. Heuristic: None
 3. It did not find the least-cost path because BFS guarantees the shortest number of links but does not account for link costs.
 
-### G2
+#### G2
 Search Tree (with scores):
 A (6) → B
 A (3) → D
@@ -170,7 +171,7 @@ D → G
 2. Heuristic: H1
 3. It did not find the least-cost path because Best First Search is not optimal—it selects the first path reaching the goal without full cost evaluation.
 
-### G3
+#### G3
 Search Tree (with scores):
 A (7) → B
 A (6) → D
@@ -181,7 +182,7 @@ D (6) → G
 2. Heuristic: H1
 3. It did not find the least-cost path because A* guarantees optimality only with an admissible heuristic, and H1 overestimates costs (i.e., is not admissible).
 
-### G4
+#### G4
 Search Tree (with scores):
 A (3) → B
 A (2) → D
@@ -192,7 +193,7 @@ C → G
 2. Heuristic: H2
 3. It found the least-cost path in this instance, even though Best First Search is not generally optimal.
 
-### G5
+#### G5
 Search Tree:
 A → B
 A → D
@@ -205,7 +206,7 @@ C → G
 2. Heuristic: None
 3. It did not find the least-cost path because DFS does not consider path cost, merely the depth-first order.
 
-### G6
+#### G6
 Search Tree (with scores):
 A (4) → B
 B (6) → C
@@ -220,7 +221,7 @@ C (5) → G
 2. Heuristic: H2
 3. It found the least-cost path. Although H2 is admissible, it isn’t consistent; however, A* still reached the optimal solution in this case.
 
-### G7
+#### G7
 Search Tree (with scores):
 A (1) → B
 A (3) → D
