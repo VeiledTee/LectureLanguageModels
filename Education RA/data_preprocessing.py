@@ -83,34 +83,14 @@ def extract_questions(extract_from: str) -> list[str]:
         return [line.strip() for line in extract_from.splitlines() if line.strip()]
 
 
+import re
+
+
 def load_markdown_sections(file_path: str) -> dict[str, str]:
-    """
-    Processes a Markdown file line by line and splits it into sections using header tags.
-
-    Rule:
-      - When a header is found, all subsequent lines fall under its section until a header
-        of the same or higher level (i.e. with the same or fewer '#' characters) is encountered.
-      - For example, if a section starts with a "##" header, lines will be added to that section
-        until another "##" or a top-level "#" header is found.
-
-    This function generalizes the logic for any header level and returns a dictionary mapping
-    each hierarchical header path (e.g., "[H2] Section > [H3] Subsection") to its associated content.
-
-    Args:
-        file_path (str): Path to the Markdown file.
-
-    Returns:
-        dict[str, str]: A dictionary where keys are hierarchical header paths and values are the content.
-    """
-    # Regex to match header lines. This pattern accepts headers with or without a space after the '#'s.
     header_regex = re.compile(r"^(#{1,6})\s*(.*)$")
 
     sections = {}
-    # We'll use a stack to keep track of the current section hierarchy.
-    # Each element is a dict with: 'level' (int), 'title' (str), 'content' (list of lines).
     stack = []
-
-    # Use a default "root" section for any content before the first header.
     default_section = {'level': 0, 'title': 'No Header', 'content': []}
     stack.append(default_section)
 
@@ -119,41 +99,29 @@ def load_markdown_sections(file_path: str) -> dict[str, str]:
             line = line.rstrip("\n")
             m = header_regex.match(line)
             if m:
-                # Found a header line.
                 level = len(m.group(1))
                 title = m.group(2).strip()
 
-                # While the top section has a level that is the same or higher (i.e. level number <= current header level),
-                # finish that section by popping it off the stack.
                 while stack and stack[-1]['level'] >= level:
                     popped = stack.pop()
-                    # Build a hierarchical key from the remaining stack and the popped section.
-                    key_parts = []
-                    # We skip the default section ("No Header") in the key.
-                    for sec in stack[1:]:
-                        key_parts.append(f"[H{sec['level']}] {sec['title']}")
-                    if popped['title'] != "No Header":
+                    if popped['level'] >= 4:  # Only store if it's H4 or deeper
+                        key_parts = [f"[H{sec['level']}] {sec['title']}" for sec in stack[1:]]
                         key_parts.append(f"[H{popped['level']}] {popped['title']}")
-                    key = " > ".join(key_parts) if key_parts else "No Header"
-                    sections[key] = "\n".join(popped['content']).strip()
+                        key = " > ".join(key_parts)
+                        sections[key] = "\n".join(popped['content']).strip()
 
-                # Start a new section for the current header.
                 new_section = {'level': level, 'title': title, 'content': []}
                 stack.append(new_section)
             else:
-                # Not a header; add the line to the content of the current (top) section.
                 stack[-1]['content'].append(line)
 
-    # At end of file, flush all remaining sections.
     while stack:
         popped = stack.pop()
-        key_parts = []
-        for sec in stack[1:]:
-            key_parts.append(f"[H{sec['level']}] {sec['title']}")
-        if popped['title'] != "No Header":
+        if popped['level'] >= 4:
+            key_parts = [f"[H{sec['level']}] {sec['title']}" for sec in stack[1:]]
             key_parts.append(f"[H{popped['level']}] {popped['title']}")
-        key = " > ".join(key_parts) if key_parts else "No Header"
-        sections[key] = "\n".join(popped['content']).strip()
+            key = " > ".join(key_parts)
+            sections[key] = "\n".join(popped['content']).strip()
 
     return sections
 
