@@ -157,6 +157,7 @@ if __name__ == "__main__":
         "mistralai/Mistral-7B-Instruct-v0.3",
         "bigscience/bloom",
         "Qwen/Qwen2.5-VL-3B-Instruct",
+        "meta-llama/Llama-3.2-1B",
     ]:
         logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
         model_name = model.split('/')[-1]
