@@ -2,8 +2,41 @@
 	- vanilla vs paraphrased questions
 	- generate answers to questions
 	
-- for training
-	- train on raw text
-	- attempt to paraphrase notes with gpt-4 and train on paraphrased text
-	- compare raw vs paraphrased trainees
+# Training
+- train on raw text
+- attempt to paraphrase notes with gpt-4 and train on paraphrased text
+- compare raw vs paraphrased trainees
 	
+# Evaluation
+## BLEU (Bilingual Evaluation Understudy)
+- Purpose: Measures n-gram overlap between generated and reference answers.
+- Mechanics:
+    * Compares candidate text to gold answer using modified n-gram precision (up to 4-grams).
+    * Uses brevity penalty to penalize overly short outputs.
+    * A smoothing function avoids zero scores for mismatched n-grams.
+- Strengths: Simple and fast for exact matches.
+- Weakness: Ignores semantic similarity; low scores indicate minimal exact phrase overlaps.
+
+## ROUGE (Recall-Oriented Understudy for Gisting Evaluation)
+### ROUGE-1:
+    - Computes overlap of unigrams (single words) between candidate and reference.
+### ROUGE-L:
+    - Measures longest common subsequence (LCS) to evaluate structural similarity.
+    - Less strict than BLEU; works better for paraphrased answers.
+    - Focus: Emphasizes recall (how much of the reference is covered).
+
+## Token F1
+- Purpose: Token-level overlap metric similar to classification F1.
+- Mechanics:
+    * Precision: common_tokens / candidate_tokens.
+    * Recall: common_tokens / gold_tokens.
+    * F1: Harmonic mean of precision and recall.
+
+## BERTScore
+- Purpose: Evaluates semantic similarity using contextual embeddings from BERT.
+- Mechanics:
+    * Encodes candidate and reference into BERT embeddings.
+    * Computes cosine similarity between token pairs.
+- Strength: Captures paraphrasing and semantic equivalence better than n-gram metrics.
+- Weakness: Computationally expensive; requires GPU for efficiency.
+
