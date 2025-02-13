@@ -1,182 +1,207 @@
 import logging
-import time
-
-from pathlib import Path
-from transformers import pipeline
 import re
+import time
+import gc
+from pathlib import Path
+from typing import List, Dict, Any
+
+from transformers import pipeline
 from data_preprocessing import load_markdown_sections
 import torch
+import os
+from dotenv import load_dotenv
 
-MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
-LOCAL_EXAM_DIR = Path(
+
+# Configuration constants
+LOCAL_EXAM_DIR: Path = Path(
     "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams"
 ).resolve()
-LOCAL_NOTES_DIR = Path(
-    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Lecture_Notes"
-).resolve()
-OUTPUT_DIR = LOCAL_EXAM_DIR / "generated_answers"
+OUTPUT_DIR: Path = LOCAL_EXAM_DIR / "generated_answers"
+load_dotenv()  # Load variables from .env
+hf_token = os.getenv("HF_TOKEN")
+
+# Verify and create directories
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
-
-# Verify directories exist
-print(f"LOCAL_EXAM_DIR exists: {LOCAL_EXAM_DIR.exists()}")
-print(f"LOCAL_NOTES_DIR exists: {LOCAL_NOTES_DIR.exists()}")
+print(f"EXAM DIR: {LOCAL_EXAM_DIR.exists()}")
 
 
-def process_quiz_files() -> list[str]:
-    """
-    Processes all answerless quiz files in the exam directory by splitting each Markdown file
-    into sections using header tags (via split_markdown_sections) and combining the header and
-    associated content to form the full question.
+def format_question(header: str, content: str) -> str:
+    """Format a question from its header and content sections.
 
-    The hierarchical header path (the key) is combined with the section content (the value).
-    For example:
-        [H1] 6.034 Quiz 1, Spring 2005 > [H2] 1 Search Algorithms (16 points) > [H3] 1.1 Games
-        > [H4] 1. Can alpha-beta be generalized to do a breadth-first exploration ...:
+    Args:
+        header: Hierarchical header path from markdown sections
+        content: Question content text
 
     Returns:
-        list[str]: A list of question strings.
+        Formatted question string with proper punctuation
     """
-    question_list = []
-
-    # Process all answerless quiz files in the exam directory.
-    for file_path in LOCAL_EXAM_DIR.glob("*_answerless.txt"):
-        print(f"Processing file: {file_path}")
-        start_count = len(question_list)
-
-        # Use the new function to split the Markdown file into sections.
-        sections = load_markdown_sections(str(file_path))
-        for header, content in sections.items():
-            # Combine the hierarchical header (key) and its content (if any) to form the question.
-            if content:
-                question = f"{header} > {content}"
-            else:
-                question = header
-
-            # Append a colon at the end if not already present.
-            if not question.endswith(":"):
-                question += ":"
-            question_list.append(question)
-
-        print(f"Processed {len(question_list) - start_count} questions from {file_path}")
-
-    return question_list
+    question = f"{header} > {content}" if content else header
+    return question.rstrip(":") + ":" if not question.endswith(":") else question
 
 
-def generate_answer(query: str) -> str:
-    # Initialize pipeline once
-    if not hasattr(generate_answer, "pipe"):
-        generate_answer.pipe = pipeline(
-            "text-generation",
-            model=MODEL_NAME,
-            device=0 if torch.cuda.is_available() else -1,
-            torch_dtype=torch.bfloat16 if torch.cuda.is_available() else torch.float32,
-        )
+def process_exam_file(file_path: Path) -> List[str]:
+    """Process an answerless exam file into individual questions.
 
-    try:
-        # Format using chat template
-        messages = [
-            {
-                "role": "user",
-                "content": f"""
-                Please provide a comprehensive answer to the following question.
-                Answer succinctly but in detail. Maintain accuracy. 
-                Do not provide code. 
-                English only.
-                Begin answering immediately.
-                Answer as succinctly as possible.
-                Do not repeat the question
+    Args:
+        file_path: Path to the answerless exam markdown file
 
-                Question: {query}
-                Answer: 
-            """,
-            }
-        ]
+    Returns:
+        List of formatted question strings
 
-        # Generate with optimized parameters
-        response = generate_answer.pipe(
-            messages,
-            max_new_tokens=2048,
-            do_sample=True,
-            temperature=0.6,
-            top_p=0.9,
-            truncation=True,
-            pad_token_id=generate_answer.pipe.tokenizer.eos_token_id,
-            return_full_text=False,
-        )[0]["generated_text"]
+    Raises:
+        FileNotFoundError: If the specified file doesn't exist
+    """
+    questions: List[str] = []
+    sections: Dict[str, str] = load_markdown_sections(str(file_path))
 
-        # Clean up the response
-        cleaned = re.sub(
-            r"(<|endoftext|>|<\/s>|\[.*?\]|�+)",
-            "",
-            response.split("assistant")[-1].strip(),
-        )
+    for header, content in sections.items():
+        questions.append(format_question(header, content))
 
-        # Ensure proper sentence boundaries
-        if not cleaned.endswith((".", "!", "?")):
-            last_punct = max(cleaned.rfind("."), cleaned.rfind("!"), cleaned.rfind("?"))
-            if last_punct != -1:
+    print(f"Processed {len(questions)} questions from {file_path.name}")
+    return questions
+
+
+def generate_answers(questions: List[str], pipe: pipeline) -> List[str]:
+    """Generate answers for a list of questions using a text generation pipeline.
+
+    Args:
+        questions: List of formatted question strings
+        pipe: Initialized Hugging Face text generation pipeline
+
+    Returns:
+        List of generated answer strings with error handling
+
+    Raises:
+        RuntimeError: If text generation fails catastrophically
+    """
+    answers: List[str] = []
+    for i, question in enumerate(questions):
+        try:
+            # Memory management
+            torch.cuda.empty_cache() if torch.cuda.is_available() else None
+            if i % 5 == 0:
+                gc.collect()
+
+            # Generate response
+            response: List[Dict[str, Any]] = pipe(
+                f"Answer concisely in English without code: {question}",
+                max_new_tokens=256,
+                do_sample=True,
+                temperature=0.3,
+                top_p=0.7,
+                truncation=True,
+                pad_token_id=pipe.tokenizer.eos_token_id,
+            )
+
+            # Clean and format response
+            raw_text: str = response[0]["generated_text"]
+            cleaned: str = re.sub(
+                r"(<|endoftext|>|<\/s>|\[.*?\]|�+)",
+                "",
+                raw_text.split("assistant")[-1].strip()
+            )
+
+            # Ensure proper sentence endings
+            last_punct: int = max(
+                cleaned.rfind("."),
+                cleaned.rfind("!"),
+                cleaned.rfind("?")
+            )
+            if last_punct != -1 and not cleaned.endswith((".", "!", "?")):
                 cleaned = cleaned[: last_punct + 1]
 
-        return cleaned.strip()
+            answers.append(cleaned.strip())
+            print(f"Generated answer {i + 1}/{len(questions)}")
 
-    except Exception as e:
-        return f"Error: {str(e)}"
+        except Exception as e:
+            answers.append(f"Error: {str(e)}")
+
+    return answers
 
 
-def main(lm: str, output_directory: Path) -> dict:
-    question_list = process_quiz_files()
-    model_name = lm.split('/')[-1]
-    output_path = output_directory / f"{model_name}_combined_answers.txt"
+def run_exams_for_model(model_id: str) -> None:
+    """Process all exam files for a single language model.
 
-    start_time = time.time()  # Start timing
+    Args:
+        model_id: Hugging Face model identifier (e.g., "gpt2")
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        for i, question in enumerate(question_list):
-            print(f"Generating answer for question {i + 1}")
-            if '[H2]' in question:
-                response = generate_answer(question)
-                f.write(f"//// ANSWER: {response}\n\n")
+    Raises:
+        ValueError: If model initialization fails
+        OSError: If file operations fail
+    """
+    model_name: str = model_id.replace("/", "-")
+    logging.info(f"Starting exam processing for {model_id}")
 
-    total_time = time.time() - start_time
+    # Initialize text generation pipeline
+    pipe: pipeline = pipeline(
+        "text-generation",
+        model=model_id,
+        device_map="cpu",
+        token=HF_TOKEN,
+        torch_dtype=torch.float32,
+        trust_remote_code=True,
+    )
 
-    return {
-        "model": model_name,
-        "total_time": total_time,
-        "questions": len(question_list),
-        "avg_time_per_question": total_time/len(question_list)
-    }
+    # Process each exam file
+    for exam_file in LOCAL_EXAM_DIR.glob("*_answerless.txt"):
+        start_time = time.time()
+        try:
+            exam_name = exam_file.stem.replace("_answerless", "")
+            exam_dir = exam_name.split('_')[0]
+
+            # Create both directory levels
+            output_dir = OUTPUT_DIR / exam_dir
+            output_dir.mkdir(parents=True, exist_ok=True)  # <-- This creates both directories
+
+            output_path = output_dir / f"{model_name}_{exam_name}_answers.txt"
+
+            questions = process_exam_file(exam_file)
+            answers = generate_answers(questions, pipe)
+
+            with open(output_path, "w", encoding="utf-8") as f:
+                    f.write(f"MODEL: {model_id}\nEXAM: {exam_name}\n\n")
+                    for q, a in zip(questions, answers):
+                        f.write(f"QUESTION: {q}\nANSWER: {a}\n\n")
+
+            # Log performance
+            duration: float = time.time() - start_time
+            logging.info(f"Completed {exam_name} in {duration:.2f}s ({len(questions)} questions)")
+
+        except Exception as e:
+            logging.error(f"Failed processing {exam_file.name}: {str(e)}")
+            continue
 
 
 if __name__ == "__main__":
-    timing_report = {}
+    """Main execution block for processing exams with multiple models."""
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s"
+    )
 
-    for model in [
+    models: list[str] = [
+        # "meta-llama/Llama-3.3-70B-Instruct",
+        # "deepseek-ai/DeepSeek-R1",
+        # "simplescaling/s1-32B",
+        # "mistralai/Mistral-Small-24B-Instruct-2501",
+        # ":ibm-granite/granite-3.2-8b-instruct-preview",
         "HuggingFaceTB/SmolLM-135M-Instruct",
         "HuggingFaceTB/SmolLM-360M-Instruct",
         "HuggingFaceTB/SmolLM-1.7B-Instruct",
-        "mistralai/Mistral-7B-Instruct-v0.3",
-        "bigscience/bloom",
-        "Qwen/Qwen2.5-VL-3B-Instruct",
-        "meta-llama/Llama-3.2-1B",
-    ]:
-        logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
-        model_name = model.split('/')[-1]
+        "HuggingFaceH4/zephyr-7b-beta",
+        # "mistralai/Mistral-7B-Instruct-v0.3",
+        # "bigscience/bloom",
+        # "Qwen/Qwen2.5-VL-3B-Instruct",
+        # "meta-llama/Llama-3.2-1B",
+        "facebook/opt-1.3b",
+        "gpt2-medium",
+    ]
 
-        logging.warning(f"{model_name} has started the exam")
-        output_dir = LOCAL_EXAM_DIR / "generated_answers"
-        output_dir.mkdir(exist_ok=True, parents=True)
-
-        # Run main and collect timing data
-        metrics = main(lm=model, output_directory=output_dir)
-        timing_report[model_name] = metrics
-
-        logging.warning(f"{model_name} has finished the exam in {metrics['total_time']:.2f}s")
-
-    # Print final report
-    print("\n=== Timing Report ===")
-    for model, data in timing_report.items():
-        print(f"""Model: {model}
-                Total time: {data['total_time']:.2f} seconds
-                Questions answered: {data['questions']}
-                Average time per question: {data['avg_time_per_question']:.2f}s
-                """)
+    try:
+        for model in models:
+            run_exams_for_model(model)
+            logging.info(f"Completed all exams for {model}")
+    except KeyboardInterrupt:
+        logging.error("Process interrupted by user")
+    finally:
+        print("\n=== All model processing completed ===")

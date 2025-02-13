@@ -87,43 +87,50 @@ import re
 
 
 def load_markdown_sections(file_path: str) -> dict[str, str]:
-    header_regex = re.compile(r"^(#{1,6})\s*(.*)$")
+    header_regex = re.compile(r"^(#{1,6})\s+(.*?)(?:\(.*?\))?\s*$")  # Improved pattern
 
-    sections = {}
-    stack = []
-    default_section = {'level': 0, 'title': 'No Header', 'content': []}
-    stack.append(default_section)
-
-    with open(file_path, "r", encoding="utf-8") as f:
-        for line in f:
+    markdown_sections = {}
+    stack = [{"level": 0, "title": "Root", "content": []}]
+    with open(file_path, "r", encoding="utf-8") as markdown_file:
+        for line_num, line in enumerate(markdown_file, 1):
             line = line.rstrip("\n")
             m = header_regex.match(line)
+
             if m:
+                # Extract header level and clean title
                 level = len(m.group(1))
                 title = m.group(2).strip()
 
-                while stack and stack[-1]['level'] >= level:
+                # Pop stack until we reach parent level
+                while stack and stack[-1]["level"] >= level:
                     popped = stack.pop()
-                    if popped['level'] >= 4:  # Only store if it's H4 or deeper
-                        key_parts = [f"[H{sec['level']}] {sec['title']}" for sec in stack[1:]]
-                        key_parts.append(f"[H{popped['level']}] {popped['title']}")
+                    # Store all sections with level >= 2 (modified from original >=4)
+                    if popped["level"] >= 2:
+                        key_parts = [
+                            f"{s['title']}" for s in stack[1:]
+                        ]  # Simplified key
+                        key_parts.append(popped["title"])
                         key = " > ".join(key_parts)
-                        sections[key] = "\n".join(popped['content']).strip()
+                        markdown_sections[key] = "\n".join(popped["content"]).strip()
 
-                new_section = {'level': level, 'title': title, 'content': []}
+                # Push new section to stack
+                new_section = {"level": level, "title": title, "content": []}
                 stack.append(new_section)
             else:
-                stack[-1]['content'].append(line)
+                # Add content to current section
+                if stack:
+                    stack[-1]["content"].append(line)
 
+    # Process remaining sections in stack
     while stack:
         popped = stack.pop()
-        if popped['level'] >= 4:
-            key_parts = [f"[H{sec['level']}] {sec['title']}" for sec in stack[1:]]
-            key_parts.append(f"[H{popped['level']}] {popped['title']}")
+        if popped["level"] >= 2:  # Modified from original >=4
+            key_parts = [f"{s['title']}" for s in stack[1:]]
+            key_parts.append(popped["title"])
             key = " > ".join(key_parts)
-            sections[key] = "\n".join(popped['content']).strip()
+            markdown_sections[key] = "\n".join(popped["content"]).strip()
 
-    return sections
+    return markdown_sections
 
 
 if __name__ == "__main__":
