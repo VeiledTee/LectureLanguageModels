@@ -1,0 +1,617 @@
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms > 1.1 Games > 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms  1.1 Games  1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.: 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.: 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.: 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.: 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.: 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms > 1.1 Games > 2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms  1.1 Games  2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.: 2. Can the algorithm be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.: 2. Can the algorithm be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.: 2. Can the algorithm be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.: 2. Can the algorithm be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.: 2. Can the algorithm be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms > 1.1 Games > The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms  1.1 Games  The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.: The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms > 1.2 Algorithms > 1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms  1.2 Algorithms  1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: 1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: 1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: 1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: 1.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms > 1.2 Algorithms > 2. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms  1.2 Algorithms  2. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: A path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: A path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: A path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.: A path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms > 1.2 Algorithms:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms  1.2 Algorithms: Search Algorithms  1.2.1.2.2.3.4.5.6.7.8.9.10.11.12.13.14.15.16.17.18.19.20.21.22.23.24.25.26.27.28.29.30.31.32.33.34.35.36.37.38.39.40.41.42.43.44.45.46.47.48.49.50.51.52.53.54.55.56.57.58.59.60.61.62.63.64.65.66.67.68.69.70.71.72.73.74.75.76.77.78.79.80.81.82.83.84.85.86.87.88.89.90.91.92.93.94.95.96.97.98.99.100.101.102.103.104.105.106.107.108.109.110.111.112.113.114.115.116.117.118.119.120.121.122.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  1 Search Algorithms: A Search Algorithm is a method for finding a solution to a problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem. The algorithm is used to find a solution to a problem by finding the best solution to the problem.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > 1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?: a. the initial state b. the initial state and the initial state of the constraint c. the initial state and the initial state of the constraint d. the initial state and the initial state of the constraint
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?: a. the initial state b. the initial state and the initial state of the constraint c. the initial state and the initial state of the constraint d. the initial state and the initial state of the constraint
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?: a. the initial state b. the initial state and the initial state of the constraint c. the initial state and the initial state of the constraint d. the initial state and the initial state of the constraint
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  1.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > 2. Say, instead, the initial domain of variable 5 is restricted to { B } , with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  2. Say, instead, the initial domain of variable 5 is restricted to { B } , with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?:
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  2. Say, instead, the initial domain of variable 5 is restricted to { B }, with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?:
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  2. Say, instead, the initial domain of variable 5 is restricted to { B }, with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?:
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  2. Say, instead, the initial domain of variable 5 is restricted to { B }, with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?:
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  2. Say, instead, the initial domain of variable 5 is restricted to { B }, with the other domains as before.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > 3. If in the initial state (all variables have domains { R, B } ), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  3. If in the initial state (all variables have domains { R, B } ), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?: (a) R, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraints  3. If in the initial state (all variables have domains { R, B } ), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?: (a) R, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y, Z
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraints  3. If in the initial state (all variables have domains { R, B } ), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > 4. Assume that during backtracking we first attempt assigning variables to R and then to B. Assume, also, that we examine the variables in numerical order, starting with 1. Also, let the domain of variable 5 be { B } , the other domains are { R, B } . In the following tree, which shows the space of assignments to the 5 variables we care about, indicate how pure backtracking (BT) would proceed by placing a check mark next to any assignment that would be attempted during the search and crossing out the nodes where a constraint test would fail. Leave unmarked those nodes that would never be explored. > RB
+RBRB
+RBRBRBRB
+RBRBRBRBRBRBRBRB
+BBBBBBBBBBBBBBBB:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  4. Assume that during backtracking we first attempt assigning variables to R and then to B. Assume, also, that we examine the variables in numerical order, starting with 1. Also, let the domain of variable 5 be { B } , the other domains are { R, B } . In the following tree, which shows the space of assignments to the 5 variables we care about, indicate how pure backtracking (BT) would proceed by placing a check mark next to any assignment that would be attempted during the search and crossing out the nodes where a constraint test would fail. Leave unmarked those nodes that would never be explored.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > 5. If we use backtracking with forward checking (BT-FC) in this same situation, give a list of all the assignments attempted, in sequence. Use the notation variable = color for assignments, for example, 1=R. > | Assignment:   | None    | 1 = R   | 2= B   | 1= B    | 2= R   | 3= B   | 4= R   | 5= B   |
+|---------------|---------|---------|--------|---------|--------|--------|--------|--------|
+| Domain of 1:  | { R,B } |         |        |         |        |        |        |        |
+| Domain of 2:  | { R,B } | { B }   |        | { R }   |        |        |        |        |
+| Domain of 3:  | { R,B } | { R,B } | { R }  | { R,B } | { B }  |        |        |        |
+| Domain of 4:  | { R,B } | { B }   | { B }  | { R }   | { R }  | { R }  |        |        |
+| Domain of 5:  | { B }   | { B }   | {} ⇓   | { B }   | { B }  | { B }  | { B }  |        |:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  5. If we use backtracking with forward checking (BT-FC) in this same situation, give a list of all the assignments attempted, in sequence. Use the notation variable = color for assignments, for example, 1=R.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > 6. If we use backtracking with forward checking (BT-FC) but with dynamic variable ordering, using the most-constrained-variable strategy, give a list of all the variable assignments attempted, in sequence. If there is a tie between variables, use the lowest-numbered one first. Use the notation variable = color for assignments, for example, 1=R. > | Assignment:   | None     | 5 = B    | 2= R   | 1= B   | 3= B   | 4= R   |
+|---------------|----------|----------|--------|--------|--------|--------|
+| Domain of 1:  | { R, B } | { R, B } | { B }  |        |        |        |
+| Domain of 2:  | { R, B } | { R }    |        |        |        |        |
+| Domain of 3:  | { R, B } | { R, B } | { B }  | { B }  |        |        |
+| Domain of 4:  | { R, B } | { R }    | { R }  | { R }  | { R }  |        |
+| Domain of 5:  | { B }    |          |        |        |        |        |
+{
+}:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  6. If we use backtracking with forward checking (BT-FC) but with dynamic variable ordering, using the most-constrained-variable strategy, give a list of all the variable assignments attempted, in sequence. If there is a tie between variables, use the lowest-numbered one first. Use the notation variable = color for assignments, for example, 1=R.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints > Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows:
+ 1 | 2 | 3
+----------
+ 4 | 5 |
+----------
+   |   |
+Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } .:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  2 Constraints  Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows:
+ 1 | 2 | 3
+----------
+ 4 | 5 |
+----------
+   |   |
+Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } .
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation A: The variables are the 3 k instrument/time slots. > 1. Domain:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.  1. Domain: The domain is the 3 k instrument/time slots.  2. The variables are the 3 k instrument/time slots.  3. The variables are the 3 k instrument/time slots.  4. The variables are the 3 k instrument/time slots.  5. The variables are the 3 k instrument/time slots.  6. The variables are the 3 k instrument/time slots.  7. The variables are the 3 k instrument/time slots.  8. The variables are the 3 k instrument/time slots.  9. The variables are the 3 k instrument/time slots.  10. The variables are the 3 k instrument/time slots.  11. The variables are the 3 k instrument/time slots.  12. The variables are the 3 k instrument/time slots.  13. The variables are the 3 k instrument/time slots.  14. The variables are the 3 k instrument/time slots.  15. The variables are the 3 k instrument/time slots.  16. The variables are the 3 k instrument/time slots.  17. The variables are the 3 k instrument/time slots.  18. The variables are the 3 k instrument/time slots.  19.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation A: The variables are the 3 k instrument/time slots. > 2. Size of domain:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.  2. Size of domain: The domain is the 3 k instrument/time slots.  1. The number of constraints: The number of constraints is the 3 k instrument/time slots.  2. The number of constraints: The number of constraints is the 3 k instrument/time slots.  3. The number of constraints: The number of constraints is the 3 k instrument/time slots.  4. The number of constraints: The number of constraints is the 3 k instrument/time slots.  5. The number of constraints: The number of constraints is the 3 k instrument/time slots.  6. The number of constraints: The number of constraints is the 3 k instrument/time slots.  7. The number of constraints: The number of constraints is the 3 k instrument/time slots.  8. The number of constraints: The number of constraints is the 3 k instrument/time slots.  9. The number of constraints: The number of constraints is the 3 k instrument/time slots.  10. The number of constraints: The number of constraints is the 3 k instrument/time slots.  11. The number of constraints: The number of constraints is the 3 k instrument/time slots.  12.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation A: The variables are the 3 k instrument/time slots. > 3. Satisfied constraints:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3. Satisfied constraints: A: The variables are the 3 k instrument/time slots.  3.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation A: The variables are the 3 k instrument/time slots. > 4. Binary constraints?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.  4. Binary constraints?: Yes.  5. The constraint is a binary constraint.  6. The constraint is a binary constraint.  7. The constraint is a binary constraint.  8. The constraint is a binary constraint.  9. The constraint is a binary constraint.  10. The constraint is a binary constraint.  11. The constraint is a binary constraint.  12. The constraint is a binary constraint.  13. The constraint is a binary constraint.  14. The constraint is a binary constraint.  15. The constraint is a binary constraint.  16. The constraint is a binary constraint.  17. The constraint is a binary constraint.  18. The constraint is a binary constraint.  19. The constraint is a binary constraint.  20. The constraint is a binary constraint.  21. The constraint is a binary constraint.  22. The constraint is a binary constraint.  23. The constraint is a binary constraint.  24. The constraint is a binary constraint.  25. The constraint is a binary constraint.  26. The constraint is a binary constraint.  27. The constraint is a binary constraint.  28. The constraint is a binary constraint.  29. The constraint is a binary constraint.  30.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation A: The variables are the 3 k instrument/time slots.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.: The variables are the 3 k instrument/time slots.
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.: The variables are the 3 k instrument/time slots.
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.: The variables are the 3 k instrument/time slots.
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.: The variables are the 3 k instrument/time slots.
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation A: The variables are the 3 k instrument/time slots.: The variables are the 3 k instrument/time slots.
+
+Answer concisely in English without code: 6.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation B: The variables are the m scientists. > 1. Domain:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation B: The variables are the m scientists.  1. Domain: The domain is the set of all the variables.  2. The variables are the m scientists.  3. The variables are the m scientists.  4. The variables are the m scientists.  5. The variables are the m scientists.  6. The variables are the m scientists.  7. The variables are the m scientists.  8. The variables are the m scientists.  9. The variables are the m scientists.  10. The variables are the m scientists.  11. The variables are the m scientists.  12. The variables are the m scientists.  13. The variables are the m scientists.  14. The variables are the m scientists.  15. The variables are the m scientists.  16. The variables are the m scientists.  17. The variables are the m scientists.  18. The variables are the m scientists.  19. The variables are the m scientists.  20. The variables are the m scientists.  21. The variables are the m scientists.  22. The variables are the m scientists.  23. The variables are the m scientists.  24. The variables are the m scientists.  25. The variables are the m scientists.  26.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation B: The variables are the m scientists. > 2. Size of domain:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation B: The variables are the m scientists.  2. Size of domain: The domain is the number of scientists.  3. Number of variables: The number of variables is the number of scientists.  4. Number of constraints: The number of constraints is the number of scientists.  5. Number of constraints: The number of constraints is the number of scientists.  6. Number of constraints: The number of constraints is the number of scientists.  7. Number of constraints: The number of constraints is the number of scientists.  8. Number of constraints: The number of constraints is the number of scientists.  9. Number of constraints: The number of constraints is the number of scientists.  10. Number of constraints: The number of constraints is the number of scientists.  11. Number of constraints: The number of constraints is the number of scientists.  12. Number of constraints: The number of constraints is the number of scientists.  13. Number of constraints: The number of constraints is the number of scientists.  14. Number of constraints: The number of constraints is the number of scientists.  15. Number of constraints: The number of constraints is the number of scientists.  16. Number of constraints: The number of constraints is the number of scientists.  17.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation B: The variables are the m scientists. > 3. Satisfied constraints:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation B: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3. Satisfied constraints: The variables are the m scientists.  3.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation B: The variables are the m scientists. > 4. Binary constraints?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation B: The variables are the m scientists.  4. Binary constraints?: The variables are the m scientists.  5. The variables are the m scientists.  6. The variables are the m scientists.  7. The variables are the m scientists.  8. The variables are the m scientists.  9. The variables are the m scientists.  10. The variables are the m scientists.  11. The variables are the m scientists.  12. The variables are the m scientists.  13. The variables are the m scientists.  14. The variables are the m scientists.  15. The variables are the m scientists.  16. The variables are the m scientists.  17. The variables are the m scientists.  18. The variables are the m scientists.  19. The variables are the m scientists.  20. The variables are the m scientists.  21. The variables are the m scientists.  22. The variables are the m scientists.  23. The variables are the m scientists.  24. The variables are the m scientists.  25. The variables are the m scientists.  26. The variables are the m scientists.  27. The variables are the m scientists.  28. The variables are the m scientists.  29.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation B: The variables are the m scientists.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation B: The variables are the m scientists.: The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists. The variables are the m scientists.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation C: The variables are the mn scientists' requests. > 1. Domain:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation C: The variables are the mn scientists' requests.  1. Domain: The domain of the problem is the set of all the possible values of the variables.  2. The problem is to find the set of all the possible values of the variables.  3. The problem is to find the set of all the possible values of the variables.  4. The problem is to find the set of all the possible values of the variables.  5. The problem is to find the set of all the possible values of the variables.  6. The problem is to find the set of all the possible values of the variables.  7. The problem is to find the set of all the possible values of the variables.  8. The problem is to find the set of all the possible values of the variables.  9. The problem is to find the set of all the possible values of the variables.  10. The problem is to find the set of all the possible values of the variables.  11. The problem is to find the set of all the possible values of the variables.  12. The problem is to find the set of all the possible values of the variables.  13. The problem is to find the set of all the possible values of the variables.  14.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation C: The variables are the mn scientists' requests. > 2. Size of domain:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation C: The variables are the mn scientists' requests.  2. Size of domain: The domain is the set of all the possible values of the variables.  3. Number of variables: The number of variables is the number of variables in the domain.  4. Number of constraints: The number of constraints is the number of constraints in the domain.  5. Number of constraints: The number of constraints is the number of constraints in the domain.  6. Number of constraints: The number of constraints is the number of constraints in the domain.  7. Number of constraints: The number of constraints is the number of constraints in the domain.  8. Number of constraints: The number of constraints is the number of constraints in the domain.  9. Number of constraints: The number of constraints is the number of constraints in the domain.  10. Number of constraints: The number of constraints is the number of constraints in the domain.  11. Number of constraints: The number of constraints is the number of constraints in the domain.  12. Number of constraints: The number of constraints is the number of constraints in the domain.  13. Number of constraints: The number of constraints is the number of constraints in the domain.  14. Number of constraints: The number of constraints is the number of constraints in the domain.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation C: The variables are the mn scientists' requests. > 3. Satisfied constraints:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation C: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3. Satisfied constraints: The variables are the mn scientists' requests.  3.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation C: The variables are the mn scientists' requests. > 4. Binary constraints?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation C: The variables are the mn scientists' requests.  4. Binary constraints?: The variables are the mn scientists' requests.  5. The variables are the mn scientists' requests.  6. The variables are the mn scientists' requests.  7. The variables are the mn scientists' requests.  8. The variables are the mn scientists' requests.  9. The variables are the mn scientists' requests.  10. The variables are the mn scientists' requests.  11. The variables are the mn scientists' requests.  12. The variables are the mn scientists' requests.  13. The variables are the mn scientists' requests.  14. The variables are the mn scientists' requests.  15. The variables are the mn scientists' requests.  16. The variables are the mn scientists' requests.  17. The variables are the mn scientists' requests.  18. The variables are the mn scientists' requests.  19. The variables are the mn scientists' requests.  20. The variables are the mn scientists' requests.  21. The variables are the mn scientists' requests.  22. The variables are the mn scientists' requests.  23.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > Formulation C: The variables are the mn scientists' requests.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  Formulation C: The variables are the mn scientists' requests.: The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests. The variables are the mn scientists' requests.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction > You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time.
+The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints:
+C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution).
+C2 . At most one observation per instrument per time slot is scheduled.
+C3 . The observations scheduled for a single time slot must have the same target.
+Note that for some set of requested observations, there may not be any consistent schedule, but that's fine.
+Consider the following three formulations of the problem.
+A . The variables are the 3 k instrument/time slots.
+B . The variables are the m scientists.
+C . The variables are the mn scientists' requests.
+For each formulation, specify
+1 . The value domain for the variables.
+2 . The size of the domain for the variables (in terms of k , m ,and n ).
+3 . Which of the constraints are necessarily satisfied because of the formulation.
+4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  3 Constraint satisfaction  You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time.
+The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints:
+C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution).
+C2 . At most one observation per instrument per time slot is scheduled.
+C3 . The observations scheduled for a single time slot must have the same target.
+Note that for some set of requested observations, there may not be any consistent schedule, but that's fine.
+Consider the following three formulations of the problem.
+A . The variables are the 3 k instrument/time slots.
+B . The variables are the m scientists.
+C . The variables are the mn scientists' requests.
+For each formulation, specify
+1 . The value domain for the variables.
+2 . The size of the domain for the variables (in terms of k , m ,and n ).
+3 . Which of the constraints are necessarily satisfied because of the formulation.
+4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample.:
+A. The variables are the 3 k instrument/time slots.
+B. The variables are the m scientists.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C. The variables are the mn scientists' requests.
+C.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation > 1. Use a set of the variables above to describe the rover's state. Do not include extraneous information.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  4 Search Problem formulation  1. Use a set of the variables above to describe the rover's state. Do not include extraneous information.: 1. What is the rover's current position? 2. What is the rover's current velocity? 3. What is the rover's current attitude? 4. What is the rover's current position? 5. What is the rover's current velocity? 6. What is the rover's current attitude? 7. What is the rover's current position? 8. What is the rover's current velocity? 9. What is the rover's current attitude? 10. What is the rover's current position? 11. What is the rover's current velocity? 12. What is the rover's current attitude? 13. What is the rover's current position? 14. What is the rover's current velocity? 15. What is the rover's current attitude? 16. What is the rover's current position? 17. What is the rover's current velocity? 18. What is the rover's current attitude? 19. What is the rover's current position? 20. What is the rover's current velocity? 21. What is the rover's current attitude? 22. What is the rover's current position? 23. What is the rover's current velocity? 24. What is the rover's current attitude? 25. What is the rover's current position? 26.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation > 2. Specify the goal test.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  4 Search Problem formulation  2. Specify the goal test.: 1. What is the goal of the test? 2. What is the goal of the test? 3. What is the goal of the test? 4. What is the goal of the test? 5. What is the goal of the test? 6. What is the goal of the test? 7. What is the goal of the test? 8. What is the goal of the test? 9. What is the goal of the test? 10. What is the goal of the test? 11. What is the goal of the test? 12. What is the goal of the test? 13. What is the goal of the test? 14. What is the goal of the test? 15. What is the goal of the test? 16. What is the goal of the test? 17. What is the goal of the test? 18. What is the goal of the test? 19. What is the goal of the test? 20. What is the goal of the test? 21. What is the goal of the test? 22. What is the goal of the test? 23. What is the goal of the test? 24. What is the goal of the test? 25. What is the goal of the test? 26.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation > 3. Specify the actions. Indicate how they modify the state and any preconditions for being used.:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  4 Search Problem formulation  3. Specify the actions. Indicate how they modify the state and any preconditions for being used.: 3.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation > 4. Specify a function that determines the cost of each action. > charge :
+move :
+pick-up-rock :
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  4 Search Problem formulation  4. Specify a function that determines the cost of each action.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation > 5. This can be treated as a path search problem. We would like to find a heuristic. Say whether each of these possible heuristics would be useful in finding the optimal path or, if not, what's wrong with them. Let l be the number of rocks already collected. > H1 : The sum of the distances (in the map) from the rover to the 10 -l closest locations for the missing types of rocks.
+H2 : The length of the shortest tour through the 10 -l closest locations for the missing types of rocks.
+H3 : The distance back to the lander:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  4 Search Problem formulation  5. This can be treated as a path search problem. We would like to find a heuristic. Say whether each of these possible heuristics would be useful in finding the optimal path or, if not, what's wrong with them. Let l be the number of rocks already collected.  H1 : The sum of the distances (in the map) from the rover to the 10 -l closest locations for the missing types of rocks.
+H2 : The length of the shortest tour through the 10 -l closest locations for the missing types of rocks.
+H3 : The distance back to the lander: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H4 : The length of the longest tour through the 10 -l closest locations for the missing types of rocks.
+H5 : The distance back to the rover: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H6 : The distance back to the lander: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H7 : The distance back to the rover: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H8 : The distance back to the lander: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H9 : The distance back to the rover: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H10 : The distance back to the lander: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+H11 : The distance back to the rover: the distance from the rover to the 10 -l closest locations for the missing types of rocks.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation > Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration.
+· It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge.
+· It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square.
+· It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square.
+The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander.
+Here is a list of variables that might be used to describe the rover's world:
+· types of rocks already collected
+· current rover location (square on map)
+· current lander location (square on map)
+· weight of rocks at current location (square on map)
+· cost to traverse the current location (square on map)
+· time since last charged
+· time since departure from lander
+· current day
+· current battery charge level
+· total battery capacity
+· distance to lander
+· total weight of currently collected rocks:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  4 Search Problem formulation  Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration.
+· It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge.
+· It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square.
+· It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square.
+The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G1: > A → B
+A → D
+B → C
+B → D
+B → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G1:  A → B
+A → D
+B → C
+B → D
+B → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+4. What is the cost of the path?
+5. What is the cost of the path?
+6. What is the cost of the path?
+7. What is the cost of the path?
+8. What is the cost of the path?
+9. What is the cost of the path?
+10. What is the cost of the path?
+11. What is the cost of the path?
+12. What is the cost of the path?
+13. What is the cost of the path?
+14. What is the cost of the path?
+15. What is the cost of the path?
+16. What is the cost of the path?
+17. What is the cost of the path?
+18. What is the cost of the path?
+19. What is the cost of the path?
+20. What is the cost of the path?
+21. What is the cost of the path?
+22. What is the cost of the path?
+23. What is the cost of the path?
+24. What is the cost of the path?
+25. What is the cost of the path?
+26. What is the cost of the path?
+27.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G2: > A (6) → B
+A (3) → D
+D (4) → C
+D → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G2:  A (6) → B
+A (3) → D
+D (4) → C
+D → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+4. What is the algorithm?
+5. What is the heuristic?
+6. What is the algorithm?
+7. What is the heuristic?
+8. What is the algorithm?
+9. What is the heuristic?
+10. What is the algorithm?
+11. What is the heuristic?
+12. What is the algorithm?
+13. What is the heuristic?
+14. What is the algorithm?
+15. What is the heuristic?
+16. What is the algorithm?
+17. What is the heuristic?
+18. What is the algorithm?
+19. What is the heuristic?
+20. What is the algorithm?
+21. What is the heuristic?
+22. What is the algorithm?
+23. What is the heuristic?
+24. What is the algorithm?
+25. What is the heuristic?
+26. What is the algorithm?
+27. What is the heuristic?
+28. What is the algorithm?
+29. What is the heuristic?
+30. What is the algorithm?
+31. What is the algorithm?
+32. What is the algorithm?
+33. What is the algorithm?
+34.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G3: > A (7) → B
+A (6) → D
+D (8) → C
+D (6) → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G3:  A (7) → B
+A (6) → D
+D (8) → C
+D (6) → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+4. What is the best algorithm to find shortest path?
+5. What is the best algorithm to find shortest path?
+6. What is the best algorithm to find shortest path?
+7. What is the best algorithm to find shortest path?
+8. What is the best algorithm to find shortest path?
+9. What is the best algorithm to find shortest path?
+10. What is the best algorithm to find shortest path?
+11. What is the best algorithm to find shortest path?
+12. What is the best algorithm to find shortest path?
+13. What is the best algorithm to find shortest path?
+14. What is the best algorithm to find shortest path?
+15. What is the best algorithm to find shortest path?
+16. What is the best algorithm to find shortest path?
+17. What is the best algorithm to find shortest path?
+18. What is the best algorithm to find shortest path?
+19. What is the best algorithm to find shortest path?
+20. What is the best algorithm to find shortest path?
+21. What is the best algorithm to find shortest path?
+22. What is the best algorithm to find shortest path?
+23.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G4: > A (3) → B
+A (2) → D
+D (0) → C
+C → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G4:  A (3) → B
+A (2) → D
+D (0) → C
+C → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why:
+4. What is the algorithm?
+5. What is the heuristic?
+6. What is the algorithm?
+7. What is the heuristic?
+8. What is the algorithm?
+9. What is the heuristic?
+10. What is the algorithm?
+11. What is the heuristic?
+12. What is the algorithm?
+13. What is the heuristic?
+14. What is the algorithm?
+15. What is the heuristic?
+16. What is the algorithm?
+17. What is the heuristic?
+18. What is the algorithm?
+19. What is the heuristic?
+20. What is the algorithm?
+21. What is the heuristic?
+22. What is the algorithm?
+23. What is the heuristic?
+24. What is the algorithm?
+25. What is the heuristic?
+26. What is the algorithm?
+27. What is the heuristic?
+28. What is the algorithm?
+29. What is the heuristic?
+30. What is the algorithm?
+31. What is the algorithm?
+32. What is the algorithm?
+33. What is the algorithm?
+34.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G5: > A → B
+A → D
+B → C
+B → D
+B → G
+C → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G5:  A → B
+A → D
+B → C
+B → D
+B → G
+C → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why?:
+4. What is the cost of the path?
+5. What is the cost of the path?
+6. What is the cost of the path?
+7. What is the cost of the path?
+8. What is the cost of the path?
+9. What is the cost of the path?
+10. What is the cost of the path?
+11. What is the cost of the path?
+12. What is the cost of the path?
+13. What is the cost of the path?
+14. What is the cost of the path?
+15. What is the cost of the path?
+16. What is the cost of the path?
+17. What is the cost of the path?
+18. What is the cost of the path?
+19. What is the cost of the path?
+20. What is the cost of the path?
+21. What is the cost of the path?
+22. What is the cost of the path?
+23. What is the cost of the path?
+24. What is the cost of the path?
+25. What is the cost of the path?
+26. What is the cost of the path?
+27.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G6: > A (4) → B
+B (6) → C
+B (7) → D
+B (7) → G
+A (5) → D
+D (4) → C
+D (6) → G
+C (5) → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G6:  A (4) → B
+B (6) → C
+B (7) → D
+B (7) → G
+A (5) → D
+D (4) → C
+D (6) → G
+C (5) → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why?:
+4. What is the cost of the path?
+5. What is the cost of the path?
+6. What is the cost of the path?
+7. What is the cost of the path?
+8. What is the cost of the path?
+9. What is the cost of the path?
+10. What is the cost of the path?
+11. What is the cost of the path?
+12. What is the cost of the path?
+13. What is the cost of the path?
+14. What is the cost of the path?
+15. What is the cost of the path?
+16. What is the cost of the path?
+17. What is the cost of the path?
+18. What is the cost of the path?
+19. What is the cost of the path?
+20. What is the cost of the path?
+21. What is the cost of the path?
+22. What is the cost of the path?
+23. What is the cost of the path?
+24. What is the cost of the path?
+25. What is the cost of the path?
+26. What is the cost of the path?
+27.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > G7: > A (1) → B
+A (3) → D
+B (6) → C
+B (5) → D
+B (7) → G
+D (6) → C
+D (8) → G
+D (4) → C
+D (6) → G
+C (5) → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why?:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  G7:  A (1) → B
+A (3) → D
+B (6) → C
+B (5) → D
+B (7) → G
+D (6) → C
+D (8) → G
+D (4) → C
+D (6) → G
+C (5) → G
+1. Algorithm:
+2. Heuristic (if any):
+3. Did it find least-cost path? If not, why?:
+4. Did it find shortest path? If not, why?:
+5. Did it find shortest path? If not, why?:
+6. Did it find shortest path? If not, why?:
+7. Did it find shortest path? If not, why?:
+8. Did it find shortest path? If not, why?:
+9. Did it find shortest path? If not, why?:
+10. Did it find shortest path? If not, why?:
+11. Did it find shortest path? If not, why?:
+12. Did it find shortest path? If not, why?:
+13. Did it find shortest path? If not, why?:
+14. Did it find shortest path? If not, why?:
+15. Did it find shortest path? If not, why?:
+16. Did it find shortest path? If not, why?:
+17. Did it find shortest path? If not, why?:
+18. Did it find shortest path? If not, why?:
+19. Did it find shortest path? If not, why?:
+20. Did it find shortest path? If not, why?:
+21. Did it find shortest path? If not, why?:
+22.
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces > Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes.
+G:
+A (1) → B
+A (3) → D
+A (2) → B
+B (5) → C
+B (6) → G
+B (4) → D
+D (1) → C
+D (3) → G
+C (1) → G
+For each tree, indicate whether it was generated with
+1. Depth first search
+2. Breadth first search
+3. Uniform cost search
+4. A* search
+5. Best-first (greedy) search
+In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used
+H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 }
+H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 }
+Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific.
+Write your answers in the space provided below (not on the figure).:
+//// ANSWER: Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes.
+G:
+A (1) → B
+A (3) → D
+A (2) → B
+B (5) → C
+B (6) → G
+B (4) → D
+D (1) → C
+D (3) → G
+C (1) → G
+For each tree, indicate whether it was generated with
+1. Depth first search
+2. Breadth first search
+3. Uniform cost search
+4. A* search
+5. Best-first (greedy) search
+In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used
+H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 }
+H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 }
+Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific.
+Write your answers in the space provided below (not on the figure).:
+
+Answer concisely in English without code: 6.034 Quiz 1, Spring 2005  5 Search traces  Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant'score' used by the algorithm for those nodes.
+G:
+A (1) → B
+A (3) → D
+A (2) → B
+B (5) → C
+B (6) → G
+B (4) → D
+D (1) → C
+D (3) → G
+C (1) → G
+For each tree, indicate whether it was generated with
+1. Depth first search
+2. Breadth first search
+3. Uniform cost search
+4. A* search
+5. Best-first (greedy) search
+In all cases a strict expanded list was used.
+
