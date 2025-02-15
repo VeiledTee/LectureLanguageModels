@@ -91,15 +91,14 @@ def generate_answers(questions: List[str], pipe: pipeline) -> List[str]:
                 top_p=0.7,
                 truncation=True,
                 pad_token_id=pipe.tokenizer.eos_token_id,
+
             )
 
             # Clean and format response
             raw_text: str = response[0]["generated_text"]
-            cleaned: str = re.sub(
-                r"(<|endoftext|>|<\/s>|\[.*?\]|�+)",
-                "",
-                raw_text.split("assistant")[-1].strip(),
-            )
+            # Remove the initial prompt from the response
+            cleaned = raw_text.replace(f"Answer concisely in English without code: {question}", "", 1).strip()
+            # Proceed with existing regex cleaning and punctuation checks
 
             # Ensure proper sentence endings
             last_punct: int = max(
@@ -135,7 +134,7 @@ def run_exams_for_model(model_id: str) -> None:
         "text-generation",
         model=model_id,
         device_map="cpu",
-        token=HF_TOKEN,
+        token=hf_token,
         torch_dtype=torch.float32,
         trust_remote_code=True,
     )
@@ -159,9 +158,8 @@ def run_exams_for_model(model_id: str) -> None:
             answers = generate_answers(questions, pipe)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                f.write(f"MODEL: {model_id}\nEXAM: {exam_name}\n\n")
                 for q, a in zip(questions, answers):
-                    f.write(f"QUESTION: {q}\nANSWER: {a}\n\n")
+                    f.write(f"QUESTION: {q}\n//// ANSWER: {a}\n\n")
 
             # Log performance
             duration: float = time.time() - start_time
@@ -186,14 +184,15 @@ if __name__ == "__main__":
         # "simplescaling/s1-32B",
         # "mistralai/Mistral-Small-24B-Instruct-2501",
         # ":ibm-granite/granite-3.2-8b-instruct-preview",
-        "HuggingFaceTB/SmolLM-135M-Instruct",
-        "HuggingFaceTB/SmolLM-360M-Instruct",
-        "HuggingFaceTB/SmolLM-1.7B-Instruct",
-        "HuggingFaceH4/zephyr-7b-beta",
+        # "HuggingFaceH4/zephyr-7b-beta",
         # "mistralai/Mistral-7B-Instruct-v0.3",
         # "bigscience/bloom",
         # "Qwen/Qwen2.5-VL-3B-Instruct",
         # "meta-llama/Llama-3.2-1B",
+        # "open-thoughts/OpenThinker-7B",
+        "HuggingFaceTB/SmolLM-135M-Instruct",
+        "HuggingFaceTB/SmolLM-360M-Instruct",
+        "HuggingFaceTB/SmolLM-1.7B-Instruct",
         "facebook/opt-1.3b",
         "gpt2-medium",
     ]
