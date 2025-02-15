@@ -42,6 +42,7 @@ def extract_answers_from_markdown(md_file: Path) -> list[str]:
         r"^//// ANSWER:(.*?)(?=^//// ANSWER:|^#|\Z)", re.DOTALL | re.MULTILINE
     )
     answers = pattern.findall(content)
+    print(len(answers))
     return [ans.strip() for ans in answers]
 
 
@@ -174,28 +175,34 @@ def evaluate_answers(
 
 if __name__ == "__main__":
     answer_directory = Path("AI_Course/Exams/generated_answers")
-    gold_answers: list[str] = extract_answers_from_markdown(
-        Path(
-            "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams/q1_soln_parsed.txt"
-        )
-    )
-    for file in answer_directory.glob("*.txt"):
-        print(f"Processing file: {file.name}")
-        model = file.name.split("_")[0]
-        generated_answers: list[str] = extract_answers_from_markdown(file)
+    question_dirs = ["q1", "q2"]  # List of question directories to process
 
-        metrics: dict[str, float] = evaluate_answers(
-            answers_to_evaluate=generated_answers,
-            gold_standard_answers=gold_answers,
-            verbose=True,
+    for question in question_dirs:
+        # Load gold standard answers for the current question
+        gold_path = Path(
+            f"/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams/{question}_soln_parsed.txt"
         )
+        gold_answers: list[str] = extract_answers_from_markdown(gold_path)
 
-        print(f"\n=== Final Metrics for {model} ===")
-        print(f"BLEU: {metrics['bleu']:.4f}")
-        print(f"ROUGE-1: {metrics['rouge1']:.4f}")
-        print(f"ROUGE-L: {metrics['rougeL']:.4f}")
-        print(f"Token F1: {metrics['token_f1']:.4f}")
-        print(f"BERTScore F1: {metrics['bert_f1']:.4f}")
-        print(f"NLI Entailment: {metrics['nli_entailment']:.4f}")
-        print(f"Exact Match: {metrics['exact_match']:.4f}")
-        print(f"Jaccard: {metrics['jaccard']:.4f}")
+        # Process generated answers for the current question
+        question_dir = answer_directory / question
+        for file in question_dir.glob("*.txt"):
+            print(f"\nProcessing file: {file.name} (Question: {question})")
+            model = file.name.split("_")[0]
+            generated_answers: list[str] = extract_answers_from_markdown(file)
+
+            metrics: dict[str, float] = evaluate_answers(
+                answers_to_evaluate=generated_answers,
+                gold_standard_answers=gold_answers,
+                verbose=True,
+            )
+
+            print(f"\n=== Final Metrics for {model} (Question: {question}) ===")
+            print(f"BLEU: {metrics['bleu']:.4f}")
+            print(f"ROUGE-1: {metrics['rouge1']:.4f}")
+            print(f"ROUGE-L: {metrics['rougeL']:.4f}")
+            print(f"Token F1: {metrics['token_f1']:.4f}")
+            print(f"BERTScore F1: {metrics['bert_f1']:.4f}")
+            print(f"NLI Entailment: {metrics['nli_entailment']:.4f}")
+            print(f"Exact Match: {metrics['exact_match']:.4f}")
+            print(f"Jaccard: {metrics['jaccard']:.4f}")

@@ -1,16 +1,16 @@
+import gc
 import logging
+import os
 import re
 import time
-import gc
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
-from transformers import pipeline
-from data_preprocessing import load_markdown_sections
 import torch
-import os
 from dotenv import load_dotenv
+from transformers import pipeline
 
+from data_preprocessing import load_markdown_sections
 
 # Configuration constants
 LOCAL_EXAM_DIR: Path = Path(
@@ -91,21 +91,18 @@ def generate_answers(questions: List[str], pipe: pipeline) -> List[str]:
                 top_p=0.7,
                 truncation=True,
                 pad_token_id=pipe.tokenizer.eos_token_id,
+
             )
 
             # Clean and format response
             raw_text: str = response[0]["generated_text"]
-            cleaned: str = re.sub(
-                r"(<|endoftext|>|<\/s>|\[.*?\]|�+)",
-                "",
-                raw_text.split("assistant")[-1].strip()
-            )
+            # Remove the initial prompt from the response
+            cleaned = raw_text.replace(f"Answer concisely in English without code: {question}", "", 1).strip()
+            # Proceed with existing regex cleaning and punctuation checks
 
             # Ensure proper sentence endings
             last_punct: int = max(
-                cleaned.rfind("."),
-                cleaned.rfind("!"),
-                cleaned.rfind("?")
+                cleaned.rfind("."), cleaned.rfind("!"), cleaned.rfind("?")
             )
             if last_punct != -1 and not cleaned.endswith((".", "!", "?")):
                 cleaned = cleaned[: last_punct + 1]
@@ -137,7 +134,7 @@ def run_exams_for_model(model_id: str) -> None:
         "text-generation",
         model=model_id,
         device_map="cpu",
-        token=HF_TOKEN,
+        token=hf_token,
         torch_dtype=torch.float32,
         trust_remote_code=True,
     )
@@ -147,11 +144,13 @@ def run_exams_for_model(model_id: str) -> None:
         start_time = time.time()
         try:
             exam_name = exam_file.stem.replace("_answerless", "")
-            exam_dir = exam_name.split('_')[0]
+            exam_dir = exam_name.split("_")[0]
 
             # Create both directory levels
             output_dir = OUTPUT_DIR / exam_dir
-            output_dir.mkdir(parents=True, exist_ok=True)  # <-- This creates both directories
+            output_dir.mkdir(
+                parents=True, exist_ok=True
+            )  # <-- This creates both directories
 
             output_path = output_dir / f"{model_name}_{exam_name}_answers.txt"
 
@@ -159,13 +158,14 @@ def run_exams_for_model(model_id: str) -> None:
             answers = generate_answers(questions, pipe)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                    f.write(f"MODEL: {model_id}\nEXAM: {exam_name}\n\n")
-                    for q, a in zip(questions, answers):
-                        f.write(f"QUESTION: {q}\nANSWER: {a}\n\n")
+                for q, a in zip(questions, answers):
+                    f.write(f"QUESTION: {q}\n//// ANSWER: {a}\n\n")
 
             # Log performance
             duration: float = time.time() - start_time
-            logging.info(f"Completed {exam_name} in {duration:.2f}s ({len(questions)} questions)")
+            logging.info(
+                f"Completed {exam_name} in {duration:.2f}s ({len(questions)} questions)"
+            )
 
         except Exception as e:
             logging.error(f"Failed processing {exam_file.name}: {str(e)}")
@@ -175,8 +175,7 @@ def run_exams_for_model(model_id: str) -> None:
 if __name__ == "__main__":
     """Main execution block for processing exams with multiple models."""
     logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s"
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
     )
 
     models: list[str] = [
@@ -185,14 +184,15 @@ if __name__ == "__main__":
         # "simplescaling/s1-32B",
         # "mistralai/Mistral-Small-24B-Instruct-2501",
         # ":ibm-granite/granite-3.2-8b-instruct-preview",
-        "HuggingFaceTB/SmolLM-135M-Instruct",
-        "HuggingFaceTB/SmolLM-360M-Instruct",
-        "HuggingFaceTB/SmolLM-1.7B-Instruct",
-        "HuggingFaceH4/zephyr-7b-beta",
+        # "HuggingFaceH4/zephyr-7b-beta",
         # "mistralai/Mistral-7B-Instruct-v0.3",
         # "bigscience/bloom",
         # "Qwen/Qwen2.5-VL-3B-Instruct",
         # "meta-llama/Llama-3.2-1B",
+        # "open-thoughts/OpenThinker-7B",
+        "HuggingFaceTB/SmolLM-135M-Instruct",
+        "HuggingFaceTB/SmolLM-360M-Instruct",
+        "HuggingFaceTB/SmolLM-1.7B-Instruct",
         "facebook/opt-1.3b",
         "gpt2-medium",
     ]
