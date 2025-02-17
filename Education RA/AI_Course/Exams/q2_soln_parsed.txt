@@ -6,20 +6,25 @@
    - Left branch (True): Predicts Negative (contains points (2,1), (2,-2)).  
    - Right branch (False): Further split on \(f_2 > 0.5\).  
 
+//// ANSWER:
 2. **Decision Boundaries**: Vertical line at \(x_1 = 1.5\), horizontal line at \(x_2 = 0.5\).  
 
+//// ANSWER:
 3. **Top-Level Test Choice**:  
    Computed average entropy for candidate splits:  
    - \(f_1 > 1.5\): \(AE = 0.552\) (minimal).  
    - Other splits (e.g., \(f_2 > 0.5\)) had higher \(AE\).  
 
+//// ANSWER:
 4. **Prediction for (1, -1.01)**: Positive (falls into the right subtree with majority +).  
 
 ## 2 Nearest Neighbors (8 pts)
 //// ANSWER:
 1. **1-NN Boundaries**: Voronoi diagram partitioning space around each point.  
-2. **1-NN Prediction**: Positive (closest neighbor is (1,0)).  
-3. **3-NN Prediction**: Positive (neighbors: (1,0), (0,0), (2,-2); 2+ vs 1-).  
+//// ANSWER:
+2. **1-NN Prediction**: Positive (closest neighbor is (1,0)).
+//// ANSWER:
+3. **3-NN Prediction**: Positive (neighbors: (1,0), (0,0), (2,-2); 2+ vs 1-).
 
 ## 3 Perceptron (7 pts)
 //// ANSWER:
@@ -30,8 +35,10 @@
    - Misclassified (1,0): Update to [-1, 0, 2].  
    - Final separator after convergence: [0, 1, 2].  
 
+//// ANSWER:
 2. **Prediction for (2.0, -1.01)**: Negative (margin = \(0 \cdot 1 + 1 \cdot 2 + 2 \cdot (-1.01) = -0.02 < 0\)).  
 
+//// ANSWER:
 3. **5-Point Dataset Result**: No convergence; data is not linearly separable.  
 
 ## 4 Neural Net (9 pts)
@@ -41,6 +48,7 @@
    - \((2,-2)\): \(s(0) = 0.5\).  
    - \((1,0)\): \(s(1) = 0.73\).  
 
+//// ANSWER:
 2. **Backpropagation for \(\Delta w_2\)**:  
    \[
    \Delta w_2 = \eta \cdot (y - t) \cdot y(1 - y) \cdot x_2 = 1 \cdot (0.5 - 0) \cdot 0.25 \cdot (-2) = -0.25
@@ -54,29 +62,40 @@
    - \(\Pr(x_2=1|y=1) = \frac{0+1}{6+2} = \frac{1}{8}\).  
    - \(\Pr(x_3=0|y=0) = 1 - \frac{2+1}{6+2} = \frac{5}{8}\).  
 
+//// ANSWER:
 2. **Most Influential Feature**: \(x_3\) (largest class-conditional probability difference).  
 
 ## 6 Learning Algorithms (16 pts)
 //// ANSWER:
 1. **1M Training, 6D Features**: K-Nearest Neighbors (low dimensionality, fast training).  
-2. **Kindergarten Classifier**: Decision Trees (interpretable).  
-3. **Book Preferences**: Naive Bayes (handles high dimensions, incremental updates).  
-4. **Rainfall Prediction**: Neural Networks or Regression (non-linear modeling).  
+//// ANSWER:
+2. **Kindergarten Classifier**: Decision Trees (interpretable).
+//// ANSWER:
+3. **Book Preferences**: Naive Bayes (handles high dimensions, incremental updates).
+//// ANSWER:
+4. **Rainfall Prediction**: Neural Networks or Regression (non-linear modeling).
 
 ## 7 Error vs Complexity (15 pts)
 //// ANSWER:
 1. **Perceptron**: Fixed hypothesis class (linear separators). No complexity penalty.  
-2. **Linear SVM**: Complexity penalty (maximizes margin). Optimizes criterion.  
-3. **Decision Tree (fixed depth)**: Fixed hypothesis class. Approximates minimal error.  
-4. **Neural Network**: Fixed architecture. No explicit complexity control.  
-5. **SVM (\(c < \infty\))**: Complexity penalty (soft margin). Optimizes tradeoff.  
+//// ANSWER:
+2. **Linear SVM**: Complexity penalty (maximizes margin). Optimizes criterion.
+//// ANSWER:
+3. **Decision Tree (fixed depth)**: Fixed hypothesis class. Approximates minimal error.
+//// ANSWER:
+4. **Neural Network**: Fixed architecture. No explicit complexity control.
+//// ANSWER:
+5. **SVM (\(c < \infty\))**: Complexity penalty (soft margin). Optimizes tradeoff.
 
 ## 8 Regression (12 pts)
 //// ANSWER:
 1. **2-NN**: Piecewise constant with jumps at midpoints between points.  
-2. **Regression Trees**: Stepwise constant regions matching data partitions.  
-3. **Linear Neural Network**: Straight line fit minimizing MSE.  
-4. **Multi-layer NN**: Smooth curve approximating data trends.  
+//// ANSWER:
+2. **Regression Trees**: Stepwise constant regions matching data partitions.
+//// ANSWER:
+3. **Linear Neural Network**: Straight line fit minimizing MSE.
+//// ANSWER:
+4. **Multi-layer NN**: Smooth curve approximating data trends.
 
 ## 9 SVM (12 pts)
 //// ANSWER:
@@ -86,7 +105,8 @@
    (c) Fails (insufficient margin).  
    (d) Fails (margin scaling incorrect).  
 
-2. **Kernel Matching**:  
+//// ANSWER:
+2. **Kernel Matching**:
    (a) Polynomial (degree=2): Diagram D (quadratic boundaries).  
    (b) Polynomial (degree=3): Diagram B (complex curves).  
    (c) RBF (\(\sigma=0.5\)): Diagram A (tight clusters).  

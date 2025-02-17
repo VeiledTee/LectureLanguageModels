@@ -1,5 +1,6 @@
 import os
 import re
+from typing import Any
 
 from docling.document_converter import DocumentConverter
 
@@ -59,31 +60,24 @@ def pdf_to_markdown(pdf_path: str, output_txt_path: str) -> None:
 
 
 def extract_questions(extract_from: str) -> list[str]:
-    """
-    Extracts individual questions from a string using specific delimiters.
-    First it attempts to split using the record (\x1e) and unit (\x1f) separators.
-    If those aren’t present, it falls back to using a regex to pick out question lines.
-    """
-    # Try using the expected delimiters.
-    if "\x1e" in extract_from or "\x1f" in extract_from:
-        questions = []
-        for block in extract_from.split("\x1e"):
-            for query in block.split("\x1f"):
-                if query.strip():
-                    questions.append(query.strip())
-        if questions:
-            return questions
+    """Dynamically finds and extracts deepest-level headers as questions"""
+    # Find all headers and their levels
+    headers = []
+    header_re = re.compile(r'^(#+)\s+(.+?)(?:\(.*?\))?\s*$', re.MULTILINE)
 
-    pattern = re.compile(r"^#{3,6}\s*(\d+\.\s+.+)$", re.MULTILINE)
-    matches = pattern.findall(extract_from)
-    if matches:
-        return [m.strip() for m in matches]
-    else:
-        # Final fallback: return all nonempty lines.
-        return [line.strip() for line in extract_from.splitlines() if line.strip()]
+    for match in header_re.finditer(extract_from):
+        level = len(match.group(1))
+        text = match.group(2).strip()
+        headers.append((level, text))
 
+    if not headers:
+        return []
 
-import re
+    # Find deepest header level used in document
+    max_level = max(level for level, _ in headers)
+
+    # Extract all headers at deepest level
+    return [text for level, text in headers if level == max_level]
 
 
 def load_markdown_sections(file_path: str) -> dict[str, str]:
@@ -133,17 +127,77 @@ def load_markdown_sections(file_path: str) -> dict[str, str]:
     return markdown_sections
 
 
+def parse_quiz(md_text: str) -> list[str]:
+    """
+    Parse markdown text representing a quiz with hierarchical sections.
+
+    Headers (lines starting with '#' characters) signify sections, subsections, and questions.
+    Lines between headers are considered content for the preceding header.
+    The hierarchy is built dynamically based on header levels. If a header of a lower level is found,
+    the current stack is popped until the header level matches. The function returns a list of
+    concatenated paths (using ' > ') from the root to each leaf node.
+
+    Args:
+        md_text (str): The markdown text to parse.
+
+    Returns:
+        list[str]: A list of full question paths in the form "Section > Subsection > ... > Question".
+    """
+    lines: list[str] = md_text.splitlines()
+    root: list[dict[str, Any]] = []
+    stack: list[dict[str, Any]] = []
+
+    for line in lines:
+        line = line.rstrip()
+        if not line.strip():
+            continue
+        if line.startswith("#"):
+            # Determine header level and text.
+            level = 0
+            while level < len(line) and line[level] == "#":
+                level += 1
+            header = line[level:].strip()
+            node: dict[str, Any] = {"level": level, "header": header, "content": "", "children": []}
+            # Pop until the top of the stack is of a lower level.
+            while stack and stack[-1]["level"] >= level:
+                stack.pop()
+            if stack:
+                stack[-1]["children"].append(node)
+            else:
+                root.append(node)
+            stack.append(node)
+        else:
+            # Append non-header content to the current header.
+            if stack:
+                current = stack[-1]
+                current["content"] = (current["content"] + " " + line.strip()).strip() if current["content"] else line.strip()
+
+    questions: list[str] = []
+
+    def traverse(path: list[str], node: dict[str, Any]) -> None:
+        text = node["header"]
+        if node["content"]:
+            text += " " + node["content"]
+        new_path = path + [text]
+        if not node["children"]:
+            questions.append(" > ".join(new_path))
+        else:
+            for child in node["children"]:
+                traverse(new_path, child)
+
+    for node in root:
+        traverse([], node)
+
+    return questions
+
+
 if __name__ == "__main__":
-    # Directory containing the PDF files
-    # DIRECTORY = "AI_Course/Exams"
-    # DIRECTORY = "AI_Course/Lecture_Notes"
     for directory in ["AI_Course/Exams"]:
         # Create a converter instance
         converter = DocumentConverter()
 
         for filename in os.listdir(directory):
             source_path = os.path.join(directory, filename)  # found for every file
-            print(source_path)
 
             # if filename.endswith(".pdf"):  # filter by .pdf extension
             #     output_path = os.path.join(
@@ -153,12 +207,10 @@ if __name__ == "__main__":
             #         source_path, output_path
             #     )  # convert pdf to markdown file and save in directory with '_parsed' suffix
 
-            if filename.endswith("_answerless.txt"):  # find edited quizzes for parsing
+            if filename.endswith("_answerless.txt"):
                 with open(source_path, "r", encoding="utf-8") as f:
                     input_text = f.read()
-                    sections = load_markdown_sections(
-                        file_path=f"{directory}/{filename}"
-                    )
-                    print(len(sections.items()))
-                    # for header, content in sections.items():
-                    #     print(f"{header}:\n{content}\n{'-' * 40}")
+                    questions = parse_quiz(input_text)
+                    print(f"File: {filename}, Questions Found: {len(questions)}")
+                    # for i in questions:
+                    #     print(i)
