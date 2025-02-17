@@ -169,14 +169,17 @@ if __name__ == "__main__":
         # "mistralai/Mistral-7B-Instruct-v0.3",
         # "bigscience/bloom",
         # "Qwen/Qwen2.5-VL-3B-Instruct",
-        # "meta-llama/Llama-3.2-1B",
         # "open-thoughts/OpenThinker-7B",
-        "HuggingFaceTB/SmolLM-135M-Instruct",
-        "HuggingFaceTB/SmolLM-360M-Instruct",
-        "HuggingFaceTB/SmolLM-1.7B-Instruct",
-        "facebook/opt-1.3b",
-        "gpt2-medium",
-        "cerebras/btlm-3b-8k-base",
+        "HuggingFaceTB/SmolLM2-135M-Instruct",  # v2
+        "HuggingFaceTB/SmolLM2-360M-Instruct",  # v2
+        "HuggingFaceTB/SmolLM2-1.7B-Instruct",  # v2
+        "HuggingFaceTB/SmolLM-135M-Instruct",  # v1
+        "HuggingFaceTB/SmolLM-360M-Instruct",  # v1
+        "HuggingFaceTB/SmolLM-1.7B-Instruct",  # v1
+        # "facebook/opt-1.3b",
+        # "gpt2-medium",
+        # "Qwen/Qwen2.5-7B-Instruct-1M",
+        # "meta-llama/Llama-3.1-8B-Instruct",
     ]
 
     try:
