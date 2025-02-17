@@ -1,571 +1,225 @@
-MODEL: HuggingFaceTB/SmolLM-1.7B-Instruct
-EXAM: q2_soln
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 1. Construct a decision tree for the data.
+//// ANSWER: The tree should be a binary tree with 3 nodes. The root node should have a value of 0. The left and right subtrees should have values of 1 and 2, respectively. The tree should be balanced. The tree should be a binary tree with 3 nodes. The root node should have a value of 0. The left and right subtrees should have values of 1 and 2, respectively. The tree should be balanced. The tree should be a binary tree with 3 nodes. The root node should have a value of 0. The left and right subtrees should have values of 1 and 2, respectively. The tree should be balanced. The tree should be a binary tree with 3 nodes. The root node should have a value of 0. The left and right subtrees should have values of 1 and 2, respectively. The tree should be balanced. The tree should be a binary tree with 3 nodes. The root node should have a value of 0. The left and right subtrees should have values of 1 and 2, respectively. The tree should be balanced. The tree should be a binary tree with 3 nodes.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees > 1. Construct a decision tree for the data.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  1 Decision Trees  1. Construct a decision tree for the data.
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 2. Draw decision boundaries on the graph.
+//// ANSWER: The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points. The decision boundary is the line that separates the positive and negative data points.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees > 2. Draw decision boundaries on the graph.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  1 Decision Trees  2. Draw decision boundaries on the graph.:
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 3. Explain how you chose the top-level test in the tree.
+//// ANSWER: **Question 13**
 
-**Answer:**
+Write a Python function to convert a string of comma-separated numbers into a list of integers. The function should handle invalid input and raise an exception if the input is not a string.
 
-Decision Trees are a type of supervised learning algorithm that can be used to classify data. They work by recursively partitioning the data into smaller subsets based on the values of the input features. The goal is to create a tree-like model that can be used to make predictions on new, unseen data.
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 4. What class does the tree predict for the point (1, -1.01)?
+//// ANSWER: A) Negative B) Positive C) None of the above D) The tree predicts nothing.
 
-In the context of the quiz, Decision Trees can be used to classify the data into different categories. For example, if we have a dataset of students with their grades in a course, a Decision Tree can be used to classify the students into different categories based on their grades.
+Answer: C) None of the above
 
-Here's a simple example of how a Decision Tree can be used to classify data:
+**Section 4: Data Preprocessing**
 
-Suppose we have a dataset of students with their grades in a course, and we want to classify them into three categories: "A", "B", and "C". We can use a Decision Tree to classify the students based on their grades.
+* Question 1: What is the difference between normalization and standardization?
+* Question 2: Which of the following is a type of data preprocessing technique?
+A) Data transformation
+B) Data aggregation
+C) Data filtering
+D) Data transformation
 
-The Decision Tree would start by creating a root node, which represents the entire dataset. The first split would be based on the grade 90, and the students with grades 90 or higher would be classified as "A".
+Answer: C) Data transformation
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees > 3. Explain how you chose the top-level test in the tree.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  1 Decision Trees  3. Explain how you chose the top-level test in the tree.:
+**Section 5: Machine Learning**
 
-The top-level test in the tree is the "Is-A" test, which is a binary classification test. This test is chosen because it is the most informative test in the tree, and it provides the most information about the classification of the data. The "Is-A" test is a binary classification test because it only has two possible outcomes, and it is a top-level test because it is the highest level of abstraction in the tree.
+* Question 1: What is the difference between supervised and unsupervised learning?
+* Question 2: Which of the following is a type of machine learning algorithm?
+A) Decision tree
+B) Random forest
+C) Neural network
+D) Support vector machine
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees > 4. What class does the tree predict for the point (1, -1.01)?:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  1 Decision Trees  4. What class does the tree predict for the point (1, -1.01)?:
+Answer: C) Neural network
 
-A) 0
-B) 1
-C) 2
-D) 3
+**Section 6: Model Evaluation**
 
-Answer: 4. What class does the tree predict for the point (1, -1.01)?:
+* Question 1: What is the purpose of model evaluation?
 
-A) 0
-B) 1
-C) 2
-D) 3
+QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors (8 pts) > 1. Draw 1-NN decision boundaries.
+//// ANSWER: 2. What is the nearest neighbor of a point in the dataset? 3. What is the nearest neighbor of a point in the dataset? 4. What is the nearest neighbor of a point in the dataset? 5. What is the nearest neighbor of a point in the dataset? 6. What is the nearest neighbor of a point in the dataset? 7. What is the nearest neighbor of a point in the dataset? 8. What is the nearest neighbor of a point in the dataset? 9. What is the nearest neighbor of a point in the dataset? 10. What is the nearest neighbor of a point in the dataset? 11. What is the nearest neighbor of a point in the dataset? 12. What is the nearest neighbor of a point in the dataset? 13. What is the nearest neighbor of a point in the dataset? 14. What is the nearest neighbor of a point in the dataset? 15. What is the nearest neighbor of a point in the dataset? 16. What is the nearest neighbor of a point in the dataset? 17. What is the nearest neighbor of a point in the dataset? 18.
 
-**Section 4: Multiple Choice Questions**
+QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors (8 pts) > 2. What class does 1-NN predict for (1, -1.01)? Explain.
+//// ANSWER: **Answer:** 1-NN predicts the class with the highest probability (1) for the input (1, -1.01).
 
-1. What is the difference between a decision tree and a random forest?
+**Question 10:** What is the difference between a decision tree and a random forest?
 
-A) A decision tree is a single tree, while a random forest is a collection of trees.
-B) A decision tree is a single tree, while a random forest is a collection of trees.
-C) A decision tree is a single tree, while a random forest is a collection of trees.
-D) A decision tree is a single tree, while a random forest is a collection of trees.
+**Answer:** A decision tree is a single tree that splits the data into subsets based on features, while a random forest is an ensemble of decision trees that combines multiple trees to improve accuracy and reduce overfitting.
 
-Answer: A) A decision tree is a single tree, while a random forest is a collection of trees.
+**Question 11:** What is the difference between a support vector machine (SVM) and a k-nearest neighbors (KNN) algorithm?
 
-2. Which of the following is a type of machine learning algorithm?
+**Answer:** A SVM is a supervised learning algorithm that finds the hyperplane that maximally separates classes, while a KNN is a supervised learning algorithm that predicts the class of a new instance based on the majority vote of its k nearest neighbors.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees > Data points:  
-Negative: (-1, 0), (2, 1), (2, -2)  
-Positive: (0, 0), (1, 0):
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  1 Decision Trees  Data points:  
-Negative: (-1, 0), (2, 1), (2, -2)  
-Positive: (0, 0), (1, 0): 3.034 Quiz 2, Spring 2005  1 Decision Trees  Data points:  
-Negative: (-1, 0), (2, 1), (2, -2)  
-Positive: (0, 0), (1, 0): 3.034 Quiz 2, Spring 2005  1 Decision Trees  Data points:  
-Negative: (-1, 0), (2, 1), (2, -2)  
-Positive: (0, 0), (1, 0): 3.034 Quiz 2, Spring 2005  1 Decision Trees  Data points:  
-Negative: (-1, 0), (2, 1), (2, -2)  
-Positive: (0, 0), (1, 0): 3.034 Quiz 2, Spring 2005  1 Decision Trees  Data points:  
-Negative: (-1, 0), (2, 1), (2, -2)  
-Positive: (0, 0), (1, 0): 3.
+**Question 12:** What is the purpose of feature selection in machine learning?
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors > 1. Draw 1-NN decision boundaries.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  2 Nearest Neighbors  1. Draw 1-NN decision boundaries.:
+**Answer:** Feature selection is the process of selecting a subset of the most relevant features from a large set of features to improve the performance of a machine learning model.
 
-The answer is:
+QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors (8 pts) > 3. What class does 3-NN predict for (1, -1.01)? Explain.
+//// ANSWER: (4 pts)
 
-The answer is: 1 Nearest Neighbors
+**Answer:** 3-NN predicts the class of the new point (1, -1.01) to be a 3-nearest neighbor, which is a class of the training data.
 
-**Answer:**
+**Question 14:** What is the difference between a decision tree and a random forest? (2 pts)
 
-The answer is: 1 Nearest Neighbors
+**Answer:** A decision tree is a single tree that splits the data into subsets based on features, while a random forest is an ensemble of decision trees that combines multiple trees to improve accuracy.
 
-**Question 4:**
+**Question 15:** What is the difference between a classification model and a regression model? (2 pts)
 
-What is the difference between a decision tree and a random forest?
+**Answer:** A classification model predicts a categorical output (e.g., spam vs. not spam), while a regression model predicts a continuous output (e.g., the price of a house).
 
-A) A decision tree is a single tree, while a random forest is a collection of trees.
-B) A decision tree is a single tree, while a random forest is a collection of trees with random feature subsets.
-C) A decision tree is a single tree, while a random forest is a collection of trees with random feature subsets and a single tree.
-D) A decision tree is a single tree, while a random forest is a collection of trees with random feature subsets and a single tree.
+**Question 16:** What is the difference between a bias-variance tradeoff and a overfitting-underfitting tradeoff? (2 pts)
 
-The answer is: C) A decision tree is a single tree, while a random forest is a collection of trees with random feature subsets and a single tree.
+**Answer:** A bias-variance tradeoff refers to the tradeoff between the error introduced by simplifying a model (bias) and the error introduced by fitting the noise in the data (variance).
 
-**Answer:**
+QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 1. Explain how the perceptron algorithm produces the separator (0, 1, 2).
+//// ANSWER: **Question 3**
 
-The answer is: C) A decision tree is a single tree, while a random forest is a collection of trees with random feature subsets and a single tree.
+Write a Python function to implement the perceptron algorithm. The function should take the following arguments:
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors > 2. What class does 1-NN predict for (1, -1.01)? Explain.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  2 Nearest Neighbors  2. What class does 1-NN predict for (1, -1.01)? Explain.:
+- `X`: a 2D array of input data points
+- `y`: a 1D array of output labels
+- `w`: a 1D array of weights
+- `b`: a scalar bias term
 
-A: 1-NN predicts the class with the highest probability of the nearest neighbors. In this case, the nearest neighbors are the points (1, -1.01) and (-1, 1.01), so the 1-NN predicts the class with the highest probability of the nearest neighbors.
+The function should return the following:
 
-**Section 4: Practice Questions**
+- `y_pred`: a 1D array of predicted output labels
+- `w_pred`: a 1D array of predicted weights
 
-**Multiple Choice Questions**
+The function should implement the perceptron algorithm as follows:
 
-1. A 2-NN predicts the class of a new point (5, 7) with a probability of 0.8. What is the class of the new point?
-
-A: 2
-B: 3
-C: 4
-D: 5
-
-Answer: A
-
-2. A 1-NN predicts the class of a new point (3, 4) with a probability of 0.6. What is the class of the new point?
-
-A: 1
-B: 2
-C: 3
-D: 4
-
-Answer: A
-
-3. A 3-NN predicts the class of a new point (2, 3) with a probability of 0.9. What is the class of the new point?
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors > 3. What class does 3-NN predict for (1, -1.01)? Explain.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  2 Nearest Neighbors  3. What class does 3-NN predict for (1, -1.01)? Explain.:
-
-**Answer:** 3-NN predicts the class of (1, -1.01) because it is a classification algorithm that predicts the class of a new instance based on the class of its k-nearest neighbors. In this case, 3-NN predicts the class of (1, -1.01) because it is the class of the k-nearest neighbors of (1, -1.01) that are closest to it.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  2 Nearest Neighbors:
-
-**Question 1:**
-
-The nearest neighbor algorithm is a type of clustering algorithm that groups similar data points into clusters based on their proximity to each other. The algorithm works by calculating the distance between each data point and its nearest neighbors, and then grouping the data points into clusters based on these distances.
-
-**Answer:**
-
-The nearest neighbor algorithm is a type of clustering algorithm that groups similar data points into clusters based on their proximity to each other. It works by calculating the distance between each data point and its nearest neighbors, and then grouping the data points into clusters based on these distances.
-
-**Question 2:**
-
-The nearest neighbor algorithm is commonly used in applications such as image segmentation, object recognition, and recommendation systems.
-
-**Answer:**
-
-The nearest neighbor algorithm is commonly used in applications such as image segmentation, object recognition, and recommendation systems.
-
-**Question 3:**
-
-The nearest neighbor algorithm is also known as the "k-nearest neighbors" algorithm.
-
-**Answer:**
-
-The nearest neighbor algorithm is also known as the "k-nearest neighbors" algorithm.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron > 1. Explain how the perceptron algorithm produces the separator (0, 1, 2).:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  3 Perceptron  1. Explain how the perceptron algorithm produces the separator (0, 1, 2).:
-
-The perceptron algorithm is a type of feedforward neural network that produces the separator by iteratively adjusting the weights and biases of the network. The algorithm works by feeding the input data through the network, and then adjusting the weights and biases to minimize the error between the predicted output and the actual output.
-
-The perceptron algorithm is based on the idea of a single neuron, also known as a perceptron, that takes in multiple inputs and produces a single output. The perceptron is trained to produce the correct output for a given input by adjusting the weights and biases of the neuron.
-
-The perceptron algorithm produces the separator by iteratively adjusting the weights and biases of the neuron to minimize the error between the predicted output and the actual output. The algorithm starts with an initial set of weights and biases, and then iteratively adjusts them to minimize the error.
-
-The perceptron algorithm produces the separator by iteratively adjusting the weights and biases of the neuron to minimize the error between the predicted output and the actual output. The algorithm starts with an initial set of weights and biases, and then iteratively adjusts them to minimize the error.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron > 2. Predict the class for (2.0, -1.01).:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  3 Perceptron  2. Predict the class for (2.0, -1.01).: 2.0, -1.01
-
-**3. Write a Python function to implement the following formula:
-
-$$
-f(x) = \frac{1}{1 + e^{-x}}
-$$
-
-where $x$ is a scalar input.
+- Initialize the weights and bias term randomly
+- For each input data point, compute the output label using the weights and bias term
+- If the output label is positive, update the weights and bias term using the perceptron rule
+- Repeat until convergence or a stopping criterion is reached
 
 Your code should pass the following test case:
 ```python
-x = 0.5
-expected_output = 0.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron > 3. Describe the result if applied to the 5-point dataset from Problem 1.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  3 Perceptron  3. Describe the result if applied to the 5-point dataset from Problem 1.:
-
-The 5-point dataset from Problem 1 is a simple dataset with 5 points, each represented by a 2-dimensional vector.
-
-The 3-layer perceptron is a type of artificial neural network that consists of three layers: an input layer, a hidden layer, and an output layer.
-
-The 3-layer perceptron is applied to the 5-point dataset from Problem 1 by feeding the input vector through the hidden layer and then outputting the result.
-
-The result of applying the 3-layer perceptron to the 5-point dataset from Problem 1 is a 2-dimensional vector that represents the predicted output.
-
-The predicted output is a 2-dimensional vector that is close to the true output, indicating that the 3-layer perceptron is able to learn the underlying patterns in the data.
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron > Data points:  
-Negative: (-1, 0), (2, -2)  
-Positive: (1, 0):
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  3 Perceptron  Data points:  
-Negative: (-1, 0), (2, -2)  
-Positive: (1, 0): 1.000, (2, 1): 1.000, (3, 2): 1.000, (4, 3): 1.000, (5, 4): 1.000, (6, 5): 1.000, (7, 6): 1.000, (8, 7): 1.000, (9, 8): 1.000, (10, 9): 1.000, (11, 10): 1.000, (12, 11): 1.000, (13, 12): 1.000, (14, 13): 1.000, (15, 14): 1.000, (16, 15): 1.000, (17, 16): 1.000, (18, 17): 1.000, (19, 18): 1.
+QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Predict the class for (2.0, -1.01).
+//// ANSWER: **Answer concisely in English without code:** 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Predict the class for (2.0, -1.01).
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net > 1. Compute sigmoid outputs for points (-1,0), (2,-2), (1,0) with weights \(w_0=0, w_1=1, w_2=1\).:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  4 Neural Net  1. Compute sigmoid outputs for points (-1,0), (2,-2), (1,0) with weights \(w_0=0, w_1=1, w_2=1\).:
+**Answer concisely in English without code:** 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Predict the class for (2.0, -1.01).
 
-```python
-import numpy as np
+**Answer concisely in English without code:** 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Predict the class for (2.0, -1.01).
 
-def sigmoid(x):
-    return 1 / (1 + np.
+QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 3. Describe the result if applied to the 5-point dataset from Problem 1.
+//// ANSWER: Answer: The 3-point dataset is classified as positive by the 3-point dataset.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net > 2. Calculate \(\Delta w_2\) via backpropagation for input (2,-2).:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  4 Neural Net  2. Calculate \(\Delta w_2\) via backpropagation for input (2,-2).:
+QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net (9 pts) > 1. Compute sigmoid outputs for points (-1,0), (2,-2), (1,0) with weights \(w_0=0, w_1=1, w_2=1\).
+//// ANSWER: 2. Compute output of hidden layer with weights \(w_3=0, w_4=1, w_5=1\). 3. Compute output of output layer with weights \(w_6=0, w_7=1, w_8=1\). 4. Compute output of neural net with weights \(w_9=0, w_10=1, w_11=1\). 5. Compute output of neural net with weights \(w_12=0, w_13=1, w_14=1\). 6. Compute output of neural net with weights \(w_15=0, w_16=1, w_17=1\). 7. Compute output of neural net with weights \(w_18=0, w_19=1, w_20=1\). 8. Compute output of neural net with weights \(w_21=0, w_22=1, w_23=1\). 9.
 
-```
-\Delta w_2 = \begin{bmatrix}
-0.1 & 0.2 \\
-0.3 & 0.4
-\end{bmatrix}
-```
+QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net (9 pts) > 2. Calculate \(\Delta w_2\) via backpropagation for input (2,-2).
+//// ANSWER: **Answer:**
 
-Your code should pass the following test case:
-```python
-# Provided example
-assert backpropagation_2_layer(2, 2, 2) == 0.1, 0.2
-# Additional cases
-assert backpropagation_2_layer(2, 2, 2) == 0.1, 0.2
-assert backpropagation_2_layer(2, 2, 2) == 0.1, 0.
+To calculate the change in weights for the second layer, we need to know the output of the first layer and the error between the predicted output and the actual output.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  4 Neural Net: Backpropagation, Gradient Descent, and Gradient Checking
+The output of the first layer is \(y_1 = 2\) and the error is \(e = 2 - 0 = 2\).
 
-**Quiz 2, Spring 2005**
+The output of the first layer is \(y_2 = 2\) and the error is \(e = 2 - 2 = 0\).
 
-**Section 1: Neural Network Fundamentals**
+The output of the first layer is \(y_3 = 2\) and the error is \(e = 2 - 2 = 0\).
 
-1. What is the difference between a feedforward neural network and a recurrent neural network?
-a) A feedforward neural network processes the input data in a single pass, while a recurrent neural network processes the input data in a loop.
-b) A feedforward neural network processes the input data in a single pass, while a recurrent neural network processes the input data in a loop.
-c) A feedforward neural network processes the input data in a single pass, while a recurrent neural network processes the input data in a loop.
-d) A feedforward neural network processes the input data in a single pass, while a recurrent neural network processes the input data in a loop.
+The output of the first layer is \(y_4 = 2\) and the error is \(e = 2 - 2 = 0\).
 
-Answer: a) A feedforward neural network processes the input data in a single pass, while a recurrent neural network processes the input data in a loop.
+The output of the first layer is \(y_5 = 2\) and the error is \(e = 2 - 2 = 0\).
 
-2. What is the purpose of the activation function in a neural network?
+QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes (8 pts) Training data (12 examples: 6 positive, 6 negative): |  Feature  | \(y=0\) | \(y=1\) | |-----------|---------|---------| | \(x_1=1\) | 6       | 6       | | \(x_2=1\) | 0       | 0       | | \(x_3=1\) | 2       | 4       | > 1. Compute \(\Pr(x_1=1|y=0)\), \(\Pr(x_2=1|y=1)\), \(\Pr(x_3=0|y=0)\) with Laplacian correction.
+//// ANSWER: | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.5 Naive Bayes (8 pts) | 0.
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes > 1. Compute \(\Pr(x_1=1|y=0)\), \(\Pr(x_2=1|y=1)\), \(\Pr(x_3=0|y=0)\) with Laplacian correction.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  5 Naive Bayes  1. Compute \(\Pr(x_1=1|y=0)\), \(\Pr(x_2=1|y=1)\), \(\Pr(x_3=0|y=0)\) with Laplacian correction.:
+QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes (8 pts) Training data (12 examples: 6 positive, 6 negative): |  Feature  | \(y=0\) | \(y=1\) | |-----------|---------|---------| | \(x_1=1\) | 6       | 6       | | \(x_2=1\) | 0       | 0       | | \(x_3=1\) | 2       | 4       | > 2. Identify the most influential feature.
+//// ANSWER: |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |  |
 
-Your code should pass the following test case:
-```python
-# Provided example
-assert compute_pr(1, 0, 0, 0) == 0.5
-# Additional cases
-assert compute_pr(1, 0, 1, 0) == 0.5
-assert compute_pr(1, 0, 0, 1) == 0.
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 1. 1M training examples, 6D features, 100 test queries.
+//// ANSWER: **Answer:**
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes > 2. Identify the most influential feature.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  5 Naive Bayes  2. Identify the most influential feature.:
+1. Gradient Boosting
 
-A) The number of times the word "dog" appears in the text.
-B) The number of times the word "cat" appears in the text.
-C) The number of times the word "car" appears in the text.
-D) The number of times the word "dog" appears in the text.
-E) The number of times the word "cat" appears in the text.
-
-Answer: C) The number of times the word "cat" appears in the text.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes > Training data (12 examples: 6 positive, 6 negative):  
-|  Feature  | \(y=0\) | \(y=1\) |  
-|-----------|---------|---------|  
-| \(x_1=1\) | 6       | 6       |  
-| \(x_2=1\) | 0       | 0       |  
-| \(x_3=1\) | 2       | 4       |:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  5 Naive Bayes  Training data (12 examples: 6 positive, 6 negative):  
-|  Feature  | \(y=0\) | \(y=1\) |  
-|-----------|---------|---------|  
-| \(x_1=1\) | 6       | 6       |  
-| \(x_2=1\) | 0       | 0       |  
-| \(x_3=1\) | 2       | 4       |: 0.8333333333333333 |
-| \(x_4=1\) | 3       | 4       |: 0.8333333333333333 |
-| \(x_5=1\) | 5       | 5       |: 0.8333333333333333 |
-| \(x_6=1\) | 4       | 4       |: 0.8333333333333333 |
-| \(x_7=1\) | 2       | 4       |: 0.8333333333333333 |
-| \(x_8=1\) | 3       | 4       |: 0.8333333333333333 |
-| \(x_9=1\) | 5       | 5       |: 0.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms > 1. 1M training examples, 6D features, 100 test queries.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  6 Learning Algorithms  1. 1M training examples, 6D features, 100 test queries.:
-
-**1. 1M training examples, 6D features, 100 test queries:**
-
-This is a common dataset used in machine learning, where the number of training examples (1 million) is large, and the number of features (6) is relatively small. The dataset size is also relatively small compared to other datasets.
-
-**2. 1M training examples, 6D features, 100 test queries:**
-
-This dataset is similar to the previous one, but with a slightly larger number of training examples (1 million) and a slightly larger number of features (6). The dataset size is still relatively small compared to other datasets.
-
-**3. 1M training examples, 6D features, 100 test queries:**
-
-This dataset is similar to the previous one, but with a slightly larger number of training examples (1 million) and a slightly larger number of features (6). The dataset size is still relatively small compared to other datasets.
-
-**4.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms > 2. Classifier for kindergarten special education requiring justification.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  6 Learning Algorithms  2. Classifier for kindergarten special education requiring justification.:
-
-**2. Classifier for kindergarten special education requiring justification:**
-
-A classifier is a machine learning model that predicts the outcome of a classification problem. In the context of special education, a classifier can be used to identify students who require special education services.
-
-**3. Classifier for kindergarten special education requiring justification:**
-
-A classifier is a machine learning model that predicts the outcome of a classification problem. In the context of special education, a classifier can be used to identify students who require special education services.
-
-**4. Classifier for kindergarten special education requiring justification:**
-
-A classifier is a machine learning model that predicts the outcome of a classification problem. In the context of special education, a classifier can be used to identify students who require special education services.
-
-**5. Classifier for kindergarten special education requiring justification:**
-
-A classifier is a machine learning model that predicts the outcome of a classification problem. In the context of special education, a classifier can be used to identify students who require special education services.
-
-**6. Classifier for kindergarten special education requiring justification:**
-
-A classifier is a machine learning model that predicts the outcome of a classification problem.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms > 3. Book preference prediction with 1M features and frequent updates.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  6 Learning Algorithms  3. Book preference prediction with 1M features and frequent updates.:
-
-**Algorithm 3: Book Preference Prediction with 1M Features and Frequent Updates**
-
-This algorithm uses a combination of machine learning and frequent updates to predict user preferences for books. The algorithm is based on a large dataset of user ratings and reviews, which are used to train a model that can learn to predict user preferences.
-
-The algorithm uses a combination of techniques, including:
-
-* Collaborative filtering: This involves using the ratings and reviews of similar users to predict user preferences.
-* Matrix factorization: This involves reducing the dimensionality of the user-item interaction matrix to identify latent factors that influence user preferences.
-* Frequent updates: This involves updating the model with new user ratings and reviews to improve its accuracy over time.
-
-The algorithm uses a variant of the popular collaborative filtering algorithm, such as Singular Value Decomposition (SVD) or Non-negative Matrix Factorization (NMF), to reduce the dimensionality of the user-item interaction matrix and identify latent factors that influence user preferences.
-
-The algorithm also uses a variant of the popular frequent updates algorithm, such as the Apriori algorithm, to update the model with new user ratings and reviews.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms > 4. Rainfall prediction from ocean currents/tides.:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  6 Learning Algorithms  4. Rainfall prediction from ocean currents/tides.:
-
-**4. Rainfall prediction from ocean currents/tides:**
-
-This is a classic problem in machine learning, where the goal is to predict the amount of rainfall in a given region based on the ocean currents and tides. The idea is to use a neural network to learn the relationships between the ocean currents and tides, and then use this knowledge to make predictions about the rainfall.
-
-Here's a high-level overview of how you could approach this problem:
-
-1. Collect a large dataset of ocean currents and tides, along with corresponding rainfall data.
-2. Use a neural network to learn the relationships between the ocean currents and tides, and the rainfall data.
-3. Use the learned relationships to make predictions about the rainfall in new, unseen regions.
-
-Some potential techniques you could use to improve the performance of this approach include:
-
-* Using a more advanced neural network architecture, such as a convolutional neural network (CNN) or a recurrent neural network (RNN).
-* Using techniques such as transfer learning, where you use a pre-trained neural network as a starting point for your own model.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms > For each scenario, choose the best algorithm and justify:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  6 Learning Algorithms  For each scenario, choose the best algorithm and justify:
-
-**Scenario 1: Image Classification**
-
-A dataset of images is given, and the goal is to classify them into different categories.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity > 1. Perceptron:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  7 Error vs Complexity  1. Perceptron: A simple neural network that learns to classify data. 2. Backpropagation: An algorithm used to train neural networks. 3. Gradient Descent: An optimization algorithm used to minimize the loss function. 4. Activation Functions: Functions that introduce non-linearity into the neural network. 5. Overfitting: When a model is too complex and performs well on the training data but poorly on new data. 6. Underfitting: When a model is too simple and fails to capture the underlying patterns in the data. 7. Bias-Variance Tradeoff: The balance between the error introduced by simplifying a model (bias) and the error introduced by fitting the noise in the data (variance). 8. Gradient: A vector of partial derivatives of the loss function with respect to the model's parameters. 9. Loss Function: A mathematical function that measures the difference between the model's predictions and the true labels. 10. Optimization Algorithm: A method used to minimize the loss function and update the model's parameters. 11. Regularization: A technique used to prevent overfitting by adding a penalty term to the loss function. 12. Activation Function: A function that introduces non-linearity into the neural network.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity > 2. Linear SVM:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  7 Error vs Complexity  2. Linear SVM: 3.534 Quiz 2, Spring 2005  5 Error vs Complexity  1. Non-linear SVM: 3.534 Quiz 2, Spring 2005  4 Error vs Complexity  2. Linear SVM: 3.534 Quiz 2, Spring 2005  5 Error vs Complexity  1. Non-linear SVM: 3.534 Quiz 2, Spring 2005  3 Error vs Complexity  2. Linear SVM: 3.534 Quiz 2, Spring 2005  4 Error vs Complexity  1. Non-linear SVM: 3.534 Quiz 2, Spring 2005  2 Error vs Complexity  1. Non-linear SVM: 3.534 Quiz 2, Spring 2005  1 Error vs Complexity  2. Linear SVM: 3.534 Quiz 2, Spring 2005  3 Error vs Complexity  1. Non-linear SVM: 3.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity > 3. Decision Tree:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  7 Error vs Complexity  3. Decision Tree: A decision tree is a graphical representation of a decision-making process. It consists of a tree-like model with nodes and branches, where each node represents a decision or test, and each branch represents a possible outcome. The goal of a decision tree is to classify data into different categories or predict a continuous value. Decision trees are often used in machine learning and data mining applications.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity > 4. Neural Network:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  7 Error vs Complexity  4. Neural Network: A network of interconnected nodes (neurons) that process and transmit information.
-
-**5. What is the difference between a neural network and a decision tree?**
-
-A: A neural network is a more general machine learning model that can learn complex patterns, while a decision tree is a tree-based model that splits data into subsets based on features.
-
-**6. What is the concept of overfitting in machine learning?**
-
-A: Overfitting occurs when a model is too complex and performs well on the training data but poorly on new, unseen data. This happens when the model is too specialized to the training data and fails to generalize well.
-
-**7. What is the difference between a supervised and unsupervised learning problem?**
-
-A: In supervised learning, the model is trained on labeled data to learn the relationship between input features and output labels. In unsupervised learning, the model is trained on unlabeled data to discover patterns or structure in the data.
-
-**8. What is the concept of bias-variance tradeoff?**
-
-A: The bias-variance tradeoff refers to the balance between the error introduced by simplifying a model (bias) and the error introduced by fitting the noise in the data (variance).
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity > 5. SVM:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  7 Error vs Complexity  5. SVM: A powerful algorithm for classification and regression tasks.
-
-**5. How do you handle missing values in a dataset?**
-
-A: I would use a combination of techniques, such as:
-
-* Imputation: replacing missing values with mean, median, or mode.
-* Listwise deletion: removing rows with missing values.
-* Interpolation: filling missing values based on neighboring values.
-* Machine learning algorithms: using algorithms like decision trees or random forests to handle missing values.
-
-**6. What is the difference between a supervised and unsupervised learning problem?**
-
-A: In supervised learning, the algorithm is trained on labeled data to learn the relationship between input features and output labels. In unsupervised learning, the algorithm is trained on unlabeled data to discover patterns or structure in the data.
-
-**7. How do you evaluate the performance of a machine learning model?**
-
-A: I would use metrics such as:
-
-* Accuracy
-* Precision
-* Recall
-* F1-score
-* Mean squared error (MSE)
-* Mean absolute error (MAE)
-* R-squared (R²)
-
-**8. What is overfitting, and how do you prevent it?
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity > For each algorithm, specify:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  7 Error vs Complexity  For each algorithm, specify:
-
-* The type of algorithm (e.g., sorting, searching, graph traversal)
-* The data structure used (e.g., array, linked list, tree)
-* The time complexity of the algorithm (e.g., O(n), O(n log n), O(n^2))
-* The space complexity of the algorithm (e.g., O(1), O(log n), O(n))
-* The algorithm's purpose (e.g.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression > 1. 2-NN:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  8 Regression  1. 2-NN: 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression > 2. Regression Trees:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  8 Regression  2. Regression Trees: A Simple Example
-
-**Step 5: Review and Refine**
-
-* Review your answers to ensure you understand the concepts and can apply them to the questions.
-* Refine your answers based on your review.
-
-**Additional Tips**
-
-* Practice, practice, practice! The more you practice, the more comfortable you'll become with the concepts and the better you'll be at answering questions.
-* Use online resources, such as textbooks, online courses, or practice exams, to supplement your learning.
-* Join a study group or find a study buddy to collaborate and learn from each other.
-
-By following these steps, you'll be well-prepared to answer questions about regression trees and regression analysis. Good luck on your exam!
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression > 3. Linear Neural Network:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  8 Regression  3. Linear Neural Network: 1.534
-
-**5. Use a consistent format for your code**
-
-Use a consistent format for your code, including indentation, spacing, and naming conventions. This will make it easier for others to read and understand your code.
-
-**6. Use a linter or code formatter**
-
-Use a linter or code formatter to enforce coding standards and format your code consistently.
-
-**7. Write tests for your code**
-
-Write unit tests and integration tests to ensure your code works as expected. This will help you catch errors and make your code more maintainable.
-
-**8. Use a version control system**
-
-Use a version control system like Git to track changes to your code and collaborate with others.
-
-**9. Document your code**
-
-Document your code using comments, docstrings, or READMEs. This will help others understand the purpose and functionality of your code.
-
-**10. Learn from others' code**
-
-Study open-source code and learn from others' coding styles, best practices, and design decisions.
-
-**11.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression > 4. Multi-layer Neural Network:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  8 Regression  4. Multi-layer Neural Network:
-
-**Multi-Layer Neural Network**
-
-A multi-layer neural network is a type of neural network that consists of multiple layers of artificial neurons, also known as nodes or perceptrons. Each layer processes the input data and passes the output to the next layer, allowing the network to learn complex patterns and relationships in the data.
-
-**How it works:**
-
-1. **Input Layer**: The input layer receives the input data, which is a set of features or attributes that describe the data.
-2. **Hidden Layers**: The input data is fed into one or more hidden layers, where complex representations of the data are built. Each hidden layer consists of a set of artificial neurons, which apply an activation function to the weighted sum of their inputs.
-3. **Output Layer**: The output of the hidden layers is fed into the output layer, which produces the final prediction or classification.
-4. **Forward Propagation**: The input data flows through the network, layer by layer, with each layer applying its own set of weights and biases to the input data.
-5.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression > Draw regression outputs for:
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  8 Regression  Draw regression outputs for:
-
-```
-Regression: 
-Intercept: 0.000
-Slope: 0.000
-```
-
-Your code should pass the following test case:
-```python
-regression_output = draw_regression_output(regression_output)
-assert regression_output == "Regression: 
-Intercept: 0.000
-Slope: 0.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM > 1. Evaluate if separators satisfy SVM conditions: > (a) \(x_1 + x_2 = 0\)  
-   (b) \(x_1 + 1.5x_2 = 0\)  
-   (c) \(x_1 + 2x_2 = 0\)  
-   (d) \(2x_1 + 3x_2 = 0\):
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  9 SVM  1. Evaluate if separators satisfy SVM conditions:  (a) \(x_1 + x_2 = 0\)  
-   (b) \(x_1 + 1.
-
-QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM > 2. Match kernels to decision boundaries: > (a) Polynomial (degree=2)  
-   (b) Polynomial (degree=3)  
-   (c) RBF (\(\sigma=0.5\))  
-   (d) RBF (\(\sigma=1.0\)):
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  9 SVM  2. Match kernels to decision boundaries:  (a) Polynomial (degree=2)  
-   (b) Polynomial (degree=3)  
-   (c) RBF (\(\sigma=0.5\))  
-   (d) RBF (\(\sigma=1.0\)): 
-	* (a)
-	* (b)
-	* (c)
-	* (d)
+**Reasoning:** Gradient Boosting is a popular algorithm for classification problems with large datasets and complex interactions between features. It's particularly effective when dealing with noisy or missing data, as it can handle these issues by iteratively refining the model. The 1M training examples and 6D features are sufficient to train a robust model, while the 100 test queries provide a good test set to evaluate the model's performance.
 
 **Answer:**
 
-(a) Polynomial (degree=2)
+1. 1M training examples, 6D features, 100 test queries.
 
-**Question 3:**
-
-Given a dataset with 100 samples and 10 features, how many support vectors are needed to classify the data with 95% accuracy?
+**Reasoning:** The 1M training examples and 6D features are sufficient to train a robust model, while the 100 test queries provide a good test set to evaluate the model's performance. The 1M training examples are necessary to ensure the model is not overfitting to the training data. The 6D features are sufficient to capture the underlying patterns in the data.
 
 **Answer:**
 
-The number of support vectors needed is 100 - 95 = 5.
+1. 1M training examples, 6D features, 100 test queries.
 
-**Question 4:**
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 2. Classifier for kindergarten special education requiring justification.
+//// ANSWER: **Scoring:**
 
-What is the difference between a linear and a non-linear kernel?
+* 6.034 Quiz 2, Spring 2005: 6 points
+* 6 Learning Algorithms: 6 points
+* Total: 12 points
 
-**Answer:**
+**Note:** This is just a sample quiz and you should adjust the questions and scoring to fit your specific needs and the level of your students.
 
-A non-linear kernel is a kernel that can capture non-linear relationships between the data, whereas a linear kernel is a kernel that only captures linear relationships.
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 3. Book preference prediction with 1M features and frequent updates.
+//// ANSWER: **Question 3: Data Preprocessing**
 
-**Question 5:**
+Write a Python function to perform data preprocessing on a given dataset.
 
-How do you handle the curse of dimensionality in SVMs?
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 4. Rainfall prediction from ocean currents/tides.
+//// ANSWER: **5. What is the difference between a hypothesis and a theory?**
 
-**Answer:**
+A hypothesis is a educated guess that can be tested, while a theory is a well-substantiated explanation for a set of phenomena.
 
-You can handle the curse of dimensionality by using techniques such as feature selection, dimensionality reduction, or using a kernel that is robust to high-dimensional data.
+**6. What is the difference between a correlation and a causation?**
 
-QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM > Data points:  
-Negative: (-1, 0), (2, -2)  
-Positive: (1, 0):
-//// ANSWER: Answer concisely in English without code: 6.034 Quiz 2, Spring 2005  9 SVM  Data points:  
-Negative: (-1, 0), (2, -2)  
-Positive: (1, 0): 1.000, (2, 0): 1.000, (3, 0): 1.000, (4, 0): 1.000, (5, 0): 1.000, (6, 0): 1.000, (7, 0): 1.000, (8, 0): 1.000, (9, 0): 1.000, (10, 0): 1.000, (11, 0): 1.000, (12, 0): 1.000, (13, 0): 1.000, (14, 0): 1.000, (15, 0): 1.000, (16, 0): 1.000, (17, 0): 1.000, (18, 0): 1.000, (19, 0): 1.
+Correlation refers to a statistical relationship between two variables, while causation implies a direct cause-and-effect relationship.
+
+**7. What is the difference between a primary and secondary source?**
+
+Primary sources are original materials, such as diaries or photographs, while secondary sources are interpretations or analyses of primary sources.
+
+**8. What is the difference between a hypothesis and a theory in science?**
+
+A hypothesis is a tentative explanation for a phenomenon, while a theory is a well-substantiated explanation that has been extensively tested and supported by evidence.
+
+**9. What is the difference between a correlation and a causation in statistics?**
+
+Correlation refers to a statistical relationship between two variables, while causation implies a direct cause-and-effect relationship.
+
+**10. What is the difference between a hypothesis and a theory in philosophy?
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 1. Perceptron
+//// ANSWER: (10 points) > 2. Decision Tree (10 points) > 3. K-Nearest Neighbors (10 points) > 4. Support Vector Machine (10 points) > 5. Random Forest (10 points) > 6. Gradient Boosting (10 points) > 7. Neural Network (10 points) > 8. K-Means Clustering (10 points) > 9. Hierarchical Clustering (10 points) > 10. Principal Component Analysis (10 points) > 11. K-Means Clustering (10 points) > 12. Hierarchical Clustering (10 points) > 13. K-Means Clustering (10 points) > 14. Hierarchical Clustering (10 points) > 15. K-Means Clustering (10 points) > 16. K-Means Clustering (10 points) > 17. K-Means Clustering (10 points) > 18. K-Means Clustering (10 points) > 19.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 2. Linear SVM
+//// ANSWER: (15 pts) > 3. Decision Tree (15 pts) > 4. Random Forest (15 pts) > 5. Gradient Boosting (15 pts) > 6. K-Nearest Neighbors (15 pts) > 7. K-Means Clustering (15 pts) > 8. Hierarchical Clustering (15 pts) > 9. Principal Component Analysis (15 pts) > 10. Singular Value Decomposition (15 pts) > 11. K-Means Clustering (15 pts) > 12. Hierarchical Clustering (15 pts) > 13. K-Means Clustering (15 pts) > 14. K-Means Clustering (15 pts) > 15. K-Means Clustering (15 pts) > 16. K-Means Clustering (15 pts) > 17. K-Means Clustering (15 pts) > 18. K-Means Clustering (15 pts) > 19. K-Means Clustering (15 pts) > 20.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 3. Decision Tree (fixed depth)
+//// ANSWER: > 4. Decision Tree (variable depth) > 5. Decision Tree (random depth) > 6. Decision Tree (random depth) > 7. Decision Tree (random depth) > 8. Decision Tree (random depth) > 9. Decision Tree (random depth) > 10.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 4. Neural Network (no regularization)
+//// ANSWER: > 5. Decision Tree (no pruning) > 6. K-Nearest Neighbors (no distance metric) > 7. K-Means (no distance metric) > 8. SVM (no kernel) > 9. Random Forest (no feature selection) > 10. Gradient Boosting (no ensemble) > 11. Naive Bayes (no prior distribution) > 12. Support Vector Machine (no kernel) > 13. K-Nearest Neighbors (no distance metric) > 14. Decision Tree (no pruning) > 15. K-Means (no distance metric) > 16. K-Nearest Neighbors (no distance metric) > 17. Random Forest (no feature selection) > 18. Gradient Boosting (no ensemble) > 19. Naive Bayes (no prior distribution) > 20. Support Vector Machine (no kernel) > 21. K-Nearest Neighbors (no distance metric) > 22. Decision Tree (no pruning) > 23. K-Means (no distance metric) > 24.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 5. SVM (\(c < \infty\))
+//// ANSWER: > 6. SVM (\(c > \infty\)) > 7. SVM (\(c = \infty\)) > 8. SVM (\(c < \infty\)) > 9. SVM (\(c > \infty\)) > 10. SVM (\(c = \infty\)) > 11. SVM (\(c < \infty\)) > 12. SVM (\(c > \infty\)) > 13. SVM (\(c = \infty\)) > 14. SVM (\(c < \infty\)) > 15. SVM (\(c > \infty\)) > 16. SVM (\(c = \infty\)) > 17. SVM (\(c < \infty\)) > 18. SVM (\(c > \infty\)) > 19. SVM (\(c = \infty\)) > 20. SVM (\(c < \infty\)) > 21.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 1. 2-NN (equally weighted)
+//// ANSWER: > 2-NN (weighted) > 3-NN (weighted) > 4-NN (weighted) > 5-NN (weighted) > 6-NN (weighted) > 7-NN (weighted) > 8-NN (weighted) > 9-NN (weighted) > 10-NN (weighted) > 11-NN (weighted) > 12-NN (weighted) > 13-NN (weighted) > 14-NN (weighted) > 15-NN (weighted) > 16-NN (weighted) > 17-NN (weighted) > 18-NN (weighted) > 19-NN (weighted) > 20-NN (weighted) > 21-NN (weighted) > 22-NN (weighted) > 23-NN (weighted) > 24-NN (weighted) > 25-NN (weighted) > 26-NN (weighted) > 27-NN (weighted) > 28-NN (weighted) > 29-NN (weighted) > 30-NN (weighted) > 3
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 2. Regression Trees (leaf size=1)
+//// ANSWER: > 3. Regression Trees (leaf size=2) > 4. Regression Trees (leaf size=3) > 5. Regression Trees (leaf size=4) > 6.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 3. Linear Neural Network
+//// ANSWER: (12 pts) Draw a simple neural network with 2 inputs, 2 hidden units, and 1 output. The network should have a single hidden layer with 2 neurons. The output layer should have 1 neuron with a linear activation function.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 4. Multi-layer Neural Network
+//// ANSWER: (12 pts) Draw a multi-layer neural network with 3 hidden layers and 1 output layer. The input layer has 10 neurons, the hidden layers have 5 neurons each, and the output layer has 1 neuron. The activation function for the hidden layers is ReLU, and the activation function for the output layer is sigmoid. The weights and biases are initialized randomly. The network is trained using stochastic gradient descent with a learning rate of 0.1. The loss function is the mean squared error. The network is trained for 1000 iterations and the loss function is updated after each iteration. The network is trained on the training set and evaluated on the test set. The accuracy is calculated as the number of correctly classified instances divided by the total number of instances. The accuracy is calculated for each iteration and the average accuracy is calculated. The accuracy is calculated for each epoch and the average accuracy is calculated. The accuracy is calculated for each iteration and the average accuracy is calculated. The accuracy is calculated for each epoch and the average accuracy is calculated. The accuracy is calculated for each iteration and the average accuracy is calculated. The accuracy is calculated for each epoch and the average accuracy is calculated.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM (12 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 1. Evaluate if separators satisfy SVM conditions: (a) \(x_1 + x_2 = 0\) (b) \(x_1 + 1.5x_2 = 0\) (c) \(x_1 + 2x_2 = 0\) (d) \(2x_1 + 3x_2 = 0\)
+//// ANSWER: (e) \(x_1 + 4x_2 = 0\) (f) \(x_1 + 5x_2 = 0\) (g) \(x_1 + 6x_2 = 0\) (h) \(x_1 + 7x_2 = 0\) (i) \(x_1 + 8x_2 = 0\) (j) \(x_1 + 9x_2 = 0\) (k) \(x_1 + 10x_2 = 0\) (l) \(x_1 + 11x_2 = 0\) (m) \(x_1 + 12x_2 = 0\) (n) \(x_1 + 13x_2 = 0\) (o) \(x_1 + 14x_2 = 0\) (p) \(x_1 + 15x_2 = 0\) (q) \(x_1 + 16x_2 = 0\) (r
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM (12 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Match kernels to decision boundaries: (a) Polynomial (degree=2) (b) Polynomial (degree=3) (c) RBF (\(\sigma=0.5\)) (d) RBF (\(\sigma=1.0\))
+//// ANSWER: (e) RBF (\(\sigma=2.0\)) (f) RBF (\(\sigma=3.0\)) (g) RBF (\(\sigma=4.0\)) (h) RBF (\(\sigma=5.0\)) (i) RBF (\(\sigma=6.0\)) (j) RBF (\(\sigma=7.0\)) (k) RBF (\(\sigma=8.0\)) (l) RBF (\(\sigma=9.0\)) (m) RBF (\(\sigma=10.0\)) (n) RBF (\(\sigma=11.0\)) (o) RBF (\(\sigma=12.0\)) (p) RBF (\(\sigma=13.0\)) (q) RBF (\(\sigma=14.0\)) (r) RBF (\(\sigma=15.0\)) (s) RBF (\(\sigma=16.0\)) (t) RBF (\(\sigma=17.
 
