@@ -1,7 +1,6 @@
 import re
 from collections import Counter
 from pathlib import Path
-
 import torch
 from bert_score import score
 from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
@@ -9,18 +8,22 @@ from rich.console import Console
 from rich.table import Table
 from rouge import Rouge
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from transformers import logging as transformers_logging
+transformers_logging.set_verbosity_error()
 
 # Console to print question metrics
 console = Console()
+
+# Check for GPU
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Initialize the NLI model and tokenizer
 nli_model_name = "facebook/bart-large-mnli"
 nli_tokenizer = AutoTokenizer.from_pretrained(nli_model_name)
-nli_model = AutoModelForSequenceClassification.from_pretrained(nli_model_name)
-
+nli_model = AutoModelForSequenceClassification.from_pretrained(nli_model_name).to(device)  # Move model to GPU
 
 def print_metrics(question_number: int, metrics: dict):
     table = Table(title=f"Question {question_number} Metrics")
-
     table.add_column("Metric", style="cyan", no_wrap=True)
     table.add_column("Score", style="magenta", justify="right")
 
@@ -35,7 +38,6 @@ def print_metrics(question_number: int, metrics: dict):
 
     console.print(table)
 
-
 def extract_answers_from_markdown(md_file: Path) -> list[str]:
     content = md_file.read_text(encoding="utf-8")
     pattern = re.compile(
@@ -44,7 +46,6 @@ def extract_answers_from_markdown(md_file: Path) -> list[str]:
     answers = pattern.findall(content)
     print(len(answers))
     return [ans.strip() for ans in answers]
-
 
 def extract_gold_answers(gold_file: Path) -> list[str]:
     with gold_file.open("r", encoding="utf-8") as f:
@@ -76,7 +77,6 @@ def extract_gold_answers(gold_file: Path) -> list[str]:
 
     return answers
 
-
 def compute_token_f1(candidate: str, gold: str) -> float:
     candidate_counts = Counter(candidate.split())
     gold_counts = Counter(gold.split())
@@ -94,14 +94,10 @@ def compute_token_f1(candidate: str, gold: str) -> float:
         return 0.0
     return 2 * (precision * recall) / (precision + recall)
 
-
 def exact_match(candidate: str, gold: str) -> float:
-    """Returns 1.0 if the candidate exactly matches the gold answer, else 0.0."""
     return 1.0 if candidate.strip() == gold.strip() else 0.0
 
-
 def jaccard_similarity(candidate: str, gold: str) -> float:
-    """Computes the Jaccard similarity between candidate and gold tokens."""
     candidate_tokens = set(candidate.split())
     gold_tokens = set(gold.split())
     if not candidate_tokens and not gold_tokens:
@@ -110,16 +106,13 @@ def jaccard_similarity(candidate: str, gold: str) -> float:
     union = candidate_tokens.union(gold_tokens)
     return len(intersection) / len(union)
 
-
 def nli_score(premise: str, hypothesis: str) -> float:
     inputs = nli_tokenizer.encode_plus(
         premise, hypothesis, return_tensors="pt", truncation=True
-    )
+    ).to(device)  # Move input tensors to GPU
     logits = nli_model(**inputs).logits
     probs = torch.softmax(logits, dim=1).detach().cpu().numpy()[0]
-    # Index 2 corresponds to 'entailment'
     return float(probs[2])
-
 
 def evaluate_answers(
     answers_to_evaluate: list[str],
@@ -172,7 +165,6 @@ def evaluate_answers(
     avg_results = {k: sum(r[k] for r in results) / len(results) for k in results[0]}
     return avg_results
 
-
 if __name__ == "__main__":
     answer_directory = Path("AI_Course/Exams/generated_answers")
     question_dirs = ["q1", "q2"]  # List of question directories to process
@@ -194,7 +186,7 @@ if __name__ == "__main__":
             metrics: dict[str, float] = evaluate_answers(
                 answers_to_evaluate=generated_answers,
                 gold_standard_answers=gold_answers,
-                verbose=True,
+                verbose=False,
             )
 
             print(f"\n=== Final Metrics for {model} (Question: {question}) ===")
