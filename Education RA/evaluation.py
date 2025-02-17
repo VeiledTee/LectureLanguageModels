@@ -22,19 +22,19 @@ nli_model_name = "facebook/bart-large-mnli"
 nli_tokenizer = AutoTokenizer.from_pretrained(nli_model_name)
 nli_model = AutoModelForSequenceClassification.from_pretrained(nli_model_name).to(device)  # Move model to GPU
 
-def print_metrics(question_number: int, metrics: dict):
+def print_metrics(question_number: int, evaluation_metrics: dict):
     table = Table(title=f"Question {question_number} Metrics")
     table.add_column("Metric", style="cyan", no_wrap=True)
     table.add_column("Score", style="magenta", justify="right")
 
-    table.add_row("BLEU", f"{metrics['bleu']:.4f}")
-    table.add_row("ROUGE-1", f"{metrics['rouge1']:.4f}")
-    table.add_row("ROUGE-L", f"{metrics['rougeL']:.4f}")
-    table.add_row("Token F1", f"{metrics['token_f1']:.4f}")
-    table.add_row("BERTScore F1", f"{metrics['bert_f1']:.4f}")
-    table.add_row("NLI Entailment", f"{metrics['nli_entailment']:.4f}")
-    table.add_row("Exact Match", f"{metrics['exact_match']:.4f}")
-    table.add_row("Jaccard", f"{metrics['jaccard']:.4f}")
+    table.add_row("BLEU", f"{evaluation_metrics['bleu']:.4f}")
+    table.add_row("ROUGE-1", f"{evaluation_metrics['rouge1']:.4f}")
+    table.add_row("ROUGE-L", f"{evaluation_metrics['rougeL']:.4f}")
+    table.add_row("Token F1", f"{evaluation_metrics['token_f1']:.4f}")
+    table.add_row("BERTScore F1", f"{evaluation_metrics['bert_f1']:.4f}")
+    table.add_row("NLI Entailment", f"{evaluation_metrics['nli_entailment']:.4f}")
+    table.add_row("Exact Match", f"{evaluation_metrics['exact_match']:.4f}")
+    table.add_row("Jaccard", f"{evaluation_metrics['jaccard']:.4f}")
 
     console.print(table)
 
@@ -189,12 +189,12 @@ if __name__ == "__main__":
                 verbose=False,
             )
 
-            print(f"\n=== Final Metrics for {model} (Question: {question}) ===")
-            print(f"BLEU: {metrics['bleu']:.4f}")
-            print(f"ROUGE-1: {metrics['rouge1']:.4f}")
-            print(f"ROUGE-L: {metrics['rougeL']:.4f}")
-            print(f"Token F1: {metrics['token_f1']:.4f}")
-            print(f"BERTScore F1: {metrics['bert_f1']:.4f}")
-            print(f"NLI Entailment: {metrics['nli_entailment']:.4f}")
-            print(f"Exact Match: {metrics['exact_match']:.4f}")
-            print(f"Jaccard: {metrics['jaccard']:.4f}")
+            print(f"=== Final Metrics for {model} (Question: {question}) ===")
+            print(f"\tBLEU: {metrics['bleu']:.4f}")
+            print(f"\tROUGE-1: {metrics['rouge1']:.4f}")
+            print(f"\tROUGE-L: {metrics['rougeL']:.4f}")
+            print(f"\tToken F1: {metrics['token_f1']:.4f}")
+            print(f"\tBERTScore F1: {metrics['bert_f1']:.4f}")
+            print(f"\tNLI Entailment: {metrics['nli_entailment']:.4f}")
+            print(f"\tExact Match: {metrics['exact_match']:.4f}")
+            print(f"\tJaccard: {metrics['jaccard']:.4f}")
