@@ -1,6 +1,7 @@
 import gc
 import logging
 import os
+
 os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 
 import time
@@ -24,10 +25,12 @@ hf_token = os.getenv("HF_TOKEN")
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 print(f"EXAM DIR: {LOCAL_EXAM_DIR.exists()}")
 
+
 def format_question(header: str, content: str) -> str:
     """Format a question from its header and content sections."""
     question = f"{header} > {content}" if content else header
     return question.rstrip(":") + ":" if not question.endswith(":") else question
+
 
 def process_exam_file(file_path: Path) -> list[str]:
     """Process an answerless exam file into individual questions."""
@@ -37,11 +40,14 @@ def process_exam_file(file_path: Path) -> list[str]:
     print(f"Processed {len(questions)} questions from {file_path.name}")
     return questions
 
-def generate_answers(questions: list[str], pipe: pipeline, batch_size: int = 8) -> list[str]:
+
+def generate_answers(
+    questions: list[str], pipe: pipeline, batch_size: int = 8
+) -> list[str]:
     """Generate answers for a list of questions using a text generation pipeline."""
     answers: list[str] = []
     for i in range(0, len(questions), batch_size):
-        batch = questions[i:i + batch_size]
+        batch = questions[i : i + batch_size]
         try:
             # Memory management
             torch.cuda.empty_cache() if torch.cuda.is_available() else None
@@ -79,6 +85,7 @@ def generate_answers(questions: list[str], pipe: pipeline, batch_size: int = 8) 
 
     return answers
 
+
 def run_exams_for_model(model_id: str) -> None:
     """Process all exam files for a single language model.
 
@@ -109,7 +116,7 @@ def run_exams_for_model(model_id: str) -> None:
         logging.info(f"Device set to use {device}:0")
 
     except RuntimeError as e:
-        if 'CUDA out of memory' in str(e):
+        if "CUDA out of memory" in str(e):
             logging.warning(f"CUDA out of memory error: {e}. Falling back to CPU.")
             # Initialize the pipeline on CPU
             pipe: pipeline = pipeline(
@@ -133,7 +140,9 @@ def run_exams_for_model(model_id: str) -> None:
 
             # Create both directory levels
             output_dir = OUTPUT_DIR / exam_dir
-            output_dir.mkdir(parents=True, exist_ok=True)  # <-- This creates both directories
+            output_dir.mkdir(
+                parents=True, exist_ok=True
+            )  # <-- This creates both directories
 
             output_path = output_dir / f"{model_name}_{exam_name}_answers.txt"
 
@@ -153,6 +162,7 @@ def run_exams_for_model(model_id: str) -> None:
         except Exception as e:
             logging.error(f"Failed processing {exam_file.name}: {str(e)}")
             continue
+
 
 if __name__ == "__main__":
     logging.basicConfig(

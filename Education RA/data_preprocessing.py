@@ -63,7 +63,7 @@ def extract_questions(extract_from: str) -> list[str]:
     """Dynamically finds and extracts deepest-level headers as questions"""
     # Find all headers and their levels
     headers = []
-    header_re = re.compile(r'^(#+)\s+(.+?)(?:\(.*?\))?\s*$', re.MULTILINE)
+    header_re = re.compile(r"^(#+)\s+(.+?)(?:\(.*?\))?\s*$", re.MULTILINE)
 
     for match in header_re.finditer(extract_from):
         level = len(match.group(1))
@@ -157,7 +157,12 @@ def parse_quiz(md_text: str) -> list[str]:
             while level < len(line) and line[level] == "#":
                 level += 1
             header = line[level:].strip()
-            node: dict[str, Any] = {"level": level, "header": header, "content": "", "children": []}
+            node: dict[str, Any] = {
+                "level": level,
+                "header": header,
+                "content": "",
+                "children": [],
+            }
             # Pop until the top of the stack is of a lower level.
             while stack and stack[-1]["level"] >= level:
                 stack.pop()
@@ -170,7 +175,11 @@ def parse_quiz(md_text: str) -> list[str]:
             # Append non-header content to the current header.
             if stack:
                 current = stack[-1]
-                current["content"] = (current["content"] + " " + line.strip()).strip() if current["content"] else line.strip()
+                current["content"] = (
+                    (current["content"] + " " + line.strip()).strip()
+                    if current["content"]
+                    else line.strip()
+                )
 
     questions: list[str] = []
 
