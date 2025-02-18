@@ -2,8 +2,6 @@ import gc
 import logging
 import os
 
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-
 import time
 from pathlib import Path
 
@@ -11,7 +9,9 @@ import torch
 from dotenv import load_dotenv
 from transformers import pipeline
 
-from preprocessing import parse_quiz
+from preprocessing import process_exam_file
+
+os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
 
 # Configuration constants
 LOCAL_EXAM_DIR: Path = Path(
@@ -24,21 +24,6 @@ hf_token = os.getenv("HF_TOKEN")
 # Verify and create directories
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 print(f"EXAM DIR: {LOCAL_EXAM_DIR.exists()}")
-
-
-def format_question(header: str, content: str) -> str:
-    """Format a question from its header and content sections."""
-    question = f"{header} > {content}" if content else header
-    return question.rstrip(":") + ":" if not question.endswith(":") else question
-
-
-def process_exam_file(file_path: Path) -> list[str]:
-    """Process an answerless exam file into individual questions."""
-    with open(file_path, "r", encoding="utf-8") as f:
-        input_text = f.read()
-        questions: list[str] = parse_quiz(str(input_text))
-    print(f"Processed {len(questions)} questions from {file_path.name}")
-    return questions
 
 
 def generate_answers(
