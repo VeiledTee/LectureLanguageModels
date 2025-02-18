@@ -1,44 +1,41 @@
 import os
 from pathlib import Path
 
-from lightrag import LightRAG, QueryParam
-from lightrag.llm.hf import hf_embed, hf_model_complete
+import asyncio
+import os
+import inspect
+from lightrag.llm.ollama import ollama_model_complete, ollama_embed
+from lightrag.lightrag import LightRAG, QueryParam
 from lightrag.utils import EmbeddingFunc
-from transformers import AutoModel, AutoTokenizer
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 # Path to documents
-KNOWLEDGE_DIR = Path(
-    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Lecture_Notes"
-).resolve()
+KNOWLEDGE_DIR = Path(r"AI_Course/Lecture_Notes").resolve()
 
 # Path to exams
-EXAM_DIR = Path(
-    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams"
-).resolve()
-
+EXAM_DIR = Path(r"AI_Course/Exams").resolve()
 
 # Output directory
-OUTPUT_DIR = Path(
-    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams/generated_rag_answers"
-).resolve()
+OUTPUT_DIR = Path("AI_Course/Exams/generated_rag_answers").resolve()
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 
-
 # Define the working directory for LightRAG
-WORKING_DIR = "./lightrag_working_dir"
+WORKING_DIR = "./lightrag"
 Path(WORKING_DIR).mkdir(exist_ok=True)
 
 
 # Function to load documents from the knowledge directory
 def load_documents(directory: Path):
-    documents = []
+    all_documents = []
     for filename in os.listdir(directory):
         if filename.endswith(".txt"):
             file_path = directory / filename
             with open(file_path, "r", encoding="utf-8") as file:
                 content = file.read()
-                documents.append({"id": filename, "text": content})
-    return documents
+                all_documents.append({"id": filename, "text": content})
+    return all_documents
 
 
 # Function to generate answers using LightRAG
@@ -71,28 +68,25 @@ def process_exams(exam_dir: Path, output_dir: Path):
             print(f"Failed processing {exam_file.name}: {str(e)}")
 
 
-# Initialize the Hugging Face embedding model
-embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
-tokenizer = AutoTokenizer.from_pretrained(embedding_model_name)
-embed_model = AutoModel.from_pretrained(embedding_model_name)
-
-# Initialize LightRAG with Hugging Face models
 rag = LightRAG(
     working_dir=WORKING_DIR,
-    llm_model_func=hf_model_complete,
-    llm_model_name="HuggingFaceTB/SmolLM-1.7B-Instruct",
+    # Ollama model for text generation
+    llm_model_func=ollama_model_complete,
+    llm_model_name="deepseek-r1",
+    llm_model_kwargs={"reasoning_tag": "think"},
+    # Use Ollama embedding function
     embedding_func=EmbeddingFunc(
-        embedding_dim=384,
-        max_token_size=5000,
-        func=lambda texts: hf_embed(
-            texts, tokenizer=tokenizer, embed_model=embed_model
+        embedding_dim=768,
+        max_token_size=8192,
+        func=lambda embedded_texts: ollama_embed(
+            embedded_texts, embed_model="nomic-embed-text"
         ),
     ),
 )
 
 # Load and insert documents into LightRAG
 documents = load_documents(KNOWLEDGE_DIR)
-texts = [doc["text"] for doc in documents]
+texts = [doc["text"] for doc in documents[:2]]
 rag.insert(texts)
 
 # Process the exams
