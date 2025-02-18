@@ -43,7 +43,9 @@ def generate_answer(question: str) -> str:
     try:
         # Query LightRAG with the question
         response = rag.query(question, param=QueryParam(mode="hybrid"))
-        return response["result"]
+        print(question)
+        print(response)
+        return response
     except Exception as e:
         return f"Error: {str(e)}"
 
@@ -73,11 +75,12 @@ rag = LightRAG(
     # Ollama model for text generation
     llm_model_func=ollama_model_complete,
     llm_model_name="deepseek-r1",
+    llm_model_max_token_size=512,
     llm_model_kwargs={"reasoning_tag": "think"},
     # Use Ollama embedding function
     embedding_func=EmbeddingFunc(
         embedding_dim=768,
-        max_token_size=8192,
+        max_token_size=512,
         func=lambda embedded_texts: ollama_embed(
             embedded_texts, embed_model="nomic-embed-text"
         ),
@@ -87,7 +90,9 @@ rag = LightRAG(
 # Load and insert documents into LightRAG
 documents = load_documents(KNOWLEDGE_DIR)
 texts = [doc["text"] for doc in documents[:2]]
-rag.insert(texts)
+for text in texts:
+    print(text)
+    rag.insert([text])
 
 # Process the exams
 process_exams(EXAM_DIR, OUTPUT_DIR)
