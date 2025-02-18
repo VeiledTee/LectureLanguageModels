@@ -11,7 +11,7 @@ import torch
 from dotenv import load_dotenv
 from transformers import pipeline
 
-from data_preprocessing import parse_quiz
+from preprocessing import parse_quiz
 
 # Configuration constants
 LOCAL_EXAM_DIR: Path = Path(
