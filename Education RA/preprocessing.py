@@ -1,8 +1,24 @@
 import os
 import re
+from pathlib import Path
 from typing import Any
 
 from docling.document_converter import DocumentConverter
+
+
+def format_question(header: str, content: str) -> str:
+    """Format a question from its header and content sections."""
+    question = f"{header} > {content}" if content else header
+    return question.rstrip(":") + ":" if not question.endswith(":") else question
+
+
+def process_exam_file(file_path: Path) -> list[str]:
+    """Process an answerless exam file into individual questions."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        file_text = f.read()
+        queries: list[str] = parse_quiz(str(file_text))
+    print(f"Processed {len(queries)} questions from {file_path.name}")
+    return queries
 
 
 def pdf_to_markdown(pdf_path: str, output_txt_path: str) -> None:
