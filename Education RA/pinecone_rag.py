@@ -311,7 +311,12 @@ class PineconeRAG:
             },
         )
         # Extract and format response
-        answer: str = response.get("response", "").strip()
+        if "deepseek" not in self.generation_model:
+            answer: str = response.get("response", "").strip()
+        else:
+            response = response["message"]["content"]
+            answer = re.sub(r"<think>.*?</think>\n?", "", response, flags=re.DOTALL)
+        print(answer)
         answer_with_sources: str = self._add_citations(answer, sources)
         return answer_with_sources if self.sources else answer
 
@@ -391,7 +396,7 @@ if __name__ == "__main__":
     chunker = RAGChunking()
     pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
     # initialize
-    rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K)
+    rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K, ollama_generation_model_name='deepseekr1:7b')
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     # clean slate
     logging.info(f"Deleting index {PINECONE_INDEX_NAME}...")
