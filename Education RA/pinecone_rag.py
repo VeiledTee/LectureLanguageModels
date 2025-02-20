@@ -263,7 +263,6 @@ class PineconeRAG:
             meta = match.metadata
             context_parts.append(f"{meta['text']}")
             sources.add(meta['filename'])
-        print(context_parts)
 
         return context_parts, list(sources)
 
@@ -302,7 +301,6 @@ class PineconeRAG:
     {question}
     </s>
     <|assistant|>"""
-        print(prompt)
 
         # Generate response through Ollama
         response = ollama.generate(
