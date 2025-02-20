@@ -1,4 +1,3 @@
-import os
 import logging
 import os
 import re
@@ -8,11 +7,10 @@ from pathlib import Path
 import ollama
 import pinecone
 from dotenv import load_dotenv
-from pinecone import Pinecone, ServerlessSpec
+from pinecone import Pinecone
 
 from chunking import RAGChunking
-from preprocessing import process_exam_file, load_markdown_sections, parse_quiz
-from tqdm.auto import tqdm
+from preprocessing import load_markdown_sections, parse_quiz, process_exam_file
 
 load_dotenv()
 
@@ -38,12 +36,14 @@ class PineconeRAG:
     """
 
     def __init__(
-            self, pinecone_client: pinecone.Pinecone, index_name: str,
-            ollama_generation_model_name: str = 'llama3.2',
-            ollama_embedding_model_name: str = 'nomic-embed-text',
-            embedding_dimension: int = 768,
-            top_k: int = 5,
-            include_sources: bool = False
+        self,
+        pinecone_client: pinecone.Pinecone,
+        index_name: str,
+        ollama_generation_model_name: str = "llama3.2",
+        ollama_embedding_model_name: str = "nomic-embed-text",
+        embedding_dimension: int = 768,
+        top_k: int = 5,
+        include_sources: bool = False,
     ) -> None:
         """Initializes the PineconeRAG instance by setting up the Pinecone connection and index.
 
@@ -71,10 +71,7 @@ class PineconeRAG:
                 name=self.index_name,
                 dimension=embedding_dimension,
                 metric="cosine",
-                spec=pinecone.ServerlessSpec(
-                    cloud="aws",
-                    region="us-east-1"
-                )
+                spec=pinecone.ServerlessSpec(cloud="aws", region="us-east-1"),
             )
         self.index: Pinecone.Index = self.pinecone.Index(index_name)
         logging.info(f"Initialized Pinecone index {index_name}")
@@ -104,7 +101,7 @@ class PineconeRAG:
                     chunks = self._process_section(
                         content=content,
                         section_path=section_path,
-                        filename=filename  # Changed parameter name for clarity
+                        filename=filename,  # Changed parameter name for clarity
                     )
 
                     # Add to batch with embeddings
@@ -121,7 +118,9 @@ class PineconeRAG:
         if batch:
             self._upsert_batch(batch)
 
-    def _process_section(self, content: str, section_path: str, filename: str) -> list[dict]:
+    def _process_section(
+        self, content: str, section_path: str, filename: str
+    ) -> list[dict]:
         """Processes a markdown section into chunks with associated structural metadata.
 
         Args:
@@ -139,25 +138,25 @@ class PineconeRAG:
             "filename": filename,  # Explicit filename field
             "section_path": section_path,
             "content_type": content_type,
-            "header_level": section_path.count(">") + 1
+            "header_level": section_path.count(">") + 1,
         }
 
         # Split long sections using preprocessing-aware chunking
         if len(content) > 1000:
             sub_chunks = self.chunker.recursive_chunk(content, chunk_size=512)
-            chunks.extend({
-                              "text": chunk,
-                              "metadata": {
-                                  **base_metadata,
-                                  "is_subchunk": True,
-                                  "parent_content": content[:200]
-                              }
-                          } for chunk in sub_chunks)
+            chunks.extend(
+                {
+                    "text": chunk,
+                    "metadata": {
+                        **base_metadata,
+                        "is_subchunk": True,
+                        "parent_content": content[:200],
+                    },
+                }
+                for chunk in sub_chunks
+            )
         else:
-            chunks.append({
-                "text": content,
-                "metadata": base_metadata
-            })
+            chunks.append({"text": content, "metadata": base_metadata})
 
         return chunks
 
@@ -174,15 +173,18 @@ class PineconeRAG:
         texts = [chunk["text"] for chunk in chunks]
         embeddings = self.generate_embeddings(texts)
 
-        return [{
-            "id": f"{filename}-{idx}",  # Filename in ID
-            "values": emb,
-            "metadata": {
-                **chunk["metadata"],
-                "text": chunk["text"],
-                "document_source": filename
+        return [
+            {
+                "id": f"{filename}-{idx}",  # Filename in ID
+                "values": emb,
+                "metadata": {
+                    **chunk["metadata"],
+                    "text": chunk["text"],
+                    "document_source": filename,
+                },
             }
-        } for idx, (chunk, emb) in enumerate(zip(chunks, embeddings))]
+            for idx, (chunk, emb) in enumerate(zip(chunks, embeddings))
+        ]
 
     def generate_embeddings(self, texts: list[str]) -> list[list[float]]:
         """Generates embeddings for given texts using the Ollama model.
@@ -196,10 +198,7 @@ class PineconeRAG:
         if type(texts) == str:
             texts = [texts]
         try:
-            response = ollama.embed(
-                model=self.embedding_model,
-                input=texts
-            )
+            response = ollama.embed(model=self.embedding_model, input=texts)
             embeddings = response.get("embeddings", [])
             if not embeddings:
                 raise ValueError("No embeddings returned in the response.")
@@ -251,9 +250,7 @@ class PineconeRAG:
         """
         embedding = self.generate_embeddings([question])
         result = self.index.query(
-            vector=embedding[0],
-            top_k=top_k,
-            include_metadata=True
+            vector=embedding[0], top_k=top_k, include_metadata=True
         )
 
         # Extract both text and metadata for citations
@@ -262,13 +259,13 @@ class PineconeRAG:
         for match in result.matches:
             meta = match.metadata
             context_parts.append(f"{meta['text']}")
-            sources.add(meta['filename'])
+            sources.add(meta["filename"])
 
         return context_parts, list(sources)
 
-    def generate_answer(self, question: str,
-                        temperature: float = 0.3,
-                        max_tokens: int = 2048) -> str:
+    def generate_answer(
+        self, question: str, temperature: float = 0.3, max_tokens: int = 2048
+    ) -> str:
         """
         Generates an answer to a user question using an Ollama LLM with context-aware prompting.
 
@@ -310,8 +307,8 @@ class PineconeRAG:
                 "temperature": temperature,
                 "max_tokens": max_tokens,
                 "top_p": 0.9,
-                "stop": ["</s>", "\n\n\n"]
-            }
+                "stop": ["</s>", "\n\n\n"],
+            },
         )
         # Extract and format response
         answer: str = response.get("response", "").strip()
@@ -342,7 +339,9 @@ class PineconeRAG:
         """
         try:
             # Disable deletion protection
-            self.pinecone.configure_index(self.index_name, deletion_protection='disabled')
+            self.pinecone.configure_index(
+                self.index_name, deletion_protection="disabled"
+            )
             logging.info(f"Deletion protection disabled for index '{self.index_name}'.")
 
             # Delete the index
