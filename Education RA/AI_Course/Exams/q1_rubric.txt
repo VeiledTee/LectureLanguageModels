@@ -1,0 +1,162 @@
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Correctly states "No," explains that alpha-beta relies on depth-first order to prune branches using min-max values from earlier subtrees. Notes that BFS would eliminate pruning opportunities, making it equivalent to min-max with higher space complexity.  
+- **Partial Credit (2 pts):** Identifies "No" but provides incomplete reasoning (e.g., mentions pruning limitations without tying to depth-first structure).  
+- **No Credit:** Incorrectly claims "Yes" or fails to address BFS’s incompatibility with alpha-beta’s pruning mechanism.
+
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Correctly states "Yes," explains that PD repeatedly performs depth-first searches to increasing depths, compatible with alpha-beta. Mentions advantages (e.g., guaranteed move under time constraints) and disadvantages (repeated work, but manageable with high branching factors).  
+- **Partial Credit (2 pts):** Identifies "Yes" but omits key details (e.g., PD’s iterative nature or trade-offs).  
+- **No Credit:** Incorrectly claims "No" or fails to connect PD to alpha-beta.
+
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Recommends **Progressive Deepening (PD)**. Explains that PD avoids BFS’s space issues while guaranteeing shortest paths. States that a visited list is unnecessary (due to high branching factor and short paths).  
+- **Partial Credit (2 pts):** Correct algorithm but incomplete reasoning (e.g., does not mention space constraints or visited list trade-offs).  
+- **No Credit:** Suggests BFS, DFS, or other suboptimal algorithms.
+
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Recommends **Uniform Cost Search (UCS)**. Explains UCS handles variable costs optimally. Mentions expanded lists are useful if loops are present but may not be necessary for short paths.  
+- **Partial Credit (2 pts):** Correct algorithm but misses nuances (e.g., does not address variable costs or expanded list conditions).  
+- **No Credit:** Suggests A*, PD, or other algorithms incompatible with variable costs.
+
+//// RUBRIC: **Total Points: 1**
+- **Full Credit (1 pt):** All domains remain {R, B}.  
+- **No Credit:** Incorrect domains or claims propagation reduces domains.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Correctly lists domains as [1={B}, 2={R}, 3={B}, 4={R}, 5={B}].  
+- **Partial Credit (1-2 pts):** Partially correct (e.g., 2 or 3 domains correct).  
+- **No Credit:** All domains incorrect.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Correctly lists domains as [1=R, 2={B}, 3={R,B}, 4={B}, 5={B}].  
+- **Partial Credit (1-2 pts):** Correct for variables 2 and 4 but misses variable 3.  
+- **No Credit:** Incorrect domains or misapplies forward checking.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Correctly marks attempted nodes and crossed-out failures per the solution tree.  
+- **Partial Credit (1-2 pts):** Partially correct (e.g., marks some checks/crosses but misses others).  
+- **No Credit:** No meaningful marks or entirely incorrect.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Correct sequence: 1=R → 2=B (FAIL), backtrack → 1=B → 2=R → 3=B → 4=R → 5=B.  
+- **Partial Credit (1-2 pts):** Partial sequence (e.g., misses backtracking step or fails to list all assignments).  
+- **No Credit:** Incorrect sequence or no backtracking logic.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Correct sequence: 5=B → 2=R → 1=B → 3=B → 4=R.  
+- **Partial Credit (1-2 pts):** Correct first two assignments but misses later steps.  
+- **No Credit:** Incorrect order or assignments.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "Observations requesting the instrument/time slot or 'empty'."  
+- **No Credit:** Incorrect domain (e.g., scientists or requests).
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "At most m*n +1 per variable."  
+- **No Credit:** Incorrect size or formula.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "C2."  
+- **No Credit:** Incorrect constraint(s).
+
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Explains C1 cannot be binary (requires global check), C3 can (constraints between same-time variables).  
+- **Partial Credit (2 pts):** Correct for one constraint but not both.  
+- **No Credit:** Incorrect for both.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "All pairs of observations from the scientist’s list."  
+- **No Credit:** Incorrect domain (e.g., single observations).
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "C(n, 2) ≈ n²/2."  
+- **No Credit:** Incorrect formula.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "C1."  
+- **No Credit:** Incorrect constraint(s).
+
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Explains C2 and C3 can be enforced via pairwise constraints between scientists.  
+- **Partial Credit (2 pts):** Correct for one constraint but not both.  
+- **No Credit:** Incorrect for both.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "{Granted, Rejected}."  
+- **No Credit:** Incorrect domain.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "2."  
+- **No Credit:** Incorrect size.
+
+//// RUBRIC: **Total Points: 2**
+- **Full Credit (2 pts):** "None."  
+- **No Credit:** Incorrect constraint(s).
+
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** Explains C1 cannot be binary (global), C2 and C3 can via pairwise checks.  
+- **Partial Credit (2 pts):** Correct for two constraints but misses one.  
+- **No Credit:** Incorrect for all.
+
+//// RUBRIC: **Total Points: 5**
+- **Full Credit (5 pts):** Includes: types of rocks collected, current location, time since departure, battery level. (Total weight optional).  
+- **Partial Credit (2-4 pts):** Missing 1-2 critical variables or includes extras.  
+- **No Credit:** Incorrect variables.
+
+//// RUBRIC: **Total Points: 5**
+- **Full Credit (5 pts):** "All 10 rock types collected, at lander, time < 3 days."  
+- **Partial Credit (2-4 pts):** Missing one component.  
+- **No Credit:** Incorrect or incomplete.
+
+//// RUBRIC: **Total Points: 5**
+- **Full Credit (5 pts):** Correct preconditions/effects for charge, move, pick-up-rock (e.g., move requires sufficient battery, pick-up reduces battery).  
+- **Partial Credit (2-4 pts):** Minor errors (e.g., missing preconditions).  
+- **No Credit:** Major errors or omissions.
+
+//// RUBRIC: **Total Points: 5**
+- **Full Credit (5 pts):** Charge=0, move=10m, pick-up=α*weight.  
+- **Partial Credit (2-4 pts):** One incorrect cost.  
+- **No Credit:** All incorrect or missing.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):**  
+  - H1: Inadmissible (sum > actual cost).  
+  - H2: Inadmissible/impractical (TSP is NP-hard).  
+  - H3: Admissible but weak.  
+- **Partial Credit (1-2 pts):** 1-2 correct evaluations.  
+- **No Credit:** All incorrect.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=BFS; No heuristic; Did not find least-cost (explains BFS ignores costs).  
+- **Partial Credit (1-2 pts):** Correct algorithm but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm or justification.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=Best-First; Heuristic=H1; Did not find least-cost (explains H1 inadmissible).  
+- **Partial Credit (1-2 pts):** Correct algorithm/heuristic but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm/heuristic.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=A*; Heuristic=H1; Did not find least-cost (H1 not admissible).  
+- **Partial Credit (1-2 pts):** Correct algorithm/heuristic but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm/heuristic.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=Best-First; Heuristic=H2; Found least-cost (coincidentally).  
+- **Partial Credit (1-2 pts):** Correct algorithm/heuristic but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm/heuristic.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=DFS; No heuristic; Did not find least-cost (DFS ignores costs).  
+- **Partial Credit (1-2 pts):** Correct algorithm but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=A*; Heuristic=H2; Found least-cost (H2 admissible).  
+- **Partial Credit (1-2 pts):** Correct algorithm/heuristic but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm/heuristic.
+
+//// RUBRIC: **Total Points: 3**
+- **Full Credit (3 pts):** Algorithm=Uniform Cost; No heuristic; Found least-cost.  
+- **Partial Credit (1-2 pts):** Correct algorithm but incomplete reasoning.  
+- **No Credit:** Incorrect algorithm.
