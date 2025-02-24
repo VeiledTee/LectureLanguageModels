@@ -1,5 +1,6 @@
 import os
 import re
+import csv
 from collections import Counter
 from pathlib import Path
 
@@ -16,11 +17,7 @@ from transformers import logging as transformers_logging
 load_dotenv()
 
 transformers_logging.set_verbosity_error()
-
-# Console to print question metrics
 console = Console()
-
-# Check for GPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
@@ -111,7 +108,7 @@ Student Answer:
 Provide your evaluation score:"""
 
     response = ollama.generate(
-        model="deepseek-r1",
+        model=str(os.getenv("EVALUATION_MODEL")),
         prompt=prompt,
         options={
             "temperature": 0.0,
@@ -158,13 +155,13 @@ def evaluate_answers(
             print(f"Error evaluating rubric for Q{question_num}: {str(e)}")
             awarded, possible = 0.0, 0.0
 
-        print(awarded, possible)
-
         total_awarded += awarded
         total_possible += possible
+
         gen_tokens = gen.split()
         gold_tokens = gold.split()
         bleu = sentence_bleu([gold_tokens], gen_tokens, smoothing_function=smoothing)
+
         try:
             rouge_scores = rouge_evaluator.get_scores(gen, gold)[0]
         except Exception:
@@ -175,59 +172,111 @@ def evaluate_answers(
         bert_f1 = F1[0].item()
         jaccard = jaccard_similarity(gen, gold)
 
-        results.append(
-            {
-                "bleu": bleu,
-                "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
-                "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
-                "token_f1": token_f1,
-                "bert_f1": bert_f1,
-                "jaccard": jaccard,
-                "rubric_score": f"{awarded:.1f}/{possible:.0f}",
-            }
-        )
+        results.append({
+            "bleu": bleu,
+            "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
+            "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
+            "token_f1": token_f1,
+            "bert_f1": bert_f1,
+            "jaccard": jaccard,
+            "rubric_score": f"{awarded:.1f}/{possible:.0f}",
+        })
 
         if verbose:
             print_metrics(question_num, results[-1])
 
-    avg_results = {k: sum(r[k] for r in results) / len(results) for k in results[0]}
+    avg_metrics = ["bleu", "rouge1", "rougeL", "token_f1", "bert_f1", "jaccard"]
+    avg_results = {
+        metric: sum(r[metric] for r in results) / len(results)
+        for metric in avg_metrics
+    }
+
+    # Add cumulative rubric scores
     avg_results["total_awarded"] = total_awarded
     avg_results["total_possible"] = total_possible
+
     return avg_results
 
 
 if __name__ == "__main__":
-    ANSWER_DIR = Path(os.getenv("ANSWER_DIR"))
-    EXAM_DIR = Path(os.getenv("EXAM_DIR"))
-    RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR"))
-    question_dirs = ["q1_soln"]
+    ANSWER_DIR = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
+    EXAM_DIR = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
+    RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR", "AI_Course/Rubrics"))
 
-    for question in question_dirs:
-        gold_path = EXAM_DIR / f"{question}_parsed.txt"  # Update path
-        gold_answers = extract_answers(gold_path)
+    # Get all answer files
+    answer_files = list(ANSWER_DIR.glob("*_answers.txt")) + list(ANSWER_DIR.glob("*_rag_answers.txt"))
 
-        quiz_number: str = question.split("_")[0]
+    # Prepare CSV output
+    csv_path = ANSWER_DIR / f"evaluation_results.csv"
 
-        question_dir = ANSWER_DIR / question
-        for file in question_dir.glob("*.txt"):
-            print(f"\nProcessing file: {file.name} (Question: {question})")
-            model = file.name.split("_")[-2]
-            generated_answers = extract_answers(file)
+    with open(csv_path, "w", newline="", encoding="utf-8") as csvfile:
+        fieldnames = [
+            "filename", "bleu", "rouge1", "rougeL",
+            "token_f1", "bert_f1", "jaccard",
+            "total_awarded", "total_possible", "quiz_score"
+        ]
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
 
-            metrics = evaluate_answers(
-                answers_to_evaluate=generated_answers,
-                gold_standard_answers=gold_answers,
-                rubric_file=RUBRIC_DIR / f"{quiz_number}_rubric.txt",
-                verbose=False,
-            )
+        for answer_file in answer_files:
+            print(f"\nProcessing file: {answer_file.name}")
 
-            print(f"\n=== Final Metrics for {model} (Question: {question}) ===")
-            print(
-                f"\tCumulative Rubric Score: {metrics['total_awarded']:.1f}/{metrics['total_possible']:.1f}"
-            )
-            print(f"\tBLEU: {metrics['bleu']:.4f}")
-            print(f"\tROUGE-1: {metrics['rouge1']:.4f}")
-            print(f"\tROUGE-L: {metrics['rougeL']:.4f}")
-            print(f"\tToken F1: {metrics['token_f1']:.4f}")
-            print(f"\tBERTScore F1: {metrics['bert_f1']:.4f}")
-            print(f"\tJaccard: {metrics['jaccard']:.4f}")
+            # Extract exam and model info
+            filename_parts = answer_file.stem.split("_")
+            exam_name = filename_parts[0]
+            model_name = "_".join(filename_parts[1:-1])
+
+            # Paths for gold standard and rubric
+            gold_path = EXAM_DIR / f"{exam_name}_soln.txt"
+            rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
+
+            if not gold_path.exists():
+                print(f"Gold file {gold_path} not found, skipping")
+                continue
+
+            if not rubric_path.exists():
+                print(f"Rubric {rubric_path} not found, skipping")
+                continue
+
+            try:
+                gold_answers = extract_answers(gold_path)
+                generated_answers = extract_answers(answer_file)
+
+                metrics = evaluate_answers(
+                    answers_to_evaluate=generated_answers,
+                    gold_standard_answers=gold_answers,
+                    rubric_file=rubric_path,
+                    verbose=False,
+                )
+
+                # Calculate percentage score
+                if metrics["total_possible"] > 0:
+                    score_pct = round(
+                        (metrics["total_awarded"] / metrics["total_possible"]) * 100,
+                        2
+                    )
+                else:
+                    score_pct = 0.0
+
+                # Write to CSV
+                writer.writerow({
+                    "filename": answer_file.name,
+                    "bleu": round(metrics["bleu"], 4),
+                    "rouge1": round(metrics["rouge1"], 4),
+                    "rougeL": round(metrics["rougeL"], 4),
+                    "token_f1": round(metrics["token_f1"], 4),
+                    "bert_f1": round(metrics["bert_f1"], 4),
+                    "jaccard": round(metrics["jaccard"], 4),
+                    "total_awarded": round(metrics["total_awarded"], 1),
+                    "total_possible": int(metrics["total_possible"]),
+                    "quiz_score": score_pct
+                })
+
+                # Print summary
+                print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
+
+            except Exception as e:
+                print(f"Error processing {answer_file}: {str(e)}")
+                continue
+
+    print(f"\nEvaluation complete! Results saved to {csv_path}")
