@@ -18,22 +18,15 @@ logging.basicConfig(level=logging.INFO)
 class LLMQASystem:
     """A class for direct question answering using Ollama models without RAG context."""
 
-    def __init__(
-        self,
-        generation_model_name: str = "llama3.2",
-        temperature: float = 0.3,
-        max_tokens: int = 2048,
-    ) -> None:
+    def __init__(self, generation_model_name: str):
         """Initializes the direct answering instance.
 
         Args:
             generation_model_name: Name of the Ollama model for answer generation.
-            temperature: Controls randomness (0.0-1.0, lower means more factual).
-            max_tokens: Maximum length of the generated response.
         """
         self.generation_model = generation_model_name
-        self.temperature = temperature
-        self.max_tokens = max_tokens
+        self.temperature = float(os.getenv("GENERATION_TEMPERATURE", "0.3"))
+        self.max_tokens = int(os.getenv("MAX_TOKENS", "2048"))
 
     def generate_answer(self, question: str) -> str:
         """Generates an answer to a user question directly using Ollama.
@@ -90,17 +83,13 @@ def process_exams(ollama_pipeline: LLMQASystem):
     Args:
         ollama_pipeline: An instance of LLMQASystem used to generate answers.
     """
-    for exam_file in EXAM_DIR.glob("*_answerless.txt"):
+    exam_dir = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
+    output_dir = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
+    for exam_file in exam_dir.glob("*_answerless.txt"):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            output_directory = OUTPUT_DIR / exam_name
-            output_directory.mkdir(parents=True, exist_ok=True)
-            output_path = (
-                OUTPUT_DIR
-                / exam_name
-                / f"{exam_name}_{ollama_pipeline.generation_model}_answers.txt"
-            )
+            output_path = output_dir / f"{exam_name}_{ollama_pipeline.generation_model}_answers.txt"
 
             questions = process_exam_file(exam_file)
 
@@ -119,15 +108,11 @@ def process_exams(ollama_pipeline: LLMQASystem):
 
 if __name__ == "__main__":
     # Configuration
-    EXAM_DIR: Path = Path(os.getenv("EXAM_DIR")).resolve()
-    OUTPUT_DIR: Path = Path(os.getenv("MODEL_OUTPUT_DIR")).resolve()
     env_models: str = os.getenv("GENERATION_MODELS")
     models: list[str] = [m.strip() for m in env_models.split(",")]
     for model in models:
         # Initialize direct answering pipeline
-        quiz_taking_system = LLMQASystem(
-            generation_model_name=model, temperature=0.3, max_tokens=2048
-        )
+        quiz_taking_system = LLMQASystem(generation_model_name=model)
 
         # Process exams directly
         logging.info(f"Processing exams with Ollama queries and {model}...")

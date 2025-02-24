@@ -25,6 +25,43 @@ class PineconeRAG:
     documents, generating embeddings, retrieving relevant context, and generating answers
     with optional source citations.
     """
+    def __init__(
+        self,
+        pinecone_client: pinecone.Pinecone,
+        index_name: str,
+        ollama_generation_model_name: str,
+    ) -> None:
+        """Initializes the PineconeRAG instance by setting up the Pinecone connection and index.
+
+        Args:
+            pinecone_client: Authenticated Pinecone client instance.
+            index_name: Name of the index to create or use.
+            ollama_generation_model_name: Name of the Ollama model for answer generation.
+        """
+        self.chunker = RAGChunking()
+        self.generation_model = ollama_generation_model_name
+        self.pinecone = pinecone_client
+        self.top_k = int(os.getenv("RAG_TOP_K", "5"))
+        self.index_name = os.getenv("RAG_INDEX_NAME", "ai-course-rag")
+        self.embedding_model = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
+        self.sources = os.getenv("INCLUDE_SOURCES", "False").lower()
+
+        # Initialize index
+        existing_indexes = [i.name for i in self.pinecone.list_indexes()]
+        if self.index_name not in existing_indexes:
+            self.pinecone.create_index(
+                name=self.index_name,
+                dimension=int(os.getenv("RAG_EMBEDDING_DIM", "768")),
+                metric="cosine",
+                spec=pinecone.ServerlessSpec(
+                    cloud="aws",
+                    region=os.getenv("PINECONE_REGION", "us-east-1")
+                )
+            )
+        self.index = self.pinecone.Index(self.index_name)
+
+        logging.info(f"Initialized Pinecone index {index_name}")
+        logging.info(f"Initialized Pinecone RAG system with {self.generation_model}")
 
     def upsert_documents(self, directory: Path, batch_size: int = 50) -> None:
         """Processes and indexes markdown documents while preserving their structure.
@@ -68,48 +105,6 @@ class PineconeRAG:
         if batch:
             self._upsert_batch(batch)
 
-    def __init__(
-        self,
-        pinecone_client: pinecone.Pinecone,
-        index_name: str,
-        ollama_generation_model_name: str,
-        ollama_embedding_model_name: str = "nomic-embed-text",
-        embedding_dimension: int = 768,
-        top_k: int = 5,
-        include_sources: bool = False,
-    ) -> None:
-        """Initializes the PineconeRAG instance by setting up the Pinecone connection and index.
-
-        Args:
-            pinecone_client: Authenticated Pinecone client instance.
-            index_name: Name of the index to create or use.
-            ollama_generation_model_name: Name of the Ollama model for answer generation.
-            ollama_embedding_model_name: Name of the Ollama model for generating embeddings.
-            embedding_dimension: Dimension size for embedding vectors.
-            top_k: Number of top results to retrieve during queries.
-            include_sources: Whether to include source citations in generated answers.
-        """
-        self.chunker: RAGChunking = RAGChunking()
-        self.generation_model: str = ollama_generation_model_name
-        self.embedding_model: str = ollama_embedding_model_name
-        self.pinecone: Pinecone = pinecone_client
-        self.top_k: int = top_k
-        self.index_name: str = index_name
-        self.sources: bool = include_sources
-
-        # Configure index with preprocessing-aware settings
-        existing_indexes: list[str] = [i.name for i in self.pinecone.list_indexes()]
-        if self.index_name not in existing_indexes:
-            self.pinecone.create_index(
-                name=self.index_name,
-                dimension=embedding_dimension,
-                metric="cosine",
-                spec=pinecone.ServerlessSpec(cloud="aws", region="us-east-1"),
-            )
-        self.index: Pinecone.Index = self.pinecone.Index(index_name)
-        logging.info(f"Initialized Pinecone index {index_name}")
-        logging.info(f"Initialized Pinecone RAG system with {self.generation_model}")
-
     def _process_section(
         self, content: str, section_path: str, filename: str
     ) -> list[dict]:
@@ -134,8 +129,9 @@ class PineconeRAG:
         }
 
         # Split long sections using preprocessing-aware chunking
+        chunk_size = int(os.getenv("RAG_CHUNK_SIZE", "512"))
         if len(content) > 1000:
-            sub_chunks = self.chunker.recursive_chunk(content, chunk_size=512)
+            sub_chunks = self.chunker.recursive_chunk(content, chunk_size=chunk_size)
             chunks.extend(
                 {
                     "text": chunk,
@@ -255,9 +251,7 @@ class PineconeRAG:
 
         return context_parts, list(sources)
 
-    def generate_answer(
-        self, question: str, temperature: float = 0.3, max_tokens: int = 2048
-    ) -> str:
+    def generate_answer(self, question: str) -> str:
         """
         Generates an answer to a user question using an Ollama LLM with context-aware prompting.
 
@@ -270,6 +264,8 @@ class PineconeRAG:
             A formatted answer string with citations if source inclusion is enabled,
             otherwise the plain answer.
         """
+        temperature = float(os.getenv("GENERATION_TEMPERATURE", "0.3"))
+        max_tokens = int(os.getenv("MAX_TOKENS", "2048"))
         # Get context and sources for the question
         context, sources = self.retrieve_context(question)
         # Create structured prompt with context instructions
@@ -310,8 +306,7 @@ class PineconeRAG:
             answer = response.get("response", "").strip()
             answer = re.sub(r"<think>.*?</think>\n?", "", answer, flags=re.DOTALL)
 
-        answer_with_sources: str = self._add_citations(answer, sources)
-        return answer_with_sources if self.sources else answer
+        return self._add_citations(answer, sources) if self.sources else answer
 
     def _add_citations(self, answer: str, sources: list) -> str:
         """Appends source citations (filenames) to the generated answer.
@@ -364,12 +359,15 @@ def process_exams(rag_pipeline: PineconeRAG):
     Side Effects:
         Creates output files in OUTPUT_DIR and logs processing duration.
     """
-    for exam_file in EXAM_DIR.glob("*_answerless.txt"):
+    exam_dir = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
+    output_dir = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for exam_file in exam_dir.glob("*_answerless.txt"):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
             output_path = (
-                OUTPUT_DIR
+                output_dir
                 / f"{exam_name}_{rag_pipeline.generation_model}_rag_answers.txt"
             )
 
@@ -389,45 +387,35 @@ def process_exams(rag_pipeline: PineconeRAG):
 
 
 if __name__ == "__main__":
-    # Configuration
-    KNOWLEDGE_DIR: Path = Path(os.getenv("KNOWLEDGE_DIR")).resolve()
-    ANSWER_DIR: Path = Path(os.getenv("ANSWER_DIR")).resolve()
-    EXAM_DIR: Path = Path(os.getenv("EXAM_DIR")).resolve()
-    RUBRIC_DIR: Path = Path(os.getenv("RUBRIC_DIR")).resolve()
-    OUTPUT_DIR: Path = Path(os.getenv("RAG_OUTPUT_DIR")).resolve()
-    PINECONE_INDEX_NAME: str = os.getenv("RAG_INDEX_NAME")
-    EMBEDDING_DIM: int = int(os.getenv("RAG_EMBEDDING_DIM"))
-    CHUNK_SIZE: int = int(os.getenv("RAG_CHUNK_SIZE"))
-    TOP_K: int = int(os.getenv("RAG_TOP_K"))
+    pinecone_index_name: str = str(os.getenv("RAG_INDEX_NAME"))
 
-    env_models: str = os.getenv("GENERATION_MODELS")
-    models: list[str] = [m.strip() for m in env_models.split(",")]
+    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+    models = [m.strip() for m in os.getenv("GENERATION_MODELS", "").split(",")]
+
     for model in models:
         chunker: RAGChunking = RAGChunking()
         pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
         # initialize
         rag = PineconeRAG(
             pinecone_client=pc,
-            index_name=PINECONE_INDEX_NAME,
-            top_k=TOP_K,
+            index_name=pinecone_index_name,
             ollama_generation_model_name=model,
         )
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+
         # clean slate
-        logging.info(f"Deleting index {PINECONE_INDEX_NAME}...")
+        logging.info(f"Deleting index {pinecone_index_name}...")
         rag.delete_index()
 
         # reinitialize
         rag = PineconeRAG(
             pinecone_client=pc,
-            index_name=PINECONE_INDEX_NAME,
-            top_k=TOP_K,
+            index_name=pinecone_index_name,
             ollama_generation_model_name=model,
         )
 
         # Index documents
         logging.info("Indexing documents...")
-        rag.upsert_documents(KNOWLEDGE_DIR)
+        rag.upsert_documents(Path(os.getenv("KNOWLEDGE_DIR")))
         logging.info("Document indexing complete!")
 
         # Process exams
