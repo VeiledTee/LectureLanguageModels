@@ -11,10 +11,6 @@ from preprocessing import process_exam_file
 
 load_dotenv()
 
-# Configuration
-EXAM_DIR = Path(r"AI_Course/Exams").resolve()
-OUTPUT_DIR = Path("AI_Course/Exams/generated_answers").resolve()
-
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 
@@ -23,10 +19,10 @@ class LLMQASystem:
     """A class for direct question answering using Ollama models without RAG context."""
 
     def __init__(
-            self,
-            generation_model_name: str = "llama3.2",
-            temperature: float = 0.3,
-            max_tokens: int = 2048,
+        self,
+        generation_model_name: str = "llama3.2",
+        temperature: float = 0.3,
+        max_tokens: int = 2048,
     ) -> None:
         """Initializes the direct answering instance.
 
@@ -100,7 +96,11 @@ def process_exams(ollama_pipeline: LLMQASystem):
             exam_name = exam_file.stem.replace("_answerless", "")
             output_directory = OUTPUT_DIR / exam_name
             output_directory.mkdir(parents=True, exist_ok=True)
-            output_path = OUTPUT_DIR / exam_name / f"{exam_name}_{ollama_pipeline.generation_model}_answers.txt"
+            output_path = (
+                OUTPUT_DIR
+                / exam_name
+                / f"{exam_name}_{ollama_pipeline.generation_model}_answers.txt"
+            )
 
             questions = process_exam_file(exam_file)
 
@@ -118,19 +118,15 @@ def process_exams(ollama_pipeline: LLMQASystem):
 
 
 if __name__ == "__main__":
-    models: list[str] = [
-        "phi4",
-        "llama3.2",
-        "mistral",
-        "qwen2.5",
-        "deepseek-r1",
-    ]
+    # Configuration
+    EXAM_DIR: Path = Path(os.getenv("EXAM_DIR")).resolve()
+    OUTPUT_DIR: Path = Path(os.getenv("MODEL_OUTPUT_DIR")).resolve()
+    env_models: str = os.getenv("GENERATION_MODELS")
+    models: list[str] = [m.strip() for m in env_models.split(",")]
     for model in models:
         # Initialize direct answering pipeline
         quiz_taking_system = LLMQASystem(
-            generation_model_name=model,
-            temperature=0.3,
-            max_tokens=2048
+            generation_model_name=model, temperature=0.3, max_tokens=2048
         )
 
         # Process exams directly
