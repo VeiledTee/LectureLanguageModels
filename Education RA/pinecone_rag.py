@@ -35,47 +35,6 @@ class PineconeRAG:
     with optional source citations.
     """
 
-    def __init__(
-        self,
-        pinecone_client: pinecone.Pinecone,
-        index_name: str,
-        ollama_generation_model_name: str = "llama3.2",
-        ollama_embedding_model_name: str = "nomic-embed-text",
-        embedding_dimension: int = 768,
-        top_k: int = 5,
-        include_sources: bool = False,
-    ) -> None:
-        """Initializes the PineconeRAG instance by setting up the Pinecone connection and index.
-
-        Args:
-            pinecone_client: Authenticated Pinecone client instance.
-            index_name: Name of the index to create or use.
-            ollama_generation_model_name: Name of the Ollama model for answer generation.
-            ollama_embedding_model_name: Name of the Ollama model for generating embeddings.
-            embedding_dimension: Dimension size for embedding vectors.
-            top_k: Number of top results to retrieve during queries.
-            include_sources: Whether to include source citations in generated answers.
-        """
-        self.chunker: RAGChunking = RAGChunking()
-        self.generation_model: str = ollama_generation_model_name
-        self.embedding_model: str = ollama_embedding_model_name
-        self.pinecone: Pinecone = pinecone_client
-        self.top_k: int = top_k
-        self.index_name: str = index_name
-        self.sources: bool = include_sources
-
-        # Configure index with preprocessing-aware settings
-        existing_indexes: list[str] = [i.name for i in self.pinecone.list_indexes()]
-        if self.index_name not in existing_indexes:
-            self.pinecone.create_index(
-                name=self.index_name,
-                dimension=embedding_dimension,
-                metric="cosine",
-                spec=pinecone.ServerlessSpec(cloud="aws", region="us-east-1"),
-            )
-        self.index: Pinecone.Index = self.pinecone.Index(index_name)
-        logging.info(f"Initialized Pinecone index {index_name}")
-
     def upsert_documents(self, directory: Path, batch_size: int = 50) -> None:
         """Processes and indexes markdown documents while preserving their structure.
 
@@ -117,6 +76,48 @@ class PineconeRAG:
 
         if batch:
             self._upsert_batch(batch)
+
+    def __init__(
+        self,
+        pinecone_client: pinecone.Pinecone,
+        index_name: str,
+        ollama_generation_model_name: str,
+        ollama_embedding_model_name: str = "nomic-embed-text",
+        embedding_dimension: int = 768,
+        top_k: int = 5,
+        include_sources: bool = False,
+    ) -> None:
+        """Initializes the PineconeRAG instance by setting up the Pinecone connection and index.
+
+        Args:
+            pinecone_client: Authenticated Pinecone client instance.
+            index_name: Name of the index to create or use.
+            ollama_generation_model_name: Name of the Ollama model for answer generation.
+            ollama_embedding_model_name: Name of the Ollama model for generating embeddings.
+            embedding_dimension: Dimension size for embedding vectors.
+            top_k: Number of top results to retrieve during queries.
+            include_sources: Whether to include source citations in generated answers.
+        """
+        self.chunker: RAGChunking = RAGChunking()
+        self.generation_model: str = ollama_generation_model_name
+        self.embedding_model: str = ollama_embedding_model_name
+        self.pinecone: Pinecone = pinecone_client
+        self.top_k: int = top_k
+        self.index_name: str = index_name
+        self.sources: bool = include_sources
+
+        # Configure index with preprocessing-aware settings
+        existing_indexes: list[str] = [i.name for i in self.pinecone.list_indexes()]
+        if self.index_name not in existing_indexes:
+            self.pinecone.create_index(
+                name=self.index_name,
+                dimension=embedding_dimension,
+                metric="cosine",
+                spec=pinecone.ServerlessSpec(cloud="aws", region="us-east-1"),
+            )
+        self.index: Pinecone.Index = self.pinecone.Index(index_name)
+        logging.info(f"Initialized Pinecone index {index_name}")
+        logging.info(f"Initialized Pinecone RAG system with {self.generation_model}")
 
     def _process_section(
         self, content: str, section_path: str, filename: str
@@ -310,13 +311,14 @@ class PineconeRAG:
                 "stop": ["</s>", "\n\n\n"],
             },
         )
+
         # Extract and format response
         if "deepseek" not in self.generation_model:
-            answer: str = response.get("response", "").strip()
+            answer = response.get("response", "").strip()
         else:
-            response = response["message"]["content"]
-            answer = re.sub(r"<think>.*?</think>\n?", "", response, flags=re.DOTALL)
-        print(answer)
+            answer = response.get("response", "").strip()
+            answer = re.sub(r"<think>.*?</think>\n?", "", answer, flags=re.DOTALL)
+
         answer_with_sources: str = self._add_citations(answer, sources)
         return answer_with_sources if self.sources else answer
 
@@ -375,7 +377,7 @@ def process_exams(rag_pipeline: PineconeRAG):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            output_path = OUTPUT_DIR / f"{exam_name}_rag_answers.txt"
+            output_path = OUTPUT_DIR / f"{exam_name}_{rag_pipeline.generation_model}_rag_answers.txt"
 
             questions = process_exam_file(exam_file)
 
@@ -393,23 +395,32 @@ def process_exams(rag_pipeline: PineconeRAG):
 
 
 if __name__ == "__main__":
-    chunker = RAGChunking()
-    pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-    # initialize
-    rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K, ollama_generation_model_name='deepseekr1:7b')
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    # clean slate
-    logging.info(f"Deleting index {PINECONE_INDEX_NAME}...")
-    rag.delete_index()
+    models: list[str] = [
+        "phi4",
+        "llama3.2",
+        "mistral",
+        "qwen2.5",
+        "deepseek-r1",
+    ]
+    for model in models:
+        chunker = RAGChunking()
+        pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+        # initialize
+        rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K, ollama_generation_model_name=model)
+        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+        # clean slate
+        logging.info(f"Deleting index {PINECONE_INDEX_NAME}...")
+        rag.delete_index()
 
-    # reinitialize
-    rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K)
+        # reinitialize
+        rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K, ollama_generation_model_name=model)
 
-    # Index documents
-    logging.info("Indexing documents...")
-    rag.upsert_documents(KNOWLEDGE_DIR)
-    logging.info("Document indexing complete!")
+        # Index documents
+        logging.info("Indexing documents...")
+        rag.upsert_documents(KNOWLEDGE_DIR)
+        logging.info("Document indexing complete!")
 
-    # Process exams
-    logging.info("Processing exams...")
-    process_exams(rag)
+        # Process exams
+        logging.info(f"Processing exams with Pinecone and Ollama queries and {model}...")
+        process_exams(rag)
+        logging.info(f"{model} exam complete!")
