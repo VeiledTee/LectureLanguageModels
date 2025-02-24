@@ -1,14 +1,19 @@
+import os
 import re
 from collections import Counter
 from pathlib import Path
+
+import ollama
 import torch
 from bert_score import score
+from dotenv import load_dotenv
 from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
 from rich.console import Console
 from rich.table import Table
 from rouge import Rouge
 from transformers import logging as transformers_logging
-import ollama
+
+load_dotenv()
 
 transformers_logging.set_verbosity_error()
 
@@ -30,7 +35,7 @@ def print_metrics(question_number: int, evaluation_metrics: dict):
     table.add_row("Token F1", f"{evaluation_metrics['token_f1']:.4f}")
     table.add_row("BERTScore F1", f"{evaluation_metrics['bert_f1']:.4f}")
     table.add_row("Jaccard", f"{evaluation_metrics['jaccard']:.4f}")
-    table.add_row("Rubric Score", evaluation_metrics['rubric_score'])
+    table.add_row("Rubric Score", evaluation_metrics["rubric_score"])
 
     console.print(table)
 
@@ -43,37 +48,6 @@ def extract_answers(md_file: Path) -> list[str]:
     answers = pattern.findall(content)
     print(len(answers))
     return [ans.strip() for ans in answers]
-
-
-def extract_gold_answers(gold_file: Path) -> list[str]:
-    with gold_file.open("r", encoding="utf-8") as f:
-        content = f.read()
-
-    answers: list[str] = []
-    current_answer: list[str] = []
-    in_answer: bool = False
-    question_pattern = re.compile(r"^-\s*\d+\.")
-
-    for line in content.split("\n"):
-        line = line.strip()
-        if question_pattern.match(line):
-            if in_answer and current_answer:
-                answers.append("\n".join(current_answer).strip())
-                current_answer = []
-            in_answer = True
-        elif in_answer:
-            if line.startswith("##"):
-                in_answer = False
-                if current_answer:
-                    answers.append("\n".join(current_answer).strip())
-                    current_answer = []
-            else:
-                current_answer.append(line)
-
-    if in_answer and current_answer:
-        answers.append("\n".join(current_answer).strip())
-
-    return answers
 
 
 def compute_token_f1(candidate: str, gold: str) -> float:
@@ -92,10 +66,6 @@ def compute_token_f1(candidate: str, gold: str) -> float:
     if (precision + recall) == 0:
         return 0.0
     return 2 * (precision * recall) / (precision + recall)
-
-
-def exact_match(candidate: str, gold: str) -> float:
-    return 1.0 if candidate.strip() == gold.strip() else 0.0
 
 
 def jaccard_similarity(candidate: str, gold: str) -> float:
@@ -118,7 +88,9 @@ def extract_rubric(rubric_file: Path, question_number: int) -> str:
         raise ValueError(f"No rubric found for question {question_number}")
 
 
-def evaluate_with_rubric(rubric_text: str, query: str, student_answer: str) -> tuple[float, float]:
+def evaluate_with_rubric(
+    rubric_text: str, query: str, student_answer: str
+) -> tuple[float, float]:
     # Extract total available marks
     total_match = re.search(r"Total Points:\s*(\d+)", rubric_text, re.IGNORECASE)
     if not total_match:
@@ -179,7 +151,9 @@ def evaluate_answers(
         question_num = idx + 1
         try:
             rubric_text = extract_rubric(rubric_file, question_num)
-            awarded, possible = evaluate_with_rubric(rubric_text, f"Question {question_num}", gen)
+            awarded, possible = evaluate_with_rubric(
+                rubric_text, f"Question {question_num}", gen
+            )
         except Exception as e:
             print(f"Error evaluating rubric for Q{question_num}: {str(e)}")
             awarded, possible = 0.0, 0.0
@@ -201,15 +175,17 @@ def evaluate_answers(
         bert_f1 = F1[0].item()
         jaccard = jaccard_similarity(gen, gold)
 
-        results.append({
-            "bleu": bleu,
-            "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
-            "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
-            "token_f1": token_f1,
-            "bert_f1": bert_f1,
-            "jaccard": jaccard,
-            "rubric_score": f"{awarded:.1f}/{possible:.0f}"
-        })
+        results.append(
+            {
+                "bleu": bleu,
+                "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
+                "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
+                "token_f1": token_f1,
+                "bert_f1": bert_f1,
+                "jaccard": jaccard,
+                "rubric_score": f"{awarded:.1f}/{possible:.0f}",
+            }
+        )
 
         if verbose:
             print_metrics(question_num, results[-1])
@@ -221,18 +197,18 @@ def evaluate_answers(
 
 
 if __name__ == "__main__":
-    answer_directory = Path("AI_Course/Exams/generated_answers")
-    exam_directory = Path("AI_Course/Exams")
-    rubric_path = Path("AI_Course/Exams/")
+    ANSWER_DIR = Path(os.getenv("ANSWER_DIR"))
+    EXAM_DIR = Path(os.getenv("EXAM_DIR"))
+    RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR"))
     question_dirs = ["q1_soln"]
 
     for question in question_dirs:
-        gold_path = exam_directory / f"{question}_parsed.txt"  # Update path
+        gold_path = EXAM_DIR / f"{question}_parsed.txt"  # Update path
         gold_answers = extract_answers(gold_path)
 
         quiz_number: str = question.split("_")[0]
 
-        question_dir = answer_directory / question
+        question_dir = ANSWER_DIR / question
         for file in question_dir.glob("*.txt"):
             print(f"\nProcessing file: {file.name} (Question: {question})")
             model = file.name.split("_")[-2]
@@ -241,12 +217,14 @@ if __name__ == "__main__":
             metrics = evaluate_answers(
                 answers_to_evaluate=generated_answers,
                 gold_standard_answers=gold_answers,
-                rubric_file=rubric_path / f"{quiz_number}_rubric.txt",
+                rubric_file=RUBRIC_DIR / f"{quiz_number}_rubric.txt",
                 verbose=False,
             )
 
             print(f"\n=== Final Metrics for {model} (Question: {question}) ===")
-            print(f"\tCumulative Rubric Score: {metrics['total_awarded']:.1f}/{metrics['total_possible']:.1f}")
+            print(
+                f"\tCumulative Rubric Score: {metrics['total_awarded']:.1f}/{metrics['total_possible']:.1f}"
+            )
             print(f"\tBLEU: {metrics['bleu']:.4f}")
             print(f"\tROUGE-1: {metrics['rouge1']:.4f}")
             print(f"\tROUGE-L: {metrics['rougeL']:.4f}")
