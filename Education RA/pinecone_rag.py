@@ -14,15 +14,6 @@ from preprocessing import load_markdown_sections, parse_quiz, process_exam_file
 
 load_dotenv()
 
-# Configuration
-KNOWLEDGE_DIR = Path(r"AI_Course/Lecture_Notes").resolve()
-EXAM_DIR = Path(r"AI_Course/Exams").resolve()
-OUTPUT_DIR = Path("AI_Course/Exams/generated_rag_answers").resolve()
-PINECONE_INDEX_NAME = "ai-course-rag"
-EMBEDDING_DIM = 768
-CHUNK_SIZE = 512
-TOP_K = 5
-
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 
@@ -377,7 +368,10 @@ def process_exams(rag_pipeline: PineconeRAG):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            output_path = OUTPUT_DIR / f"{exam_name}_{rag_pipeline.generation_model}_rag_answers.txt"
+            output_path = (
+                OUTPUT_DIR
+                / f"{exam_name}_{rag_pipeline.generation_model}_rag_answers.txt"
+            )
 
             questions = process_exam_file(exam_file)
 
@@ -395,25 +389,41 @@ def process_exams(rag_pipeline: PineconeRAG):
 
 
 if __name__ == "__main__":
-    models: list[str] = [
-        "phi4",
-        "llama3.2",
-        "mistral",
-        "qwen2.5",
-        "deepseek-r1",
-    ]
+    # Configuration
+    KNOWLEDGE_DIR: Path = Path(os.getenv("KNOWLEDGE_DIR")).resolve()
+    ANSWER_DIR: Path = Path(os.getenv("ANSWER_DIR")).resolve()
+    EXAM_DIR: Path = Path(os.getenv("EXAM_DIR")).resolve()
+    RUBRIC_DIR: Path = Path(os.getenv("RUBRIC_DIR")).resolve()
+    OUTPUT_DIR: Path = Path(os.getenv("RAG_OUTPUT_DIR")).resolve()
+    PINECONE_INDEX_NAME: str = os.getenv("RAG_INDEX_NAME")
+    EMBEDDING_DIM: int = int(os.getenv("RAG_EMBEDDING_DIM"))
+    CHUNK_SIZE: int = int(os.getenv("RAG_CHUNK_SIZE"))
+    TOP_K: int = int(os.getenv("RAG_TOP_K"))
+
+    env_models: str = os.getenv("GENERATION_MODELS")
+    models: list[str] = [m.strip() for m in env_models.split(",")]
     for model in models:
-        chunker = RAGChunking()
+        chunker: RAGChunking = RAGChunking()
         pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
         # initialize
-        rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K, ollama_generation_model_name=model)
+        rag = PineconeRAG(
+            pinecone_client=pc,
+            index_name=PINECONE_INDEX_NAME,
+            top_k=TOP_K,
+            ollama_generation_model_name=model,
+        )
         OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
         # clean slate
         logging.info(f"Deleting index {PINECONE_INDEX_NAME}...")
         rag.delete_index()
 
         # reinitialize
-        rag = PineconeRAG(pinecone_client=pc, index_name=PINECONE_INDEX_NAME, top_k=TOP_K, ollama_generation_model_name=model)
+        rag = PineconeRAG(
+            pinecone_client=pc,
+            index_name=PINECONE_INDEX_NAME,
+            top_k=TOP_K,
+            ollama_generation_model_name=model,
+        )
 
         # Index documents
         logging.info("Indexing documents...")
@@ -421,6 +431,8 @@ if __name__ == "__main__":
         logging.info("Document indexing complete!")
 
         # Process exams
-        logging.info(f"Processing exams with Pinecone and Ollama queries and {model}...")
+        logging.info(
+            f"Processing exams with Pinecone and Ollama queries and {model}..."
+        )
         process_exams(rag)
         logging.info(f"{model} exam complete!")
