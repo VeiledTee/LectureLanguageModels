@@ -7,8 +7,8 @@ from nltk.translate.bleu_score import SmoothingFunction, sentence_bleu
 from rich.console import Console
 from rich.table import Table
 from rouge import Rouge
-from transformers import AutoModelForSequenceClassification, AutoTokenizer
 from transformers import logging as transformers_logging
+import ollama
 
 transformers_logging.set_verbosity_error()
 
@@ -17,13 +17,6 @@ console = Console()
 
 # Check for GPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# Initialize the NLI model and tokenizer
-nli_model_name = "facebook/bart-large-mnli"
-nli_tokenizer = AutoTokenizer.from_pretrained(nli_model_name)
-nli_model = AutoModelForSequenceClassification.from_pretrained(nli_model_name).to(
-    device
-)  # Move model to GPU
 
 
 def print_metrics(question_number: int, evaluation_metrics: dict):
@@ -36,14 +29,13 @@ def print_metrics(question_number: int, evaluation_metrics: dict):
     table.add_row("ROUGE-L", f"{evaluation_metrics['rougeL']:.4f}")
     table.add_row("Token F1", f"{evaluation_metrics['token_f1']:.4f}")
     table.add_row("BERTScore F1", f"{evaluation_metrics['bert_f1']:.4f}")
-    table.add_row("NLI Entailment", f"{evaluation_metrics['nli_entailment']:.4f}")
-    table.add_row("Exact Match", f"{evaluation_metrics['exact_match']:.4f}")
     table.add_row("Jaccard", f"{evaluation_metrics['jaccard']:.4f}")
+    table.add_row("Rubric Score", evaluation_metrics['rubric_score'])
 
     console.print(table)
 
 
-def extract_answers_from_markdown(md_file: Path) -> list[str]:
+def extract_answers(md_file: Path) -> list[str]:
     content = md_file.read_text(encoding="utf-8")
     pattern = re.compile(
         r"^//// ANSWER:(.*?)(?=^//// ANSWER:|^#|\Z)", re.DOTALL | re.MULTILINE
@@ -116,33 +108,86 @@ def jaccard_similarity(candidate: str, gold: str) -> float:
     return len(intersection) / len(union)
 
 
-def nli_score(premise: str, hypothesis: str) -> float:
-    inputs = nli_tokenizer.encode_plus(
-        premise, hypothesis, return_tensors="pt", truncation=True
-    ).to(
-        device
-    )  # Move input tensors to GPU
-    logits = nli_model(**inputs).logits
-    probs = torch.softmax(logits, dim=1).detach().cpu().numpy()[0]
-    return float(probs[2])
+def extract_rubric(rubric_file: Path, question_number: int) -> str:
+    content = rubric_file.read_text(encoding="utf-8")
+    rubrics = re.split(r"^//// RUBRIC:", content, flags=re.MULTILINE)[1:]
+
+    try:
+        return rubrics[question_number - 1].strip()
+    except IndexError:
+        raise ValueError(f"No rubric found for question {question_number}")
+
+
+def evaluate_with_rubric(rubric_text: str, query: str, student_answer: str) -> tuple[float, float]:
+    # Extract total available marks
+    total_match = re.search(r"Total Points:\s*(\d+)", rubric_text, re.IGNORECASE)
+    if not total_match:
+        return 0.0, 0.0
+    total_available = float(total_match.group(1))
+
+    prompt = f"""Evaluate this answer based on the following rubric. Return only the numerical score awarded as a number.
+
+Rubric:
+{rubric_text}
+
+Question:
+{query}
+
+Student Answer:
+{student_answer}
+
+Provide your evaluation score:"""
+
+    response = ollama.generate(
+        model="deepseek-r1",
+        prompt=prompt,
+        options={
+            "temperature": 0.0,
+            "max_tokens": 50,
+            "top_p": 0.9,
+            "stop": ["</s>", "\n\n\n"],
+        },
+    )
+
+    answer = response.get("response", "").strip()
+    try:
+        awarded = float(answer.split()[0])  # Take first numerical value
+    except (ValueError, IndexError):
+        awarded = 0.0
+
+    return awarded, total_available
 
 
 def evaluate_answers(
     answers_to_evaluate: list[str],
     gold_standard_answers: list[str],
+    rubric_file: Path,
     verbose: bool = False,
 ) -> dict[str, float]:
     smoothing = SmoothingFunction().method1
     rouge_evaluator = Rouge()
     results: list[dict[str, float]] = []
+    total_awarded = 0.0
+    total_possible = 0.0
 
     if len(answers_to_evaluate) != len(gold_standard_answers):
         raise ValueError(
             f"Generated answers and gold answers count mismatch! {len(answers_to_evaluate)} vs {len(gold_standard_answers)}"
         )
 
-    question_count: int = 0
-    for gen, gold in zip(answers_to_evaluate, gold_standard_answers):
+    for idx, (gen, gold) in enumerate(zip(answers_to_evaluate, gold_standard_answers)):
+        question_num = idx + 1
+        try:
+            rubric_text = extract_rubric(rubric_file, question_num)
+            awarded, possible = evaluate_with_rubric(rubric_text, f"Question {question_num}", gen)
+        except Exception as e:
+            print(f"Error evaluating rubric for Q{question_num}: {str(e)}")
+            awarded, possible = 0.0, 0.0
+
+        print(awarded, possible)
+
+        total_awarded += awarded
+        total_possible += possible
         gen_tokens = gen.split()
         gold_tokens = gold.split()
         bleu = sentence_bleu([gold_tokens], gen_tokens, smoothing_function=smoothing)
@@ -154,61 +199,57 @@ def evaluate_answers(
         token_f1 = compute_token_f1(gen, gold)
         P, R, F1 = score([gen], [gold], lang="en")
         bert_f1 = F1[0].item()
-        nli_entailment = nli_score(gold, gen)
-        em = exact_match(gen, gold)
         jaccard = jaccard_similarity(gen, gold)
 
-        results.append(
-            {
-                "bleu": bleu,
-                "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
-                "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
-                "token_f1": token_f1,
-                "bert_f1": bert_f1,
-                "nli_entailment": nli_entailment,
-                "exact_match": em,
-                "jaccard": jaccard,
-            }
-        )
+        results.append({
+            "bleu": bleu,
+            "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
+            "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
+            "token_f1": token_f1,
+            "bert_f1": bert_f1,
+            "jaccard": jaccard,
+            "rubric_score": f"{awarded:.1f}/{possible:.0f}"
+        })
 
         if verbose:
-            print_metrics(question_count + 1, results[-1])
-        question_count += 1
+            print_metrics(question_num, results[-1])
 
     avg_results = {k: sum(r[k] for r in results) / len(results) for k in results[0]}
+    avg_results["total_awarded"] = total_awarded
+    avg_results["total_possible"] = total_possible
     return avg_results
 
 
 if __name__ == "__main__":
     answer_directory = Path("AI_Course/Exams/generated_answers")
-    question_dirs = ["q1", "q2"]  # List of question directories to process
+    exam_directory = Path("AI_Course/Exams")
+    rubric_path = Path("AI_Course/Exams/")
+    question_dirs = ["q1_soln"]
 
     for question in question_dirs:
-        # Load gold standard answers for the current question
-        gold_path = Path(
-            f"/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams/{question}_soln_parsed.txt"
-        )
-        gold_answers: list[str] = extract_answers_from_markdown(gold_path)
+        gold_path = exam_directory / f"{question}_parsed.txt"  # Update path
+        gold_answers = extract_answers(gold_path)
 
-        # Process generated answers for the current question
+        quiz_number: str = question.split("_")[0]
+
         question_dir = answer_directory / question
         for file in question_dir.glob("*.txt"):
             print(f"\nProcessing file: {file.name} (Question: {question})")
-            model = file.name.split("_")[0]
-            generated_answers: list[str] = extract_answers_from_markdown(file)
+            model = file.name.split("_")[-2]
+            generated_answers = extract_answers(file)
 
-            metrics: dict[str, float] = evaluate_answers(
+            metrics = evaluate_answers(
                 answers_to_evaluate=generated_answers,
                 gold_standard_answers=gold_answers,
+                rubric_file=rubric_path / f"{quiz_number}_rubric.txt",
                 verbose=False,
             )
 
-            print(f"=== Final Metrics for {model} (Question: {question}) ===")
+            print(f"\n=== Final Metrics for {model} (Question: {question}) ===")
+            print(f"\tCumulative Rubric Score: {metrics['total_awarded']:.1f}/{metrics['total_possible']:.1f}")
             print(f"\tBLEU: {metrics['bleu']:.4f}")
             print(f"\tROUGE-1: {metrics['rouge1']:.4f}")
             print(f"\tROUGE-L: {metrics['rougeL']:.4f}")
             print(f"\tToken F1: {metrics['token_f1']:.4f}")
             print(f"\tBERTScore F1: {metrics['bert_f1']:.4f}")
-            print(f"\tNLI Entailment: {metrics['nli_entailment']:.4f}")
-            print(f"\tExact Match: {metrics['exact_match']:.4f}")
             print(f"\tJaccard: {metrics['jaccard']:.4f}")
