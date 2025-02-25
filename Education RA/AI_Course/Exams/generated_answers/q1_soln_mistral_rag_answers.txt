@@ -1,0 +1,535 @@
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms (16 points) > 1.1 Games The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree. > 1. Can alpha-beta be generalized to do a breadth-first exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using breadth-first search in this application.
+//// ANSWER: No, alpha-beta algorithm cannot be generalized to perform a breadth-first exploration of the game tree and still get the optimal answer. The reason is that alpha-beta is designed for depth-first search, which explores the nodes at increasing levels of depth in the search tree. Breadth-first search, on the other hand, explores the nodes at the same level of depth before moving to the next level.
+
+   In a depth-first search, alpha-beta prunes away unpromising branches by maintaining lower and upper bounds on the value of the best move for each node in the tree. This allows it to focus its search on the most promising nodes, which can lead to significant performance improvements, especially when dealing with large game trees.
+
+   If we were to try to adapt alpha-beta for breadth-first search, we would lose the ability to prune unpromising branches effectively because we would be exploring many nodes at the same level simultaneously. This could result in a much slower and less efficient search algorithm.
+
+   In summary, while it is possible to perform a breadth-first search on a game tree, using alpha-beta for this purpose would not provide any advantages and may even lead to significant performance degradation. Instead, other search algorithms such as Breadth-First Search or Iterative Deepening Depth-First Search are more suitable for breadth-first exploration of game trees.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms (16 points) > 1.1 Games The standard alpha-beta algorithm performs a depth-first exploration (to a pre-specified depth) of the game tree. > 2. Can alpha-beta be generalized to do a progressive-deepening exploration of the game tree and still get the optimal answer? Explain how or why not. If it can be generalized, indicate any advantages or disadvantages of using progressive-deepening search in this application.
+//// ANSWER: Yes, alpha-beta can be generalized to perform a progressive-deepening exploration of the game tree and still get the optimal answer. The iterative deepening strategy involves performing multiple depth-limited searches with increasing depth limits until a certain time limit is reached or a solution is found. This method allows the search to go as deep as necessary to find the optimal move, without wasting time on shallow searches when a good move has already been found at a shallower depth.
+
+   Advantages of using progressive-deepening search in this application include:
+   1. It ensures that the search goes as deep as necessary to find the optimal move, even for difficult searches where it is not possible to predict the appropriate depth in advance.
+   2. It can make use of the results from shallower searches to prune the search space and reduce the number of nodes explored at deeper levels, which can save time and improve performance.
+   3. It allows for more efficient use of resources, as the search can be terminated early if a good move is found or if the time limit is reached, without wasting resources on unnecessary exploration.
+
+   A disadvantage of using progressive-deepening search in this application is that it requires more computational resources than a single depth-limited search, as multiple searches must be performed and each search may explore a large number of nodes. However, the potential for improved performance and optimal solutions makes it a valuable technique for game trees with complex branching structures and deep search spaces.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms (16 points) > 1.2 Algorithms > 1. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). All the actions have the same cost. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.
+//// ANSWER: The search algorithm that would be most suitable for this problem is Breadth-First Search (BFS). This is because, even though the branching factor is large, the solutions are relatively short in length. Since all actions have the same cost, BFS will systematically explore the shallow nodes before delving into deeper ones, which aligns well with the problem description that solutions are short.
+
+   Using a visited or expanded list would be beneficial in this case. The visited list helps to avoid revisiting already explored nodes, thus preventing unnecessary computations and memory usage. The expanded list, on the other hand, can help keep track of nodes that have been expanded but not yet fully processed, which can be useful for backtracking or implementing heuristics like A*. However, since we are using BFS, the need for an expanded list is less critical as BFS naturally maintains the order of exploration based on depth.
+
+Sources:
+ch2_search2_parsed.txt
+ch2_search3_parsed.txt
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 1 Search Algorithms (16 points) > 1.2 Algorithms > 2. You are faced with a path search problem with a very large branching factor, but where the answers always involve a relative short sequence of actions (whose exact length is unknown). These actions, however, have widely varying costs. What search algorithm would you use to find the optimal answer? Indicate under what conditions, if any, a visited or expanded list would be a good idea.
+//// ANSWER: The search algorithm that would be most suitable for this problem is A* search, which uses a heuristic function to estimate the cost from the current state to the goal. This algorithm is particularly effective when the branching factor is large but the solutions are relatively short.
+
+In terms of using a visited or expanded list, it would be a good idea to implement both in this scenario for several reasons:
+
+1. Visited List: To avoid revisiting states that have already been explored, which can help reduce redundant computations and improve the efficiency of the search algorithm.
+2. Expanded List: To keep track of the nodes that have been expanded (i.e., opened up) during the search process, so that we can prune suboptimal paths and focus on the most promising ones. This can help reduce the overall search depth and improve the performance of the algorithm.
+
+In practice, it is common to use a combination of both visited and expanded lists in A* search algorithms to balance exploration and exploitation effectively.
+
+Sources:
+ch2_search2_parsed.txt
+ch2_search3_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints (16 points) Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows: 1 | 2 | 3 ---------- 4 | 5 | ---------- |   | Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } . > 1. If we run full constraint propagation on the initial state, what are the resulting domains of the variables?
+//// ANSWER: To find the resulting domains after applying full constraint propagation on the initial state of the given CSP problem, we need to apply the All Different (AD) constraint to each row and column. The AD constraint ensures that all values in a given set are distinct.
+
+   For the 3x3 checkerboard:
+   1 | 2 | 3
+   ----------
+   4 | 5 | 6
+   ----------
+   7 | 8 | 9
+
+   Let's apply AD constraint to each row and column:
+
+   Row 1: {R, B} (initial domain)
+   Row 2: Initially, we can assign any value from the domain {R, B}. However, since square 1 has been assigned a color, that color cannot be used for square 4. So, the updated domain for square 4 is {B}. Now, since squares 2 and 3 are adjacent to square 4, they must have different colors from square 4. This means their domains are updated to {R}.
+   Row 3: Initially, we can assign any value from the domain {R, B}. However, since square 1 has been assigned a color, that color cannot be used for square 7. So, the updated domain for square 7 is {B}. Now, since squares 8 and 9 are adjacent to square 7, they must have different colors from square 7. This means their domains are updated to {R}.
+   Column 1: Initially, we can assign any value from the domain {R, B} to square 1. However, since row 1 has been assigned a color, that color cannot be used for square 5. So, the updated domain for square 5 is {B}. Now, since squares 2 and 4 are adjacent to square 5, they must have different colors from square 5. This means their domains are updated to {R}.
+   Column 2: Initially, we can assign any value from the domain {R, B} to square 2. However, since row 2 has been assigned a color (R), that color cannot be used for square 3. So, the updated domain for square 3 is {B}. Now, since squares 1 and 4 are adjacent to square 3, they must have different colors from square 3. This means their domains are updated to {R}.
+   Column 3: Initially, we can assign any value from the domain {R, B} to square 3. However, since row 3 has been assigned a color (B), that color cannot be used for square 6. So, the updated domain for square 6 is {R}. Now, since squares 5 and 7 are adjacent to square 6, they must have different colors from square 6. This means their domains are updated to {B}.
+
+   After applying full constraint propagation, the resulting domains of the variables are as follows:
+   1: {R} (since it is assigned R)
+   2: {R}
+   3: {B}
+   4: {R}
+   5: {B}
+   6: {B}
+   7: {R}
+   8: {R}
+   9: {R}
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints (16 points) Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows: 1 | 2 | 3 ---------- 4 | 5 | ---------- |   | Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } . > 2. Say, instead, the initial domain of variable 5 is restricted to { B } , with the other domains as before. If we now run full constraint propagation, what are the resulting domains of the variables?
+//// ANSWER: In this case, since we have a restriction on the initial domain of variable 5 (V5) being {B}, and all other variables having domains {R, B}, we will perform constraint propagation to determine the resulting domains.
+
+First, let's examine the constraints between the variables:
+- Vertical adjacency: V1 and V2, V2 and V3, V3 and V4
+- Horizontal adjacency: V1 and V4, V2 and V5
+
+Since we know that no adjacent squares can have the same color, we will start by eliminating any inconsistent values from each variable's domain.
+
+1. Since V5 is initially restricted to {B}, there are no inconsistencies with its neighbors (V2). So the domain of V2 remains {R, B}.
+
+2. Now let's look at the vertical adjacency constraints:
+   - V1 and V2: Since V1 has a domain of {R, B} and V2 has a domain of {R, B}, there are no inconsistencies here. So the domain of V1 remains {R, B}.
+   - V2 and V3: If we assign V2 as B (which it already is), then V3 must be R to satisfy the constraint. So the domain of V3 becomes {R}.
+   - V3 and V4: Since V3 has a domain of {R} and V4 has a domain of {R, B}, there are no inconsistencies here. So the domain of V4 remains {R, B}.
+
+3. Now let's look at the horizontal adjacency constraints:
+   - V1 and V4: Since V1 has a domain of {R, B} and V4 has a domain of {R, B}, there are no inconsistencies here. So the domain of V1 remains {R, B}.
+   - V2 and V5: If we assign V2 as B (which it already is), then V5 must be R to satisfy the constraint. So the domain of V5 becomes {R}.
+
+So, after performing full constraint propagation with the given initial assignment, the resulting domains are:
+- V1: {R, B}
+- V2: {B}
+- V3: {R}
+- V4: {R, B}
+- V5: {R}
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints (16 points) Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows: 1 | 2 | 3 ---------- 4 | 5 | ---------- |   | Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } . > 3. If in the initial state (all variables have domains { R, B } ), we assign variable 1 to R and do forward checking, what are the resulting domains of the other variables?
+//// ANSWER: In the initial state with variable 1 assigned to R, the resulting domains for the other variables can be determined through forward checking. Let's examine the constraints one by one:
+
+- Variable 2 and 3 are adjacent horizontally to variable 1, so their domains must exclude R since they cannot have the same color as variable 1. Thus, their domains become {B}.
+- Variable 4 is vertically adjacent to variable 1, so its domain remains unchanged because it can be either R or B as long as it does not have the same color as variable 1 in the horizontal direction (which we ensured by assigning variable 2 and 3 with B). So, its domain remains {R,B}.
+- Variable 5 is neither horizontally nor vertically adjacent to variable 1, so its domain also remains unchanged. Thus, its domain remains {R,B}.
+
+So, after forward checking, the resulting domains for the other variables are:
+- Variable 2: {B}
+- Variable 3: {B}
+- Variable 4: {R, B}
+- Variable 5: {R, B}
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints (16 points) Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows: 1 | 2 | 3 ---------- 4 | 5 | ---------- |   | Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } . > 4. Assume that during backtracking we first attempt assigning variables to R and then to B. Assume, also, that we examine the variables in numerical order, starting with 1. Also, let the domain of variable 5 be { B } , the other domains are { R, B } . In the following tree, which shows the space of assignments to the 5 variables we care about, indicate how pure backtracking (BT) would proceed by placing a check mark next to any assignment that would be attempted during the search and crossing out the nodes where a constraint test would fail. Leave unmarked those nodes that would never be explored. RB RBRB RBRBRBRB RBRBRBRBRBRBRBRB BBBBBBBBBBBBBBBB
+//// ANSWER: In pure backtracking (BT), we start by assigning the first variable (Variable 1) with a value from its domain, say Red (R). This gives us the following assignments: R_1.
+
+Next, we move to the second variable (Variable 2). Since it shares an edge with Variable 1 and we already assigned it with Red, we must assign Variable 2 with Black (B) to satisfy the constraint that adjacent squares do not have the same color. This gives us the following assignments: R_1 B_2.
+
+We then move to the third variable (Variable 3). Since it shares an edge with both Variable 1 and Variable 2, we must assign it with a value that is different from both Red and Black. However, since the domain of Variable 5 is {B}, we cannot proceed any further because assigning Variable 3 would violate the constraint with either Variable 1 or Variable 2.
+
+So, in this case, BT would cross out the nodes where a constraint test would fail, which includes all nodes that have R_1 B_2 and a variable 3 assigned with Red (R). The remaining unmarked nodes represent assignments that would never be explored because they lead to a dead end.
+
+Here is the updated tree:
+
+    RB
+       |
+       B
+         |
+         --- Crossed out nodes start here ---
+       R
+       RB
+       RBR
+       RBRB
+       RBRBR
+       RBRBRB
+       RBRBRBR
+       RBRBRBRB
+       RBRBRBRBR
+       RBRBRBRBRB
+         |
+         BBBBBBBBBBBBBBBB
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints (16 points) Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows: 1 | 2 | 3 ---------- 4 | 5 | ---------- |   | Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } . > 5. If we use backtracking with forward checking (BT-FC) in this same situation, give a list of all the assignments attempted, in sequence. Use the notation variable = color for assignments, for example, 1=R. | Assignment:   | None    | 1 = R   | 2= B   | 1= B    | 2= R   | 3= B   | 4= R   | 5= B   | |---------------|---------|---------|--------|---------|--------|--------|--------|--------| | Domain of 1:  | { R,B } |         |        |         |        |        |        |        | | Domain of 2:  | { R,B } | { B }   |        | { R }   |        |        |        |        | | Domain of 3:  | { R,B } | { R,B } | { R }  | { R,B } | { B }  |        |        |        | | Domain of 4:  | { R,B } | { B }   | { B }  | { R }   | { R }  | { R }  |        |        | | Domain of 5:  | { B }   | { B }   | {} ⇓   | { B }   | { B }  | { B }  | { B }  |        |
+//// ANSWER: Based on the context provided, here is a possible sequence of assignments using Backtracking with Forward Checking (BT-FC) for the given CSP problem:
+
+1. None (Initial state)
+2. 1 = R (Assign color R to square 1)
+3. 2 = B (Assign color B to square 2, which is consistent with the constraint that squares adjacent vertically or horizontally do not have the same color)
+4. 3 = B (Assign color B to square 3, which is consistent with the current state)
+5. 4 = R (Assign color R to square 4, which is inconsistent with the constraint since it would make squares 1 and 4 adjacent with the same color. Backtrack.)
+6. 2 = R (Change the assignment of square 2 from B to R, which is consistent with the current state)
+7. 4 = B (Assign color B to square 4, which is now consistent with the constraint since it makes squares 1 and 4 non-adjacent)
+8. 5 = B (Assign color B to square 5, which is consistent with the current state)
+9. None (The remaining variables are assigned, so we check for a solution by propagating constraints.)
+10. Propagate constraints: Since squares 1 and 2 are adjacent and have different colors, the domain of square 5 (which is adjacent to square 2) must be {B}. The domain of square 3 (which is adjacent to squares 1 and 4) must be {R}.
+11. Check for a solution: Since all variables have been assigned and their domains are consistent with the constraints, this assignment is a valid solution.
+
+The final sequence of assignments would be: [1=R, 2=B, 3=B, 4=B, 5=B].
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 2 Constraints (16 points) Consider assigning colors to a checkerboard so that squares that are adjacent vertically or horizontally do not have the same color. We know that this can be done with only two colors, say red (R) and black (B). We will limit our discussion to five squares on a 3x3 board, numbered as follows: 1 | 2 | 3 ---------- 4 | 5 | ---------- |   | Let's look at the CSP formulation of this problem. Let the squares be the variables and the colors be the values. All the variables have domains { R, B } . > 6. If we use backtracking with forward checking (BT-FC) but with dynamic variable ordering, using the most-constrained-variable strategy, give a list of all the variable assignments attempted, in sequence. If there is a tie between variables, use the lowest-numbered one first. Use the notation variable = color for assignments, for example, 1=R. | Assignment:   | None     | 5 = B    | 2= R   | 1= B   | 3= B   | 4= R   | |---------------|----------|----------|--------|--------|--------|--------| | Domain of 1:  | { R, B } | { R, B } | { B }  |        |        |        | | Domain of 2:  | { R, B } | { R }    |        |        |        |        | | Domain of 3:  | { R, B } | { R, B } | { B }  | { B }  |        |        | | Domain of 4:  | { R, B } | { R }    | { R }  | { R }  | { R }  |        | | Domain of 5:  | { B }    |          |        |        |        |        | { }
+//// ANSWER: To solve the given CSP problem using Backtracking with Forward Checking (BT-FC) and dynamic variable ordering based on the most-constrained-variable strategy, we will start by finding the variable with the smallest domain (i.e., the most constrained variable). In this case, variable 5 has only one value in its domain (B), so it is assigned first:
+
+    Assignment: 5 = B
+
+Now, let's update the domains of the other variables based on the forward checking constraint:
+
+    Domain of 1: { R }
+    Domain of 2: { R }
+    Domain of 3: { R, B }
+    Domain of 4: { R }
+
+Next, we find the most constrained variable among the remaining variables (i.e., variables with smaller domains). In this case, both variables 1 and 4 have a domain size of 1, so we will choose the lowest-numbered one first:
+
+    Assignment: 1 = R
+
+Now, let's update the domains of the other variables based on the forward checking constraint:
+
+    Domain of 2: { B }
+    Domain of 3: { B }
+    Domain of 4:        (no change)
+
+Next, we find the most constrained variable among the remaining variables. In this case, both variables 2 and 3 have a domain size of 1, so we will choose the lowest-numbered one first:
+
+    Assignment: 2 = R
+
+Now, let's update the domains of the other variables based on the forward checking constraint:
+
+    Domain of 3:        (no change)
+    Domain of 4: { B }
+
+Finally, we find the most constrained variable among the remaining variables. In this case, variable 4 has a domain size of 1, so it is assigned last:
+
+    Assignment: 4 = R
+
+Now, let's update the domains of the other variables based on the forward checking constraint (since there are no more assignments to make, all remaining variables will have an empty domain):
+
+    Domain of 3:        (no change)
+    Domain of 5:        (no change)
+
+The final sequence of variable assignments is: [5=B, 1=R, 2=R, 4=R]
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation A: The variables are the 3 k instrument/time slots. > 1. Domain:
+//// ANSWER: 1. Value domain for the variables: Each variable represents an instrument/time slot, so the possible values are the different combinations of instruments (1, 2, or 3) and time slots (1 to k). Since each instrument must be aimed at the same target at the same time, this means that there will only be three unique values for each variable in a consistent schedule.
+    2. Size of the domain for the variables: The size of the domain is 3^k since there are three instruments and k time slots.
+    3. Constraints necessarily satisfied because of the formulation: C1 is not necessarily satisfied because this formulation does not explicitly represent the scientists or their observations. However, C2 and C3 are implicitly satisfied in this formulation because each variable represents a unique instrument/time slot combination, ensuring that at most one observation per instrument per time slot is scheduled and that the observations scheduled for a single time slot must have the same target.
+    4. Whether the constraints can be specified as binary constraints in this formulation: No, the constraints cannot be specified as binary constraints in this formulation because they involve more than two variables (scientists or observations) and their relationships. For example, C1 requires choosing exactly two observations from each scientist's list, which involves multiple variables (observations of a single scientist). Similarly, C3 requires that the observations scheduled for a single time slot must have the same target, which also involves multiple variables (the observations scheduled for that time slot).
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation A: The variables are the 3 k instrument/time slots. > 2. Size of domain:
+//// ANSWER: 1. The value domain for each variable in this formulation consists of all possible combinations of the three telescope instruments (I1, I2, I3) and the k time slots (T1, T2, ..., Tk). So, each domain has a total of 3 \* k values.
+
+   2. Size of domain in terms of k , m , and n : Each variable's domain size is 3 \* k since there are three instruments and k time slots. Since there are no scientists involved in this formulation, the size of the domain does not depend on m or n.
+
+   3. The constraints C1 and C2 are necessarily satisfied because of the formulation. In this formulation, we are only considering the instrument/time slot variables, so each scientist will automatically have exactly two observations scheduled (the choice of the two will be part of the solution), and at most one observation per instrument per time slot is scheduled due to the nature of the variable domains. Constraint C3 can still be satisfied because the variables are instrument/time slots, and all observations for a single time slot must have the same target since they are associated with the same instrument/time slot variable.
+
+   4. The constraints can be specified as binary constraints in this formulation. For constraint C1 (exactly two observations from each scientist's list will be made), we can create k binary variables, one for each time slot, to represent whether an observation is scheduled or not for that time slot for a given scientist. If the value of a variable is 1, it means an observation is scheduled; if the value is 0, it means no observation is scheduled. To ensure exactly two observations are scheduled per scientist, we can use the following binary constraints:
+   - For each scientist, the sum of the k variables representing their time slots should be equal to 2.
+   - No variable should have a value greater than 1.
+
+   For constraint C2 (at most one observation per instrument per time slot), we can create three binary variables for each time slot, one for each instrument, to represent whether an observation using that instrument is scheduled or not for that time slot. Similar to the previous case, if a variable has a value of 1, it means an observation is scheduled using that instrument; if it's 0, no observation is scheduled. To ensure at most one observation per instrument per time slot, we can use the following binary constraints:
+   - For each time slot and each instrument, the sum of the variables representing observations using that instrument should be less than or equal to 1.
+
+   Constraint C3 (the observations scheduled for a single time slot must have the same target) cannot be specified as a binary constraint in this formulation since we are not considering the targets explicitly in the variable domains. Instead, we would need to check the consistency of the assignments during constraint propagation or backtracking search.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation A: The variables are the 3 k instrument/time slots. > 3. Satisfied constraints:
+//// ANSWER: 1. The value domain for the variables consists of all possible combinations of the three instruments (I1, I2, I3) and the k time slots. So, the domain is {(I1, T1), (I1, T2), ..., (I3, Tk)} where I1, I2, I3 are the three instruments and T1, T2, ..., Tk are the k time slots.
+    2. The size of the domain for each variable is 3k since there are three possible instruments and k possible time slots.
+    3. Constraint C1 is necessarily satisfied because the formulation only considers one observation per scientist's list, which means exactly two observations from each scientist's list will be made, but the variables in this formulation do not represent scientists directly.
+    4. Constraints C2 and C3 can be specified as binary constraints in this formulation. For constraint C2, a binary constraint can be defined between each pair of instruments for each time slot, enforcing that at most one instrument is assigned to the time slot. For constraint C3, a binary constraint can be defined between each pair of targets for each time slot, enforcing that the observations scheduled for a single time slot must have the same target. This is because if a binary constraint between two variables exists, it implies that they cannot both be true at the same time, which satisfies the requirement that all telescopes must be aimed at the same target at the same time. A counterexample to this would be if there were more than one pair of variables representing observations with the same target and time slot, in which case the binary constraint would not enforce the correct relationship.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation A: The variables are the 3 k instrument/time slots. > 4. Binary constraints?:
+//// ANSWER: 1. The value domain for each variable is the set of all possible combinations of the three instruments (since there are three instruments and each variable represents an instrument/time slot, the domain has 3^k elements).
+   2. The size of the domain for each variable is 3^k (since there are k instrument/time slots, and each one can take on any of the three possible values for the instrument).
+   3. Constraints C1 and C2 are necessarily satisfied because of this formulation since each variable represents an instrument/time slot, and we know that exactly two observations will be made from each scientist's list (which means that at most two variables can take on a value), and at most one observation per instrument per time slot is scheduled (since each variable represents an instrument/time slot). Constraint C3 is not necessarily satisfied because of this formulation since the variables do not represent observations, but rather the instruments used for those observations.
+   4. The constraints can be specified as binary constraints in this formulation. To specify constraint C1, we can use a binary constraint between each pair of variables representing the two observations made by the same scientist (since exactly two observations will be made from each scientist's list, there will be k/2 such pairs). To specify constraint C3, we can use a binary constraint between each pair of variables representing observations scheduled for the same time slot (since all observations in a single time slot must have the same target, we can enforce this by ensuring that no two variables representing observations scheduled for the same time slot take on different values for the target). To specify constraint C2, we can use a binary constraint between each pair of variables representing observations using the same instrument (since at most one observation per instrument per time slot is scheduled, we can ensure this by enforcing that no two variables representing observations using the same instrument take on the same value for the time slot).
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation B: The variables are the m scientists. > 1. Domain:
+//// ANSWER: 1. Value domain for the variables: Each variable (scientist) has a domain consisting of all possible subsets of size 2 from their list of n observations. Since each scientist can only make exactly two observations, this means that each scientist's domain contains 2^n-2 unique subsets.
+   2. Size of the domain for the variables: The size of the domain for each variable is (2^n)-2, where n is the number of telescope observations submitted by the corresponding scientist.
+   3. Constraints necessarily satisfied because of the formulation:
+       - C1: Since the variables are the scientists and the domain for each variable consists of all possible subsets of size 2 from their list of n observations, this ensures that exactly two observations from each scientist's list will be included in the solution (since each subset has size 2).
+   4. Which of the constraints can be specified as binary constraints in this formulation:
+       - C1 can be specified as a binary constraint since it requires selecting exactly two observations from each scientist's list, which can be represented by pairwise relationships between the observations for each scientist (e.g., an observation cannot be paired with itself or with an observation that has already been paired).
+   5. Whether the constraints can be specified as binary constraints in this formulation:
+       - C2 and C3 cannot be directly specified as binary constraints in this formulation because they involve relationships between multiple observations (instrument/time slot) and targets, which are not represented by pairwise relationships between variables. However, these constraints can be enforced during the search process through propagation rules or consistency checks based on the current assignments of values to the variables. For example, at each step in the search, we can check if assigning a value to a variable violates C2 or C3 by examining the other variables that share an instrument/time slot or target with the assigned variable. If a violation is found, we can backtrack and explore alternative assignments for the current variable.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation B: The variables are the m scientists. > 2. Size of domain:
+//// ANSWER: 1. Value domain for the variables: Each variable represents a scientist, so the value domain consists of all possible scientists (in this case, there are m scientists).
+
+   2. Size of domain: Since each variable represents a unique scientist, the size of the domain is equal to the number of scientists (m).
+
+   3. Constraints necessarily satisfied because of the formulation: None of the constraints C1, C2, or C3 can be necessarily satisfied because of this formulation alone. The variables do not directly represent the observations or the time slots, so it's impossible to enforce these constraints based on the scientist variables alone.
+
+   4. Whether the constraints can be specified as binary constraints in this formulation: No, the constraints cannot be specified as binary constraints in this formulation because the variables do not represent pairs of observations, instruments, or time slots that are involved in the constraints. Instead, each variable represents a unique scientist. A binary constraint would require variables that represent pairs of entities from the same constraint (e.g., two observations, two instruments, or two time slots).
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation B: The variables are the m scientists. > 3. Satisfied constraints:
+//// ANSWER: 1. The value domain for the variables is a set of indices representing each scientist (from 1 to m).
+   2. The size of the domain for each variable is equal to the number of scientists (m).
+   3. The constraints C1 and C2 are necessarily satisfied because of this formulation since we know that each scientist has a fixed number of requests, and we are only considering two of them in the solution. Constraint C3 cannot be necessarily satisfied because knowing the variables for the scientists doesn't provide information about their observations or targets.
+   4. The constraints can be specified as binary constraints in this formulation. To represent constraint C1 (exactly two observations from each scientist's list will be made), we can use a pair of binary variables, one representing whether an observation is scheduled for the first request and another for the second request. For example, if V_i represents the variable for scientist i, then we can have two binary variables: V1_i (representing the first request) and V2_i (representing the second request). The constraint would be that exactly one of V1_i and V2_i should be 1, while the other is 0.
+   Constraint C2 (at most one observation per instrument per time slot) can also be represented as a binary constraint by introducing additional variables for each combination of scientist, target, and instrument. For example, if T_j represents the variable for target j, I_l represents the variable for instrument l, and S_k represents the variable for scientist k, we can have a binary variable X_jkl to represent whether an observation for target j with instrument l by scientist k is scheduled in a specific time slot. The constraint would be that at most one X_jkl should be 1 for each combination of j, l, and k.
+   Constraint C3 (the observations scheduled for a single time slot must have the same target) can also be represented as a binary constraint by introducing additional variables for each pair of observations with the same time slot. For example, if O_i represents the variable for observation i, we can have a binary variable Y_ij to represent whether observations i and j are scheduled in the same time slot. The constraint would be that if Y_ij is 1, then T_i should equal T_j.
+   In this formulation, it's important to note that the binary variables introduced to represent the constraints are auxiliary and not part of the original problem definition. They serve only to help enforce the constraints during the search process.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation B: The variables are the m scientists. > 4. Binary constraints?:
+//// ANSWER: Yes, the constraints can be specified as binary constraints in this formulation. In Formulation B, each scientist is considered as a variable with a domain of size 2 (since exactly two observations from their list will be made). The constraints are as follows:
+
+   C1: For each scientist, there must be two distinct variables that are assigned the value 1 (indicating the chosen observations) and the rest of the variables for that scientist should be assigned the value 0. This can be represented as a binary constraint since each variable can only take on two values, 0 or 1.
+
+   C2: At most one observation per instrument per time slot is scheduled. In this formulation, we don't have direct access to the instruments or time slots, but we can indirectly enforce this constraint by considering pairs of observations for each scientist. If a pair of observations shares an instrument or time slot, they cannot both be chosen (since there are only two choices per scientist). This can also be represented as a binary constraint since each pair of variables can only take on two values, 0 (not chosen together) or 1 (chosen together).
+
+   C3: The observations scheduled for a single time slot must have the same target. In this formulation, we don't have direct access to the targets, but we can indirectly enforce this constraint by considering triples of variables representing pairs of observations and the corresponding time slots. If a triple violates this constraint (i.e., the two observations do not share the same target or they are scheduled for different time slots), it cannot be part of a valid solution. This can also be represented as a binary constraint since each triple of variables can only take on two values, 0 (invalid) or 1 (valid).
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation C: The variables are the mn scientists' requests. > 1. Domain:
+//// ANSWER: 1. Domain: Each variable represents a scientist's observation request, and the domain for each variable is the set of all possible combinations of target, instrument, and time slot that the scientist has requested. Since there are n requests per scientist, the size of the domain for each variable is n^3.
+   2. Size of the domain: The size of the domain for each variable (in terms of k, m, and n) is n^3.
+   3. Constraints necessarily satisfied because of the formulation: Since each scientist can only have exactly two observations made, this constraint (C1) is inherently satisfied in this formulation as we are considering all requests from a single scientist at once. Also, since there are no repeated instruments or targets within a scientist's requests, constraints C2 and C3 are not necessarily satisfied because of the formulation alone.
+   4. Constraints can be specified as binary constraints: In this formulation, constraints C2 and C3 can be specified as binary constraints. For constraint C2, we can create a binary variable for each pair of instruments and time slots within the problem, with a value of 1 indicating that both instruments are scheduled for the same time slot and a value of 0 otherwise. Similarly, for constraint C3, we can create a binary variable for each pair of targets and time slots within the problem, with a value of 1 indicating that observations with the same target are scheduled for the same time slot and a value of 0 otherwise.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation C: The variables are the mn scientists' requests. > 2. Size of domain:
+//// ANSWER: 1. Value Domain for the variables: Each variable represents a scientist's request and its value is a triple (target, instrument, time slot). The possible values for each variable are all combinations of the targets, instruments, and time slots available.
+
+   2. Size of domain: Since there are m scientists, n observations per scientist, k total time slots, and 3 telescope instruments, the size of the domain for each variable is m \* n \* k \* 3.
+
+   3. Constraints necessarily satisfied because of the formulation:
+       - C1: Exactly two observations from each scientist's list will be made. This constraint is inherently satisfied in this formulation, as we are considering all possible requests from each scientist and only selecting exactly two.
+       - C2: At most one observation per instrument per time slot is scheduled. In this formulation, since each variable represents a specific request (target, instrument, time slot), there can be at most one instance of the same instrument-time slot combination in any solution.
+       - C3: The observations scheduled for a single time slot must have the same target. This constraint cannot be necessarily satisfied because of the formulation, as we are not considering combinations of requests across different time slots.
+
+   4. Constraints can be specified as binary constraints in this formulation:
+       - C1 and C2 can be represented as binary constraints. For example, for each scientist i and observation j, we can create a binary constraint that enforces exactly two observations from the scientist's list are selected (one for variable i,j and another for variable i,(j+1) mod n, assuming the requests are ordered). Similarly, for each instrument and time slot, we can create a binary constraint to enforce at most one observation per instrument-time slot combination.
+       - C3 cannot be represented as a binary constraint in this formulation because it involves considering multiple variables (requests) across different time slots simultaneously.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation C: The variables are the mn scientists' requests. > 3. Satisfied constraints:
+//// ANSWER: 1. The value domain for each variable in this formulation consists of all possible combinations of target, instrument, and time slot that a scientist has requested. Since each scientist can have n observations, the size of the domain for each variable is n.
+
+2. The size of the domain for each variable (in terms of k, m, and n) is n^3 because there are three attributes (target, instrument, and time slot) and each attribute has k, m, and n possible values respectively.
+
+3. In this formulation, constraints C1 and C2 are necessarily satisfied because the variables represent the scientists' requests, and by definition, each scientist can only make exactly two observations (satisfying C1), and each observation can only be made once per instrument and time slot (satisfying C2). Constraint C3 cannot be satisfied by this formulation alone since it requires that all observations scheduled for a single time slot must have the same target, but the variables in this formulation do not represent multiple observations at the same time slot.
+
+4. The constraints can be specified as binary constraints in this formulation. For constraint C1, we can create a binary variable for each pair of requests from the same scientist and enforce that at most two of these binary variables are set to 1. For constraint C2, we can create a binary variable for each combination of instrument, time slot, and request, and enforce that at most one of these binary variables is set to 1 for any given instrument and time slot. Constraint C3 cannot be specified as a binary constraint in this formulation because it requires considering multiple observations at the same time slot, but the variables in this formulation only represent individual requests, not groups of requests at the same time slot.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 3 Constraint satisfaction (24 points) You are trying to schedule observations on the space telescope. We have m scientists who have each submitted a list of n telescope observations they would like to make. An observation is specified by a target, a telescope instrument, and a time slot. Each scientist is working on a different project so the targets in each scientist's observations are different from those of other scientists. There are k total time slots, and the telescope has three instruments, but all must be aimed at the same target at the same time. The greedy scientists cannot all be satisfied, so we will try to find a schedule that satisfies the following constraints: C1 . Exactly two observations from each scientist's list will be made (the choice of the two will be part of the solution). C2 . At most one observation per instrument per time slot is scheduled. C3 . The observations scheduled for a single time slot must have the same target. Note that for some set of requested observations, there may not be any consistent schedule, but that's fine. Consider the following three formulations of the problem. A . The variables are the 3 k instrument/time slots. B . The variables are the m scientists. C . The variables are the mn scientists' requests. For each formulation, specify 1 . The value domain for the variables. 2 . The size of the domain for the variables (in terms of k , m ,and n ). 3 . Which of the constraints are necessarily satisfied because of the formulation. 4 . Whether the constraints can be specified as binary constraints in this formulation. If they can, explain how. If not, provide a counterexample. > Formulation C: The variables are the mn scientists' requests. > 4. Binary constraints?:
+//// ANSWER: Yes, the constraints can be specified as binary constraints in this formulation. In Formulation C, each variable represents a scientist's request, and the value of that variable indicates whether or not the corresponding observation is scheduled (1 for yes, 0 for no). The binary constraints are as follows:
+
+   1. For each scientist (m variables), exactly two out of their n requests should be scheduled (C1). This can be represented by a set of k binary constraints, where k is the number of time slots. Each constraint ensures that the sum of the values for that scientist's requests in a specific time slot is either 0 or 2.
+   2. For each instrument (3 variables), at most one observation per time slot is scheduled (C2). This can be represented by a set of k binary constraints, where k is the number of time slots. Each constraint ensures that the sum of the values for an instrument's requests in a specific time slot is at most 1.
+   3. For each time slot (k variables), the observations scheduled must have the same target (C3). This can be represented by a set of m(m-1) binary constraints, where m is the number of scientists. Each constraint ensures that if one scientist's request for a specific target in a time slot is 1, then all other scientists' requests for that same target and time slot should be 0.
+
+In this formulation, each constraint involves exactly two variables, making them binary constraints.
+
+Sources:
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation (23 points) Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration. · It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge. · It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square. · It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square. The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander. Here is a list of variables that might be used to describe the rover's world: · types of rocks already collected · current rover location (square on map) · current lander location (square on map) · weight of rocks at current location (square on map) · cost to traverse the current location (square on map) · time since last charged · time since departure from lander · current day · current battery charge level · total battery capacity · distance to lander · total weight of currently collected rocks > 1. Use a set of the variables above to describe the rover's state. Do not include extraneous information.
+//// ANSWER: The state of the Mars rover can be described as follows:
+
+   - Current location (square on map)
+   - Types of rocks already collected
+   - Weight of rocks at current location (square on map)
+   - Cost to traverse the current location (square on map)
+   - Time since last charged
+   - Time since departure from lander
+   - Current day
+   - Current battery charge level
+   - Total battery capacity
+   - Distance to lander
+   - Total weight of currently collected rocks
+
+This set of variables provides a succinct and relevant description of the rover's state at any given moment during its exploration.
+
+Sources:
+ch2_search1_parsed.txt
+ch2_search2_parsed.txt
+ch6_mach2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation (23 points) Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration. · It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge. · It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square. · It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square. The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander. Here is a list of variables that might be used to describe the rover's world: · types of rocks already collected · current rover location (square on map) · current lander location (square on map) · weight of rocks at current location (square on map) · cost to traverse the current location (square on map) · time since last charged · time since departure from lander · current day · current battery charge level · total battery capacity · distance to lander · total weight of currently collected rocks > 2. Specify the goal test.
+//// ANSWER: The goal test for this problem is to check if the rover has collected one of each of 10 types of rocks within three days, while minimizing a combination of their total weight and the distance traveled. In other words, the goal state is reached when the rover has collected all 10 unique types of rocks and it's been three days or less since its departure from the lander. The rover must also return to the lander with the collected rocks. So, the goal test can be defined as:
+
+    Goal Test: (Number of unique types of rocks collected == 10) AND (Current day <= 3) AND (Rover is at the lander location)
+
+Sources:
+ch2_search1_parsed.txt
+ch2_search2_parsed.txt
+ch6_mach2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation (23 points) Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration. · It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge. · It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square. · It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square. The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander. Here is a list of variables that might be used to describe the rover's world: · types of rocks already collected · current rover location (square on map) · current lander location (square on map) · weight of rocks at current location (square on map) · cost to traverse the current location (square on map) · time since last charged · time since departure from lander · current day · current battery charge level · total battery capacity · distance to lander · total weight of currently collected rocks > 3. Specify the actions. Indicate how they modify the state and any preconditions for being used.
+//// ANSWER: In the given context, the actions that the Mars rover can perform are:
+
+1. Drive to a specific location (square on the map): This action modifies the current rover location. The precondition for this action is that the battery charge level is sufficient to traverse the cost of the current location and reach the desired location, and the time since last charged is greater than or equal to the time required to travel from the current location to the destination.
+
+2. Unfold solar collectors: This action charges the batteries. The precondition for this action is that it can only be performed when the rover is stationary (not moving).
+
+3. Pick up a rock: This action modifies the weight of rocks at the current location (square on the map) and the total weight of currently collected rocks. The precondition for this action is that the battery charge level is sufficient to pick up the rock, and the time since last charged is greater than or equal to the time required to travel from the current location to the destination.
+
+4. Depart from lander: This action modifies the current rover location (to the lander) and the time since departure from lander. The precondition for this action is that the battery charge level is sufficient to traverse the cost of the current location (the lander), and the time since last charged is greater than or equal to the time required to travel from the current location (the lander) to the destination.
+
+5. Return to lander: This action modifies the current rover location (to the lander). The precondition for this action is that the battery charge level is sufficient to traverse the cost of the current location and reach the lander, and the time since last charged is greater than or equal to the time required to travel from the current location to the lander.
+
+6. Charge batteries: This action modifies the current battery charge level. The precondition for this action is that it can only be performed when the rover is stationary (not moving).
+
+Sources:
+ch2_search1_parsed.txt
+ch2_search2_parsed.txt
+ch6_mach2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation (23 points) Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration. · It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge. · It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square. · It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square. The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander. Here is a list of variables that might be used to describe the rover's world: · types of rocks already collected · current rover location (square on map) · current lander location (square on map) · weight of rocks at current location (square on map) · cost to traverse the current location (square on map) · time since last charged · time since departure from lander · current day · current battery charge level · total battery capacity · distance to lander · total weight of currently collected rocks > 4. Specify a function that determines the cost of each action. charge : move : pick-up-rock :
+//// ANSWER: In this problem, we have three actions: charging, moving, and picking up a rock. Here's how to define the cost for each action based on the given information:
+
+1. Charging (charge): The cost of this action is zero since it doesn't require any resources or movement. However, it adds 1 unit of battery charge.
+
+2. Moving (move): The cost of moving from one square to another depends on two factors: the time required to traverse that square and the battery charge consumed during travel. Since we are given the time in hours and battery charge consumed for each square, we can calculate the cost as follows:
+
+   Cost = Time_to_travel * α + Battery_charge_consumed
+
+3. Picking up a rock (pick-up-rock): The cost of this action is the consumption of one unit of battery charge and the weight of the rock found at the current location. Since we are given the weight of rocks for each square, we can calculate the cost as follows:
+
+   Cost = 1 (battery charge) + Weight_of_rock_at_current_location
+
+In summary, to determine the cost of an action, we need to consider the time required to traverse the current location, battery charge consumed during travel, battery charge consumption for the action itself, and the weight of any rocks found at the current location. The tradeoff parameter α converts units of weight to units of distance.
+
+Sources:
+ch2_search1_parsed.txt
+ch2_search2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 4 Search Problem formulation (23 points) Consider a Mars rover that has to drive around the surface, collect rock samples, and return to the lander. We want to construct a plan for its exploration. · It has batteries. The batteries can be charged by stopping and unfurling the solar collectors (pretend it's always daylight). One hour of solar collection results in one unit of battery charge. The batteries can hold a total of 10 units of charge. · It can drive. It has a map at 10-meter resolution indicating how many units of battery charge and how much time (in hours) will be required to reach a suitable rock in each square. · It can pick up a rock. This requires one unit of battery charge. The robot has a map at 10-meter resolution that indicates the type of rock expected in that location and the expected weight of rocks in that location. Assume only one type of rock and one size can be found in each square. The objective for the rover is to get one of each of 10 types of rocks, within three days, while minimizing a combination of their total weight and the distance traveled. You are given a tradeoff parameter α that converts units of weight to units of distance. The rover starts at the lander with a full battery and must return to the lander. Here is a list of variables that might be used to describe the rover's world: · types of rocks already collected · current rover location (square on map) · current lander location (square on map) · weight of rocks at current location (square on map) · cost to traverse the current location (square on map) · time since last charged · time since departure from lander · current day · current battery charge level · total battery capacity · distance to lander · total weight of currently collected rocks > 5. This can be treated as a path search problem. We would like to find a heuristic. Say whether each of these possible heuristics would be useful in finding the optimal path or, if not, what's wrong with them. Let l be the number of rocks already collected. H1 : The sum of the distances (in the map) from the rover to the 10 -l closest locations for the missing types of rocks. H2 : The length of the shortest tour through the 10 -l closest locations for the missing types of rocks. H3 : The distance back to the lander
+//// ANSWER: 1. H1: The sum of the distances (in the map) from the rover to the 10-l closest locations for the missing types of rocks would be useful in finding an optimal path because it provides a measure of how far the rover needs to travel to collect the remaining rocks. However, it does not take into account the weight of the rocks or the battery charge level, which are also important factors in determining the optimal path.
+
+2. H2: The length of the shortest tour through the 10-l closest locations for the missing types of rocks would not be useful in finding an optimal path because it does not consider the weight of the rocks or the battery charge level, which are crucial factors in minimizing a combination of total weight and distance traveled. Additionally, it is difficult to calculate the shortest tour without knowing the specific locations of the remaining rocks.
+
+3. H3: The distance back to the lander would not be useful in finding an optimal path because it only considers the distance to the starting point and does not take into account the locations of the remaining rocks or their weights, which are essential factors in minimizing total weight and distance traveled. Furthermore, the objective is to collect all 10 types of rocks within three days, so returning to the lander as quickly as possible may not be the optimal strategy.
+
+Sources:
+ch2_search2_parsed.txt
+ch3_csp_games1_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G1: A → B A → D B → C B → D B → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why
+//// ANSWER: 1. Depth first search - No, this tree was not generated with depth-first search because it does not follow the depth-first traversal order (left to right, then deepest node).
+2. Breadth first search - No, this tree was not generated with breadth-first search because it does not follow the breadth-first traversal order (level by level).
+3. Uniform cost search - No, this tree was not generated with uniform cost search because it uses a heuristic function to guide the search, which is not allowed in uniform cost search.
+4. A* search - Yes, this tree was generated with A* search using heuristic 1 (h(A)=3, h(B)=6, h(C)=4, h(D)=3). The result is an optimal path because the A* algorithm always finds the least-cost path when a consistent heuristic function is used.
+5. Best-first (greedy) search - Yes, this tree was generated with best-first (greedy) search using heuristic 1 (h(A)=3, h(B)=6, h(C)=4, h(D)=3). The result is an optimal path because the greedy algorithm always chooses the next node that appears to be closest to the goal in terms of the heuristic function.
+   Heuristic 1: h(A)=3, h(B)=6, h(C)=4, h(D)=3
+   Heuristic 2: Not used in this tree.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G2: A (6) → B A (3) → D D (4) → C D → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why
+//// ANSWER: 1. The tree labeled as G2 was generated with Breadth-First Search (BFS) because it expands nodes in a breadthwise manner, and the order of children is visited alphabetically.
+2. No heuristic function was used for this search.
+3. Yes, it found the least-cost path. The sum of link costs for the path A -> B -> D -> C -> D -> G is 6 + 3 + 4 + 0 + 2 = 15, which is the minimum cost from node A to node G in this graph.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G3: A (7) → B A (6) → D D (8) → C D (6) → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why
+//// ANSWER: 1. The tree G3 was generated with Breadth-First Search (BFS). This is because in BFS, the algorithm expands nodes at the same level before moving on to the next level, and this tree shows a breadthwise expansion of the nodes.
+2. No heuristic function was used for this search.
+3. Yes, it found the least-cost path. The sum of link costs in this path is 7 + 6 + 8 + 6 = 27, which is the minimum cost from A to G in this graph. This can be verified by checking all other possible paths from A to G.
+4. Not applicable as no heuristic function was used for this search.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G4: A (3) → B A (2) → D D (0) → C C → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why
+//// ANSWER: 1. Depth First Search - No, this search is not depth first as the nodes are visited in alphabetical order, which is a characteristic of breadth-first or best-first search.
+2. Heuristic (if any): None, since no heuristic function is specified in the given tree G4.
+3. Did it find least-cost path? If not, why - No, this tree does not represent a least-cost path because the path A -> B -> D -> C -> G has a total cost of 9, while there exists an optimal path with a lower cost (A -> B -> C -> G with a total cost of 5). The reason for this is that depth-first search does not consider the costs of the paths when choosing which node to expand next. Instead, it simply expands nodes in alphabetical order.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G5: A → B A → D B → C B → D B → G C → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why?
+//// ANSWER: 1. The algorithm used for tree G5 is Best-first (greedy) search.
+2. No heuristic function was specified or used in this case as the problem does not provide one.
+3. Yes, it found the least-cost path. The sum of link costs in the path A → B A → D B → C B → G is 1 + 3 + 0 + 1 = 5, which is the minimum cost possible from node A to node G in this graph. Since no heuristic function was used, the algorithm simply follows the path with the lowest immediate cost at each step, which results in finding the optimal path.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G6: A (4) → B B (6) → C B (7) → D B (7) → G A (5) → D D (4) → C D (6) → G C (5) → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why?
+//// ANSWER: 1. The algorithm used for tree G6 is Breadth-First Search (BFS). This can be determined by observing that the nodes are visited in a breadthwise manner, with each level being filled before moving to the next level.
+
+2. No heuristic function was used for this search.
+
+3. Yes, it found the least-cost path. The total cost of the path A -> B -> C -> G is 4 + 6 + 5 = 15, which is the minimum cost among all paths in the graph. This can be confirmed by checking other paths and their costs. For example, the path A -> D -> C -> G has a cost of 4 + 2 + 3 + 2 = 11, which is greater than the cost of the optimal path found by BFS.
+
+In this case, BFS was able to find the optimal path without using any heuristic function, demonstrating that it can be effective even in uninformed search scenarios when the graph structure allows for efficient exploration.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
+QUESTION: 6.034 Quiz 1, Spring 2005 > 5 Search traces (21 points) Consider the graph shown in the figure below. We can search it with a variety of different algorithms, resulting in different search trees. Each of the trees (labeled G1-G7) was generated by searching this graph, but with a different algorithm. Assume that children of a node are visited in alphabetical order. Each tree shows all the nodes that have been visited. Numbers next to nodes indicate the relevant 'score' used by the algorithm for those nodes. G: A (1) → B A (3) → D A (2) → B B (5) → C B (6) → G B (4) → D D (1) → C D (3) → G C (1) → G For each tree, indicate whether it was generated with 1. Depth first search 2. Breadth first search 3. Uniform cost search 4. A* search 5. Best-first (greedy) search In all cases a strict expanded list was used. Furthermore, if you choose an algorithm that uses a heuristic function, say whether we used H1 :heuristic 1 = { h ( A )=3 ,h ( B )=6 ,h ( C )=4 ,h ( D )=3 } H2 :heuristic 2 = { h ( A )=3 ,h ( B )=3 ,h ( C )=0 ,h ( D )=2 } Also, for all algorithms, say whether the result was an optimal path (measured by sum of link costs), and if not, why not. Be specific. Write your answers in the space provided below (not on the figure). > G7: A (1) → B A (3) → D B (6) → C B (5) → D B (7) → G D (6) → C D (8) → G D (4) → C D (6) → G C (5) → G 1. Algorithm: 2. Heuristic (if any): 3. Did it find least-cost path? If not, why?
+//// ANSWER: 1. Algorithm: Best-first (greedy) search
+2. Heuristic (if any): h1 = { h(A) = 3, h(B) = 6, h(C) = 4, h(D) = 3 }
+3. Did it find least-cost path? If not, why? No, the path found by this search is not the least-cost path. The optimal path from A to G is A -> B -> D -> C -> G with a cost of 10, while the path found by Best-first search (A -> B -> D -> G) has a cost of 16 (1 + 3 + 6 + 5 + 6). The reason it did not find the optimal path is because it always chooses the node with the lowest heuristic value, which is not necessarily the node with the lowest total cost to reach the goal. In this case, it prioritized moving from B to D over moving from A to C, leading it astray from the optimal path.
+
+Sources:
+ch2_search1_parsed.txt
+ch3_csp_games1_parsed.txt
+ch3_csp_games2_parsed.txt
+
