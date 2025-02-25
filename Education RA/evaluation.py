@@ -22,7 +22,14 @@ console = Console()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
-def print_metrics(question_number: int, evaluation_metrics: dict):
+def print_metrics(question_number: int, evaluation_metrics: dict) -> None:
+    """Prints evaluation metrics for a question in a formatted table.
+
+    Args:
+        question_number: Number identifier for the question.
+        evaluation_metrics: Dictionary containing metric scores. Expected keys:
+            'bleu', 'rouge1', 'rougeL', 'token_f1', 'bert_f1', 'jaccard', 'rubric_score'.
+    """
     table = Table(title=f"Question {question_number} Metrics")
     table.add_column("Metric", style="cyan", no_wrap=True)
     table.add_column("Score", style="magenta", justify="right")
@@ -39,6 +46,17 @@ def print_metrics(question_number: int, evaluation_metrics: dict):
 
 
 def extract_answers(md_file: Path) -> list[str]:
+    """Extracts answers from a markdown file using a predefined pattern.
+
+    Args:
+        md_file: Path to markdown file containing answers in `//// ANSWER:` blocks.
+
+    Returns:
+        list of extracted answer strings, stripped of whitespace.
+
+    Raises:
+        FileNotFoundError: If the provided path does not exist.
+    """
     content = md_file.read_text(encoding="utf-8")
     pattern = re.compile(
         r"^//// ANSWER:(.*?)(?=^//// ANSWER:|^#|\Z)", re.DOTALL | re.MULTILINE
@@ -48,6 +66,15 @@ def extract_answers(md_file: Path) -> list[str]:
 
 
 def compute_token_f1(candidate: str, gold: str) -> float:
+    """Calculates token-level F1 score between candidate and reference text.
+
+    Args:
+        candidate: Generated answer text to evaluate.
+        gold: Reference gold-standard answer text.
+
+    Returns:
+        F1 score (float) between 0.0 and 1.0, where 1.0 is perfect overlap.
+    """
     candidate_counts = Counter(candidate.split())
     gold_counts = Counter(gold.split())
     common = sum(
@@ -66,6 +93,15 @@ def compute_token_f1(candidate: str, gold: str) -> float:
 
 
 def jaccard_similarity(candidate: str, gold: str) -> float:
+    """Computes Jaccard similarity between token sets of two texts.
+
+    Args:
+        candidate: Generated answer text to evaluate.
+        gold: Reference gold-standard answer text.
+
+    Returns:
+        Jaccard similarity score (float) between 0.0 (no overlap) and 1.0 (identical).
+    """
     candidate_tokens = set(candidate.split())
     gold_tokens = set(gold.split())
     if not candidate_tokens and not gold_tokens:
@@ -76,6 +112,19 @@ def jaccard_similarity(candidate: str, gold: str) -> float:
 
 
 def extract_rubric(rubric_file: Path, question_number: int) -> str:
+    """Extracts rubric criteria for a specific question from a rubric file.
+
+    Args:
+        rubric_file: Path to file containing rubric sections starting with `//// RUBRIC:`.
+        question_number: 1-based index of the question to extract.
+
+    Returns:
+        Extracted rubric text for the specified question.
+
+    Raises:
+        ValueError: If no rubric exists for the specified question number.
+        FileNotFoundError: If the rubric file does not exist.
+    """
     content = rubric_file.read_text(encoding="utf-8")
     rubrics = re.split(r"^//// RUBRIC:", content, flags=re.MULTILINE)[1:]
     try:
@@ -85,8 +134,21 @@ def extract_rubric(rubric_file: Path, question_number: int) -> str:
 
 
 def evaluate_with_rubric(
-    rubric_text: str, query: str, student_answer: str
+        rubric_text: str, query: str, student_answer: str
 ) -> tuple[float, float]:
+    """Evaluates a student answer using an LLM-based rubric scorer.
+
+    Args:
+        rubric_text: Full text of the evaluation rubric.
+        query: Original question text being evaluated.
+        student_answer: Answer text to evaluate against the rubric.
+
+    Returns:
+        Tuple containing (awarded_points, total_possible_points).
+
+    Notes:
+        Requires Ollama API access and EVALUATION_MODEL environment variable.
+    """
     total_match = re.search(r"Total Points:\s*(\d+)", rubric_text, re.IGNORECASE)
     if not total_match:
         return 0.0, 0.0
@@ -103,7 +165,7 @@ Question:
 Student Answer:
 {student_answer}
 
-Provide your evaluation score:"""
+Return ONLY the numeric score (e.g., '2.5') with no additional text. Your evaluation score:"""
 
     response = ollama.generate(
         model=str(os.getenv("EVALUATION_MODEL")),
@@ -118,7 +180,7 @@ Provide your evaluation score:"""
 
     answer = response.get("response", "").strip()
     try:
-        awarded = float(answer.split()[0])
+        awarded = float(re.search(r"\d+\.?\d*", answer).group())
     except (ValueError, IndexError):
         awarded = 0.0
 
@@ -126,11 +188,36 @@ Provide your evaluation score:"""
 
 
 def evaluate_answers(
-    answers_to_evaluate: list[str],
-    gold_standard_answers: list[str],
-    rubric_file: Path,
-    verbose: bool = False,
+        answers_to_evaluate: list[str],
+        gold_standard_answers: list[str],
+        rubric_file: Path,
+        verbose: bool = False,
 ) -> dict[str, float]:
+    """Evaluate generated answers against gold standards using multiple metrics and rubric scoring.
+
+    Computes BLEU, ROUGE, token F1, BERTScore, Jaccard similarity, and rubric-based scores.
+    Returns averaged metrics across all questions and total awarded/possible points.
+
+    Args:
+        answers_to_evaluate: list of generated answers to evaluate
+        gold_standard_answers: list of reference gold standard answers
+        rubric_file: Path to file containing grading rubric
+        verbose: Whether to print per-question metrics (default: False)
+
+    Returns:
+        Dictionary containing:
+        - Average BLEU score
+        - Average ROUGE-1 F1
+        - Average ROUGE-L F1
+        - Average token-level F1
+        - Average BERTScore F1
+        - Average Jaccard similarity
+        - Total awarded points (sum)
+        - Total possible points (sum)
+
+    Raises:
+        ValueError: If input answer lists have different lengths
+    """
     smoothing = SmoothingFunction().method1
     rouge_evaluator = Rouge()
     results: list[dict[str, float]] = []
@@ -205,7 +292,7 @@ if __name__ == "__main__":
     RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR", "AI_Course/Rubrics"))
 
     # Get all answer files
-    answer_files = list(ANSWER_DIR.glob("*_answers.txt")) + list(ANSWER_DIR.glob("*_rag_answers.txt"))
+    answer_files = list(ANSWER_DIR.glob("*_answers.txt"))
 
     # CSV path and processed file check
     csv_path = ANSWER_DIR / "evaluation_results.csv"
@@ -277,6 +364,7 @@ if __name__ == "__main__":
                 })
 
                 print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
+                csvfile.flush()
 
             except Exception as e:
                 print(f"Error processing {answer_file}: {str(e)}")
