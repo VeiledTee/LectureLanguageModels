@@ -1,203 +1,128 @@
-import gc
 import logging
 import os
-
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:512"
-
+import re
 import time
 from pathlib import Path
+from tqdm import tqdm
 
-import torch
+import ollama
 from dotenv import load_dotenv
-from transformers import pipeline
 
-from preprocessing import parse_quiz
+from preprocessing import process_exam_file
 
-# Configuration constants
-LOCAL_EXAM_DIR: Path = Path(
-    "/home/penguins/Documents/PhD/LectureLanguageModels/Education RA/AI_Course/Exams"
-).resolve()
-OUTPUT_DIR: Path = LOCAL_EXAM_DIR / "generated_answers"
-load_dotenv()  # Load variables from .env
-hf_token = os.getenv("HF_TOKEN")
+load_dotenv()
 
-# Verify and create directories
-OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
-print(f"EXAM DIR: {LOCAL_EXAM_DIR.exists()}")
+# Initialize logging
+logging.basicConfig(level=logging.INFO)
 
 
-def format_question(header: str, content: str) -> str:
-    """Format a question from its header and content sections."""
-    question = f"{header} > {content}" if content else header
-    return question.rstrip(":") + ":" if not question.endswith(":") else question
+class LLMQASystem:
+    """A class for direct question answering using Ollama models without RAG context."""
 
+    def __init__(self, generation_model_name: str):
+        """Initializes the direct answering instance.
 
-def process_exam_file(file_path: Path) -> list[str]:
-    """Process an answerless exam file into individual questions."""
-    with open(file_path, "r", encoding="utf-8") as f:
-        input_text = f.read()
-        questions: list[str] = parse_quiz(str(input_text))
-    print(f"Processed {len(questions)} questions from {file_path.name}")
-    return questions
+        Args:
+            generation_model_name: Name of the Ollama model for answer generation.
+        """
+        self.generation_model = generation_model_name
+        self.temperature = float(os.getenv("GENERATION_TEMPERATURE", "0.3"))
+        self.max_tokens = int(os.getenv("MAX_TOKENS", "2048"))
 
+    def generate_answer(self, question: str) -> str:
+        """Generates an answer to a user question directly using Ollama.
 
-def generate_answers(
-    questions: list[str], pipe: pipeline, batch_size: int = 8
-) -> list[str]:
-    """Generate answers for a list of questions using a text generation pipeline."""
-    answers: list[str] = []
-    for i in range(0, len(questions), batch_size):
-        batch = questions[i : i + batch_size]
+        Args:
+            question: The user question to answer.
+
+        Returns:
+            The generated answer string.
+        """
         try:
-            # Memory management
-            torch.cuda.empty_cache() if torch.cuda.is_available() else None
-            if i % 5 == 0:
-                gc.collect()
+            # Create simplified prompt without context
+            prompt = f"""<|system|>
+You are an AI teaching assistant. Answer the following question to the best of your knowledge.
+Provide a detailed answer based on your training.
+Be definitive in your answer if the question calls for a yes or no response.
+Answer all parts of the question completely.
+</s>
+<|user|>
+{question}
+</s>
+<|assistant|>"""
 
-            # Generate responses
-            responses = pipe(
-                [f"Answer concisely in English without code: {q}" for q in batch],
-                max_new_tokens=256,
-                do_sample=True,
-                temperature=0.3,
-                top_p=0.7,
-                truncation=True,
-                pad_token_id=pipe.tokenizer.eos_token_id,
+            # Generate response through Ollama
+            response = ollama.generate(
+                model=self.generation_model,
+                prompt=prompt,
+                options={
+                    "temperature": self.temperature,
+                    "max_tokens": self.max_tokens,
+                    "top_p": 0.9,
+                    "stop": ["</s>", "\n\n\n"],
+                },
             )
 
-            # Clean and format responses
-            for j, response in enumerate(responses):
+            # Extract and format response
+            if "deepseek" not in self.generation_model:
+                answer = response.get("response", "").strip()
+            else:
+                answer = response.get("response", "").strip()
+                answer = re.sub(r"<think>.*?</think>\n?", "", answer, flags=re.DOTALL)
 
-                raw_text = response[0]["generated_text"]
-                cleaned = raw_text.replace(
-                    f"Answer concisely in English without code: {batch[j]}", "", 1
-                ).strip()
-                last_punct = max(
-                    cleaned.rfind("."), cleaned.rfind("!"), cleaned.rfind("?")
-                )
-                if last_punct != -1 and not cleaned.endswith((".", "!", "?")):
-                    cleaned = cleaned[: last_punct + 1]
-                answers.append(cleaned.strip())
-            print(f"Generated answers {i + 1}/{len(questions)}")
+            return answer
 
         except Exception as e:
-            answers.extend([f"Error: {str(e)}"] * len(batch))
+            logging.error(f"Answer generation failed: {str(e)}")
+            return "Error generating answer"
 
-    return answers
 
-
-def run_exams_for_model(model_id: str) -> None:
-    """Process all exam files for a single language model.
+def process_exams(ollama_pipeline: LLMQASystem):
+    """
+    Processes exam files to generate answers using direct Ollama queries.
 
     Args:
-        model_id: Hugging Face model identifier (e.g., "gpt2")
-
-    Raises:
-        ValueError: If model initialization fails
-        OSError: If file operations fail
+        ollama_pipeline: An instance of LLMQASystem used to generate answers.
     """
-    model_name: str = model_id.replace("/", "-")
-    logging.info(f"Starting exam processing for {model_id}")
-
-    # Attempt to initialize the model on GPU
-    try:
-        # Check if GPU is available
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-
-        # Initialize text generation pipeline with the correct device
-        pipe: pipeline = pipeline(
-            "text-generation",
-            model=model_id,
-            device=0 if device == "cuda" else -1,  # Use GPU if available, otherwise CPU
-            token=hf_token,
-            torch_dtype=torch.float32,
-            trust_remote_code=True,
-        )
-        logging.info(f"Device set to use {device}:0")
-
-    except RuntimeError as e:
-        if "CUDA out of memory" in str(e):
-            logging.warning(f"CUDA out of memory error: {e}. Falling back to CPU.")
-            # Initialize the pipeline on CPU
-            pipe: pipeline = pipeline(
-                "text-generation",
-                model=model_id,
-                device=-1,  # Use CPU
-                token=hf_token,
-                torch_dtype=torch.float32,
-                trust_remote_code=True,
-            )
-            logging.info("Device set to use CPU.")
-        else:
-            raise  # Re-raise the exception if it's not a CUDA out of memory error
-
-    # Process each exam file
-    for exam_file in LOCAL_EXAM_DIR.glob("*_answerless.txt"):
-        start_time = time.time()
+    exam_dir = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
+    output_dir = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
+    for exam_file in exam_dir.glob("*_answerless.txt"):
         try:
+            start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            exam_dir = exam_name.split("_")[0]
-
-            # Create both directory levels
-            output_dir = OUTPUT_DIR / exam_dir
-            output_dir.mkdir(
-                parents=True, exist_ok=True
-            )  # <-- This creates both directories
-
-            output_path = output_dir / f"{model_name}_{exam_name}_answers.txt"
+            output_path = output_dir / f"{exam_name}_{ollama_pipeline.generation_model.split(':')[0]}_answers.txt"
 
             questions = process_exam_file(exam_file)
-            answers = generate_answers(questions, pipe)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                for q, a in zip(questions, answers):
-                    f.write(f"QUESTION: {q}\n//// ANSWER: {a}\n\n")
+                for question in tqdm(questions, desc="Generating answers", unit="question"):
+                    answer = ollama_pipeline.generate_answer(question)
+                    f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
+                    f.flush()  # write answer immediately
 
-            # Log performance
-            duration: float = time.time() - start_time
+            duration = time.time() - start_time
+
+            # Convert duration to hh:mm:ss
+            hours = int(duration // 3600)
+            minutes = int((duration % 3600) // 60)
+            seconds = int(duration % 60)
+
             logging.info(
-                f"Completed {exam_name} in {duration:.2f}s ({len(questions)} questions)"
+                f"Processed {exam_name} in {hours:02}:{minutes:02}:{seconds:02} ({len(questions)} questions)"
             )
-
         except Exception as e:
-            logging.error(f"Failed processing {exam_file.name}: {str(e)}")
-            continue
+            logging.error(f"Error processing {exam_file}: {str(e)}")
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-    )
+    # Configuration
+    env_models: str = os.getenv("GENERATION_MODELS")
+    models: list[str] = [m.strip() for m in env_models.split(",")]
+    for model in models:
+        # Initialize direct answering pipeline
+        quiz_taking_system = LLMQASystem(generation_model_name=model)
 
-    models: list[str] = [
-        # "meta-llama/Llama-3.3-70B-Instruct",
-        # "deepseek-ai/DeepSeek-R1",
-        # "simplescaling/s1-32B",
-        # "mistralai/Mistral-Small-24B-Instruct-2501",
-        # ":ibm-granite/granite-3.2-8b-instruct-preview",
-        # "HuggingFaceH4/zephyr-7b-beta",
-        # "mistralai/Mistral-7B-Instruct-v0.3",
-        # "bigscience/bloom",
-        # "Qwen/Qwen2.5-VL-3B-Instruct",
-        # "open-thoughts/OpenThinker-7B",
-        "HuggingFaceTB/SmolLM2-135M-Instruct",  # v2
-        "HuggingFaceTB/SmolLM2-360M-Instruct",  # v2
-        "HuggingFaceTB/SmolLM2-1.7B-Instruct",  # v2
-        "HuggingFaceTB/SmolLM-135M-Instruct",  # v1
-        "HuggingFaceTB/SmolLM-360M-Instruct",  # v1
-        "HuggingFaceTB/SmolLM-1.7B-Instruct",  # v1
-        # "facebook/opt-1.3b",
-        # "gpt2-medium",
-        # "Qwen/Qwen2.5-7B-Instruct-1M",
-        # "meta-llama/Llama-3.1-8B-Instruct",
-    ]
-
-    try:
-        for model in models:
-            torch.cuda.empty_cache()
-            run_exams_for_model(model)
-            logging.info(f"Completed all exams for {model}")
-    except KeyboardInterrupt:
-        logging.error("Process interrupted by user")
-    finally:
-        print("\n=== All model processing completed ===")
+        # Process exams directly
+        logging.info(f"Processing exams with Ollama queries and {model}...")
+        process_exams(quiz_taking_system)
+        logging.info(f"{model} exam complete!")

@@ -1,0 +1,143 @@
+Data points:
+Negative: (-1, 0), (2, 1), (2, -2)  
+Positive: (0, 0), (1, 0)  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Correct tree structure with root split on \(f_1 > 1.5\), subsequent splits as needed (e.g., \(f_2 > 0.5\)). All points classified correctly.  
+- **Partial credit (2-3)**: Minor errors in splits or hierarchy, but overall logical structure.  
+- **No credit (0)**: Incorrect root split or failure to classify points.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Vertical line at \(f_1 = 1.5\) and horizontal lines at \(f_2 = 0.5\) (or other valid splits from the tree).  
+- **Partial credit (1-2)**: Missing/incorrect boundaries but at least one correct.  
+- **No credit (0)**: No boundaries or entirely incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Mentions calculating average entropy for candidate splits (e.g., \(f_1 > 1.5\) minimizes AE to 0.552). Uses entropy table correctly.  
+- **Partial credit (1-2)**: Correct approach but minor calculation errors or incomplete justification.  
+- **No credit (0)**: No mention of entropy or incorrect methodology.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Predicts "Positive" with explanation (e.g., \(f_2 > -0.5\) leads to positive region).  
+- **No credit (0)**: Incorrect class or no explanation.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Voronoi diagram with correct regions around each point. Negative regions around (-1,0), (2,1), (2,-2); positive around (0,0), (1,0).  
+- **Partial credit (1-2)**: Minor errors in boundaries but mostly correct.  
+- **No credit (0)**: No boundaries or entirely incorrect.  
+
+//// RUBRIC: Total Points: 2
+- **Full credit (2)**: "Positive" with correct explanation (closest point is (1,0)).  
+- **Partial credit (1)**: Correct class but weak/no explanation.  
+- **No credit (0)**: Incorrect class.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: "Positive" with explanation (majority of (0,0), (1,0), (2,-2)).  
+- **Partial credit (1-2)**: Correct class but weak/no explanation.  
+- **No credit (0)**: Incorrect class.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Describes weight updates through cycles, including misclassifications and final convergence. Mentions initial weights (0,0,0) and updates for (-1,0), (2,-2), (1,0).  
+- **Partial credit (1-2)**: Incomplete explanation but mentions key steps.  
+- **No credit (0)**: No meaningful explanation.  
+
+//// RUBRIC: Total Points: 2
+- **Full credit (2)**: "Negative" with margin calculation (\(0(2) + 1(-1.01) + 2(1) = 0.99\), step function gives -1).  
+- **No credit (0)**: Incorrect class or no calculation.  
+
+//// RUBRIC: Total Points: 2
+- **Full credit (2)**: States "no convergence" because data is not linearly separable.  
+- **No credit (0)**: Incorrect conclusion.  
+
+//// RUBRIC: Total Points: 5
+- **Full credit (5)**: Correct values (0.27, 0.5, 0.73).  
+- **Partial credit (3-4)**: 2/3 correct.  
+- **No credit (0)**: All incorrect.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Correct formula and result (0.25).  
+- **Partial credit (2-3)**: Correct formula with arithmetic error.  
+- **No credit (0)**: Incorrect approach.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Correct probabilities (\(\frac{7}{8}\), \(\frac{1}{8}\), \(\frac{5}{8}\)).  
+- **Partial credit (2-3)**: 2/3 correct.  
+- **No credit (0)**: All incorrect.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Names \(x_3\) with explanation (largest class difference).  
+- **No credit (0)**: Incorrect feature or no justification.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Recommends k-NN with justification (low dim, fast training).  
+- **Partial credit (2-3)**: Correct algorithm but weak justification.  
+- **No credit (0)**: Incorrect choice.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Recommends decision trees (interpretability).  
+- **No credit (0)**: Incorrect choice.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Recommends Naive Bayes (efficient updates).  
+- **Partial credit (2-3)**: Correct algorithm but weak justification.  
+- **No credit (0)**: Incorrect choice.  
+
+//// RUBRIC: Total Points: 4
+- **Full credit (4)**: Recommends regression (neural net, regression trees, or LWNN).  
+- **Partial credit (2-3)**: Correct type (regression) but no specific method.  
+- **No credit (0)**: Incorrect approach.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Identifies "fixed hypothesis class (linear separators)" and "guaranteed convergence if separable".  
+- **Partial credit (1-2)**: Partial description.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Mentions "complexity penalty (max margin)" and "optimizes criterion".  
+- **Partial credit (1-2)**: Partial description.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Identifies "fixed hypothesis class (fixed-depth trees)" and "no optimality guarantee".  
+- **Partial credit (1-2)**: Partial description.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: States "fixed hypothesis class (network structure)" and no complexity control.  
+- **Partial credit (1-2)**: Partial description.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Mentions "complexity penalty (soft margin)" and "trade-off via \(c\)".  
+- **Partial credit (1-2)**: Partial description.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Piecewise linear plot averaging two nearest neighbors.  
+- **Partial credit (1-2)**: Minor errors.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Stepwise constant regions matching exact data points.  
+- **Partial credit (1-2)**: Minor errors.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Straight line fit minimizing squared error.  
+- **Partial credit (1-2)**: Minor deviations.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 3
+- **Full credit (3)**: Non-linear curve fitting data closely.  
+- **Partial credit (1-2)**: Rough approximation.  
+- **No credit (0)**: Incorrect.  
+
+//// RUBRIC: Total Points: 6
+- **Full credit (6)**: Correct evaluation for all 4 lines (a: No, b: Yes, c: No, d: No).  
+- **Partial credit (3-5)**: 3/4 correct.  
+- **No credit (0-2)**: ≤2 correct.  
+
+//// RUBRIC: Total Points: 6
+- **Full credit (6)**: Correct matches (a-D, b-B, c-A, d-C).  
+- **Partial credit (3-5)**: 3/4 correct.  
+- **No credit (0-2)**: ≤2 correct.
