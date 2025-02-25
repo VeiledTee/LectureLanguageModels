@@ -44,7 +44,7 @@ class PineconeRAG:
         self.top_k = int(os.getenv("RAG_TOP_K", "5"))
         self.index_name = os.getenv("RAG_INDEX_NAME", "ai-course-rag")
         self.embedding_model = os.getenv("EMBEDDING_MODEL", "nomic-embed-text")
-        self.sources = os.getenv("INCLUDE_SOURCES", "False").lower()
+        self.sources = bool(int(os.getenv("INCLUDE_SOURCES", 0)))
 
         # Initialize index
         existing_indexes = [i.name for i in self.pinecone.list_indexes()]
@@ -70,9 +70,10 @@ class PineconeRAG:
             directory: Path containing markdown documents.
             batch_size: Number of vectors per upsert batch.
         """
+        logging.info("Indexing documents...")
         if not directory.exists():
             raise FileNotFoundError(f"Directory {directory} not found")
-
+        start_time = time.time()
         batch = []
         for file_path in directory.glob("*.txt"):
             try:
@@ -104,6 +105,15 @@ class PineconeRAG:
 
         if batch:
             self._upsert_batch(batch)
+
+        duration = time.time() - start_time
+
+        # Convert duration to hh:mm:ss
+        hours = int(duration // 3600)
+        minutes = int((duration % 3600) // 60)
+        seconds = int(duration % 60)
+        logging.info(f"Document indexing complete in {hours:02}:{minutes:02}:{seconds:02}!")
+
 
     def _process_section(
         self, content: str, section_path: str, filename: str
@@ -330,6 +340,8 @@ class PineconeRAG:
         Raises:
             Logs an error if deletion fails.
         """
+        logging.info(f"Deleting index {self.index_name}...")
+
         try:
             # Disable deletion protection
             self.pinecone.configure_index(
@@ -359,6 +371,10 @@ def process_exams(rag_pipeline: PineconeRAG):
     Side Effects:
         Creates output files in OUTPUT_DIR and logs processing duration.
     """
+    logging.info(
+        f"Processing exams with Pinecone and Ollama queries and {rag_pipeline.generation_model}..."
+    )
+
     exam_dir = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
     output_dir = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -377,11 +393,16 @@ def process_exams(rag_pipeline: PineconeRAG):
                 for question in questions:
                     answer = rag_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
+                    f.flush()  # write answer immediately
 
             duration = time.time() - start_time
-            logging.info(
-                f"Processed {exam_name} in {duration:.2f}s ({len(questions)} questions)"
-            )
+
+            # Convert duration to hh:mm:ss
+            hours = int(duration // 3600)
+            minutes = int((duration % 3600) // 60)
+            seconds = int(duration % 60)
+            logging.info(f"{model} exam complete {hours:02}:{minutes:02}:{seconds:02}!")
+
         except Exception as e:
             logging.error(f"Error processing {exam_file}: {str(e)}")
 
@@ -403,7 +424,6 @@ if __name__ == "__main__":
         )
 
         # clean slate
-        logging.info(f"Deleting index {pinecone_index_name}...")
         rag.delete_index()
 
         # reinitialize
@@ -414,13 +434,7 @@ if __name__ == "__main__":
         )
 
         # Index documents
-        logging.info("Indexing documents...")
         rag.upsert_documents(Path(os.getenv("KNOWLEDGE_DIR")))
-        logging.info("Document indexing complete!")
 
         # Process exams
-        logging.info(
-            f"Processing exams with Pinecone and Ollama queries and {model}..."
-        )
         process_exams(rag)
-        logging.info(f"{model} exam complete!")

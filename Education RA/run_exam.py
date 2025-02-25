@@ -89,7 +89,7 @@ def process_exams(ollama_pipeline: LLMQASystem):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            output_path = output_dir / f"{exam_name}_{ollama_pipeline.generation_model}_answers.txt"
+            output_path = output_dir / f"{exam_name}_{ollama_pipeline.generation_model.split(':')[0]}_answers.txt"
 
             questions = process_exam_file(exam_file)
 
@@ -97,10 +97,17 @@ def process_exams(ollama_pipeline: LLMQASystem):
                 for question in questions:
                     answer = ollama_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
+                    f.flush()  # write answer immediately
 
             duration = time.time() - start_time
+
+            # Convert duration to hh:mm:ss
+            hours = int(duration // 3600)
+            minutes = int((duration % 3600) // 60)
+            seconds = int(duration % 60)
+
             logging.info(
-                f"Processed {exam_name} in {duration:.2f}s ({len(questions)} questions)"
+                f"Processed {exam_name} in {hours:02}:{minutes:02}:{seconds:02} ({len(questions)} questions)"
             )
         except Exception as e:
             logging.error(f"Error processing {exam_file}: {str(e)}")
