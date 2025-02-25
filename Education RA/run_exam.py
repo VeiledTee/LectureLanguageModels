@@ -3,6 +3,7 @@ import os
 import re
 import time
 from pathlib import Path
+from tqdm import tqdm
 
 import ollama
 from dotenv import load_dotenv
@@ -94,7 +95,7 @@ def process_exams(ollama_pipeline: LLMQASystem):
             questions = process_exam_file(exam_file)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                for question in questions:
+                for question in tqdm(questions, desc="Generating answers", unit="question"):
                     answer = ollama_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
                     f.flush()  # write answer immediately

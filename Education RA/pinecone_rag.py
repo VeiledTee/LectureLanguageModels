@@ -3,6 +3,7 @@ import os
 import re
 import time
 from pathlib import Path
+from tqdm import tqdm
 
 import ollama
 import pinecone
@@ -390,7 +391,7 @@ def process_exams(rag_pipeline: PineconeRAG):
             questions = process_exam_file(exam_file)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                for question in questions:
+                for question in tqdm(questions, desc="Generating answers", unit="question"):
                     answer = rag_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
                     f.flush()  # write answer immediately
