@@ -130,3 +130,5 @@ Edit the `.env` file for any configuration changes:
 - Adjust RAG performance with `RAG_CHUNK_SIZE` and `RAG_TOP_K`
 - Control answer creativity with `GENERATION_TEMPERATURE`
 - Modify evaluation thresholds
+
+CORRELATION BETWEEN SCORES

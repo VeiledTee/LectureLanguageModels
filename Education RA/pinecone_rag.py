@@ -385,7 +385,7 @@ def process_exams(rag_pipeline: PineconeRAG):
             exam_name = exam_file.stem.replace("_answerless", "")
             output_path = (
                 output_dir
-                / f"{exam_name}_{rag_pipeline.generation_model}_rag_answers.txt"
+                / f"{exam_name}_{rag_pipeline.generation_model.split(':')[0]}_rag_answers.txt"
             )
 
             questions = process_exam_file(exam_file)
