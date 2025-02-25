@@ -548,8 +548,8 @@
 
 
 # Network and Computer Security (Fine-tuning) (LLM-Assisted)
-| Question ID       | ROUGE-L Score | BLEU Score | BERTScore | F1 Score |
-|--------------------|---------------|------------|-----------|----------|
+| Question ID       | Score | Comments |
+|--------------------|---------------|------------|
 request_S14_ps1_0_0 | 0 | The LLM response is incorrect. While it correctly starts with the process of XORing the two ciphertexts to find the XOR of the plaintexts (M1 ⊕ M2 = C1 ⊕ C2), it incorrectly leaps to an assumed solution of 'MEET ME' without any explanation or basis on how it correlates to the actual given output. The LLM fails to identify that the actual decoded words are 'networks' and 'security', as shown in the simulated attack results. Moreover, it fails to show any checks against English words, which is a crucial part of identifying the correct solution as per the original prompt's method.
 request_S14_ps1_0_1 | 0 | The response provided is incorrect and does not address the ground truth effectively.
 
