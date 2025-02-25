@@ -68,6 +68,18 @@ KNOWLEDGE_DIR=AI_Course/Lecture_Notes
 
 ## Key Configuration Options
 
+### Ollama Set-Up
+Download [Ollama](https://ollama.com/).
+Within project venv run the following to install models used by default in the project.
+```terminal
+ollama pull nomic-embed-text
+ollama pull phi4
+ollama pull llama3.2:3b
+ollama pull mistral
+ollama pull qwen2.5:7b
+ollama pull deepseek-r1:7b
+```
+
 ### Model Selection
 ```env
 GENERATION_MODELS=phi4,llama3.2,mistral,qwen2.5,deepseek-r1
