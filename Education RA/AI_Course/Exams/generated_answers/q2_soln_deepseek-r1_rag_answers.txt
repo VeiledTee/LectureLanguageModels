@@ -1,0 +1,33 @@
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 1. Construct a decision tree for the data.
+//// ANSWER: 
+To construct a decision tree for the given dataset, we start by identifying features that best separate the classes. Here's how it can be done:
+
+1. **Root Node**: Split on `x <= 0`. This separates the single negative point (-1,0) from the rest.
+
+2. **Right Subtree (x > 0)**:
+   - **Split Node**: Split on `x <= 1`. This isolates positive points at x=0 and x=1.
+     - **Left Subnode (x <= 1)**: All points here are positive.
+   - **Right Subnode (x > 1)**: Points are at x=2, which need further separation.
+
+3. **Further Split in Right Subnode**: Split on `y`. 
+   - **Left Subsubnode (y <= 0)**: Contains the negative point (2,-2).
+   - **Right Subsubnode (y > 0)**: Contains the positive point (2,1).
+
+This decision tree correctly classifies all points.
+
+**Answer**: 
+
+The decision tree is constructed as follows:
+
+- Root: Split on `x <= 0`.
+  - Left: (-1,0) is negative.
+  - Right:
+    - Split on `x <= 1`:
+      - Left: (0,0), (1,0) are positive.
+      - Right:
+        - Split on `y`: 
+          - Left: (2,-2) is negative.
+          - Right: (2,1) is positive.
+
+This tree correctly classifies all data points.
+
