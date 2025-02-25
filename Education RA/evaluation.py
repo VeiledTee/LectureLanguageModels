@@ -227,7 +227,7 @@ if __name__ == "__main__":
             model_name = "_".join(filename_parts[1:-1])
 
             # Paths for gold standard and rubric
-            gold_path = EXAM_DIR / f"{exam_name}_soln.txt"
+            gold_path = EXAM_DIR / f"{exam_name}_soln_parsed.txt"
             rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
 
             if not gold_path.exists():
