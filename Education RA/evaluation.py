@@ -3,6 +3,7 @@ import re
 import csv
 from collections import Counter
 from pathlib import Path
+from tqdm import tqdm
 
 import ollama
 import torch
@@ -43,7 +44,6 @@ def extract_answers(md_file: Path) -> list[str]:
         r"^//// ANSWER:(.*?)(?=^//// ANSWER:|^#|\Z)", re.DOTALL | re.MULTILINE
     )
     answers = pattern.findall(content)
-    print(len(answers))
     return [ans.strip() for ans in answers]
 
 
@@ -144,8 +144,13 @@ def evaluate_answers(
             f"Generated answers and gold answers count mismatch! {len(answers_to_evaluate)} vs {len(gold_standard_answers)}"
         )
 
-    for idx, (gen, gold) in enumerate(zip(answers_to_evaluate, gold_standard_answers)):
-        question_num = idx + 1
+    # Main loop with tqdm for progress bar
+    for idx, (gen, gold) in enumerate(tqdm(
+        zip(answers_to_evaluate, gold_standard_answers),
+        total=len(answers_to_evaluate),
+        desc="Evaluating questions"
+    )):
+        question_num = idx + 1  # Calculate question number (1-based index)
         try:
             rubric_text = extract_rubric(rubric_file, question_num)
             awarded, possible = evaluate_with_rubric(
@@ -191,12 +196,10 @@ def evaluate_answers(
         for metric in avg_metrics
     }
 
-    # Add cumulative rubric scores
     avg_results["total_awarded"] = total_awarded
     avg_results["total_possible"] = total_possible
 
     return avg_results
-
 
 if __name__ == "__main__":
     ANSWER_DIR = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
@@ -272,7 +275,7 @@ if __name__ == "__main__":
                     "quiz_score": score_pct
                 })
 
-                # Print summary
+                # Summary
                 print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
 
             except Exception as e:
