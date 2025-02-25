@@ -78,7 +78,6 @@ def jaccard_similarity(candidate: str, gold: str) -> float:
 def extract_rubric(rubric_file: Path, question_number: int) -> str:
     content = rubric_file.read_text(encoding="utf-8")
     rubrics = re.split(r"^//// RUBRIC:", content, flags=re.MULTILINE)[1:]
-
     try:
         return rubrics[question_number - 1].strip()
     except IndexError:
@@ -88,7 +87,6 @@ def extract_rubric(rubric_file: Path, question_number: int) -> str:
 def evaluate_with_rubric(
     rubric_text: str, query: str, student_answer: str
 ) -> tuple[float, float]:
-    # Extract total available marks
     total_match = re.search(r"Total Points:\s*(\d+)", rubric_text, re.IGNORECASE)
     if not total_match:
         return 0.0, 0.0
@@ -120,7 +118,7 @@ Provide your evaluation score:"""
 
     answer = response.get("response", "").strip()
     try:
-        awarded = float(answer.split()[0])  # Take first numerical value
+        awarded = float(answer.split()[0])
     except (ValueError, IndexError):
         awarded = 0.0
 
@@ -144,13 +142,12 @@ def evaluate_answers(
             f"Generated answers and gold answers count mismatch! {len(answers_to_evaluate)} vs {len(gold_standard_answers)}"
         )
 
-    # Main loop with tqdm for progress bar
     for idx, (gen, gold) in enumerate(tqdm(
         zip(answers_to_evaluate, gold_standard_answers),
         total=len(answers_to_evaluate),
         desc="Evaluating questions"
     )):
-        question_num = idx + 1  # Calculate question number (1-based index)
+        question_num = idx + 1
         try:
             rubric_text = extract_rubric(rubric_file, question_num)
             awarded, possible = evaluate_with_rubric(
@@ -201,6 +198,7 @@ def evaluate_answers(
 
     return avg_results
 
+
 if __name__ == "__main__":
     ANSWER_DIR = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
     EXAM_DIR = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
@@ -209,27 +207,36 @@ if __name__ == "__main__":
     # Get all answer files
     answer_files = list(ANSWER_DIR.glob("*_answers.txt")) + list(ANSWER_DIR.glob("*_rag_answers.txt"))
 
-    # Prepare CSV output
-    csv_path = ANSWER_DIR / f"evaluation_results.csv"
+    # CSV path and processed file check
+    csv_path = ANSWER_DIR / "evaluation_results.csv"
+    processed_files = set()
+    csv_mode = "w"
+    if csv_path.exists():
+        with open(csv_path, "r", newline="", encoding="utf-8") as csvfile:
+            reader = csv.DictReader(csvfile)
+            processed_files = {row["filename"] for row in reader if 'deep' not in row["filename"]}
+        csv_mode = "a"
 
-    with open(csv_path, "w", newline="", encoding="utf-8") as csvfile:
+    with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
         fieldnames = [
             "filename", "bleu", "rouge1", "rougeL",
             "token_f1", "bert_f1", "jaccard",
             "total_awarded", "total_possible", "quiz_score"
         ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()
+        if csv_mode == "w":
+            writer.writeheader()
 
         for answer_file in answer_files:
-            print(f"\nProcessing file: {answer_file.name}")
+            if answer_file.name in processed_files:
+                print(f"Skipping file: {answer_file.name} (already graded)")
+                continue
 
-            # Extract exam and model info
+            print(f"\nProcessing file: {answer_file.name}")
             filename_parts = answer_file.stem.split("_")
             exam_name = filename_parts[0]
             model_name = "_".join(filename_parts[1:-1])
 
-            # Paths for gold standard and rubric
             gold_path = EXAM_DIR / f"{exam_name}_soln_parsed.txt"
             rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
 
@@ -252,16 +259,10 @@ if __name__ == "__main__":
                     verbose=False,
                 )
 
-                # Calculate percentage score
-                if metrics["total_possible"] > 0:
-                    score_pct = round(
-                        (metrics["total_awarded"] / metrics["total_possible"]) * 100,
-                        2
-                    )
-                else:
-                    score_pct = 0.0
+                score_pct = round(
+                    (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
+                ) if metrics["total_possible"] > 0 else 0.0
 
-                # Write to CSV
                 writer.writerow({
                     "filename": answer_file.name,
                     "bleu": round(metrics["bleu"], 4),
@@ -275,7 +276,6 @@ if __name__ == "__main__":
                     "quiz_score": score_pct
                 })
 
-                # Summary
                 print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
 
             except Exception as e:
