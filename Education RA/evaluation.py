@@ -153,22 +153,18 @@ def evaluate_with_rubric(
     if not total_match:
         return 0.0, 0.0
     total_available = float(total_match.group(1))
+    print(total_available)
 
-    prompt = f"""Evaluate this answer based on the following rubric. 
-Return only the numerical score awarded as a number.
-The maximum amount of points available is: {total_available}. 
- You will not award more points than {total_available}.
+    prompt = f"""Evaluate this answer based on the following rubric.
+Return only the score in the following format: "Score: X/Y", where X is the awarded points and Y is the maximum available ({total_available}). Do not include any extra text.
 
-Rubric:
-{rubric_text}
+Rubric: {rubric_text}
 
-Question:
-{query}
+Question: {query}
 
-Student Answer:
-{student_answer}
+Student Answer: {student_answer}
 
-Return ONLY the numeric score (e.g., '2.5') with no additional text. Your evaluation score:"""
+Your evaluation score:"""
 
     response = ollama.generate(
         model=str(os.getenv("EVALUATION_MODEL")),
@@ -182,12 +178,18 @@ Return ONLY the numeric score (e.g., '2.5') with no additional text. Your evalua
     )
 
     answer = response.get("response", "").strip()
-    try:
-        awarded = float(re.search(r"\d+\.?\d*", answer).group())
-    except (ValueError, IndexError):
+    match = re.search(r"Score:\s*(\d+\.?\d*)\s*/\s*(\d+\.?\d*)", answer)
+    if match:
+        awarded = float(match.group(1))
+        parsed_total = float(match.group(2))
+        # Use total_available if parsed total closely matches it
+        total = total_available if abs(parsed_total - total_available) < 1e-3 else parsed_total
+        awarded = min(awarded, total)
+    else:
         awarded = 0.0
+        total = total_available
 
-    return awarded, total_available
+    return awarded, total
 
 
 def evaluate_answers(
@@ -346,7 +348,7 @@ if __name__ == "__main__":
                     answers_to_evaluate=generated_answers,
                     gold_standard_answers=gold_answers,
                     rubric_file=rubric_path,
-                    verbose=False,
+                    verbose=True,
                 )
 
                 score_pct = round(
