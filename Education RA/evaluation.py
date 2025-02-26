@@ -154,7 +154,10 @@ def evaluate_with_rubric(
         return 0.0, 0.0
     total_available = float(total_match.group(1))
 
-    prompt = f"""Evaluate this answer based on the following rubric. Return only the numerical score awarded as a number.
+    prompt = f"""Evaluate this answer based on the following rubric. 
+Return only the numerical score awarded as a number.
+The maximum amount of points available is: {total_available}. 
+ You will not award more points than {total_available}.
 
 Rubric:
 {rubric_text}
