@@ -321,7 +321,7 @@ if __name__ == "__main__":
         # Write header only for new files
         if csv_mode == "w":
             writer.writeheader()
-
+        print(f"Processing {len(answer_files)} files")
         for answer_file in answer_files:
             if answer_file.name in processed_files:
                 print(f"Skipping file: {answer_file.name} (already graded)")
