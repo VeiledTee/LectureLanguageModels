@@ -305,7 +305,6 @@ if __name__ == "__main__":
     if csv_path.exists():
         with open(csv_path, "r", newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
-            processed_files = {row["filename"] for row in reader if 'deep' not in row["filename"]}
         csv_mode = "a"
 
     with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
