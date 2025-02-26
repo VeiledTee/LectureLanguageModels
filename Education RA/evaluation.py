@@ -312,11 +312,13 @@ if __name__ == "__main__":
             processed_files = {row["filename"] for row in reader if "filename" in row}
         csv_mode = "a"
 
-    # Filter out already processed files and log skipped
-    skipped_files = [f for f in answer_files if f.name in processed_files]
-    answer_files = [f for f in answer_files if f.name not in processed_files]
+    # Filter out processed files AND files containing "rag" in name
+    skipped_files = [f for f in answer_files if f.name in processed_files or "rag" in f.name.lower()]
+    answer_files = [f for f in answer_files if f.name not in processed_files and "rag" not in f.name.lower()]
+
     for skipped_file in skipped_files:
-        print(f"Skipping file: {skipped_file.name} (already graded)")
+        skip_reason = "already graded" if skipped_file.name in processed_files else "contains 'rag'"
+        print(f"Skipping file: {skipped_file.name} ({skip_reason})")
 
     with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
         fieldnames = [
