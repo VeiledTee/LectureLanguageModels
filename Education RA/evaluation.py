@@ -370,7 +370,7 @@ if __name__ == "__main__":
                         "quiz_score": score_pct
                     })
 
-                    print(f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_awarded']} | BERTScore: {metrics['bert_f1']:.4f} |")
+                    print(f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_possible']} | BERTScore: {metrics['bert_f1']:.4f} |")
                     csvfile.flush()
 
                 except Exception as e:
