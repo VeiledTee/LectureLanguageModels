@@ -155,15 +155,15 @@ def evaluate_with_rubric(
     total_available = float(total_match.group(1))
 
     prompt = f"""Evaluate this answer based on the following rubric.
-Return only the score in the following format: "Score: X/Y", where X is the awarded points and Y is the maximum available ({total_available}). Do not include any extra text.
+    Return only the score in the following format: "Score: X/Y", where X is the awarded points and Y is the maximum available ({total_available}). Do not include any extra text.
 
-Rubric: {rubric_text}
+    Rubric: {rubric_text}
 
-Question: {query}
+    Question: {query}
 
-Student Answer: {student_answer}
+    Student Answer: {student_answer}
 
-Your evaluation score:"""
+    Your evaluation score:"""
 
     response = ollama.generate(
         model=str(os.getenv("EVALUATION_MODEL")),
@@ -180,9 +180,7 @@ Your evaluation score:"""
     match = re.search(r"Score:\s*(\d+\.?\d*)\s*/\s*(\d+\.?\d*)", answer)
     if match:
         awarded = float(match.group(1))
-        parsed_total = float(match.group(2))
-        # Use total_available if parsed total closely matches it
-        total = total_available if abs(parsed_total - total_available) < 1e-3 else parsed_total
+        total = total_available  # max points possible
         awarded = min(awarded, total)
     else:
         awarded = 0.0
@@ -276,6 +274,8 @@ def evaluate_answers(
         })
 
         if verbose:
+            print(f"This Question:\n\tAwarded: {awarded}\n\tPossible: {possible}")
+            print(f"Running totals:\n\tAwarded: {total_awarded}\n\tPossible: {total_possible}")
             print_metrics(question_num, results[-1])
 
     avg_metrics = ["bleu", "rouge1", "rougeL", "token_f1", "bert_f1", "jaccard"]
@@ -370,7 +370,7 @@ if __name__ == "__main__":
                         "quiz_score": score_pct
                     })
 
-                    print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
+                    print(f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_awarded']} | BERTScore: {metrics['bert_f1']:.4f} |")
                     csvfile.flush()
 
                 except Exception as e:
