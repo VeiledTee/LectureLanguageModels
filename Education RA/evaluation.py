@@ -302,9 +302,12 @@ if __name__ == "__main__":
     csv_path = ANSWER_DIR / "evaluation_results.csv"
     processed_files = set()
     csv_mode = "w"
+
+    # Read existing processed files
     if csv_path.exists():
         with open(csv_path, "r", newline="", encoding="utf-8") as csvfile:
             reader = csv.DictReader(csvfile)
+            processed_files = {row["filename"] for row in reader if "filename" in row}
         csv_mode = "a"
 
     with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
@@ -314,13 +317,14 @@ if __name__ == "__main__":
             "total_awarded", "total_possible", "quiz_score"
         ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        # Write header only for new files
         if csv_mode == "w":
             writer.writeheader()
 
         for answer_file in answer_files:
             if answer_file.name in processed_files:
                 print(f"Skipping file: {answer_file.name} (already graded)")
-                continue
             else:
                 print(f"\nProcessing file: {answer_file.name}")
                 filename_parts = answer_file.stem.split("_")
