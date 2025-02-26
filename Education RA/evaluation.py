@@ -296,12 +296,10 @@ if __name__ == "__main__":
     RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR", "AI_Course/Rubrics"))
 
     # Get all answer files
-    answer_files = sorted(list(ANSWER_DIR.glob("*_rag_answers.txt")), reverse=True)
-
-    print(answer_files)
+    answer_files = sorted(list(ANSWER_DIR.glob("*_answers.txt")), reverse=True)
 
     # CSV path and processed file check
-    csv_path = ANSWER_DIR / "evaluation_results.csv"
+    csv_path = ANSWER_DIR / f"evaluation_results_{os.getenv('EVALUATION_MODEL').replace('.', '-')}.csv"
     processed_files = set()
     csv_mode = "w"
 
