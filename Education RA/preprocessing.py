@@ -1,9 +1,65 @@
+from dotenv import load_dotenv
+from pdf2image import convert_from_path
 import os
 import re
 from pathlib import Path
 from typing import Any
 
 from docling.document_converter import DocumentConverter
+
+# Load environment variables
+load_dotenv()
+
+# Configuration constants
+BASE_DIR = Path(os.getenv("PDF_DIR", "."))
+OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", "./processed"))
+LECTURE_DIR = Path(os.getenv("LECTURE_DIR", "lecture_notes"))
+EXAM_DIR = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
+LECTURE_PATTERN = re.compile(r"lec(\d+)\.pdf$", re.IGNORECASE)
+
+
+def create_directory(path: Path) -> None:
+    """Create directory if it doesn't exist"""
+    path.mkdir(parents=True, exist_ok=True)
+    print(f"Created directory: {path}")
+
+
+# PDF to Image Conversion Functions
+def find_lecture_pdfs() -> list[Path]:
+    """Find PDF files matching lecture pattern"""
+    return [
+        f for f in BASE_DIR.glob("*.pdf")
+        if LECTURE_PATTERN.search(f.name)
+    ]
+
+
+def convert_pdf_to_images(pdf_path: Path, output_dir: Path) -> None:
+    """Convert PDF to JPEG images"""
+    try:
+        images = convert_from_path(str(pdf_path))
+        for i, image in enumerate(images):
+            image_path = output_dir / f"page_{i + 1:02d}.jpeg"
+            image.save(image_path, "JPEG")
+            print(f"Converted: {image_path}")
+    except Exception as e:
+        print(f"Error converting {pdf_path}: {str(e)}")
+
+
+def process_lectures() -> None:
+    """Process all lecture PDFs into images"""
+    lecture_output = OUTPUT_DIR / LECTURE_DIR
+    create_directory(lecture_output)
+
+    pdf_files = find_lecture_pdfs()
+    print(f"Found {len(pdf_files)} lecture files")
+
+    for pdf_file in pdf_files:
+        match = LECTURE_PATTERN.search(pdf_file.name)
+        if match:
+            lecture_num = match.group(1)
+            lecture_path = lecture_output / f"lec_{lecture_num}"
+            create_directory(lecture_path)
+            convert_pdf_to_images(pdf_file, lecture_path)
 
 
 def format_question(header: str, content: str) -> str:
