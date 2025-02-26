@@ -153,7 +153,6 @@ def evaluate_with_rubric(
     if not total_match:
         return 0.0, 0.0
     total_available = float(total_match.group(1))
-    print(total_available)
 
     prompt = f"""Evaluate this answer based on the following rubric.
 Return only the score in the following format: "Score: X/Y", where X is the awarded points and Y is the maximum available ({total_available}). Do not include any extra text.
@@ -323,56 +322,56 @@ if __name__ == "__main__":
             if answer_file.name in processed_files:
                 print(f"Skipping file: {answer_file.name} (already graded)")
                 continue
+            else:
+                print(f"\nProcessing file: {answer_file.name}")
+                filename_parts = answer_file.stem.split("_")
+                exam_name = filename_parts[0]
+                model_name = "_".join(filename_parts[1:-1])
 
-            print(f"\nProcessing file: {answer_file.name}")
-            filename_parts = answer_file.stem.split("_")
-            exam_name = filename_parts[0]
-            model_name = "_".join(filename_parts[1:-1])
+                gold_path = EXAM_DIR / f"{exam_name}_soln_parsed.txt"
+                rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
 
-            gold_path = EXAM_DIR / f"{exam_name}_soln_parsed.txt"
-            rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
+                if not gold_path.exists():
+                    print(f"Gold file {gold_path} not found, skipping")
+                    continue
 
-            if not gold_path.exists():
-                print(f"Gold file {gold_path} not found, skipping")
-                continue
+                if not rubric_path.exists():
+                    print(f"Rubric {rubric_path} not found, skipping")
+                    continue
 
-            if not rubric_path.exists():
-                print(f"Rubric {rubric_path} not found, skipping")
-                continue
+                try:
+                    gold_answers = extract_answers(gold_path)
+                    generated_answers = extract_answers(answer_file)
 
-            try:
-                gold_answers = extract_answers(gold_path)
-                generated_answers = extract_answers(answer_file)
+                    metrics = evaluate_answers(
+                        answers_to_evaluate=generated_answers,
+                        gold_standard_answers=gold_answers,
+                        rubric_file=rubric_path,
+                        verbose=True,
+                    )
 
-                metrics = evaluate_answers(
-                    answers_to_evaluate=generated_answers,
-                    gold_standard_answers=gold_answers,
-                    rubric_file=rubric_path,
-                    verbose=True,
-                )
+                    score_pct = round(
+                        (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
+                    ) if metrics["total_possible"] > 0 else 0.0
 
-                score_pct = round(
-                    (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
-                ) if metrics["total_possible"] > 0 else 0.0
+                    writer.writerow({
+                        "filename": answer_file.name,
+                        "bleu": round(metrics["bleu"], 4),
+                        "rouge1": round(metrics["rouge1"], 4),
+                        "rougeL": round(metrics["rougeL"], 4),
+                        "token_f1": round(metrics["token_f1"], 4),
+                        "bert_f1": round(metrics["bert_f1"], 4),
+                        "jaccard": round(metrics["jaccard"], 4),
+                        "total_awarded": round(metrics["total_awarded"], 1),
+                        "total_possible": int(metrics["total_possible"]),
+                        "quiz_score": score_pct
+                    })
 
-                writer.writerow({
-                    "filename": answer_file.name,
-                    "bleu": round(metrics["bleu"], 4),
-                    "rouge1": round(metrics["rouge1"], 4),
-                    "rougeL": round(metrics["rougeL"], 4),
-                    "token_f1": round(metrics["token_f1"], 4),
-                    "bert_f1": round(metrics["bert_f1"], 4),
-                    "jaccard": round(metrics["jaccard"], 4),
-                    "total_awarded": round(metrics["total_awarded"], 1),
-                    "total_possible": int(metrics["total_possible"]),
-                    "quiz_score": score_pct
-                })
+                    print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
+                    csvfile.flush()
 
-                print(f"| Score: {score_pct}% | BERTScore: {metrics['bert_f1']:.4f} |")
-                csvfile.flush()
-
-            except Exception as e:
-                print(f"Error processing {answer_file}: {str(e)}")
-                continue
+                except Exception as e:
+                    print(f"Error processing {answer_file}: {str(e)}")
+                    continue
 
     print(f"\nEvaluation complete! Results saved to {csv_path}")
