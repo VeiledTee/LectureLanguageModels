@@ -24,69 +24,40 @@ logging.basicConfig(
 logger: logging.Logger = logging.getLogger(__name__)
 
 load_dotenv()
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 
 class Config:
-    """Centralized configuration manager with validation.
-
-    Attributes:
-        openai_api_key (str): OpenAI API key for AI operations
-        model_name (str): Name of the OpenAI model to use
-        image_format (str): Image format for PDF conversion
-        image_quality (int): Quality setting for image conversion
-        process_lectures (bool): Flag to enable lecture processing
-        process_exams (bool): Flag to enable exam processing
-        max_concurrency (int): Maximum concurrent processing tasks
-        directories (dict[str, Path]): Paths to various processing directories
-        excluded_headers (list[str]): Headers to exclude from markdown processing
-        image_patterns (list[str]): Regex patterns for image detection in markdown
-    """
-
     def __init__(self) -> None:
-        """Initialize configuration from environment variables."""
         load_dotenv()
-
-        # Core settings
         self.openai_api_key: Optional[str] = os.getenv("OPENAI_API_KEY")
         openai.api_type = os.getenv("OPENAI_API_TYPE")
         self.model_name: str = os.getenv("OPENAI_MODEL_NAME", "gpt-4o")
         self.image_format: str = os.getenv("IMAGE_FORMAT", "JPEG").upper()
         self.image_quality: int = int(os.getenv("IMAGE_QUALITY", 85))
-
-        # Processing flags
         self.process_lectures: bool = bool(int(os.getenv("PROCESS_LECTURES", 0)))
         self.process_exams: bool = bool(int(os.getenv("PROCESS_EXAMS", 0)))
         self.max_concurrency: int = int(os.getenv("MAX_CONCURRENCY", 5))
-
-        # Directories
         self.directories: dict[str, Path] = {
             'lecture_pdf': Path(os.getenv("LECTURE_PDF_DIR", "AI_Course/Lecture_Notes/Source_PDFs")),
             'lecture_image_output': Path(os.getenv("LECTURE_OUTPUT_DIR", "AI_Course/Lecture_Notes/Processed")),
-            'exam_pdf': Path(os.getenv("EXAM_PDF_DIR", "AI_Course/Exams")),
-            'exam_image_output': Path(os.getenv("EXAM_OUTPUT_DIR", "AI_Course/Exams")),
+            'exam_pdf': Path(os.getenv("EXAM_PDF_DIR", "AI_Course/Exams/Source_PDFs")),
+            'exam_image_output': Path(os.getenv("EXAM_OUTPUT_DIR", "AI_Course/Exams/Processed")),
             'knowledge_dir': Path(os.getenv("KNOWLEDGE_DIR")),
             'exam_dir': Path(os.getenv("EXAM_DIR")),
         }
-
-        # Processing parameters
         self.excluded_headers: list[str] = os.getenv(
             "EXCLUDED_HEADERS", "## Slide,## 6.034").split(",")
         self.image_patterns: list[str] = [
-            r"(?:!\[.*?\]\(.*?\))",  # Markdown images
-            r"(?:<!--\s*image[^>]*-->)",  # Image comments
-            r"(?:<img.*?>)",  # HTML images
+            r"(?:!\[.*?\]\(.*?\))",
+            r"(?:<!--\s*image[^>]*-->)",
+            r"(?:<img.*?>)",
+            r"^Page \d+$",
         ]
-
         self.validate()
         self.create_directories()
 
     def validate(self) -> None:
-        """Validate configuration values.
-
-        Raises:
-            ValueError: For invalid image formats or quality values
-            RuntimeError: If required API key is missing
-        """
         if not self.openai_api_key:
             raise ValueError("OPENAI_API_KEY is required in environment")
         if self.image_format not in {"JPEG", "PNG"}:
@@ -95,7 +66,6 @@ class Config:
             raise ValueError("IMAGE_QUALITY must be between 1 and 100")
 
     def create_directories(self) -> None:
-        """Create all required directories if they don't exist."""
         for dir_path in self.directories.values():
             dir_path.mkdir(parents=True, exist_ok=True)
 
@@ -104,7 +74,6 @@ config: Config = Config()
 
 
 def image_to_base64(image: Image.Image) -> str:
-    """Convert a PIL Image to a base64 encoded string using config settings."""
     buffered = BytesIO()
     image.save(buffered, format=config.image_format, quality=config.image_quality)
     img_str = base64.b64encode(buffered.getvalue()).decode()
@@ -116,19 +85,6 @@ class ClassNotes(BaseModel):
 
 
 async def convert_pdf_to_images(pdf_path: Path, file_type: str) -> int:
-    """Convert PDF pages to images with parallel processing.
-
-    Args:
-        pdf_path: Path to source PDF file
-        file_type: Type of PDF ('lecture' or 'exam')
-
-    Returns:
-        int: Number of new pages processed (0 if file was quarantined)
-
-    Raises:
-        RuntimeError: If conversion fails and file is quarantined
-    """
-    # Determine output directory based on file type
     if file_type == 'lecture':
         output_dir = config.directories['lecture_image_output'] / pdf_path.stem
     else:
@@ -158,90 +114,15 @@ async def convert_pdf_to_images(pdf_path: Path, file_type: str) -> int:
 
     except Exception as e:
         logger.error(f"Error processing {pdf_path}: {str(e)}")
-        quarantine_path: Path = config.directories['quarantine'] / pdf_path.name
-        pdf_path.rename(quarantine_path)
-        logger.warning(f"Moved {pdf_path.name} to quarantine")
         return 0
 
 
-async def process_pdfs() -> None:
-    """Orchestrate PDF processing based on configuration flags."""
-    pdf_files: list[tuple[Path, str]] = []  # (PDF path, type)
-
-    # Collect lecture PDFs if enabled
-    if config.process_lectures:
-        lecture_files: list[Path] = sorted(config.directories['lecture_pdf'].glob("*.pdf"))
-        pdf_files += [(path, 'lecture') for path in lecture_files]
-        logger.debug(f"Found {len(lecture_files)} lecture PDFs")
-
-    # Collect exam PDFs if enabled
-    if config.process_exams:
-        exam_files: list[Path] = sorted(config.directories['exam_pdf'].glob("*.pdf"))
-        pdf_files += [(path, 'exam') for path in exam_files]
-        logger.debug(f"Found {len(exam_files)} exam PDFs")
-
-    logger.info(f"Total PDFs to process: {len(pdf_files)}")
-
-    async with anyio.create_task_group() as tg:
-        for pdf_file, file_type in pdf_files:
-            tg.start_soon(convert_pdf_to_images, pdf_file, file_type)
-
-
-def format_question(header: str, content: str) -> str:
-    """Format a question string from header and content sections.
-
-    Args:
-        header: Section header text
-        content: Associated content text
-
-    Returns:
-        str: Formatted question string with proper punctuation
-
-    Example:
-        format_question("Section 1", "What is AI?")
-        "Section 1 > What is AI:"
-    """
-    question: str = f"{header} > {content}" if content else header
-    return question.rstrip(":") + ":" if not question.endswith(":") else question
-
-
-async def process_exam_file(file_path: Path) -> list[str]:
-    """Process exam file without answers into formatted questions.
-
-    Args:
-        file_path: Path to exam markdown file
-
-    Returns:
-        list[str]: list of parsed questions or empty list on error
-    """
-    try:
-        async with aiofiles.open(file_path, "r", encoding="utf-8") as f:
-            content: str = await f.read()
-            return parse_quiz(content)
-    except Exception as e:
-        logger.error(f"Error processing {file_path}: {str(e)}")
-        return []
-
-
 async def pdf_to_markdown(pdf_path: Path, output_path: Path) -> bool:
-    """Convert PDF to cleaned markdown with configurable patterns.
-
-    Args:
-        pdf_path: Source PDF file path
-        output_path: Target markdown file path
-
-    Returns:
-        bool: True if conversion succeeded, False otherwise
-
-    Raises:
-        IOError: If file operations fail
-    """
     try:
         doc_converter: DocumentConverter = DocumentConverter()
         result: Any = doc_converter.convert(str(pdf_path))
         markdown_text: str = result.document.export_to_markdown()
 
-        # Clean content using configured patterns
         image_pattern: re.Pattern = re.compile("|".join(config.image_patterns), re.IGNORECASE)
         processed_lines: list[str] = []
         in_ignore_block: bool = False
@@ -271,257 +152,171 @@ async def pdf_to_markdown(pdf_path: Path, output_path: Path) -> bool:
         return False
 
 
-def extract_questions(extract_from: str) -> list[str]:
-    """Extract deepest-level headers from markdown as questions.
+async def extract_text_from_image(image_path: Path) -> str:
+    try:
+        image = Image.open(image_path)
+        img_base64 = image_to_base64(image)
 
-    Args:
-        extract_from: Markdown content to analyze
-
-    Returns:
-        list[str]: list of header texts at deepest hierarchy level
-
-    Example:
-        extract_questions("# Main\n## Sub\n### Question")
-        ["Question"]
-    """
-    headers: list[tuple[int, str]] = []
-    header_re: re.Pattern = re.compile(r"^(#+)\s+(.+?)(?:\(.*?\))?\s*$", re.MULTILINE)
-
-    for match in header_re.finditer(extract_from):
-        level: int = len(match.group(1))
-        text: str = match.group(2).strip()
-        headers.append((level, text))
-
-    if not headers:
-        return []
-
-    max_level: int = max(level for level, _ in headers)
-    return [text for level, text in headers if level == max_level]
-
-
-def load_markdown_sections(file_path: str) -> dict[str, str]:
-    """Parse markdown file into hierarchical sections.
-
-    Args:
-        file_path: Path to markdown file
-
-    Returns:
-        dict[str, str]: Mapping of section paths to content
-        Format: {"Parent > Child": "content text"}
-
-    Example:
-        load_markdown_sections("doc.md")
-        {"Introduction": "Welcome text", "Chapter 1 > Section 1": "Content..."}
-    """
-    header_regex: re.Pattern = re.compile(r"^(#{1,6})\s+(.*?)(?:\(.*?\))?\s*$")
-    markdown_sections: dict[str, str] = {}
-    stack: list[dict[str, Any]] = [{"level": 0, "title": "Root", "content": []}]
-
-    with open(file_path, "r", encoding="utf-8") as markdown_file:
-        for line_num, line in enumerate(markdown_file, 1):
-            line = line.rstrip("\n")
-            m = header_regex.match(line)
-
-            if m:
-                level: int = len(m.group(1))
-                title: str = m.group(2).strip()
-
-                while stack and stack[-1]["level"] >= level:
-                    popped: dict[str, Any] = stack.pop()
-                    if popped["level"] >= 2:
-                        key_parts: list[str] = [s["title"] for s in stack[1:]]
-                        key_parts.append(popped["title"])
-                        key: str = " > ".join(key_parts)
-                        markdown_sections[key] = "\n".join(popped["content"]).strip()
-
-                new_section: dict[str, Any] = {"level": level, "title": title, "content": []}
-                stack.append(new_section)
-            else:
-                if stack:
-                    stack[-1]["content"].append(line)
-
-    # Process remaining sections
-    while stack:
-        popped = stack.pop()
-        if popped["level"] >= 2:
-            key_parts = [s["title"] for s in stack[1:]]
-            key_parts.append(popped["title"])
-            key = " > ".join(key_parts)
-            markdown_sections[key] = "\n".join(popped["content"]).strip()
-
-    return markdown_sections
-
-
-def parse_quiz(md_text: str) -> list[str]:
-    """Parse hierarchical quiz structure from markdown content.
-
-    Args:
-        md_text: Markdown content with quiz questions
-
-    Returns:
-        list[str]: list of question paths in "Section > Subsection > Question" format
-
-    Example:
-        parse_quiz("# Quiz\n## Q1\nWhat is?")
-        ["Quiz > Q1 > What is?"]
-    """
-    lines: list[str] = md_text.splitlines()
-    root: list[dict[str, Any]] = []
-    stack: list[dict[str, Any]] = []
-
-    for line in lines:
-        line = line.rstrip()
-        if not line.strip():
-            continue
-        if line.startswith("#"):
-            level: int = 0
-            while level < len(line) and line[level] == "#":
-                level += 1
-            header: str = line[level:].strip()
-            node: dict[str, Any] = {
-                "level": level,
-                "header": header,
-                "content": "",
-                "children": [],
+        messages = [
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text":
+                        "Convert this image to structured markdown following these rules:\n"
+                        "1. Extract ALL text with perfect accuracy:\n"
+                        "   - Preserve original structure/headings/lists\n"
+                        "   - Maintain code blocks (```) and math equations ($$)\n"
+                        "   - Keep exact numbering and indentation\n"
+                        "2. Special element handling:\n"
+                        "   a) Questions ALWAYS use ###### headers\n"
+                        "   b) Answers start with '//// ANSWER:'\n"
+                        "   c) Convert diagrams to:\n"
+                        "      - ASCII art with └─ ├─ symbols\n"
+                        "      - [X] for failed constraints\n"
+                        "      - [✓] for explored nodes\n"
+                        "3. Formatting requirements:\n"
+                        "   - Replace images with text descriptions\n"
+                        "   - Use proper markdown for:\n"
+                        "     * Lists (-, 1.)\n"
+                        "     * Tables\n"
+                        "     * Code (language-specific)\n"
+                        "     * Math equations\n"
+                        "4. Example transformation:\n"
+                        "   Image Content: 'Question 3: What is... diagram of A→B→C'\n"
+                        "   Converted to:\n"
+                        "   ###### 3. What is...\n"
+                        "   ```\n"
+                        "   A\n"
+                        "   └─ B [✓]\n"
+                        "      └─ C [X]\n"
+                        "   ```\n"
+                        "   //// ANSWER: Explanation..."
+                     },
+                    {"type": "image_url", "image_url": {"url": img_base64}},
+                ],
             }
-            while stack and stack[-1]["level"] >= level:
-                stack.pop()
-            if stack:
-                stack[-1]["children"].append(node)
-            else:
-                root.append(node)
-            stack.append(node)
-        else:
-            if stack:
-                current: dict[str, Any] = stack[-1]
-                current["content"] = (
-                    (current["content"] + " " + line.strip()).strip()
-                    if current["content"]
-                    else line.strip()
-                )
+        ]
 
-    questions: list[str] = []
-
-    def traverse(path: list[str], graph_node: dict[str, Any]) -> None:
-        """Recursively build question paths."""
-        text: str = graph_node["header"]
-        if graph_node["content"]:
-            text += " " + graph_node["content"]
-        new_path: list[str] = path + [text]
-        if not graph_node["children"]:
-            questions.append(" > ".join(new_path))
-        else:
-            for child in graph_node["children"]:
-                traverse(new_path, child)
-
-    for node in root:
-        traverse([], node)
-
-    return questions
-
-
-async def process_images_directory(input_dir: Path, output_dir: Path) -> None:
-    """Process all images in each subdirectory, extract text via OpenAI API,
-    and save results as a separate text file for each directory.
-
-    Args:
-        input_dir: Root directory containing images to process.
-        output_dir: Directory where output files will be saved.
-    """
-    output_dir.mkdir(parents=True, exist_ok=True)
-    valid_extensions = {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
-
-    for subdir in input_dir.iterdir():
-        if subdir.is_dir():
-            results = []
-            subdir_name = subdir.name
-            output_file = output_dir / f"{subdir_name}_images_to_text.txt"
-
-            # Sort images numerically for correct order
-            image_files = sorted(
-                [f for f in subdir.rglob("*") if f.is_file() and f.suffix.lower() in valid_extensions],
-                key=lambda x: x.name
+        response = await anyio.to_thread.run_sync(
+            lambda: openai.chat.completions.create(
+                model="gpt-4o",
+                messages=messages,
+                temperature=0.0
             )
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        logger.error(f"Error extracting text from {image_path}: {e}")
+        return ""
 
-            for image_file in image_files:
-                try:
-                    image = Image.open(image_file)
-                    img_base64 = image_to_base64(image)
-                    messages = [
-                        {
-                            "role": "user",
-                            "content": [
-                                {"type": "image_url", "image_url": {"url": img_base64}},
-                                {"type": "text", "text":
-                                    "Extract all text from this image using exact markdown formatting. "
-                                    "Special instructions:\n"
-                                    "1. Questions must start with '###### ' at the beginning of the line\n"
-                                    "2. Answers must start with '//// ANSWER: ' at the beginning of the line\n"
-                                    "3. The number of '###### ' must be the same as '//// ANSWER: ' - extract questions and answers simultaneously."
-                                    "4. Preserve code blocks, tables, and mathematical notation\n"
-                                    "5. Ensure text matches the image content precisely. Verify spacing and newlines."
-                                 }
-                            ]
-                        }
-                    ]
 
-                    # API Call
-                    response = await anyio.to_thread.run_sync(
-                        lambda: openai.chat.completions.create(
-                            model=config.model_name,
-                            messages=messages,
-                            response_format={"type": "text"},
-                            temperature=0.0
-                        )
-                    )
+async def merge_markdowns(docling_md: str, vision_md: str) -> str:
+    try:
+        prompt = (
+            "Below are two markdown representations of the same document. "
+            "The first is generated from a PDF conversion tool (docling), and the second from OpenAI's Vision API analyzing images of each page. "
+            "Please merge them into a single markdown document, combining the best aspects of both. "
+            "Ensure that the structure is preserved, eliminate redundancies, and correct any errors. "
+            "Focus on maintaining accurate code blocks, mathematical expressions, tables, graphs, and formatting.\n\n"
+            "Docling Markdown:\n"
+            "-----------------\n"
+            f"{docling_md}\n\n"
+            "Vision API Markdown:\n"
+            "--------------------\n"
+            f"{vision_md}\n\n"
+            "Merged Markdown:"
+        )
 
-                    extracted = response.choices[0].message.content.strip()
-                    results.append(extracted)
-                    logger.info(f"Processed image {image_file}")
+        messages = [{"role": "user", "content": prompt}]
 
-                except Exception as e:
-                    logger.error(f"Error processing image {image_file}: {e}")
-                    results.append(f"/* Error processing {image_file.name}: {str(e)} */")
+        response = await anyio.to_thread.run_sync(
+            lambda: openai.chat.completions.create(
+                model=config.model_name,
+                messages=messages,
+                temperature=0.0
+            )
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        logger.error(f"Error merging markdowns: {e}")
+        return ""
 
-            # Combine results and write to file
-            try:
-                async with aiofiles.open(output_file, "w", encoding="utf-8") as f:
-                    await f.write("\n\n".join(results))
-                logger.info(f"Saved extracted text to {output_file}")
-            except Exception as e:
-                logger.error(f"Error writing output file {output_file}: {e}")
+
+async def process_pdfs() -> None:
+    pdf_files: list[tuple[Path, str]] = []
+    if config.process_lectures:
+        lecture_files: list[Path] = sorted(config.directories['lecture_pdf'].glob("*.pdf"))
+        pdf_files += [(path, 'lecture') for path in lecture_files]
+        logger.debug(f"Found {len(lecture_files)} lecture PDFs")
+    if config.process_exams:
+        exam_files: list[Path] = sorted(config.directories['exam_pdf'].glob("*.pdf"))
+        pdf_files += [(path, 'exam') for path in exam_files]
+        logger.debug(f"Found {len(exam_files)} exam PDFs")
+    logger.info(f"Total PDFs to process: {len(pdf_files)}")
+    async with anyio.create_task_group() as tg:
+        for pdf_file, file_type in pdf_files:
+            tg.start_soon(convert_pdf_to_images, pdf_file, file_type)
+
 
 async def main() -> None:
-    """Main orchestration function."""
+    # Step 1: Split PDFs into images
     await process_pdfs()
-    # To process a separate directory of images, uncomment and adjust the following lines:
-    if config.process_exams:
-        await process_images_directory(config.directories['exam_image_output'], config.directories['exam_dir'])
-    if config.process_lectures:
-        await process_images_directory(config.directories['lecture_image_output'], config.directories['knowledge_dir'])
+
+    # Step 2: Generate initial docling markdown
+    for pdf_file in config.directories['exam_pdf'].glob("*.pdf"):
+        docling_md_path = pdf_file.with_name(pdf_file.stem + "_docling.md")
+        success = await pdf_to_markdown(pdf_file, docling_md_path)
+        if success:
+            logger.info(f"Generated docling markdown for {pdf_file.name}")
+        else:
+            logger.error(f"Failed to generate docling markdown for {pdf_file.name}")
+
+    # Step 3: Generate vision markdown and merge
+    for pdf_file in config.directories['exam_pdf'].glob("*.pdf"):
+        image_dir = config.directories['exam_image_output'] / pdf_file.stem
+        vision_md_path = pdf_file.with_name(pdf_file.stem + "_vision.md")
+        docling_md_path = pdf_file.with_name(pdf_file.stem + "_docling.md")
+        merged_md_path = pdf_file.with_name(pdf_file.stem + "_merged.md")
+
+        # Generate vision markdown
+        vision_md_sections = []
+        valid_extensions = {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
+        image_files = sorted(
+            [f for f in image_dir.glob("page_*.*") if f.suffix.lower() in valid_extensions],
+            key=lambda x: x.name
+        )
+
+        for image_file in image_files:
+            try:
+                text = await extract_text_from_image(image_file)
+                if text:
+                    vision_md_sections.append(text)
+                    logger.info(f"Processed image {image_file.name}")
+            except Exception as e:
+                logger.error(f"Error processing image {image_file}: {e}")
+
+        if vision_md_sections:
+            async with aiofiles.open(vision_md_path, "w", encoding="utf-8") as f:
+                await f.write("\n\n".join(vision_md_sections))
+            logger.info(f"Saved vision markdown to {vision_md_path}")
+
+            # Merge markdowns
+            try:
+                async with aiofiles.open(docling_md_path, "r", encoding="utf-8") as f:
+                    docling_md = await f.read()
+                async with aiofiles.open(vision_md_path, "r", encoding="utf-8") as f:
+                    vision_md = await f.read()
+
+                merged_md = await merge_markdowns(docling_md, vision_md)
+                if merged_md:
+                    async with aiofiles.open(merged_md_path, "w", encoding="utf-8") as f:
+                        await f.write(merged_md)
+                    logger.info(f"Saved merged markdown to {merged_md_path}")
+                else:
+                    logger.error("Failed to generate merged markdown")
+            except Exception as e:
+                logger.error(f"Error merging markdowns: {e}")
 
 
 if __name__ == "__main__":
     anyio.run(main)
-    # for directory in ["AI_Course/Exams"]:
-    #     # Create a converter instance
-    #     converter = DocumentConverter()
-    #
-    #     for filename in os.listdir(directory):
-    #         source_path = os.path.join(directory, filename)  # found for every file
-    #
-    #         # if filename.endswith(".pdf"):  # filter by .pdf extension
-    #         #     output_path = os.path.join(
-    #         #         directory, filename.split(".")[0] + "_parsed.txt"
-    #         #     )
-    #         #     pdf_to_markdown(
-    #         #         source_path, output_path
-    #         #     )  # convert pdf to markdown file and save in directory with '_parsed' suffix
-    #
-    #         if filename.endswith("_answerless.txt"):
-    #             with open(source_path, "r", encoding="utf-8") as f:
-    #                 input_text = f.read()
-    #                 questions = parse_quiz(input_text)
-    #                 print(f"File: {filename}, Questions Found: {len(questions)}")
-    #                 # for i in questions:
-    #                 #     print(i)
