@@ -311,8 +311,8 @@ if __name__ == "__main__":
         csv_mode = "a"
 
     # Filter out processed files AND files containing "rag" in name
-    skipped_files = [f for f in answer_files if f.name in processed_files or "rag" in f.name.lower()]
-    answer_files = [f for f in answer_files if f.name not in processed_files and "rag" not in f.name.lower()]
+    skipped_files = [f for f in answer_files if f.name in processed_files]
+    answer_files = [f for f in answer_files if f.name not in processed_files]
 
     for skipped_file in skipped_files:
         skip_reason = "already graded" if skipped_file.name in processed_files else "contains 'rag'"
