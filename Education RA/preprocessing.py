@@ -422,11 +422,11 @@ def parse_quiz(md_text: str) -> list[str]:
 
 async def process_images_directory(input_dir: Path, output_dir: Path) -> None:
     """Process all images in a given directory (including subdirectories),
-    extract text via OpenAI API, and save results as JSON.
+    extract text via OpenAI API, and save results as Markdown.
 
     Args:
         input_dir: Root directory containing images to process.
-        output_dir: Directory where the output JSON file will be saved.
+        output_dir: Directory where the output Markdown file will be saved.
     """
     results = []
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -468,10 +468,12 @@ async def process_images_directory(input_dir: Path, output_dir: Path) -> None:
             except Exception as e:
                 logger.error(f"Error processing image {image_file}: {e}")
 
-    output_file = output_dir / "pdf_images_to_text.json"
+    output_file = output_dir / "pdf_images_to_text.md"
+    markdown_output = "\n".join(f"## {entry['file']}\n\n{entry['text']}\n" for entry in results)
+
     try:
         async with aiofiles.open(output_file, "w", encoding="utf-8") as f:
-            await f.write(json.dumps(results, indent=2))
+            await f.write(markdown_output)
         logger.info(f"Saved extracted text to {output_file}")
     except Exception as e:
         logger.error(f"Error writing output file {output_file}: {e}")
@@ -489,3 +491,25 @@ async def main() -> None:
 
 if __name__ == "__main__":
     anyio.run(main)
+    # for directory in ["AI_Course/Exams"]:
+    #     # Create a converter instance
+    #     converter = DocumentConverter()
+    #
+    #     for filename in os.listdir(directory):
+    #         source_path = os.path.join(directory, filename)  # found for every file
+    #
+    #         # if filename.endswith(".pdf"):  # filter by .pdf extension
+    #         #     output_path = os.path.join(
+    #         #         directory, filename.split(".")[0] + "_parsed.txt"
+    #         #     )
+    #         #     pdf_to_markdown(
+    #         #         source_path, output_path
+    #         #     )  # convert pdf to markdown file and save in directory with '_parsed' suffix
+    #
+    #         if filename.endswith("_answerless.txt"):
+    #             with open(source_path, "r", encoding="utf-8") as f:
+    #                 input_text = f.read()
+    #                 questions = parse_quiz(input_text)
+    #                 print(f"File: {filename}, Questions Found: {len(questions)}")
+    #                 # for i in questions:
+    #                 #     print(i)
