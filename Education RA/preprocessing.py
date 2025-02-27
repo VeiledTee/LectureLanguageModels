@@ -421,63 +421,75 @@ def parse_quiz(md_text: str) -> list[str]:
 
 
 async def process_images_directory(input_dir: Path, output_dir: Path) -> None:
-    """Process all images in a given directory (including subdirectories),
-    extract text via OpenAI API, and save results as Markdown.
+    """Process all images in each subdirectory, extract text via OpenAI API,
+    and save results as a separate text file for each directory.
 
     Args:
         input_dir: Root directory containing images to process.
-        output_dir: Directory where the output Markdown file will be saved.
+        output_dir: Directory where output files will be saved.
     """
-    results = []
     output_dir.mkdir(parents=True, exist_ok=True)
     valid_extensions = {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
 
-    for image_file in input_dir.rglob("*"):
-        if image_file.is_file() and image_file.suffix.lower() in valid_extensions:
-            try:
-                image = Image.open(image_file)
-                img_base64 = image_to_base64(image)
-                messages = [
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "image_url",
-                                "image_url": {"url": img_base64}
-                            },
-                            {
-                                "type": "text",
-                                "text": "Extract all text from this image, including any figures."
-                            }
-                        ]
-                    }
-                ]
-                response = await anyio.to_thread.run_sync(
-                    lambda: openai.beta.chat.completions.parse(
-                        model=config.model_name,
-                        response_format=ClassNotes,
-                        messages=messages
+    for subdir in input_dir.iterdir():
+        if subdir.is_dir():
+            results = []
+            subdir_name = subdir.name
+            output_file = output_dir / f"{subdir_name}_images_to_text.txt"
+
+            # Sort images numerically for correct order
+            image_files = sorted(
+                [f for f in subdir.rglob("*") if f.is_file() and f.suffix.lower() in valid_extensions],
+                key=lambda x: x.name
+            )
+
+            for image_file in image_files:
+                try:
+                    image = Image.open(image_file)
+                    img_base64 = image_to_base64(image)
+                    messages = [
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "image_url", "image_url": {"url": img_base64}},
+                                {"type": "text", "text":
+                                    "Extract all text from this image using exact markdown formatting. "
+                                    "Special instructions:\n"
+                                    "1. Questions must start with '###### ' at the beginning of the line\n"
+                                    "2. Answers must start with '//// ANSWER: ' at the beginning of the line\n"
+                                    "3. The number of '###### ' must be the same as '//// ANSWER: ' - extract questions and answers simultaneously."
+                                    "4. Preserve code blocks, tables, and mathematical notation\n"
+                                    "5. Ensure text matches the image content precisely. Verify spacing and newlines."
+                                 }
+                            ]
+                        }
+                    ]
+
+                    # API Call
+                    response = await anyio.to_thread.run_sync(
+                        lambda: openai.chat.completions.create(
+                            model=config.model_name,
+                            messages=messages,
+                            response_format={"type": "text"},
+                            temperature=0.0
+                        )
                     )
-                )
-                extracted = response.choices[0].message.parsed
-                results.append({
-                    "file": str(image_file),
-                    "text": extracted.text
-                })
-                logger.info(f"Processed image {image_file}")
+
+                    extracted = response.choices[0].message.content.strip()
+                    results.append(extracted)
+                    logger.info(f"Processed image {image_file}")
+
+                except Exception as e:
+                    logger.error(f"Error processing image {image_file}: {e}")
+                    results.append(f"/* Error processing {image_file.name}: {str(e)} */")
+
+            # Combine results and write to file
+            try:
+                async with aiofiles.open(output_file, "w", encoding="utf-8") as f:
+                    await f.write("\n\n".join(results))
+                logger.info(f"Saved extracted text to {output_file}")
             except Exception as e:
-                logger.error(f"Error processing image {image_file}: {e}")
-
-    output_file = output_dir / "pdf_images_to_text.md"
-    markdown_output = "\n".join(f"## {entry['file']}\n\n{entry['text']}\n" for entry in results)
-
-    try:
-        async with aiofiles.open(output_file, "w", encoding="utf-8") as f:
-            await f.write(markdown_output)
-        logger.info(f"Saved extracted text to {output_file}")
-    except Exception as e:
-        logger.error(f"Error writing output file {output_file}: {e}")
-
+                logger.error(f"Error writing output file {output_file}: {e}")
 
 async def main() -> None:
     """Main orchestration function."""
