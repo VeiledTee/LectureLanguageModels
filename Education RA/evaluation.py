@@ -299,7 +299,7 @@ if __name__ == "__main__":
     answer_files = sorted(list(ANSWER_DIR.glob("*_answers.txt")), reverse=True)
 
     # CSV path and processed file check
-    csv_path = ANSWER_DIR / f"evaluation_results_{os.getenv('EVALUATION_MODEL').replace('.', '-')}.csv"
+    csv_path = ANSWER_DIR / f"evaluation_results_{os.getenv('EVALUATION_MODEL').split(':')[0].replace('.', '-')}.csv"
     processed_files = set()
     csv_mode = "w"
 
