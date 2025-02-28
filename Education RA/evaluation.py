@@ -134,7 +134,7 @@ def extract_rubric(rubric_file: Path, question_number: int) -> str:
 
 
 def evaluate_with_rubric(
-        rubric_text: str, query: str, student_answer: str
+    rubric_text: str, query: str, student_answer: str
 ) -> tuple[float, float]:
     """Evaluates a student answer using an LLM-based rubric scorer.
 
@@ -190,10 +190,10 @@ def evaluate_with_rubric(
 
 
 def evaluate_answers(
-        answers_to_evaluate: list[str],
-        gold_standard_answers: list[str],
-        rubric_file: Path,
-        verbose: bool = False,
+    answers_to_evaluate: list[str],
+    gold_standard_answers: list[str],
+    rubric_file: Path,
+    verbose: bool = False,
 ) -> dict[str, float]:
     """Evaluate generated answers against gold standards using multiple metrics and rubric scoring.
 
@@ -231,11 +231,13 @@ def evaluate_answers(
             f"Generated answers and gold answers count mismatch! {len(answers_to_evaluate)} vs {len(gold_standard_answers)}"
         )
 
-    for idx, (gen, gold) in enumerate(tqdm(
-        zip(answers_to_evaluate, gold_standard_answers),
-        total=len(answers_to_evaluate),
-        desc="Evaluating questions"
-    )):
+    for idx, (gen, gold) in enumerate(
+        tqdm(
+            zip(answers_to_evaluate, gold_standard_answers),
+            total=len(answers_to_evaluate),
+            desc="Evaluating questions",
+        )
+    ):
         question_num = idx + 1
         try:
             rubric_text = extract_rubric(rubric_file, question_num)
@@ -263,25 +265,28 @@ def evaluate_answers(
         bert_f1 = F1[0].item()
         jaccard = jaccard_similarity(gen, gold)
 
-        results.append({
-            "bleu": bleu,
-            "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
-            "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
-            "token_f1": token_f1,
-            "bert_f1": bert_f1,
-            "jaccard": jaccard,
-            "rubric_score": f"{awarded:.1f}/{possible:.0f}",
-        })
+        results.append(
+            {
+                "bleu": bleu,
+                "rouge1": rouge_scores.get("rouge-1", {}).get("f", 0.0),
+                "rougeL": rouge_scores.get("rouge-l", {}).get("f", 0.0),
+                "token_f1": token_f1,
+                "bert_f1": bert_f1,
+                "jaccard": jaccard,
+                "rubric_score": f"{awarded:.1f}/{possible:.0f}",
+            }
+        )
 
         if verbose:
             print(f"This Question:\n\tAwarded: {awarded}\n\tPossible: {possible}")
-            print(f"Running totals:\n\tAwarded: {total_awarded}\n\tPossible: {total_possible}")
+            print(
+                f"Running totals:\n\tAwarded: {total_awarded}\n\tPossible: {total_possible}"
+            )
             print_metrics(question_num, results[-1])
 
     avg_metrics = ["bleu", "rouge1", "rougeL", "token_f1", "bert_f1", "jaccard"]
     avg_results = {
-        metric: sum(r[metric] for r in results) / len(results)
-        for metric in avg_metrics
+        metric: sum(r[metric] for r in results) / len(results) for metric in avg_metrics
     }
 
     avg_results["total_awarded"] = total_awarded
@@ -299,7 +304,10 @@ if __name__ == "__main__":
     answer_files = sorted(list(ANSWER_DIR.glob("*_answers.txt")), reverse=True)
 
     # CSV path and processed file check
-    csv_path = ANSWER_DIR / f"evaluation_results_{os.getenv('EVALUATION_MODEL').split(':')[0].replace('.', '-')}.csv"
+    csv_path = (
+        ANSWER_DIR
+        / f"evaluation_results_{os.getenv('EVALUATION_MODEL').split(':')[0].replace('.', '-')}.csv"
+    )
     processed_files = set()
     csv_mode = "w"
 
@@ -315,14 +323,25 @@ if __name__ == "__main__":
     answer_files = [f for f in answer_files if f.name not in processed_files]
 
     for skipped_file in skipped_files:
-        skip_reason = "already graded" if skipped_file.name in processed_files else "contains 'rag'"
+        skip_reason = (
+            "already graded"
+            if skipped_file.name in processed_files
+            else "contains 'rag'"
+        )
         print(f"Skipping file: {skipped_file.name} ({skip_reason})")
 
     with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
         fieldnames = [
-            "filename", "bleu", "rouge1", "rougeL",
-            "token_f1", "bert_f1", "jaccard",
-            "total_awarded", "total_possible", "quiz_score"
+            "filename",
+            "bleu",
+            "rouge1",
+            "rougeL",
+            "token_f1",
+            "bert_f1",
+            "jaccard",
+            "total_awarded",
+            "total_possible",
+            "quiz_score",
         ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
@@ -358,24 +377,32 @@ if __name__ == "__main__":
                     verbose=True,
                 )
 
-                score_pct = round(
-                    (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
-                ) if metrics["total_possible"] > 0 else 0.0
+                score_pct = (
+                    round(
+                        (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
+                    )
+                    if metrics["total_possible"] > 0
+                    else 0.0
+                )
 
-                writer.writerow({
-                    "filename": answer_file.name,
-                    "bleu": round(metrics["bleu"], 4),
-                    "rouge1": round(metrics["rouge1"], 4),
-                    "rougeL": round(metrics["rougeL"], 4),
-                    "token_f1": round(metrics["token_f1"], 4),
-                    "bert_f1": round(metrics["bert_f1"], 4),
-                    "jaccard": round(metrics["jaccard"], 4),
-                    "total_awarded": round(metrics["total_awarded"], 1),
-                    "total_possible": int(metrics["total_possible"]),
-                    "quiz_score": score_pct
-                })
+                writer.writerow(
+                    {
+                        "filename": answer_file.name,
+                        "bleu": round(metrics["bleu"], 4),
+                        "rouge1": round(metrics["rouge1"], 4),
+                        "rougeL": round(metrics["rougeL"], 4),
+                        "token_f1": round(metrics["token_f1"], 4),
+                        "bert_f1": round(metrics["bert_f1"], 4),
+                        "jaccard": round(metrics["jaccard"], 4),
+                        "total_awarded": round(metrics["total_awarded"], 1),
+                        "total_possible": int(metrics["total_possible"]),
+                        "quiz_score": score_pct,
+                    }
+                )
 
-                print(f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_possible']} | BERTScore: {metrics['bert_f1']:.4f} |")
+                print(
+                    f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_possible']} | BERTScore: {metrics['bert_f1']:.4f} |"
+                )
                 csvfile.flush()
 
             except Exception as e:

@@ -19,22 +19,30 @@ def correlation_analysis(csv_path):
     df = pd.read_csv(csv_path)
 
     # Extract question number from filename
-    df['question'] = df['filename'].apply(extract_question_number)
+    df["question"] = df["filename"].apply(extract_question_number)
 
     # Handle files without question numbers
-    if df['question'].isnull().any():
+    if df["question"].isnull().any():
         print("Warning: Some files don't contain question numbers in filename")
-        df = df.dropna(subset=['question'])
+        df = df.dropna(subset=["question"])
 
     # Metrics to analyze
-    metrics = ['bleu', 'rouge1', 'rougeL', 'token_f1', 'bert_f1', 'jaccard', 'quiz_score']
+    metrics = [
+        "bleu",
+        "rouge1",
+        "rougeL",
+        "token_f1",
+        "bert_f1",
+        "jaccard",
+        "quiz_score",
+    ]
 
     # Create output directory for plots
     output_dir = Path(csv_path).parent / "correlation_analysis"
     output_dir.mkdir(exist_ok=True)
 
     # Perform analysis per question
-    for question, group in df.groupby('question'):
+    for question, group in df.groupby("question"):
         print(f"\n=== Correlation Analysis for {question} ===")
 
         # Calculate correlation matrix
@@ -46,13 +54,15 @@ def correlation_analysis(csv_path):
 
         # Visualize correlations
         plt.figure(figsize=(12, 8))
-        sns.heatmap(corr_matrix,
-                    annot=True,
-                    cmap='coolwarm',
-                    vmin=-1,
-                    vmax=1,
-                    fmt=".2f",
-                    linewidths=0.5)
+        sns.heatmap(
+            corr_matrix,
+            annot=True,
+            cmap="coolwarm",
+            vmin=-1,
+            vmax=1,
+            fmt=".2f",
+            linewidths=0.5,
+        )
         plt.title(f"Metric Correlations - {question}")
         plt.tight_layout()
 
@@ -65,7 +75,7 @@ def correlation_analysis(csv_path):
 
     # Add cross-question summary
     print("\n=== Cross-Question Summary ===")
-    summary = df.groupby('question')[metrics].mean().T
+    summary = df.groupby("question")[metrics].mean().T
     print("\nAverage Metrics per Question:")
     print(summary.round(2))
 
