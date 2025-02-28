@@ -90,12 +90,17 @@ def process_exams(ollama_pipeline: LLMQASystem):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            output_path = output_dir / f"{exam_name}_{ollama_pipeline.generation_model.split(':')[0]}_answers.txt"
+            output_path = (
+                output_dir
+                / f"{exam_name}_{ollama_pipeline.generation_model.split(':')[0]}_answers.txt"
+            )
 
             questions = process_exam_file(exam_file)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                for question in tqdm(questions, desc="Generating answers", unit="question"):
+                for question in tqdm(
+                    questions, desc="Generating answers", unit="question"
+                ):
                     answer = ollama_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
                     f.flush()  # write answer immediately
