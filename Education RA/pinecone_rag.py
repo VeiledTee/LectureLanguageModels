@@ -26,6 +26,7 @@ class PineconeRAG:
     documents, generating embeddings, retrieving relevant context, and generating answers
     with optional source citations.
     """
+
     def __init__(
         self,
         pinecone_client: pinecone.Pinecone,
@@ -55,9 +56,8 @@ class PineconeRAG:
                 dimension=int(os.getenv("RAG_EMBEDDING_DIM", "768")),
                 metric="cosine",
                 spec=pinecone.ServerlessSpec(
-                    cloud="aws",
-                    region=os.getenv("PINECONE_REGION", "us-east-1")
-                )
+                    cloud="aws", region=os.getenv("PINECONE_REGION", "us-east-1")
+                ),
             )
         self.index = self.pinecone.Index(self.index_name)
 
@@ -113,8 +113,9 @@ class PineconeRAG:
         hours = int(duration // 3600)
         minutes = int((duration % 3600) // 60)
         seconds = int(duration % 60)
-        logging.info(f"Document indexing complete in {hours:02}:{minutes:02}:{seconds:02}!")
-
+        logging.info(
+            f"Document indexing complete in {hours:02}:{minutes:02}:{seconds:02}!"
+        )
 
     def _process_section(
         self, content: str, section_path: str, filename: str
@@ -391,7 +392,9 @@ def process_exams(rag_pipeline: PineconeRAG):
             questions = process_exam_file(exam_file)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                for question in tqdm(questions, desc="Generating answers", unit="question"):
+                for question in tqdm(
+                    questions, desc="Generating answers", unit="question"
+                ):
                     answer = rag_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
                     f.flush()  # write answer immediately
