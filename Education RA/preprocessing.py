@@ -364,63 +364,166 @@ async def main() -> None:
     # Step 1: Split PDFs into images
     await process_pdfs()
 
-    # Step 2: Generate initial docling markdown
-    for pdf_file in config.directories["exam_pdf"].glob("*.pdf"):
-        docling_md_path = pdf_file.with_name(pdf_file.stem + "_docling.txt")
-        success = await pdf_to_markdown(pdf_file, docling_md_path)
-        if success:
-            logger.info(f"Generated docling markdown for {pdf_file.name}")
-        else:
-            logger.error(f"Failed to generate docling markdown for {pdf_file.name}")
+    # Step 2: Generate markdown exclusively from images
+    if config.process_lectures:
+        for pdf_file in config.directories["lecture_pdf"].glob("*.pdf"):
+            image_dir = config.directories["lecture_image_output"] / pdf_file.stem
+            markdown_output_path = pdf_file.with_name(pdf_file.stem + "_markdown.txt")
+
+            vision_md_sections = []
+            valid_extensions = (
+                {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
+            )
+            image_files = sorted(
+                [
+                    f
+                    for f in image_dir.glob("page_*.*")
+                    if f.suffix.lower() in valid_extensions
+                ],
+                key=lambda x: x.name,
+            )
+
+            for image_file in image_files:
+                try:
+                    text = await extract_text_from_image(image_file)
+                    if text:
+                        vision_md_sections.append(text)
+                except Exception as e:
+                    logger.error(f"Error processing image {image_file}: {e}")
+
+            if vision_md_sections:
+                async with aiofiles.open(markdown_output_path, "w", encoding="utf-8") as f:
+                    await f.write("\n\n".join(vision_md_sections))
+                logger.info(f"Generated vision markdown for {pdf_file.name}")
+
+    if config.process_exams:
+        for pdf_file in config.directories["exam_pdf"].glob("*.pdf"):
+            image_dir = config.directories["exam_image_output"] / pdf_file.stem
+            markdown_output_path = pdf_file.with_name(pdf_file.stem + "_markdown.txt")
+
+            vision_md_sections = []
+            valid_extensions = (
+                {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
+            )
+            image_files = sorted(
+                [
+                    f
+                    for f in image_dir.glob("page_*.*")
+                    if f.suffix.lower() in valid_extensions
+                ],
+                key=lambda x: x.name,
+            )
+
+            for image_file in image_files:
+                try:
+                    text = await extract_text_from_image(image_file)
+                    if text:
+                        vision_md_sections.append(text)
+                except Exception as e:
+                    logger.error(f"Error processing image {image_file}: {e}")
+
+            if vision_md_sections:
+                async with aiofiles.open(markdown_output_path, "w", encoding="utf-8") as f:
+                    await f.write("\n\n".join(vision_md_sections))
+                logger.info(f"Generated vision markdown for {pdf_file.name}")
 
     # Step 3: Generate vision markdown and merge
-    for pdf_file in config.directories["exam_pdf"].glob("*.pdf"):
-        image_dir = config.directories["exam_image_output"] / pdf_file.stem
-        vision_md_path = pdf_file.with_name(pdf_file.stem + "_vision.txt")
-        docling_md_path = pdf_file.with_name(pdf_file.stem + "_docling.txt")
-        merged_md_path = pdf_file.with_name(pdf_file.stem + "_merged.txt")
+    if config.process_lectures:
+        for pdf_file in config.directories["lecture_pdf"].glob("*.pdf"):
+            image_dir = config.directories["lecture_image_output"] / pdf_file.stem
+            vision_md_path = pdf_file.with_name(pdf_file.stem + "_vision.txt")
+            docling_md_path = pdf_file.with_name(pdf_file.stem + "_docling.txt")
+            merged_md_path = pdf_file.with_name(pdf_file.stem + "_merged.txt")
 
-        # Generate vision markdown
-        vision_md_sections = []
-        valid_extensions = (
-            {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
-        )
-        image_files = sorted(
-            [
-                f
-                for f in image_dir.glob("page_*.*")
-                if f.suffix.lower() in valid_extensions
-            ],
-            key=lambda x: x.name,
-        )
+            # Generate vision markdown
+            vision_md_sections = []
+            valid_extensions = (
+                {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
+            )
+            image_files = sorted(
+                [
+                    f
+                    for f in image_dir.glob("page_*.*")
+                    if f.suffix.lower() in valid_extensions
+                ],
+                key=lambda x: x.name,
+            )
 
-        merged_sections = []
-        for image_file in image_files:
-            try:
-                text = await extract_text_from_image(image_file)
-                if text:
-                    vision_md_sections.append(text)
-            except Exception as e:
-                logger.error(f"Error processing image {image_file}: {e}")
+            merged_sections = []
+            for image_file in image_files:
+                try:
+                    text = await extract_text_from_image(image_file)
+                    if text:
+                        vision_md_sections.append(text)
+                except Exception as e:
+                    logger.error(f"Error processing image {image_file}: {e}")
 
-        if vision_md_sections:
-            # Write vision MD once
-            async with aiofiles.open(vision_md_path, "w", encoding="utf-8") as f:
-                await f.write("\n\n".join(vision_md_sections))
+            if vision_md_sections:
+                # Write vision MD once
+                async with aiofiles.open(vision_md_path, "w", encoding="utf-8") as f:
+                    await f.write("\n\n".join(vision_md_sections))
 
-            # Merge FULL documents ONCE
-            try:
-                async with aiofiles.open(docling_md_path, "r", encoding="utf-8") as f:
-                    docling_md = await f.read()
-                vision_md = "\n\n".join(vision_md_sections)
+                # Merge FULL documents ONCE
+                try:
+                    async with aiofiles.open(docling_md_path, "r", encoding="utf-8") as f:
+                        docling_md = await f.read()
+                    vision_md = "\n\n".join(vision_md_sections)
 
-                merged_md = await merge_markdowns(docling_md, vision_md, image_dir)
+                    merged_md = await merge_markdowns(docling_md, vision_md, image_dir)
 
-                if merged_md:
-                    async with aiofiles.open(merged_md_path, "w", encoding="utf-8") as f:
-                        await f.write(merged_md)
-            except Exception as e:
-                logger.error(f"Error merging markdowns: {e}")
+                    if merged_md:
+                        async with aiofiles.open(merged_md_path, "w", encoding="utf-8") as f:
+                            await f.write(merged_md)
+                except Exception as e:
+                    logger.error(f"Error merging markdowns: {e}")
+    if config.process_exams:
+        for pdf_file in config.directories["exam_pdf"].glob("*.pdf"):
+            image_dir = config.directories["exam_image_output"] / pdf_file.stem
+            vision_md_path = pdf_file.with_name(pdf_file.stem + "_vision.txt")
+            docling_md_path = pdf_file.with_name(pdf_file.stem + "_docling.txt")
+            merged_md_path = pdf_file.with_name(pdf_file.stem + "_merged.txt")
+
+            # Generate vision markdown
+            vision_md_sections = []
+            valid_extensions = (
+                {".jpeg", ".jpg"} if config.image_format.upper() == "JPEG" else {".png"}
+            )
+            image_files = sorted(
+                [
+                    f
+                    for f in image_dir.glob("page_*.*")
+                    if f.suffix.lower() in valid_extensions
+                ],
+                key=lambda x: x.name,
+            )
+
+            merged_sections = []
+            for image_file in image_files:
+                try:
+                    text = await extract_text_from_image(image_file)
+                    if text:
+                        vision_md_sections.append(text)
+                except Exception as e:
+                    logger.error(f"Error processing image {image_file}: {e}")
+
+            if vision_md_sections:
+                # Write vision MD once
+                async with aiofiles.open(vision_md_path, "w", encoding="utf-8") as f:
+                    await f.write("\n\n".join(vision_md_sections))
+
+                # Merge FULL documents ONCE
+                try:
+                    async with aiofiles.open(docling_md_path, "r", encoding="utf-8") as f:
+                        docling_md = await f.read()
+                    vision_md = "\n\n".join(vision_md_sections)
+
+                    merged_md = await merge_markdowns(docling_md, vision_md, image_dir)
+
+                    if merged_md:
+                        async with aiofiles.open(merged_md_path, "w", encoding="utf-8") as f:
+                            await f.write(merged_md)
+                except Exception as e:
+                    logger.error(f"Error merging markdowns: {e}")
 
 
 if __name__ == "__main__":
