@@ -68,21 +68,22 @@ def process_directory(image_paths: list[str]) -> list[tuple[str, str]]:
 
 
 def save_aggregated_results(directory: str, results: list[tuple[str, str]]):
-    """Save results with directory structure preservation"""
-    relative_path = os.path.relpath(directory, INPUT_ROOT_DIR)
-    output_dir = os.path.join(OUTPUT_ROOT_DIR, relative_path)
-    os.makedirs(output_dir, exist_ok=True)
+    """Save results to a file named {dir_name}_aggregated_results.txt in the OUTPUT_ROOT_DIR"""
+    # Get the base directory name (e.g., "transistors-gates")
+    dir_name = os.path.basename(directory)
+    output_file = f"{dir_name}_aggregated_results.txt"
 
-    output_path = os.path.join(output_dir, "aggregated_descriptions.txt")
+    # Ensure the OUTPUT_ROOT_DIR exists (e.g., "Computer_Architecture/Processed")
+    os.makedirs(OUTPUT_ROOT_DIR, exist_ok=True)
+
+    output_path = os.path.join(OUTPUT_ROOT_DIR, output_file)
 
     with open(output_path, "w", encoding="utf-8") as f:
-        f.write(f"Image Descriptions for Directory: {relative_path}\n\n")
-        f.write(f"Generated with {OPENAI_MODEL_NAME} (Temperature: {os.getenv('GENERATION_TEMPERATURE')})\n\n")
-
         for filename, description in results:
             f.write(f"=== {filename} ===\n")
             f.write(f"{description}\n\n")
-            f.write("-" * 50 + "\n\n")
+        print(f"Saved {filename} to {output_file}")
+
 
 
 if __name__ == "__main__":
