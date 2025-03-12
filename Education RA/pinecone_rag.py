@@ -377,8 +377,8 @@ def process_exams(rag_pipeline: PineconeRAG):
         f"Processing exams with Pinecone and Ollama queries and {rag_pipeline.generation_model}..."
     )
 
-    exam_dir = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
-    output_dir = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
+    exam_dir = Path(os.getenv("EXAM_DIR", "Artificial_Intelligence/Exams"))
+    output_dir = Path(os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers"))
     output_dir.mkdir(parents=True, exist_ok=True)
     for exam_file in exam_dir.glob("*_answerless.txt"):
         try:

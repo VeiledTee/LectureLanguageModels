@@ -89,7 +89,7 @@ def correlation_analysis(csv_path):
 
 
 if __name__ == "__main__":
-    answer_dir = Path("AI_Course/Exams/generated_answers")
+    answer_dir = Path("Artificial_Intelligence/Exams/generated_answers")
     csv_files = list(answer_dir.glob("*.csv"))
 
     if not csv_files:

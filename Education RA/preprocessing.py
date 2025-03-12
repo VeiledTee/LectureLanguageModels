@@ -15,7 +15,6 @@ import openai
 import requests
 from docling.document_converter import DocumentConverter
 from dotenv import load_dotenv
-from pdf2image import convert_from_path
 from pydantic import BaseModel
 from io import BytesIO
 import base64
@@ -289,84 +288,6 @@ def image_to_base64(image: Image.Image) -> str:
     return f"data:image/png;base64,{img_str}"
 
 
-async def convert_note_to_images(pdf_path: Path, file_type: str) -> int:
-    if file_type == "lecture":
-        output_dir = config.directories["lecture_image_output"] / pdf_path.stem
-    else:
-        output_dir = config.directories["exam_image_output"] / pdf_path.stem
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    existing_pages: set[str] = {f.name for f in output_dir.glob("page_*.*")}
-    processed: int = 0
-
-    try:
-        images: list[Any] = convert_from_path(
-            str(pdf_path),
-            dpi=200,
-            thread_count=4,
-            fmt=config.image_format.lower(),
-            poppler_path=r"C:\poppler\Library\bin",
-        )
-
-        for i, image in enumerate(images, 1):
-            page_name: str = f"page_{i:03d}.{config.image_format.lower()}"
-            if page_name not in existing_pages:
-                image.save(
-                    output_dir / page_name,
-                    config.image_format,
-                    quality=config.image_quality,
-                )
-                processed += 1
-                logger.info(f"Converted page {i} of {pdf_path.name}")
-
-        return processed
-
-    except Exception as e:
-        logger.error(f"Error processing {pdf_path}: {str(e)}")
-        return 0
-
-
-async def pdf_to_markdown(pdf_path: Path, output_path: Path, file_type: str) -> bool:
-    try:
-        doc_converter: DocumentConverter = DocumentConverter()
-        result: Any = doc_converter.convert(str(pdf_path))
-        markdown_text: str = result.document.export_to_markdown()
-
-        image_pattern: re.Pattern = re.compile(
-            "|".join(config.image_patterns), re.IGNORECASE
-        )
-        processed_lines: list[str] = []
-        in_ignore_block: bool = False
-
-        for line in markdown_text.splitlines():
-            line = image_pattern.sub("", line).strip()
-            if not line:
-                continue
-
-            if "<!-- image" in line.lower():
-                in_ignore_block = True
-                continue
-
-            if in_ignore_block and line.startswith("#"):
-                in_ignore_block = False
-
-            if not in_ignore_block and not any(
-                    line.startswith(h) for h in config.excluded_headers
-            ):
-                processed_lines.append(line)
-
-        async with aiofiles.open(output_path, "w", encoding="utf-8") as f:
-            await f.write("\n".join(processed_lines))
-
-        await convert_markdown_to_json(output_path, file_type)
-
-        return True
-
-    except Exception as e:
-        logger.error(f"Failed to convert {pdf_path}: {str(e)}")
-        return False
-
-
 async def merge_markdowns_openai(
         docling_md: str, vision_md: str, image_path: Path
 ) -> str:
@@ -638,8 +559,8 @@ async def process_notes() -> None:
 async def main() -> None:
     # Existing processing
     await download_github_directory()
-    await process_github_content()
-    await process_notes()
+    # await process_github_content()
+    # await process_notes()
 
 
 if __name__ == "__main__":

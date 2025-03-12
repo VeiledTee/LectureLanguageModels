@@ -2,29 +2,19 @@ import os
 import base64
 import time
 import openai
-from typing import List, Tuple
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
 
-
-def get_env_var(name: str) -> str:
-    """Get required environment variable with error handling"""
-    value = os.getenv(name)
-    if not value:
-        raise ValueError(f"Missing required environment variable: {name}")
-    return value
-
-
 # Configuration using .env variables
-OPENAI_API_KEY = get_env_var("OPENAI_API_KEY")
-OPENAI_MODEL_NAME = get_env_var("OPENAI_MODEL_NAME")
-INPUT_ROOT_DIR = get_env_var("LECTURE_NOTE_DIR")
-OUTPUT_ROOT_DIR = get_env_var("LECTURE_OUTPUT_DIR")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_MODEL_NAME = os.getenv("OPENAI_MODEL_NAME")
+INPUT_ROOT_DIR = os.getenv("LECTURE_NOTE_DIR")
+OUTPUT_ROOT_DIR = os.getenv("LECTURE_OUTPUT_DIR")
 MAX_RETRIES = int(os.getenv("MAX_RETRIES", "3"))
 REQUEST_DELAY = float(os.getenv("REQUEST_DELAY", "1.0"))
-IMAGE_FORMAT = os.getenv("IMAGE_FORMAT", "jpeg").lower()
+IMAGE_FORMAT = os.getenv("IMAGE_FORMAT", "png").lower()
 
 
 def encode_image(image_path: str) -> str:
@@ -51,13 +41,13 @@ def image_to_md_with_gpt(image_path: str) -> str:
                 }}
             ]
         }],
-        max_tokens=int(get_env_var("MAX_TOKENS")),
+        max_tokens=int(os.getenv("MAX_TOKENS")),
         temperature=float(os.getenv("GENERATION_TEMPERATURE", "0.3")),
         top_p=float(os.getenv("TOP_P", "0.9"))
     ).choices[0].message.content
 
 
-def process_directory(image_paths: List[str]) -> List[Tuple[str, str]]:
+def process_directory(image_paths: list[str]) -> list[tuple[str, str]]:
     """Process all images in a directory with retries"""
     directory_results = []
     for img_path in image_paths:
@@ -77,7 +67,7 @@ def process_directory(image_paths: List[str]) -> List[Tuple[str, str]]:
     return directory_results
 
 
-def save_aggregated_results(directory: str, results: List[Tuple[str, str]]):
+def save_aggregated_results(directory: str, results: list[tuple[str, str]]):
     """Save results with directory structure preservation"""
     relative_path = os.path.relpath(directory, INPUT_ROOT_DIR)
     output_dir = os.path.join(OUTPUT_ROOT_DIR, relative_path)
@@ -95,20 +85,18 @@ def save_aggregated_results(directory: str, results: List[Tuple[str, str]]):
             f.write("-" * 50 + "\n\n")
 
 
-def main():
-    openai.api_key = OPENAI_API_KEY
+if __name__ == "__main__":
+    print("running...")
+    if not os.path.isdir(INPUT_ROOT_DIR):
+        raise ValueError(f"Input directory does not exist: {INPUT_ROOT_DIR}")
 
-    # Walk through directory structure
     for root, dirs, files in os.walk(INPUT_ROOT_DIR):
+        print(f"Processing directory: {root}")
         image_files = [os.path.join(root, f) for f in files if f.lower().endswith(f".{IMAGE_FORMAT}")]
+        print(f"Found images: {image_files}")
 
         if not image_files:
             continue
 
-        print(f"\nProcessing directory: {root}")
         results = process_directory(image_files)
         save_aggregated_results(root, results)
-
-
-if __name__ == "__main__":
-    main()
