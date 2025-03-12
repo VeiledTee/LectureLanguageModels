@@ -34,8 +34,13 @@ def correlation_analysis(csv_path):
 
     # Metrics to analyze
     metrics = [
-        "bleu", "rouge1", "rougeL", "token_f1",
-        "bert_f1", "jaccard", "quiz_score"
+        "bleu",
+        "rouge1",
+        "rougeL",
+        "token_f1",
+        "bert_f1",
+        "jaccard",
+        "quiz_score",
     ]
 
     # Create output directory
@@ -95,4 +100,3 @@ if __name__ == "__main__":
         correlation_analysis(csv_file)
 
     print("\nCorrelation analysis complete for all CSVs!")
-    
