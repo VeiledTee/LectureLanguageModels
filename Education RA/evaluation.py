@@ -296,7 +296,9 @@ def evaluate_answers(
 
 
 if __name__ == "__main__":
-    ANSWER_DIR = Path(os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers"))
+    ANSWER_DIR = Path(
+        os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers")
+    )
     EXAM_DIR = Path(os.getenv("EXAM_DIR", "Artificial_Intelligence/Exams"))
     RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR", "Artificial_Intelligence/Rubrics"))
 

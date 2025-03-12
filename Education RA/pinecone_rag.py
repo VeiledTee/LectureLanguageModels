@@ -378,7 +378,9 @@ def process_exams(rag_pipeline: PineconeRAG):
     )
 
     exam_dir = Path(os.getenv("EXAM_DIR", "Artificial_Intelligence/Exams"))
-    output_dir = Path(os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers"))
+    output_dir = Path(
+        os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers")
+    )
     output_dir.mkdir(parents=True, exist_ok=True)
     for exam_file in exam_dir.glob("*_answerless.txt"):
         try:

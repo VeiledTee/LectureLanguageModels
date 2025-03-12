@@ -23,28 +23,40 @@ def encode_image(image_path: str) -> str:
         raise ValueError(f"Invalid image format, expected {IMAGE_FORMAT}")
 
     with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode('utf-8')
+        return base64.b64encode(image_file.read()).decode("utf-8")
 
 
 def image_to_md_with_gpt(image_path: str) -> str:
     """Process image with configured OpenAI model"""
     base64_image = encode_image(image_path)
 
-    return openai.chat.completions.create(
-        model=OPENAI_MODEL_NAME,
-        messages=[{
-            "role": "user",
-            "content": [
-                {"type": "text", "text": "Describe this image in detail for documentation purposes. Include ASCII art if there are visuals:"},
-                {"type": "image_url", "image_url": {
-                    "url": f"data:image/{IMAGE_FORMAT};base64,{base64_image}"
-                }}
-            ]
-        }],
-        max_tokens=int(os.getenv("MAX_TOKENS")),
-        temperature=float(os.getenv("GENERATION_TEMPERATURE", "0.3")),
-        top_p=float(os.getenv("TOP_P", "0.9"))
-    ).choices[0].message.content
+    return (
+        openai.chat.completions.create(
+            model=OPENAI_MODEL_NAME,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": "Describe this image in detail for documentation purposes. Include ASCII art if there are visuals:",
+                        },
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": f"data:image/{IMAGE_FORMAT};base64,{base64_image}"
+                            },
+                        },
+                    ],
+                }
+            ],
+            max_tokens=int(os.getenv("MAX_TOKENS")),
+            temperature=float(os.getenv("GENERATION_TEMPERATURE", "0.3")),
+            top_p=float(os.getenv("TOP_P", "0.9")),
+        )
+        .choices[0]
+        .message.content
+    )
 
 
 def process_directory(image_paths: list[str]) -> list[tuple[str, str]]:
@@ -61,8 +73,10 @@ def process_directory(image_paths: list[str]) -> list[tuple[str, str]]:
             except Exception as e:
                 if attempt == MAX_RETRIES - 1:
                     print(f"Failed to process {img_path}: {str(e)}")
-                    directory_results.append((os.path.basename(img_path), f"ERROR: {str(e)}"))
-                time.sleep(2 ** attempt)
+                    directory_results.append(
+                        (os.path.basename(img_path), f"ERROR: {str(e)}")
+                    )
+                time.sleep(2**attempt)
 
     return directory_results
 
@@ -85,7 +99,6 @@ def save_aggregated_results(directory: str, results: list[tuple[str, str]]):
         print(f"Saved {filename} to {output_file}")
 
 
-
 if __name__ == "__main__":
     print("running...")
     if not os.path.isdir(INPUT_ROOT_DIR):
@@ -93,7 +106,11 @@ if __name__ == "__main__":
 
     for root, dirs, files in os.walk(INPUT_ROOT_DIR):
         print(f"\tProcessing directory: {root}")
-        image_files = [os.path.join(root, f) for f in files if f.lower().endswith(f".{IMAGE_FORMAT}")]
+        image_files = [
+            os.path.join(root, f)
+            for f in files
+            if f.lower().endswith(f".{IMAGE_FORMAT}")
+        ]
 
         if not image_files:
             continue

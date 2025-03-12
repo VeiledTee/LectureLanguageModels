@@ -41,7 +41,7 @@ def convert_rst_to_markdown(input_file: str, output_file: str):
 
     try:
         # Convert the input reST file to Markdown
-        markdown_text = pypandoc.convert_file(input_file, 'markdown', format='rst')
+        markdown_text = pypandoc.convert_file(input_file, "markdown", format="rst")
     except Exception as e:
         print(f"Error during conversion: {e}")
         return
@@ -49,7 +49,7 @@ def convert_rst_to_markdown(input_file: str, output_file: str):
     # Optionally, post-process the markdown_text here (for custom replacements) if needed
 
     # Write the markdown text to the output file
-    with open(output_file, 'w', encoding='utf-8') as md_file:
+    with open(output_file, "w", encoding="utf-8") as md_file:
         md_file.write(markdown_text)
 
     print(f"Conversion complete. Markdown file saved at: {output_file}")
@@ -60,7 +60,7 @@ async def init_rag():
     rag = LightRAG(
         working_dir="./rag_storage",  # change this to your preferred storage directory
         embedding_func=openai_embed,
-        llm_model_func=gpt_4o_mini_complete
+        llm_model_func=gpt_4o_mini_complete,
     )
     return rag
 
@@ -87,19 +87,18 @@ def main():
     print("Query Result:", result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Convert reStructuredText lecture notes to Markdown for lightrag knowledge graph."
     )
     parser.add_argument(
-        "--input", "-i",
+        "--input",
+        "-i",
         required=True,
-        help="Path to the input .rst file (e.g., from Source_Notes directory)"
+        help="Path to the input .rst file (e.g., from Source_Notes directory)",
     )
     parser.add_argument(
-        "--output", "-o",
-        required=True,
-        help="Path to the output .md file"
+        "--output", "-o", required=True, help="Path to the output .md file"
     )
     args = parser.parse_args()
 

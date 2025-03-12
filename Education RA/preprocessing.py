@@ -158,8 +158,8 @@ async def extract_text_from_image_openai(image_path: Path) -> str:
                     {
                         "type": "text",
                         "text": "Extract all text from image and put in markdown format. "
-                                "To the best of your ability, convert the image to ASCII Art."
-                                "Do not skip lines in graphs. Capture them all: ",
+                        "To the best of your ability, convert the image to ASCII Art."
+                        "Do not skip lines in graphs. Capture them all: ",
                     },
                     {"type": "image_url", "image_url": {"url": img_base64}},
                 ],
@@ -184,8 +184,8 @@ async def extract_text_from_image_ollama(image_path: Path) -> str:
                 {
                     "role": "user",
                     "content": "Extract all text from image and put in markdown format. "
-                               "To the best of your ability, convert the image to ASCII Art."
-                               "Do not skip lines in graphs. Capture them all: ",
+                    "To the best of your ability, convert the image to ASCII Art."
+                    "Do not skip lines in graphs. Capture them all: ",
                     "images": [str(image_path)],
                 }
             ],
@@ -222,7 +222,7 @@ async def process_github_content():
                 # Generate output path based on last element of RST path
                 output_md_filename = f"{rst_path.stem}.md"
                 output_md_path = (
-                        config.directories["lecture_image_output"] / output_md_filename
+                    config.directories["lecture_image_output"] / output_md_filename
                 )
 
                 if rst_path.exists():
@@ -289,7 +289,7 @@ def image_to_base64(image: Image.Image) -> str:
 
 
 async def merge_markdowns_openai(
-        docling_md: str, vision_md: str, image_path: Path
+    docling_md: str, vision_md: str, image_path: Path
 ) -> str:
     try:
         image = Image.open(image_path)
@@ -369,7 +369,7 @@ def call_ollama(model: str, messages):
 
 
 async def merge_markdowns_ollama(
-        docling_md: str, vision_md: str, image_path: Path
+    docling_md: str, vision_md: str, image_path: Path
 ) -> str:
     try:
         image = Image.open(image_path)
@@ -378,46 +378,46 @@ async def merge_markdowns_ollama(
             {
                 "role": "user",
                 "content": "Below are two markdown representations of the same image. "
-                           "The first is generated from a PDF conversion tool (docling), and the second from Ollama's vision API. "
-                           "Please merge them into a single markdown document, combining the best aspects of both. "
-                           "Ensure that the structure is preserved, eliminate redundancies, and correct any errors. "
-                           "Focus on maintaining accurate code blocks, mathematical expressions, tables, graphs, and formatting. "
-                           "If there are questions and answers, prepend the questions with '###### ' and the answers with '//// ANSWER: '\n\n"
-                           "Docling Markdown:\n"
-                           "-----------------\n"
-                           f"{docling_md}\n\n"
-                           "Vision API Markdown:\n"
-                           "--------------------\n"
-                           f"{vision_md}\n\n"
-                           "Merged Markdown:\n"
-                           "1. Extract ALL text with perfect accuracy:\n"
-                           "   - Preserve original structure/headings/lists\n"
-                           "   - Maintain code blocks (```) and math equations ($$)\n"
-                           "   - Keep exact numbering and indentation\n"
-                           "2. Special element handling:\n"
-                           "   a) Questions ALWAYS use ###### headers\n"
-                           "   b) Answers start with '//// ANSWER:'\n"
-                           "   c) Convert diagrams to:\n"
-                           "      - ASCII art with └─ ├─ symbols\n"
-                           "      - [X] for failed constraints\n"
-                           "      - [✓] for explored nodes\n"
-                           "3. Formatting requirements:\n"
-                           "   - Replace images with text descriptions\n"
-                           "   - Use proper markdown for:\n"
-                           "     * Lists (-, 1.)\n"
-                           "     * Tables\n"
-                           "     * Code (language-specific)\n"
-                           "     * Math equations\n"
-                           "4. Example transformation:\n"
-                           "   Image Content: 'Question 3: What is... diagram of A→B→C'\n"
-                           "   Converted to:\n"
-                           "   ###### 3. What is...\n"
-                           "   ```\n"
-                           "   A\n"
-                           "   └─ B [✓]\n"
-                           "      └─ C [X]\n"
-                           "   ```\n"
-                           "   //// ANSWER: Explanation...",
+                "The first is generated from a PDF conversion tool (docling), and the second from Ollama's vision API. "
+                "Please merge them into a single markdown document, combining the best aspects of both. "
+                "Ensure that the structure is preserved, eliminate redundancies, and correct any errors. "
+                "Focus on maintaining accurate code blocks, mathematical expressions, tables, graphs, and formatting. "
+                "If there are questions and answers, prepend the questions with '###### ' and the answers with '//// ANSWER: '\n\n"
+                "Docling Markdown:\n"
+                "-----------------\n"
+                f"{docling_md}\n\n"
+                "Vision API Markdown:\n"
+                "--------------------\n"
+                f"{vision_md}\n\n"
+                "Merged Markdown:\n"
+                "1. Extract ALL text with perfect accuracy:\n"
+                "   - Preserve original structure/headings/lists\n"
+                "   - Maintain code blocks (```) and math equations ($$)\n"
+                "   - Keep exact numbering and indentation\n"
+                "2. Special element handling:\n"
+                "   a) Questions ALWAYS use ###### headers\n"
+                "   b) Answers start with '//// ANSWER:'\n"
+                "   c) Convert diagrams to:\n"
+                "      - ASCII art with └─ ├─ symbols\n"
+                "      - [X] for failed constraints\n"
+                "      - [✓] for explored nodes\n"
+                "3. Formatting requirements:\n"
+                "   - Replace images with text descriptions\n"
+                "   - Use proper markdown for:\n"
+                "     * Lists (-, 1.)\n"
+                "     * Tables\n"
+                "     * Code (language-specific)\n"
+                "     * Math equations\n"
+                "4. Example transformation:\n"
+                "   Image Content: 'Question 3: What is... diagram of A→B→C'\n"
+                "   Converted to:\n"
+                "   ###### 3. What is...\n"
+                "   ```\n"
+                "   A\n"
+                "   └─ B [✓]\n"
+                "      └─ C [X]\n"
+                "   ```\n"
+                "   //// ANSWER: Explanation...",
                 "images": {"url": img_base64},
             }
         ]
@@ -467,9 +467,9 @@ async def convert_rst_to_markdown(rst_path: Path, output_md_path: Path) -> None:
     # Step 2: Convert RST to Markdown using pandoc
     pypandoc.convert_file(
         str(rst_path),
-        'markdown',
+        "markdown",
         outputfile=str(output_md_path),
-        extra_args=['-s', '--wrap=none']
+        extra_args=["-s", "--wrap=none"],
     )
 
     # Step 3: Replace image links with generated .md content
@@ -492,7 +492,7 @@ async def convert_rst_to_markdown(rst_path: Path, output_md_path: Path) -> None:
                 re.escape(f"![{alt_text}]({img_rel_path})"),
                 replacement_content,
                 md_content,
-                count=1  # Replace only the first occurrence per match
+                count=1,  # Replace only the first occurrence per match
             )
 
     # Write the final Markdown
@@ -509,10 +509,15 @@ async def convert_markdown_to_json(markdown_path: Path, output_type: str) -> Non
 
         # Create output directory structure
         json_dir = config.directories["json_output"] / output_type
-        relative_path = markdown_path.relative_to(config.directories["lecture_image_output"] if output_type == "lecture"
-                                                  else config.directories["exam_image_output"]
-                                                  if output_type == "exam"
-                                                  else config.directories["github_dir"])
+        relative_path = markdown_path.relative_to(
+            config.directories["lecture_image_output"]
+            if output_type == "lecture"
+            else (
+                config.directories["exam_image_output"]
+                if output_type == "exam"
+                else config.directories["github_dir"]
+            )
+        )
         json_path = json_dir / relative_path.with_suffix(".json")
         json_path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -520,11 +525,8 @@ async def convert_markdown_to_json(markdown_path: Path, output_type: str) -> Non
         json_data = {
             "source": str(markdown_path),
             "sections": [
-                {
-                    "path": path,
-                    "content": content
-                } for path, content in sections.items()
-            ]
+                {"path": path, "content": content} for path, content in sections.items()
+            ],
         }
 
         # Write JSON file
