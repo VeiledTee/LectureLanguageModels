@@ -35,7 +35,7 @@ def image_to_md_with_gpt(image_path: str) -> str:
         messages=[{
             "role": "user",
             "content": [
-                {"type": "text", "text": "Describe this image in detail for documentation purposes:"},
+                {"type": "text", "text": "Describe this image in detail for documentation purposes. Include ASCII art if there are visuals:"},
                 {"type": "image_url", "image_url": {
                     "url": f"data:image/{IMAGE_FORMAT};base64,{base64_image}"
                 }}
@@ -92,9 +92,8 @@ if __name__ == "__main__":
         raise ValueError(f"Input directory does not exist: {INPUT_ROOT_DIR}")
 
     for root, dirs, files in os.walk(INPUT_ROOT_DIR):
-        print(f"Processing directory: {root}")
+        print(f"\tProcessing directory: {root}")
         image_files = [os.path.join(root, f) for f in files if f.lower().endswith(f".{IMAGE_FORMAT}")]
-        print(f"Found images: {image_files}")
 
         if not image_files:
             continue
