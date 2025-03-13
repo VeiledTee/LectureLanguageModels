@@ -1,0 +1,294 @@
+=== counter_preset_symbol.png ===
+The image depicts a block diagram of a counter component. It is a rectangular box with the label "Counter" at the bottom. The diagram includes several input and output ports on the sides:
+
+- **Left Side (Inputs):**
+  - There are six blue dots representing input ports.
+  - Labels for these ports, from top to bottom, are:
+    - "enout"
+    - "dir"
+    - "in"
+    - "ld"
+    - "clr"
+
+- **Right Side (Outputs):**
+  - There are two red dots representing output ports.
+  - Labels for these ports, from top to bottom, are:
+    - "C ovf"
+
+- **Center:**
+  - A diamond shape with a ">" symbol is located on the left side, next to the "C ovf" label.
+
+The diagram is simple, with a focus on illustrating the connections for a counter component in a digital circuit.
+
+=== program_counter_count.png ===
+The image depicts a digital circuit diagram with the following components and connections:
+
+1. **Clock Signal (C):**
+   - Represented by a square wave symbol.
+   - Connected to a junction that splits the signal into two paths.
+
+2. **Enable Signal (PCₑ):**
+   - Represented by a circle symbol.
+   - Connected to the same junction as the clock signal.
+
+3. **Register (Reg):**
+   - A rectangular block labeled with inputs "D", "C", "en" and output "Q".
+   - The clock (C) and enable (PCₑ) signals are inputs to this register.
+   - The output "Q" is connected to the input "a" of the adder.
+
+4. **Adder (Add):**
+   - A rectangular block with inputs "a", "b", "cᵢ" and outputs "s", "cₒ".
+   - Input "a" is connected to the output "Q" of the register.
+   - Input "b" is connected to a constant value "1".
+   - Input "cᵢ" is connected to a constant value "0".
+   - The output "s" is connected back to the input "D" of the register, forming a feedback loop.
+
+5. **Connections:**
+   - Blue lines represent the connections between components.
+   - Red dots indicate connection points on components and lines.
+
+This circuit appears to be a simple counter or accumulator, where the register stores a value that is incremented by the adder on each clock cycle, provided the enable signal is active.
+
+=== circuit_specific_settings_preload_program_file.png ===
+The image is a screenshot of a software dialog box titled "Circuit specific settings." It has two tabs at the top: "Basic" and "Advanced," with the "Advanced" tab selected.
+
+### Dialog Box Details:
+
+- **Shape Section:**
+  - A dropdown menu labeled "Shape" with "Default" selected.
+  - Buttons labeled "Clear," "Import," and "Template."
+  - Input fields labeled "Height" and "Number of DIL pins," both set to 3.
+
+- **Content of ROMs Section:**
+  - Buttons labeled "Help" and "Edit."
+  - Checkboxes for:
+    - "Show measurement values at simulation start"
+    - "Show measurement graph at simulation start"
+    - "Show measurement graph in single gate step mode at simulation start"
+  - An input field labeled "Max number of steps to show" with the value "1000."
+
+- **Highlighted Section (Red Box):**
+  - A checkbox labeled "Preload program memory at startup," which is checked.
+  - A label "Program file:" followed by a text field containing the path ":pics/program-counter/ram_15_4.hex" and a button with ellipsis ("...") for browsing.
+
+- **Additional Options:**
+  - Checkboxes for:
+    - "Use big endian at import."
+    - "Skip in Verilog/VHDL export."
+    - "Circuit is generic"
+  - A label "Oscillation detection:" with an input field set to "1000."
+  - A checkbox labeled "In case of oscillations, continue with random values."
+
+- **Buttons at the Bottom:**
+  - "Cancel" and "OK."
+
+The interface appears to be part of a circuit simulation or design software, allowing users to configure specific settings related to circuit simulations.
+
+=== esap_alu_ram_output_pc.png ===
+The image is a digital circuit schematic with various components and connections. Here's a detailed description:
+
+1. **Components:**
+   - **Registers (Reg):** Multiple registers are present, labeled with inputs such as D, C, and en, and outputs Q.
+   - **Counter:** A component labeled "Counter" with inputs and outputs like enout, C, ovf, dir, ir, id, and clr.
+   - **RAM:** A component labeled "RAM" with inputs C, ld, and outputs A, D.
+   - **Adder (Add):** A component labeled "Add" with inputs a, b, and output S.
+   - **Look-Up Table (LUT):** A component labeled "LUT" with inputs 0-8 and output.
+
+2. **Connections:**
+   - The circuit is interconnected with blue lines representing wires or connections between components.
+   - Red dots indicate connection points or nodes.
+
+3. **Displays:**
+   - Four 7-segment displays are present, showing the number "8888" in red, indicating active segments.
+
+4. **Inputs/Outputs:**
+   - Several inputs and outputs are labeled with binary numbers (e.g., Q7, Q6, etc.).
+   - The circuit has multiple input points at the top and bottom, labeled with binary numbers.
+
+5. **Layout:**
+   - The components are arranged in a structured manner, with registers and RAM on the left, the counter at the top, and the adder and LUT towards the center and right.
+   - The 7-segment displays are aligned horizontally at the bottom right.
+
+This schematic likely represents a digital system involving counting, storage, and display functionalities, typical in digital electronics and computing systems.
+
+=== ram_program_memory.png ===
+The image shows a screenshot of a software interface related to configuring a RAM component in a digital circuit design application. 
+
+### Description:
+
+1. **Background:**
+   - The background features a schematic diagram with various interconnected components. Visible components include labeled elements such as "Address" and "Reg," with lines indicating connections between them.
+
+2. **Foreground:**
+   - A dialog box titled "RAM, bidirectional Port" is prominently displayed.
+   - The dialog box has two tabs: "Basic" and "Advanced," with the "Basic" tab selected.
+   - The dialog includes several configuration options:
+     - **Rotation:** A dropdown menu set to "0°."
+     - **Number Format:** A dropdown menu set to "Default."
+     - A grayed-out option labeled "Fixed point digits."
+     - A checkbox labeled "Program Memory," which is checked.
+   - At the bottom of the dialog box are three buttons: "Help," "Cancel," and "OK."
+
+3. **Visual Highlight:**
+   - A red oval encircles the "Program Memory" checkbox, drawing attention to it.
+
+This setup suggests the user is configuring memory settings for a RAM component within a circuit design tool.
+
+=== program_counter_count_out_in.png ===
+The image is a schematic diagram of a digital circuit. Here's a detailed description:
+
+1. **Inputs and Outputs:**
+   - **Input Data:** A horizontal line labeled "Input Data" on the left side.
+   - **Output Data:** A horizontal line labeled "Output Data" on the right side.
+
+2. **Components:**
+   - **Clock Signal (C):** A square wave symbol connected to a line labeled "C" at the top left.
+   - **Three Control Inputs (PCi, PCe, PCo):** Three vertical lines with circular symbols, labeled "PCi," "PCe," and "PCo," respectively.
+   - **Multiplexer:** A small trapezoidal shape with a "0" input and connected to other lines.
+   - **OR Gate:** A standard OR gate symbol with two inputs and one output.
+   - **Register (Reg):** A rectangular box labeled with "D," "C," "en," and "Q," indicating a data register with clock and enable inputs.
+   - **Adder (Add):** A rectangular box with inputs labeled "a," "b," "ci" and outputs labeled "S" and "Co."
+   - **Inverter:** A triangle symbol with a circle at the tip, indicating a NOT gate.
+
+3. **Connections:**
+   - The "Input Data" line connects to the multiplexer and the OR gate.
+   - The multiplexer output connects to the register.
+   - The register output connects to the adder.
+   - The adder output connects to the inverter, which then connects to the "Output Data" line.
+   - Control inputs (PCi, PCe, PCo) connect to various components, influencing their operation.
+
+4. **Lines and Nodes:**
+   - Blue lines represent connections between components.
+   - Red dots indicate connection nodes where lines intersect or connect to components.
+
+This schematic represents a digital circuit involving data input, processing through logical and arithmetic operations, and producing an output.
+
+=== program_counter.png ===
+The image is a schematic diagram of a program counter circuit. Here's a detailed description:
+
+1. **Title**: The top of the diagram is labeled "Program Counter."
+
+2. **Components**:
+   - **PC Test Block**: A green rectangular block labeled "PC_test" with a button labeled "Test."
+   - **LED Indicators**: A row of 8 LEDs labeled D0 to D7, indicating the binary output.
+   - **Clock Signal**: A square wave symbol labeled "C" indicating the clock input.
+   - **Inputs**: Three labeled inputs on the left side:
+     - \( PC_i \)
+     - \( PC_e \)
+     - \( PC_o \)
+   - **Register**: A block labeled "Reg" with inputs "D", "C", "en" and output "Q."
+   - **Adder**: A block labeled "Add" with inputs "a", "b", "c_i" and outputs "s", "c_o."
+   - **Multiplexer**: A block with inputs labeled "0-3", "4-7" and a single output.
+   - **Logic Gates**: An OR gate connecting various signals.
+
+3. **Connections**:
+   - Blue lines represent the connections between components.
+   - The clock signal connects to the register and other components.
+   - The multiplexer and adder are interconnected, with outputs feeding into the register.
+   - The test block connects to the LEDs and other components.
+
+4. **Miscellaneous**:
+   - The diagram includes several small circles indicating connection points.
+   - Red dots indicate junctions where multiple lines connect.
+   - The layout is organized with inputs on the left, processing in the middle, and outputs on the top and bottom.
+
+This schematic is likely used for educational or design purposes, illustrating the function of a program counter in a digital circuit.
+
+=== program_counter_component.png ===
+The image is a schematic diagram titled "Program Counter with Component." It appears to represent a digital circuit design, likely for educational or simulation purposes. Here's a detailed description:
+
+1. **Title and Border**:
+   - The title "Program Counter with Component" is at the top.
+   - The diagram is enclosed within a dashed border.
+
+2. **Components and Labels**:
+   - **PC_test**: A green rectangular button labeled "Test" is on the left side, associated with the label "PC_test."
+   - **Data Inputs (D0 to D7)**: There are eight labeled data inputs (D0 to D7) at the top, each connected to a horizontal line with small circles indicating connection points.
+   - **Control Signals**:
+     - **C**: A square with a clock symbol, indicating a clock input.
+     - **PC_e, PC_i, PC_o**: Three circular ports labeled as PC_e, PC_i, and PC_o, likely representing enable, input, and output controls for the program counter.
+   - **Counter Block**: A rectangular block labeled "Counter" with several inputs and outputs:
+     - Inputs: "enout," "C," "dir," "in," "ld," "clr."
+     - Outputs: "ovf" (overflow).
+   - **Logic Gate**: A triangle symbol representing a logic gate, connected to the counter block.
+
+3. **Connections**:
+   - Blue lines represent the wiring between components, with intersections and connection points marked by red dots.
+   - The connections are labeled with bit ranges (e.g., 0-7, 0-3, 4-7) indicating the data width of the connections.
+
+4. **Output**:
+   - At the bottom, there are eight circular outputs labeled 0 to 7, corresponding to the data outputs of the program counter.
+
+This diagram likely represents a simple program counter circuit with input, output, and control signals for simulation or educational purposes.
+
+=== program_counter_count_out.png ===
+The image is a digital logic circuit diagram. Here's a detailed description:
+
+1. **Components and Connections:**
+   - **Clock Signal (C):** 
+     - Represented by a square with a clock waveform symbol inside.
+     - Connected to the "C" input of a register labeled "Reg."
+   
+   - **Enable Signal (PCₑ):**
+     - Represented by a square with a circle inside.
+     - Connected to the "en" input of the register "Reg."
+   
+   - **Output Control Signal (PCₒ):**
+     - Another square with a circle inside.
+     - Connected to a line that leads to an output labeled "Output Data."
+   
+   - **Register (Reg):**
+     - A rectangular block with inputs labeled "D," "C," and "en."
+     - The output is labeled "Q" and connects to an adder component.
+   
+   - **Adder (Add):**
+     - A rectangular block with inputs labeled "a," "b," and "cᵢ" (carry in).
+     - The output is labeled "s" (sum) and "cₒ" (carry out).
+     - The "a" input is connected to the "Q" output of the register.
+     - The "b" input is connected to a constant value "1."
+     - The "cᵢ" input is grounded (connected to "0").
+   
+   - **Output:**
+     - The output from the adder is connected to an arrow symbol, indicating data flow.
+     - Labeled as "Output Data."
+
+2. **Wiring:**
+   - The wires are depicted in blue, connecting the various components.
+   - Red dots indicate connection points or junctions.
+
+3. **Flow:**
+   - The clock signal and enable signal control the register.
+   - The register's output feeds into the adder, which performs an addition operation with a constant "1."
+   - The result is directed to the output labeled "Output Data."
+
+This circuit appears to be a simple counter or incrementer, where the register holds a value that is incremented by 1 each clock cycle when enabled.
+
+=== esap_alu_ram_output_pc_vs_architecture_overview.png ===
+The image is a detailed schematic diagram of a simple computer architecture. It is divided into two main sections: the left side shows a circuit diagram, and the right side illustrates a block diagram of the computer's components.
+
+### Left Side (Circuit Diagram):
+- **Red Box**: Contains a clock symbol labeled "C," indicating the clock input.
+- **Orange Lines**: Represent the main bus connecting various components.
+- **Pink Box**: Contains a program counter with inputs and outputs connected to the bus.
+- **Green Box**: Shows the address register connected to RAM and the bus.
+- **Magenta Box**: Contains Register B, connected to the bus.
+- **Cyan Box**: Represents the Arithmetic Logic Unit (ALU) with inputs for addition and outputs connected to the bus.
+- **Black Box**: Contains the output register and a display with seven-segment displays, indicating the output mechanism.
+
+### Right Side (Block Diagram):
+- **Red Box**: Represents the clock component.
+- **Green Box**: Shows the Memory Address Register connected to RAM.
+- **Blue Box**: Indicates the instruction register leading to control signals.
+- **Pink Box**: Represents the Program Counter.
+- **Green Box**: Shows Register A connected to the bus.
+- **Cyan Box**: Represents the Arithmetic Logic Unit (ALU) for operations like addition and subtraction.
+- **Magenta Box**: Contains Register B connected to the bus.
+- **Black Box**: Represents the Output Register and Display.
+
+### Additional Details:
+- The bus is centrally located, connecting all components and facilitating data transfer.
+- Control signals and data paths are indicated with arrows, showing the flow of information between components.
+- The diagram uses color coding to differentiate between various components and their connections.
+
+This schematic provides a comprehensive overview of a basic computer architecture, highlighting the interaction between its components.
+

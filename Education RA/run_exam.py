@@ -84,18 +84,28 @@ def process_exams(ollama_pipeline: LLMQASystem):
     Args:
         ollama_pipeline: An instance of LLMQASystem used to generate answers.
     """
-    exam_dir = Path(os.getenv("EXAM_DIR", "AI_Course/Exams"))
-    output_dir = Path(os.getenv("ANSWER_DIR", "AI_Course/Exams/generated_answers"))
+    exam_dir = Path(os.getenv("EXAM_DIR"))
+    output_dir = Path(
+        os.getenv("ANSWER_DIR")
+    )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     for exam_file in exam_dir.glob("*_answerless.txt"):
         try:
             start_time = time.time()
             exam_name = exam_file.stem.replace("_answerless", "")
-            output_path = output_dir / f"{exam_name}_{ollama_pipeline.generation_model.split(':')[0]}_answers.txt"
+            output_path = (
+                output_dir
+                / f"{exam_name}_{ollama_pipeline.generation_model.split(':')[0]}_answers.txt"
+            )
 
             questions = process_exam_file(exam_file)
 
             with open(output_path, "w", encoding="utf-8") as f:
-                for question in tqdm(questions, desc="Generating answers", unit="question"):
+                for question in tqdm(
+                    questions, desc="Generating answers", unit="question"
+                ):
                     answer = ollama_pipeline.generate_answer(question)
                     f.write(f"QUESTION: {question}\n//// ANSWER: {answer}\n\n")
                     f.flush()  # write answer immediately

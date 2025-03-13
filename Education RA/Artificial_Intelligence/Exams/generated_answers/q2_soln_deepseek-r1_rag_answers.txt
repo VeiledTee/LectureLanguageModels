@@ -1,0 +1,479 @@
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 1. Construct a decision tree for the data.
+//// ANSWER: 
+To determine which feature provides the highest information gain when used to split the dataset, we evaluate both features 'x' and 'y'. 
+
+1. **Splitting on 'x':**  
+   - When splitting at x=0, group A (x ≤ 0) contains two points with y=0, resulting in entropy 0.  
+   - Group B (x > 0) includes three points: one positive (y=1) and two negatives (y=0). The entropy for this group is approximately 0.918.  
+   - Weighted average entropy after split ≈ (2/5)*0 + (3/5)*0.918 = 0.551.  
+   - Information gain ≈ 0.726 - 0.551 = 0.175.
+
+2. **Splitting on 'y':**  
+   - Split at y=0: group A (y ≤ 0) has four points, all considered negative. Entropy is 0.  
+   - Group B (y > 0) contains one positive point and three negatives. Entropy for this group is 0 since the single positive can be isolated.  
+   - Weighted average entropy after split = (4/5)*0 + (1/5)*0 = 0.  
+   - Information gain ≈ 0.726 - 0 = 0.726.
+
+**Conclusion:** Using 'y' as the feature for splitting provides a higher information gain of approximately 0.726 compared to using 'x', which yields an information gain of about 0.175. Therefore, **splitting on 'y' is more effective in maximizing information gain**.
+
+Answer: Split based on y gives maximum information gain.  
+Step-by-step explanation:  
+- Calculated entropy for the dataset and each possible split.
+- Found that splitting on 'x' at x=0 resulted in lower information gain (0.175).
+- Splitting on 'y' at y>0 achieved higher information gain (0.726) by isolating the single positive sample.
+- Therefore, using 'y' as the feature for splitting maximizes information gain.
+
+Answer: \boxed{y}
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 2. Draw decision boundaries on the graph.
+//// ANSWER: 
+The decision tree splits the data based on two criteria: first by checking if \( y < 0 \), then within the positive \( y \) region, it checks if \( x < 0 \). For points where both \( y \geq 0 \) and \( x \geq 0 \), a third check is made to see if \( x > 1 \).
+
+The regions are defined by:
+- Negative when \( y < 0 \)
+- Negative when \( y \geq 0 \) and \( x < 0 \)
+- Negative when \( y \geq 0 \) and \( x > 1 \)
+- Positive otherwise.
+
+This covers all points correctly, classifying negatives in three regions and positives in one.
+
+$\boxed{
+\begin{aligned}
+&\text{Negative if:} \\
+&\quad y < 0 \\
+&\text{or } (y \geq 0 \text{ and } x < 0) \\
+&\text{or } (y \geq 0 \text{ and } x > 1). \\
+&\text{Positive otherwise.}
+\end{aligned}
+}$
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 3. Explain how you chose the top-level test in the tree.
+//// ANSWER: 
+The optimal decision tree involves splitting the data based on the attribute with the highest information gain. In this case, splitting along the x-axis at x=1 yields a higher information gain compared to other attributes.
+
+**Decision Tree Structure:**
+
+- **Root Node:** If x ≤ 1
+  - **Left Subtree (x ≤ 1):** Check if x ≤ 0.
+    - **If Yes:** The point is negative (-1, 0).
+    - **If No:** Further split based on other attributes or consider pure node for remaining positives.
+- **Right Subtree (x > 1):** All points are negative.
+
+This structure helps in efficiently separating positive and negative data points with minimal splits. 
+
+The final decision tree is represented as:
+
+```
+if x <= 1:
+    if x <= 0:
+        return negative
+    else:
+        return positive
+else:
+    return negative
+```
+
+Answer: \boxed{\text{Decision Tree as described above}}
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 1 Decision Trees (13 pts) Data points: Negative: (-1, 0), (2, 1), (2, -2) Positive: (0, 0), (1, 0) > 4. What class does the tree predict for the point (1, -1.01)?
+//// ANSWER: 
+The decision tree likely classifies the point at (1, -1.01) as a **negative** example.
+
+**Step-by-Step Explanation:**
+
+1. **Data Overview:** The dataset consists of points where some are positive and others are negative based on their coordinates.
+
+2. **Decision Tree Structure:** Without knowing the exact splits, we assume typical decision tree behavior:
+   - First split might be along x > 1 or y > 0.
+   
+3. **Point Analysis:**
+   - The point (1, -1.01) has a high y value negative (-1.01), close to where some negatives are located.
+
+4. **Classification Outcome:** Given the proximity and similar characteristics to other negative examples like (2,-2), it's likely classified as negative despite its position near positive regions.
+
+**Answer:** The point is classified as \boxed{\text{negative}}.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors (8 pts) > 1. Draw 1-NN decision boundaries.
+//// ANSWER: 
+To draw the 1-NN decision boundaries for a given dataset with two classes (A and B), follow these steps:
+
+1. **Plot Training Points**: Begin by plotting all training points on a graph, distinguishing between class A and class B.
+
+2. **Identify Adjacent Pairs**: For each pair of adjacent points from different classes (e.g., an A point next to a B point), determine the midpoint between them.
+
+3. **Draw Perpendicular Bisectors**: For each identified pair, draw the perpendicular bisector at their midpoint. This line will serve as a decision boundary.
+
+4. **Form Decision Boundaries**: These midlines form the boundaries where any new query point beyond these lines is classified based on proximity to the nearest training point in either class A or B.
+
+5. **Determine Regions**: The regions around each training point are determined by which side of these bisectors they fall on, effectively creating a mosaic of influence zones for each class.
+
+By following this method, you can visualize how 1-NN decision boundaries separate different classes based on the proximity to their respective training points.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors (8 pts) > 2. What class does 1-NN predict for (1, -1.01)? Explain.
+//// ANSWER: 
+To determine the class predicted by the 1-NN algorithm for the point (1, -1.01), we follow these steps:
+
+1. **Understanding 1-NN**: The k-nearest neighbors (k=1) method involves storing all training data and predicting the class of a new query point based on its nearest neighbor.
+
+2. **Distance Calculation**: For each training example, compute the distance to the query point using a metric like Euclidean distance. The formula for Euclidean distance between two points \((x_1, y_1)\) and \((x_2, y_2)\) is:
+   \[
+   d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+   \]
+
+3. **Finding the Nearest Neighbor**: Identify the training example with the smallest distance to (1, -1.01).
+
+4. **Class Prediction**: The predicted class is the class of this nearest neighbor.
+
+**Conclusion**: Without specific training data, it's impossible to definitively determine the class predicted by 1-NN for (1, -1.01). However, if we assume that the nearest neighbor has a y-value close to -1 and belongs to a particular class based on previous context or dataset specifics, we could infer the prediction accordingly.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 2 Nearest Neighbors (8 pts) > 3. What class does 3-NN predict for (1, -1.01)? Explain.
+//// ANSWER: 
+To determine the prediction of a 3-NN model for the point (1, -1.01), we follow these steps:
+
+1. **Identify Nearest Neighbors**: Calculate the distances from (1, -1.01) to each training data point and identify the three closest points.
+
+2. **Determine Class Labels**: Examine the class labels of these three nearest neighbors.
+
+3. **Predict Majority Class**: The predicted class is the one that appears most frequently among the three neighbors.
+
+However, without specific information about the training dataset, such as the number of data points and their class distributions, it's impossible to definitively determine the prediction for (1, -1.01). 
+
+In a typical scenario where the majority of nearby points are from class 1, the model would predict class 1. Conversely, if two neighbors belong to class 0 and one to class 1, the prediction would be class 0 due to the majority vote.
+
+Thus, based on general behavior without specific data, the most likely prediction is:
+
+**Final Answer:** The 3-NN model predicts class **1** for the point (1, -1.01), assuming a typical distribution where nearby points favor this class.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 1. Explain how the perceptron algorithm produces the separator (0, 1, 2).
+//// ANSWER: 
+The given weight vector [0, 1] and bias term 2 can be used in a perceptron model to classify certain examples as positive. The decision boundary is defined by the equation y = -2 (since 0*x + 1*y + 2 ≥ 0 → y ≥ -2). This line separates points where y ≥ -2 as positive, which could include the given example correctly.
+
+Answer: $\boxed{[0, 1],\ 2}$
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Predict the class for (2.0, -1.01).
+//// ANSWER: 
+The perceptron algorithm was used to train a linear classifier on the given data points. After several updates based on the training examples, the final decision boundary determined that the point (2,-6) lies on the negative side of the hyperplane.
+
+$\boxed{-1}$
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 3 Perceptron (7 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 3. Describe the result if applied to the 5-point dataset from Problem 1.
+//// ANSWER: 
+The Perceptron algorithm can successfully classify all given examples because the dataset is linearly separable. A suitable separating hyperplane exists that can distinguish between the positive and negative examples without any overlap.
+
+**Answer:**
+
+The Perceptron will correctly classify all examples after some iterations, as a separating hyperplane exists for this linearly separable dataset.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net (9 pts) > 1. Compute sigmoid outputs for points (-1,0), (2,-2), (1,0) with weights \(w_0=0, w_1=1, w_2=1\).
+//// ANSWER: 
+To compute the sigmoid outputs for each point with weights \( w_0 = 0 \), \( w_1 = 1 \), and \( w_2 = 1 \):
+
+For each point \((x, y)\), calculate \( z = w_0 + w_1 x + w_2 y \) and then apply the sigmoid function:
+
+1. Point (-1, 0):
+   - \( z = 0 + (1)(-1) + (1)(0) = -1 \)
+   - Sigmoid output: \( \sigma(-1) ≈ 0.2689 \)
+
+2. Point (2, -2):
+   - \( z = 0 + (1)(2) + (1)(-2) = 0 \)
+   - Sigmoid output: \( \sigma(0) = 0.5 \)
+
+3. Point (1, 0):
+   - \( z = 0 + (1)(1) + (1)(0) = 1 \)
+   - Sigmoid output: \( \sigma(1) ≈ 0.7311 \)
+
+**Final Answers:**
+- (-1, 0): 0.2689
+- (2, -2): 0.5
+- (1, 0): 0.7311
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 4 Neural Net (9 pts) > 2. Calculate \(\Delta w_2\) via backpropagation for input (2,-2).
+//// ANSWER: 
+To calculate \(\Delta w_2\) via backpropagation for the input (2, -2), we follow these steps:
+
+1. **Understand the Network Structure**: Assume a two-layer neural network with an input layer of 2 nodes, a hidden layer of 1 node, and an output layer.
+
+2. **Forward Pass**:
+   - Input: \(x = [2, -2]\)
+   - Compute activations for each unit in subsequent layers (hidden and output).
+
+3. **Backward Pass**:
+   - Compute \(\delta\) values starting from the output layer.
+     - For the output unit: \(\delta_{output} = (y - target) \cdot f'(v \cdot h)\), where \(f'\) is the derivative of the activation function.
+   - Propagate error backward through hidden layers:
+     - For each hidden unit: \(\delta_{hidden} = (\sum weights \cdot \delta_{next layer}) \cdot h' (w_i \cdot x)\).
+
+4. **Compute Weight Updates**:
+   - The change in weight, \(\Delta w_2\), is calculated as:
+     \[
+     \Delta w_2 = \eta \cdot x \cdot \delta
+     \]
+     where \(\eta\) is the learning rate, \(x\) is the input value (either 2 or -2 depending on the weight's connection), and \(\delta\) is the computed delta for that weight's unit.
+
+Without specific values from a previous computation, such as target outputs or exact deltas, we can't provide a numerical result. However, this formula outlines how to compute \(\Delta w_2\) once all necessary values are known.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes (8 pts) Training data (12 examples: 6 positive, 6 negative): |  Feature  | \(y=0\) | \(y=1\) | |-----------|---------|---------| | \(x_1=1\) | 6       | 6       | | \(x_2=1\) | 0       | 0       | | \(x_3=1\) | 2       | 4       | > 1. Compute \(\Pr(x_1=1|y=0)\), \(\Pr(x_2=1|y=1)\), \(\Pr(x_3=0|y=0)\) with Laplacian correction.
+//// ANSWER: 
+To compute the probability \( P(x | y) \) using Laplace smoothing with an α of 1, follow these steps:
+
+1. **Count Occurrences**: For each variable \( x_i \), count how many times it takes each value (e.g., 0 or 1) in class \( y \).
+
+2. **Add Smoothing (α=1)**: To each count, add α to avoid zero probabilities.
+
+3. **Adjust Denominator**: The denominator is the total number of examples in class \( y \) plus \( k \times \alpha \), where \( k \) is the number of possible values for \( x_i \). For binary variables, \( k=2 \).
+
+4. **Compute Probability**: Divide the adjusted count by the new denominator.
+
+**Example Calculation:**
+
+- For \( x_1 \) in class 0:
+  - Count(1) = 6 → 6 + 1 = 7
+  - Denominator: 6 (total examples) + 2*1 = 8
+  - \( P(x_1=1 | y=0) = 7/8 \)
+
+- For \( x_2 \) in class 0:
+  - Count(1) = 0 → 0 + 1 = 1
+  - Denominator: 6 (total examples) + 2*1 = 8
+  - \( P(x_2=1 | y=0) = 1/8 \)
+
+- For \( x_3 \) in class 0:
+  - Count(1) = 2 → 2 + 1 = 3
+  - Denominator: 6 (total examples) + 2*1 = 8
+  - \( P(x_3=1 | y=0) = 3/8 \)
+
+**Final Probabilities for Class 0:**
+- \( x_1=1 \): 7/8
+- \( x_2=1 \): 1/8
+- \( x_3=1 \): 3/8
+
+These probabilities are used in Naive Bayes classification to determine the likelihood of each class given the features.
+
+**Answer:**
+The Laplace-smoothed probabilities for each variable in class 0 are:
+- \( P(x_1=1 | y=0) = \boxed{\dfrac{7}{8}} \)
+- \( P(x_2=1 | y=0) = \boxed{\dfrac{1}{8}} \)
+- \( P(x_3=1 | y=0) = \boxed{\dfrac{3}{8}} \)
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 5 Naive Bayes (8 pts) Training data (12 examples: 6 positive, 6 negative): |  Feature  | \(y=0\) | \(y=1\) | |-----------|---------|---------| | \(x_1=1\) | 6       | 6       | | \(x_2=1\) | 0       | 0       | | \(x_3=1\) | 2       | 4       | > 2. Identify the most influential feature.
+//// ANSWER: 
+The feature with the highest influence on determining whether an example belongs to class 1 (positive) or 0 (negative) is **x3**. This conclusion is based on the likelihood ratio for each feature, which measures how well each feature distinguishes between the two classes.
+
+For x3:
+- The probability of x3 being present given y=1 is higher than it being present given y=0.
+- Specifically, when y=1, 4 out of 6 examples have x3=1, whereas when y=0, only 2 out of 6 do. This results in a likelihood ratio of 2 for x3.
+
+For the other features:
+- **x1** has equal probabilities of being present in both classes (ratio = 1), indicating no influence.
+- **x2** is irrelevant since it never occurs as 1, making its presence not useful for prediction.
+
+Thus, **x3** is the most influential feature because its likelihood ratio is higher than that of x1 and significantly different from x2. 
+
+Answer: \boxed{x_3}
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 1. 1M training examples, 6D features, 100 test queries.
+//// ANSWER: 
+For the given scenario with 1 million training examples, 6 features, and 100 test queries, **Decision Trees** are recommended. 
+
+**Reasoning:**
+- **Memory Efficiency:** Decision Trees do not require storing all training data once trained, making them suitable for large datasets without high memory usage.
+- **Interpretability:** They offer clear decision paths, which is advantageous despite the potential need for parameter tuning.
+- **Test Queries Handling:** With only 100 test cases, the model's efficiency during testing is crucial but not as critical as training time when dealing with a large dataset.
+
+While Logistic Regression could be computationally faster during training, Decision Trees are chosen here for their balance of interpretability and suitability for low-dimensional data.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 2. Classifier for kindergarten special education requiring justification.
+//// ANSWER: 
+The best learning algorithm for classifying kindergarten children into those needing special education is a **Decision Tree**.
+
+**Reasoning:**
+- **Interpretability:** Decision trees are easy to interpret, providing clear paths from data points to outcomes. This clarity is essential for educators who need understandable reasons behind classifications.
+- **Handling Small Datasets:** While decision trees can be sensitive to small datasets, they still provide reasonable results when trained on limited data, which may suffice given the kindergarten context.
+- **Educator Understanding:** The simplicity of decision trees aligns well with the need for clear, actionable insights in special education settings.
+
+Thus, a decision tree offers an interpretable and practical solution for this classification task.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 3. Book preference prediction with 1M features and frequent updates.
+//// ANSWER: 
+The best algorithm to use for book preference prediction with 1 million features and frequent updates is **Naive Bayes**.
+
+**Justification:**
+- **Efficiency**: Naive Bayes is computationally efficient and well-suited for high-dimensional data, making it ideal for handling the large number of features.
+- **Scalability**: It can process incremental updates without requiring complete retraining, which is crucial for frequent data updates.
+- **Handling High Dimensions**: As a probabilistic classifier, Naive Bayes works effectively with high-dimensional data by assuming feature independence, which may hold in this context.
+
+While it might not capture complex relationships perfectly, Naive Bayes serves as an effective baseline and efficient starting point.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 6 Learning Algorithms (16 pts) For each scenario, choose the best algorithm and justify: > 4. Rainfall prediction from ocean currents/tides.
+//// ANSWER: 
+For predicting rainfall from ocean currents and tides, the best algorithm is **k-nearest neighbors (k-NN)**. 
+
+**Reasoning:**
+1. **Problem Type:** Rainfall prediction is a regression task, requiring continuous output values.
+2. **Algorithm Suitability:**
+   - **k-NN** excels in regression by predicting outputs based on nearby training instances, making it effective for capturing the relationship between ocean currents/tides and rainfall without complex assumptions.
+   - While decision trees can handle regression, they may overfit if not pruned and are less commonly used for such tasks compared to k-NN.
+3. **Simplicity and Effectiveness:** k-NN is straightforward, computationally efficient (with optimizations), and well-suited for time series data like ocean currents.
+
+Thus, k-NN is chosen for its simplicity, effectiveness in regression tasks, and suitability for the given context.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 1. Perceptron
+//// ANSWER: 
+| Algorithm          | Function Type                | Variance      |
+|--------------------|------------------------------|---------------|
+| Perceptron        | Low-order polynomial         | High          |
+| SVMs (linear)     | Low-order polynomial         | Lower than Perceptron but still high compared to Decision Trees |
+| Decision Trees    | Low-order polynomial         | High          |
+
+**Step-by-Step Explanation:**
+
+1. **Understanding the Context:** The context describes how increasing epsilon affects model complexity and error rates for different algorithms (Perceptron, SVMs, Decision Trees). As epsilon increases from 0, the model's complexity decreases.
+
+2. **Function Type Determination:**
+   - **Perceptron:** Linear model without kernel, so its function type is low-order polynomial.
+   - **SVMs with linear kernel:** Also a linear model, hence low-order polynomial.
+   - **Decision Trees:** Without explicit pruning, they can be considered to have a low-order polynomial behavior as complexity decreases.
+
+3. **Variance Assessment:**
+   - **Perceptron:** Default behavior (no pruning) leads to high variance due to overfitting at epsilon=0.
+   - **SVMs with linear kernel:** Better generalization than Perceptron, so lower variance despite having a low-order polynomial function type.
+   - **Decision Trees:** Default behavior without pruning results in high variance.
+
+**Final Answer:**
+
+- **Perceptron:** Function type is low-order polynomial; Variance is high.
+- **SVMs with linear kernel:** Function type is low-order polynomial; Variance is lower than Perceptron but still high compared to Decision Trees.
+- **Decision Trees:** Function type is low-order polynomial; Variance is high.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 2. Linear SVM
+//// ANSWER: 
+The error versus complexity relationship for linear SVMs can be described as follows:
+
+1. **Initial Phase**: As model complexity increases (e.g., by adding more features or data), the training error decreases because the model becomes less regularized and can fit the noise better.
+
+2. **Subsequent Phase**: Beyond a certain point, increasing complexity leads to overfitting, causing the test error to increase again due to higher variance in the model's predictions.
+
+This relationship is typically U-shaped, indicating that there is an optimal level of complexity where the generalization error is minimized.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 3. Decision Tree (fixed depth)
+//// ANSWER: 
+For a decision tree with a fixed depth:
+
+- **Error**: The error is likely to be moderate. If the fixed depth is too shallow, it may result in higher bias and potentially higher error rates on both training and test sets due to underfitting.
+
+- **Complexity**: The complexity is low to medium because the fixed depth limits the model's ability to capture intricate patterns, thus controlling its capacity but also restricting its flexibility. This can lead to either moderate or slightly higher error if the depth is not optimally set.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 4. Neural Network (no regularization)
+//// ANSWER: 
+For the algorithm in question, which appears to be a Neural Network (NN) with no regularization:
+
+- **Error vs Complexity Behavior**:
+  - As model complexity increases, training error decreases because the network can fit the data more closely.
+  - Generalization (test) error initially decreases due to better learning of underlying patterns but may increase later as overfitting occurs without regularization.
+
+This behavior is typical for neural networks without regularization, where higher complexity leads to lower training error but requires careful tuning to avoid overfitting.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 7 Error vs Complexity (15 pts) For each algorithm, specify: > 5. SVM (\(c < \infty\))
+//// ANSWER: 
+When \( c < \infty \) in an SVM, the algorithm employs a soft-margin approach. This allows for some misclassifications (errors) to enable a more balanced trade-off between model complexity and generalization. The moderate 'c' value permits flexibility, preventing overfitting by accepting a controlled level of errors, thus achieving a balance that enhances the model's ability to generalize effectively.
+
+**Answer:** When \( c < \infty \), the SVM uses a soft margin, allowing some misclassifications to maintain an optimal balance between complexity and generalization.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 1. 2-NN (equally weighted)
+//// ANSWER: 
+To draw the regression outputs for a 2-NN (equally weighted) model, follow these steps:
+
+1. **Plot Training Data**: Represent each training data point as a marker on a graph with the feature value on the x-axis and the target variable on the y-axis.
+
+2. **Query Point**: Identify the new query point \( x^* \) where you want to make a prediction.
+
+3. **Find Nearest Neighbors**: Locate the two closest training points to \( x^* \) based on their distance in the feature space.
+
+4. **Average Y-Values**: Calculate the average of the target values (\( y \)) of these two nearest neighbors.
+
+5. **Predicted Value**: The predicted value at \( x^* \) is this average, which represents the regression output for that point.
+
+6. **Visualize Regression Line**: Connect the predicted points smoothly to form a regression line that reflects the averaged local values, creating a continuous curve through or near the data points.
+
+This approach ensures that the regression model provides a smooth and stable estimate of the target variable across the feature space.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 2. Regression Trees (leaf size=1)
+//// ANSWER: 
+To draw the regression output for a regression tree with a leaf size of 1:
+
+1. **Data Points**: Represent each data point on a graph with x and y axes.
+
+2. **Leaf Nodes**: Each leaf node will contain exactly one data point since the minimum leaf size is set to 1.
+
+3. **Predictions**: For each leaf, the regression tree predicts the average of the target variable (y) values of all points in that leaf. Since each leaf contains only one data point, the prediction for any new input falling into that leaf will be exactly the y-value of that single point.
+
+4. **Visualization**:
+   - Each leaf node corresponds to a specific x-value.
+   - The prediction at each leaf is labeled with its respective y-value.
+
+Thus, the regression tree's output consists of individual predictions (y-values) for each unique x-value in the dataset, as each leaf contains only one data point.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 3. Linear Neural Network
+//// ANSWER: 
+The regression output for a linear neural network is represented by a straight line. This line models the relationship between the input feature \( x \) and the target variable \( y \), following the equation \( y = w \cdot x + b \). Here, \( w \) is the weight parameter that determines the slope of the line, and \( b \) is the bias term which shifts the line up or down. The line is learned during training by adjusting these parameters to minimize the difference between predicted and actual values, typically using a loss function like mean squared error.
+
+**Answer:**
+The regression output for a linear neural network is a straight line given by \( y = w \cdot x + b \), where \( w \) and \( b \) are learned during training.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 8 Regression (12 pts) Draw regression outputs for: > 4. Multi-layer Neural Network
+//// ANSWER: 
+To draw the regression outputs for a multi-layer neural network, consider the following structure:
+
+1. **Input Layer**: This layer receives the input features (e.g., x-values) of your dataset.
+
+2. **Hidden Layers**: These layers consist of neurons with activation functions such as ReLU or tanh. Each hidden layer transforms the data to capture complex patterns and features necessary for learning the underlying function in regression tasks.
+
+3. **Output Layer**: The final layer uses a linear activation function (e.g., identity function) to predict a continuous real number, allowing the model to fit any real-valued output required for regression.
+
+The network processes inputs through multiple layers, each enhancing feature representation, and outputs a prediction based on these learned features. This structure enables the multi-layer neural network to effectively model complex functions suitable for regression tasks.
+
+Answer: The regression output of a multi-layer neural network is represented by an output layer with linear activation, which maps inputs through several hidden layers (using non-linear activations) to predict continuous values.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM (12 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 1. Evaluate if separators satisfy SVM conditions: (a) \(x_1 + x_2 = 0\) (b) \(x_1 + 1.5x_2 = 0\) (c) \(x_1 + 2x_2 = 0\) (d) \(2x_1 + 3x_2 = 0\)
+//// ANSWER: 
+To determine which hyperplane separates the positive from negative examples with a margin of at least 1, evaluate each option by checking if for all points (x_i), y_i*(ax + by) ≥ 1. If any point fails this condition, that hyperplane isn't valid.
+
+Since specific options aren't provided, I can't give exact answers but the method involves:
+
+- For each hyperplane equation ax + by = c:
+    - Compute ax + by for each data point.
+    - Multiply each result by y_i (1 or -1).
+    - Ensure all products are ≥ 1.
+
+The valid hyperplanes will be those where every product meets this condition.
+
+QUESTION: 6.034 Quiz 2, Spring 2005 > 9 SVM (12 pts) Data points: Negative: (-1, 0), (2, -2) Positive: (1, 0) > 2. Match kernels to decision boundaries: (a) Polynomial (degree=2) (b) Polynomial (degree=3) (c) RBF (\(\sigma=0.5\)) (d) RBF (\(\sigma=1.0\))
+//// ANSWER: 
+The decision boundaries for each kernel type can be matched based on their flexibility and complexity:
+
+- **Polynomial Kernel (Degree 2)**: Creates a moderately curved boundary, suitable for separating the data without excessive complexity.
+  
+- **Polynomial Kernel (Degree 3)**: Generates a more complex curve, potentially overfitting slightly compared to degree 2.
+
+- **RBF Kernel (σ=0.5)**: Results in a highly flexible, wiggly boundary that closely follows each data point, risking overfitting.
+
+- **RBF Kernel (σ=1.0)**: Produces a smoother, less complex boundary, reducing the risk of overfitting compared to smaller σ values.
+
+**Final Answer:**
+
+a) Polynomial (degree 2): Moderately curved boundary.
+
+b) Polynomial (degree 3): More complex curve.
+
+c) RBF (σ=0.5): Highly flexible, wiggly boundary.
+
+d) RBF (σ=1.0): Smoother boundary.
+
+The specific matches are as follows:
+
+- a) Polynomial (degree 2)
+- b) Polynomial (degree 3)
+- c) RBF (σ=0.5)
+- d) RBF (σ=1.0)
+
+Each kernel type corresponds to its respective decision boundary based on flexibility and complexity.
+

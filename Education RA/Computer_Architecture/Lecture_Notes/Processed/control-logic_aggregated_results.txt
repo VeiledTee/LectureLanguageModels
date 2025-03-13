@@ -1,0 +1,264 @@
+=== esap_out_ram_in_register_a.png ===
+The image is a digital circuit diagram featuring several components connected by blue lines representing wires. Here's a detailed description:
+
+1. **Components:**
+   - **Clock (C):** A clock signal is depicted at the top left, connected to various parts of the circuit.
+   - **Register (Reg):** Labeled "Address," it has inputs labeled D, C, and en, and an output labeled Q. It is connected to a RAM component.
+   - **RAM:** Labeled with inputs A (address), str (store), C (clock), and D (data). It is connected to the register and other components.
+   - **Counter:** Located at the top right, with inputs and outputs labeled en, C, dir, in, ld, clr, out, and ovf.
+   - **Registers A and B:** Located at the bottom, each with inputs D, C, and en, and an output Q. They have feedback loops with NOT gates.
+
+2. **Connections:**
+   - The register labeled "Address" is connected to the RAM component, with an arrow indicating data flow labeled "1111" in pink.
+   - An orange arrow labeled "Data" points from the RAM to Register A.
+   - Blue lines connect various components, indicating signal paths.
+
+3. **Labels and Annotations:**
+   - "1111" in pink near the address input of the RAM.
+   - "Data" in orange near the data path from RAM to Register A.
+   - Inputs and outputs are labeled with numbers indicating bit ranges (e.g., 0-7, 4-7).
+
+4. **Logic Gates:**
+   - NOT gates are used in feedback loops for Registers A and B.
+
+This diagram likely represents a simple digital system involving memory and data processing components. The use of color highlights specific data paths and values.
+
+=== esap_in_memory_register.png ===
+The image is a digital circuit schematic featuring various components connected by blue lines, representing wires or connections. Here's a detailed description:
+
+1. **Components:**
+   - **Counter:** Located at the top center, labeled with inputs and outputs such as "en," "dir," "in," "ld," "clr," and "out."
+   - **Registers:** There are three labeled "Reg," with one specifically labeled "Address." Each has inputs/outputs like "D," "C," "en," and "Q."
+   - **RAM:** Positioned near the "Address" register, with inputs/outputs labeled "A," "str," "C," "ld," and "D."
+   - **Logic Gates:** Several logic gates are present, depicted with triangular symbols and connected to various components.
+   - **Clock (C):** A square component at the top left, connected to the circuit.
+
+2. **Connections:**
+   - Blue lines connect the components, indicating the flow of signals.
+   - The "Address" register is connected to the RAM and other parts of the circuit.
+   - The counter is connected to a logic gate, which loops back to itself.
+
+3. **Annotations:**
+   - The number "1111" is written in pink near the "Address" register, with an arrow pointing towards it.
+   - A pink line traces a path from the "Address" register to another part of the circuit.
+
+4. **Labels:**
+   - Inputs and outputs on the components are labeled with numbers and letters, indicating their function or connection points.
+
+This schematic likely represents a simple digital system involving counting, storing, and processing data. The use of registers, RAM, and counters suggests it could be part of a larger computational or memory-related circuit.
+
+=== instruction_register.png ===
+The image is a schematic diagram of an "Instruction Register" circuit. Here's a detailed description:
+
+1. **Title and Labels:**
+   - The top of the diagram is labeled "Instruction Register."
+   - Below it, there's a section labeled "Instruction Register_Test" with a green box labeled "Test."
+
+2. **Components and Connections:**
+   - There are two main inputs labeled `instruction_i` and `instruction_o`, each connected to circular nodes.
+   - A clock signal is labeled `C` with a square wave symbol.
+   - An 8-bit data bus labeled `D7` to `D0` is shown at the top, with connections to a horizontal bar.
+   - The data bus connects to a component labeled "Instruction" with inputs `D`, `C`, and `en`, and an output `Q`.
+   - The "Instruction" component is a register, as indicated by the label "Reg."
+   - The output `Q` is split into two segments: `0-3` and `4-7`, which are combined and connected to a triangular symbol representing a buffer or amplifier.
+   - The output of the buffer is labeled `0-7`.
+
+3. **Visual Elements:**
+   - The diagram uses blue lines for connections, with red dots at junctions to indicate connection points.
+   - The layout is organized with horizontal and vertical lines for clarity.
+   - The schematic is enclosed in a dashed-line rectangle.
+
+4. **Additional Details:**
+   - At the bottom, there is another 8-bit data bus with connections to circular nodes labeled `7` to `0`.
+
+This schematic represents a digital circuit for handling instructions, likely part of a larger processor or computational system.
+
+=== instruction_operator_operand.png ===
+The image consists of two main sections, each containing text and a visual element:
+
+1. **Left Section:**
+   - At the top, there is the text "XXXX" in a bold, serif font.
+   - Below "XXXX," there is a large, black curly brace pointing downwards.
+   - Underneath the curly brace, the word "Operator" is written in a typewriter-style font.
+
+2. **Right Section:**
+   - At the top, there is the text "YYYY" in the same bold, serif font as the left section.
+   - Below "YYYY," there is a large, black curly brace pointing downwards, identical to the one in the left section.
+   - Underneath the curly brace, the word "Operand" is written in the same typewriter-style font as the left section.
+
+The image visually distinguishes between the concepts of "Operator" and "Operand" using text and matching curly braces.
+
+=== esap_alu_ram_output_pc_instruction.png ===
+The image is a digital circuit schematic with various components connected by blue lines representing wires or connections. Here’s a detailed description:
+
+1. **Components**:
+   - **Registers (Reg)**: Several D-type flip-flop registers are present, labeled with "D", "C", "Q", and "en" (enable).
+   - **RAM**: A block labeled "RAM" with inputs "A", "str", "C", and "id".
+   - **Counter**: A component labeled "Counter" with inputs/outputs "enout", "covf", "dir", "il", "id", and "clr".
+   - **Adder (Add)**: A block labeled "Add" with inputs "a", "b" and output "s".
+   - **LUT**: A block labeled "LUT" with inputs 0-7 and an output labeled "out".
+   - **7-Segment Displays**: Four 7-segment displays showing the digit "8" in red.
+
+2. **Connections**:
+   - Blue lines connect various components, indicating the flow of signals.
+   - Red dots are present at intersections, possibly representing connection points or nodes.
+   - The circuit is organized with horizontal and vertical lines, creating a grid-like structure.
+
+3. **Labels**:
+   - Inputs and outputs are labeled with indices (e.g., Q0-Q3, D0-D3).
+   - The 7-segment displays are labeled with segments a-g.
+
+4. **Visual Layout**:
+   - The circuit is densely packed with components and connections, suggesting a complex digital logic design.
+   - The 7-segment displays are prominently featured on the right side, indicating a focus on output display.
+
+This schematic likely represents a digital system with memory, counting, and display capabilities, possibly for educational or simulation purposes.
+
+=== esap_alu_ram_output_pc_instruction_control_vs_architecture_overview.png ===
+The image is a detailed schematic of a simple computer architecture, divided into two main sections. Here's a breakdown of each part:
+
+### Left Section (Circuit Diagram):
+1. **Clock (Red Box)**:
+   - Contains a clock signal generator with a NOT gate.
+   
+2. **Address (Green Box)**:
+   - Includes a register and RAM, connected to the bus.
+   
+3. **Register A (Green Box)**:
+   - Contains a register with inputs and outputs connected to the bus.
+   
+4. **Register B (Pink Box)**:
+   - Similar to Register A, with connections to the bus.
+   
+5. **Arithmetic Logic Unit (ALU) (Cyan Box)**:
+   - Contains logic gates for arithmetic operations, connected to Registers A and B.
+   
+6. **Instruction (Purple Box)**:
+   - Includes an instruction register and decoder.
+   
+7. **Program Counter (Brown Box)**:
+   - Contains a counter for tracking instruction addresses.
+   
+8. **Output (Black Box)**:
+   - Includes a register and a series of seven-segment displays for output.
+
+### Right Section (Block Diagram):
+1. **Clock (Red Box)**:
+   - Indicates the clock signal input.
+   
+2. **Memory Address Register and RAM (Green Box)**:
+   - Shows the flow from the address register to RAM.
+   
+3. **Program Counter (Pink Box)**:
+   - Displays the program counter connected to the bus.
+   
+4. **Register A (Green Box)**:
+   - Connected to the bus and ALU.
+   
+5. **Arithmetic Logic Unit (ALU) (Cyan Box)**:
+   - Positioned between Register A and Register B, showing arithmetic operations.
+   
+6. **Register B (Purple Box)**:
+   - Connected to the bus and ALU.
+   
+7. **Instruction Register (Purple Box)**:
+   - Connected to the bus, feeding into control signals.
+   
+8. **Control Signals (Brown Box)**:
+   - Manages the flow of operations within the architecture.
+   
+9. **Output Register and Display (Black Box)**:
+   - Shows the connection to the output display.
+
+### Central Bus (Orange Box):
+- A vertical bus connects all components, facilitating data transfer between them.
+
+This schematic represents a basic computer architecture with essential components like registers, ALU, memory, and control units, illustrating their interconnections and data flow.
+
+=== esap_alu_ram_output_pc_instruction_vs_architecture_overview.png ===
+The image is a detailed schematic diagram of a simple computer architecture, displaying both a circuit diagram and a block diagram. Here's a breakdown of the components and their connections:
+
+### Circuit Diagram (Left Side):
+- **Program Counter (Pink Box):** Contains a counter with control inputs and outputs connected to the bus.
+- **Register A (Green Box):** Includes a register with inputs and outputs linked to the bus.
+- **Register B (Magenta Box):** Another register similar to Register A, connected to the bus.
+- **Arithmetic Logic Unit (ALU) (Cyan Box):** Features an adder circuit with inputs from the bus and outputs to the bus.
+- **Instruction Register (Purple Box):** Contains a register with inputs and outputs, connected to the bus.
+- **Output Register and Display (Black Box):** Includes a register and a display component, with connections to the bus and outputs to a 7-segment display.
+- **Memory Address Register (Green Box):** Contains a register connected to RAM and the bus.
+- **Clock (Red Box):** Provides timing signals to various components.
+- **Bus (Orange Lines):** Central connection linking all components, allowing data transfer between them.
+
+### Block Diagram (Right Side):
+- **Clock (Red Box):** Provides timing signals to synchronize operations.
+- **Memory Address Register and RAM (Green Box):** Shows the connection between the memory address register and RAM.
+- **Instruction Register (Purple Box):** Receives instructions and sends control signals.
+- **Control Signals:** Manage the operation of the computer.
+- **Program Counter (Pink Box):** Keeps track of the instruction sequence.
+- **Register A and B (Green and Magenta Boxes):** Store data for processing.
+- **Arithmetic Logic Unit (ALU) (Cyan Box):** Performs arithmetic operations.
+- **Output Register and Display (Black Box):** Outputs data to a display.
+
+### Additional Details:
+- **7-Segment Display:** Shows numerical output from the output register.
+- **Switches and Indicators:** At the bottom, there are switches and indicators for manual input and status display.
+
+The diagram uses color-coding to differentiate between components and their connections, enhancing clarity and understanding of the computer architecture.
+
+=== esap_alu_ram_output_pc_instruction_control.png ===
+The image is a digital circuit schematic diagram featuring various components connected by blue lines, representing electrical connections. Here’s a detailed description:
+
+1. **Components**:
+   - **Registers (Reg)**: There are multiple D-type flip-flop registers labeled "Reg" with inputs and outputs marked as D, C, Q, and en.
+   - **Counter**: Labeled "Counter" with inputs/outputs such as enout, C, ovf, dir, ld, and clr.
+   - **RAM**: A block labeled "RAM" with inputs/outputs such as A, str, C, and D.
+   - **Adder (Add)**: A component labeled "Add" with inputs A, B, and outputs S, C.
+   - **Look-Up Tables (LUT)**: Two blocks labeled "LUT" with inputs and outputs for data processing.
+
+2. **Connections**:
+   - The components are interconnected with blue lines indicating the flow of signals.
+   - The lines connect various inputs and outputs of the components, forming a complex network.
+
+3. **Display**:
+   - There is a seven-segment display section with four digits, each showing the number "8" in red. This suggests a digital output display for numerical values.
+
+4. **Labels and Indicators**:
+   - Various lines and components have labels such as Q, D, C, en, etc., indicating their function or signal type.
+   - Numbers like 0-7, 0-3, 0-8, etc., are used to denote bit positions or data lines.
+
+5. **Overall Structure**:
+   - The layout is organized with components aligned in rows and columns, showing a clear path of data flow from inputs to outputs.
+   - The diagram is likely part of a digital system, possibly a microcontroller or a digital processing unit.
+
+This schematic is a representation of a digital circuit with memory, processing, and display capabilities, illustrating how data is managed and processed within the system.
+
+=== instruction_register_and_control_logic.png ===
+The image is a schematic diagram of an electronic circuit. Here's a detailed description:
+
+1. **Background and Layout**:
+   - The background is black, with various components and connections drawn in blue and red.
+   - Two green boxes labeled "Test" are located at the top left corner.
+
+2. **Components**:
+   - **Inputs/Outputs**: There are several labeled nodes and connections, including:
+     - A series of horizontal blue lines at the top, labeled from 0 to 7.
+     - A vertical blue line on the left side with red dots indicating connection points.
+     - A horizontal line at the bottom labeled from 0 to 15.
+   - **Register**: 
+     - A component labeled "Reg" with inputs D, C, and en, and an output Q (0-7).
+   - **Counter**:
+     - Labeled with inputs enout, C, and clr, and an output labeled Ovf.
+   - **LUT (Look-Up Table)**:
+     - Labeled with inputs 0 to 5 and an output labeled "out".
+
+3. **Connections**:
+   - Blue lines connect various components, indicating signal paths.
+   - Red dots are used to indicate connection points or nodes where lines intersect.
+   - Some connections have labels such as 0-3, 4-7, indicating specific bit ranges.
+
+4. **Labels and Annotations**:
+   - Labels like "enout", "C", "clr", and "Ovf" are used to describe specific signals or control lines.
+   - The diagram uses standard schematic symbols and labeling conventions.
+
+This schematic likely represents a digital circuit involving registers, counters, and a look-up table, commonly used in digital electronics for processing and control applications.
+

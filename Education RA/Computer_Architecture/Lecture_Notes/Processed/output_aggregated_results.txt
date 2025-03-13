@@ -1,0 +1,697 @@
+=== esap_alu_ram_output_displaying_19.png ===
+The image is a digital circuit schematic, likely representing a simple computer or calculator system. Here’s a detailed description:
+
+1. **Color Scheme**:
+   - The circuit uses a combination of green and blue lines to represent different connections and pathways.
+   - Red elements indicate active or highlighted components.
+
+2. **Components**:
+   - **Registers**: There are several labeled "Reg" with inputs and outputs, indicating storage elements for data.
+   - **RAM**: A component labeled "RAM" is present, suggesting memory storage.
+   - **Adder**: A component labeled "Add" indicates an arithmetic unit for addition operations.
+   - **LUT (Look-Up Table)**: This is used for mapping inputs to outputs, often for logic operations.
+
+3. **Connections**:
+   - Green lines represent data or address buses connecting various components.
+   - Blue lines are used for control signals or additional data pathways.
+
+4. **Inputs/Outputs**:
+   - A series of switches at the top left and bottom indicate input controls.
+   - A row of green circles at the bottom represents output indicators, possibly LEDs.
+
+5. **Display**:
+   - Four 7-segment displays are present, showing the numbers "0000" with the last digit as "9". These are used for numerical output.
+
+6. **Labels**:
+   - Various hexadecimal labels (e.g., 0x13, 0x34) are used to denote specific data values or addresses.
+
+This schematic likely represents a simple arithmetic or computational system, with basic input, processing, and output capabilities.
+
+=== look_up_table_editing.png ===
+The image shows a graphical interface with two main components: a "Lookup Table" configuration window and a "Data" table.
+
+### Lookup Table Configuration Window:
+- **Title:** Lookup Table
+- **Options:**
+  - **Rotation:** Dropdown menu set to "0°".
+  - **Data Bits:** Dropdown menu set to "25".
+  - **Number of Inputs:** Dropdown menu set to "8".
+  - **Label:** Text field (empty).
+  - **Data:** Button labeled "Edit".
+- **Buttons:**
+  - **Help**
+  - **Cancel**
+  - **OK**
+
+### Data Table:
+- **Title:** Data
+- **Columns:**
+  - **Addr...**: Address column with hexadecimal values.
+  - **0x00 to 0x06**: Columns with hexadecimal headings.
+  - **0**: Final column with a single digit heading.
+- **Highlighted Row:**
+  - **Address 0x00**: Contains values 3F, 06, 5B, 4F, 66, 6D, and a highlighted binary value `0b01111101` in the 0x06 column.
+- **Other Rows:**
+  - Addresses 0x08 to 0xB8 are shown, all filled with zeros.
+- **Buttons:**
+  - **OK**
+
+### Diagram:
+- A simple schematic labeled "LUT" with inputs labeled 0 to 7 on the left side and an output labeled "out" on the right side.
+
+The interface appears to be part of a software tool for configuring and viewing a lookup table, likely used in digital logic design or simulation.
+
+=== esap_alu_ram_output.png ===
+The image is a digital circuit schematic with several components and connections. Here's a detailed description:
+
+1. **Registers**:
+   - There are multiple registers labeled "Reg" with inputs and outputs. These are used for storing data temporarily.
+   - Each register has inputs labeled D (data), C (clock), and en (enable).
+
+2. **RAM**:
+   - A component labeled "RAM" with inputs A (address), str (store), and D (data) is present, indicating a memory storage unit.
+
+3. **Adder**:
+   - An "Add" component is present with inputs labeled A, B, and C, and an output S, representing a digital adder for arithmetic operations.
+
+4. **LUT (Look-Up Table)**:
+   - A component labeled "LUT" with inputs and an output labeled "out" is present, used for mapping input values to output values.
+
+5. **Seven-Segment Displays**:
+   - There are four seven-segment displays, each displaying the number "8" in red, indicating they are active.
+   - These displays are likely used for numerical output.
+
+6. **Connections**:
+   - Numerous blue lines represent the connections between components, indicating the flow of data and control signals.
+   - Red dots at intersections indicate connection points.
+
+7. **Inputs/Outputs**:
+   - There are multiple labeled inputs and outputs, such as 0-7, 0-15, and others, indicating data lines or control signals.
+
+8. **General Layout**:
+   - The schematic is organized with components aligned and connected systematically, typical of digital circuit designs.
+
+This schematic likely represents a digital system with memory, processing, and display capabilities, possibly a simple computing or control device.
+
+=== esap_alu_ram_output_vs_architecture_overview.png ===
+The image is a detailed diagram of a simple computer architecture, split into two main sections.
+
+### Left Section:
+This part appears to be a schematic diagram of a basic computer circuit, featuring various components connected by lines representing electrical connections.
+
+- **Red Box (Top Left):** Contains a clock symbol, indicating the clock signal for synchronization.
+- **Green Box (Left Middle):** Labeled "Address," with a register and RAM connection.
+- **Green Box (Middle):** Labeled "A," with a register and output arrow.
+- **Pink Box (Middle):** Labeled "B," with a register and output arrow.
+- **Cyan Box (Middle):** Contains an Arithmetic Logic Unit (ALU) with add and subtract functions.
+- **Black Box (Bottom):** Labeled "Output," with a register and a series of connections to seven-segment displays.
+
+### Right Section:
+This part is a block diagram of the computer architecture, illustrating the flow of data and control signals.
+
+- **Red Box (Top):** Labeled "Clock," indicating the clock signal.
+- **Green Box (Middle):** Contains "Memory Address Register" and "RAM," showing memory operations.
+- **Blue Box (Middle):** Labeled "Program Counter," connected to the bus.
+- **Green Box (Middle Right):** Labeled "Register A," connected to the ALU.
+- **Cyan Box (Middle Right):** Labeled "Arithmetic Logic Unit (+, -)," connected to Register A and Register B.
+- **Pink Box (Middle Right):** Labeled "Register B," connected to the ALU.
+- **Black Box (Bottom Right):** Labeled "Output Register and Display," indicating the output mechanism.
+- **Orange Line (Center):** Represents the data bus, interconnecting all components.
+
+### Connections:
+- Blue lines represent data paths between components.
+- Arrows indicate the direction of data flow.
+- The diagram shows a clear separation between the schematic (left) and the block diagram (right), providing a comprehensive overview of the computer's operation.
+
+=== seven_segment_display_6.png ===
+The image depicts a schematic representation of a seven-segment display, commonly used in digital clocks and electronic meters to display numerical information.
+
+### Description:
+
+1. **Seven-Segment Display:**
+   - The central part of the image is a rectangular area containing a seven-segment display.
+   - The segments are arranged to form the number "9".
+   - Six segments are colored red, forming the shape of the number.
+   - One segment is gray, indicating it is not active.
+
+2. **Connections:**
+   - There are four vertical lines above and below the display, representing electrical connections.
+   - The lines are colored in light green and dark green.
+   - Each line has a small red circle at the top and bottom, indicating connection points.
+
+3. **Indicators:**
+   - At the top and bottom of the image, there are four small circles within black square outlines.
+   - The circles are colored in light green and dark green, matching the color of the lines.
+
+4. **Color Coding:**
+   - Red is used for active segments.
+   - Gray is used for inactive segments.
+   - Light green and dark green are used for connections and indicators.
+
+This schematic is likely used to illustrate how a seven-segment display is wired and how it represents the number "9".
+
+=== seven_segment_display_2.png ===
+The image depicts a digital seven-segment display representation of the number "8". Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The display is rectangular with a black border.
+   - It contains seven segments arranged to form the number "8".
+   - Each segment is a red bar, with three horizontal and four vertical segments.
+   - The segments are labeled from top to bottom and left to right as follows:
+     - Top horizontal segment
+     - Middle horizontal segment
+     - Bottom horizontal segment
+     - Top-left vertical segment
+     - Top-right vertical segment
+     - Bottom-left vertical segment
+     - Bottom-right vertical segment
+
+2. **Connections:**
+   - There are two sets of vertical lines connecting to the display, one at the top and one at the bottom.
+   - Each set has four lines, alternating between light green and dark green.
+   - The lines are connected to small circles at both ends.
+   - The circles at the top and bottom are colored red and blue.
+
+3. **Indicators:**
+   - At the top and bottom of the image, there are small squares containing circles.
+   - The squares are outlined in black.
+   - The circles inside the squares are colored light green and dark green, matching the lines.
+
+This image appears to be a schematic representation of how a seven-segment display is connected and operates, illustrating the segments that light up to form the number "8".
+
+=== seven_segment_display_-123.png ===
+The image depicts a schematic representation of a four-digit seven-segment display. Each digit is enclosed in a rectangular frame and consists of seven segments that can be lit up to form numbers. Here's a detailed description:
+
+1. **Seven-Segment Displays**:
+   - There are four separate seven-segment displays arranged horizontally.
+   - Each display is outlined with a black border and contains seven segments that can light up in red.
+
+2. **Displayed Numbers**:
+   - The first display shows the number "3" with the top, middle, bottom, and the two right segments lit.
+   - The second display shows the number "1" with only the two right segments lit.
+   - The third display shows the number "2" with the top, middle, bottom, top right, and bottom left segments lit.
+   - The fourth display shows the number "3" again, similar to the first display.
+
+3. **Connections**:
+   - Each display has a set of colored lines representing electrical connections.
+   - The top and bottom of each display have five circular connection points, represented by green circles.
+   - Green and light green lines connect these points vertically.
+   - Red and blue dots indicate connection nodes along these lines.
+
+4. **Color Coding**:
+   - Red segments indicate active parts of the display.
+   - Green and light green lines represent connections, with different shades indicating different paths or layers.
+   - Blue dots are used to mark specific connection points along the lines.
+
+This schematic is likely used for educational or illustrative purposes to show how seven-segment displays are wired and how they represent numbers.
+
+=== seven_segment_display_9.png ===
+The image depicts a seven-segment display diagram, commonly used in digital clocks and electronic devices to display numerical information. Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The main part of the image is a rectangular area representing a seven-segment display.
+   - It consists of seven individual segments arranged to form the number "9".
+   - The segments are colored red, except for one segment on the bottom left, which is gray, indicating it is not active.
+
+2. **Segments:**
+   - The segments are labeled from A to G, with segments A, B, C, D, F, and G lit up in red to form the number "9".
+   - Segment E is gray, indicating it is not lit.
+
+3. **Connections:**
+   - There are vertical lines representing connections to the segments.
+   - Green lines connect the top and bottom parts of the diagram, with red dots indicating connection points.
+   - Blue dots are present at intersections, possibly representing nodes or connection points.
+
+4. **Top and Bottom Sections:**
+   - At the top and bottom of the display, there are small rectangles with circles inside, representing connection terminals.
+   - The circles are green, with red dots indicating connection points.
+
+This diagram is likely used for educational or illustrative purposes to show how a seven-segment display is wired and functions.
+
+=== seven_segment_display_00001001.png ===
+The image depicts a schematic representation of a seven-segment display connected to a binary input. Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The display is rectangular with seven segments labeled from 'a' to 'g'.
+   - Segments 'a' and 'g' are highlighted in red, indicating they are active.
+   - The other segments ('b', 'c', 'd', 'e', 'f') are shown in gray, indicating they are inactive.
+
+2. **Binary Input:**
+   - The binary number "00001001" is displayed on the left side.
+   - Below the binary number, the sequence "hgfedcba" is written, indicating the order of the bits corresponding to the segments.
+
+3. **Connections:**
+   - There are four input terminals labeled 'a', 'b', 'c', and 'd' at the top, and four output terminals labeled 'e', 'f', 'g', and 'h' at the bottom.
+   - Green lines connect the input terminals to the top of the display, and green lines connect the bottom of the display to the output terminals.
+   - Red and blue dots are used to indicate connection points.
+
+4. **Color Coding:**
+   - Active segments and connections are highlighted in red.
+   - Inactive segments are shown in gray.
+   - Green lines and dots indicate connections, with blue dots marking connection junctions.
+
+This diagram likely represents how specific binary inputs activate certain segments of a seven-segment display to form a numeral or character.
+
+=== seven_segment_display_123.png ===
+The image depicts three seven-segment displays arranged horizontally. Each display is connected to a series of colored lines and dots, representing electrical connections.
+
+### Details:
+
+1. **Seven-Segment Displays:**
+   - **Left Display:** Shows the number "8" with all segments lit in red.
+   - **Middle Display:** Shows the number "8" with all segments lit in red.
+   - **Right Display:** Shows the number "8" with all segments lit in red.
+
+2. **Connections:**
+   - Each display has a set of five vertical lines above and below it.
+   - The lines are colored in light green and dark green, indicating different connections.
+   - Red dots are present at the junctions where the lines meet the black rectangular borders of the displays.
+   - Blue dots are located at the bottom junctions of the lines with the displays.
+
+3. **Overall Structure:**
+   - The displays and connections are enclosed in black rectangular borders.
+   - The lines and dots create a symmetrical pattern, suggesting a circuit diagram layout.
+
+This image appears to illustrate the wiring or connection setup for seven-segment displays, commonly used in digital clocks and electronic meters.
+
+=== lut_with_seven_segment_displays_170.png ===
+The image is a schematic diagram of an electronic circuit designed for an output display system. Here’s a detailed description:
+
+1. **Title and Labels:**
+   - The top left corner is labeled "Output Display."
+   - Below it, there is a label "output_test" connected to a green rectangular button labeled "Test."
+
+2. **Inputs and Connections:**
+   - There are eight labeled inputs (D7 to D0) connected to a block labeled "LUT" (Look-Up Table).
+   - Each input is connected with green lines to the LUT block, which has numbered outputs from 0 to 8.
+
+3. **Signed Input:**
+   - On the left, there is a label "signed" connected to a small square with a green dot, indicating a binary input.
+
+4. **Output and Display:**
+   - The LUT outputs are connected to a series of components and wires.
+   - Blue lines labeled with numbers (e.g., 0-24, 0-7, 3F) indicate specific connections and logic levels.
+   - The outputs are connected to four 7-segment displays, each capable of showing a single digit.
+   - The displays are outlined in black, with segments lit in red to show the numbers "0 0 0 8."
+
+5. **Wiring and Logic:**
+   - Green and blue lines represent the wiring, with intersections and connections marked by dots.
+   - The circuit includes logic gates or switches, indicated by black rectangles with numbers (e.g., 0-3, 4-7).
+
+6. **Additional Details:**
+   - The diagram is enclosed within a dashed border, suggesting it is part of a larger system or documentation.
+   - Various numbers and labels (e.g., 100s, 10s, 1s) are placed above the blue lines, indicating the logic or counting sequence.
+
+This schematic represents a digital logic circuit for controlling a numerical display, likely used for testing or educational purposes.
+
+=== output_register_and_seven_segment_display.png ===
+The image is a digital circuit diagram featuring a series of interconnected components. Here's a detailed description:
+
+1. **Inputs and Labels:**
+   - On the top left, there is a green label with the text "Test."
+   - Below the label, there is a series of horizontal lines labeled with letters (f, g, h, i, j, k, l, m, n, o), each with a red dot at the end, indicating input points.
+
+2. **Wiring and Connections:**
+   - Blue lines represent the wiring, connecting various components throughout the diagram.
+   - The inputs are connected to a series of vertical and horizontal lines, forming a grid-like structure.
+
+3. **Components:**
+   - **Register (Reg):** Located centrally, it has inputs labeled D, C, en, and an output labeled Q.
+   - **LUT (Look-Up Table):** Positioned to the right of the register, with inputs labeled 0 to 8 and an output labeled "out 0-24."
+   - **Seven-Segment Displays:** Four displays are arranged horizontally on the right side, each showing the number "8" in red. They are connected by blue lines and labeled with numbers (0-3) indicating segments.
+
+4. **Connections to Displays:**
+   - The output from the LUT is connected to the seven-segment displays through a series of blue lines.
+   - Each display has its segments connected to the output lines, with labels indicating the connections (e.g., 0-3, 4-7).
+
+5. **Additional Details:**
+   - Red dots are present at various junctions, indicating connection points.
+   - The wiring is organized in a structured manner, with clear paths between components.
+
+Overall, the diagram represents a digital circuit with input switches, a register, a look-up table, and four seven-segment displays, likely used for testing or demonstration purposes.
+
+=== seven_segment_display_1.png ===
+The image depicts a schematic representation of a seven-segment display with connections. Here's a detailed description:
+
+1. **Seven-Segment Display**:
+   - The display is rectangular with a border.
+   - It contains seven segments arranged to form numbers.
+   - The segments are colored in two shades: red and gray.
+   - The red segments form the number "2" by illuminating the top, upper right, middle, and lower left segments.
+
+2. **Connections**:
+   - There are vertical lines connecting the top and bottom of the display.
+   - Each line is colored green with small circles at the ends.
+   - The top and bottom sections have four circles each, arranged horizontally.
+   - The circles are colored green and red, with red circles at the connection points.
+
+3. **Additional Details**:
+   - The segments and lines are outlined in black.
+   - The circles at the top and bottom are connected by vertical green lines.
+   - Blue dots are present at the junctions where the vertical lines meet the display.
+
+This schematic likely represents how a seven-segment display is wired for a specific digit.
+
+=== seven_segment_display_4.png ===
+The image depicts a seven-segment LED display schematic, commonly used in digital clocks and electronic meters. Here’s a detailed description:
+
+1. **Seven-Segment Display:**
+   - The central part of the image is a rectangular area representing a seven-segment display.
+   - The segments are arranged to form the number "8".
+   - Each segment is a bar that can be lit up independently.
+   - The segments are colored red, indicating they are active or lit.
+   - The segments are labeled from top to bottom and left to right as follows:
+     - Top horizontal segment
+     - Top right vertical segment
+     - Bottom right vertical segment
+     - Bottom horizontal segment
+     - Bottom left vertical segment
+     - Top left vertical segment
+     - Middle horizontal segment
+
+2. **Connections:**
+   - There are two sets of vertical connections on the top and bottom of the display.
+   - Each set consists of four lines, with alternating colors of dark green and light green.
+   - The connections are linked to small circles at the ends, which might represent connection points or pins.
+
+3. **Additional Details:**
+   - The top and bottom of the image have a series of four small squares, each containing a circle.
+   - The circles within the squares are colored green, suggesting they might represent LEDs or indicators.
+   - The lines connecting the squares to the display are marked with small red and blue circles at connection points.
+
+This image likely represents a simplified diagram of how a seven-segment display is wired or connected in a circuit.
+
+=== lut_with_seven_segment_displays.png ===
+The image is a schematic diagram of an electronic circuit designed for output display, likely a digital counter or similar device. Here's a detailed description:
+
+1. **Header:**
+   - Titled "Output Display."
+
+2. **Input Section:**
+   - On the left, there is a labeled section "output_test" with a green button labeled "Test."
+   - Below it, there is a labeled input "signed" connected to a circular switch.
+
+3. **Binary Input:**
+   - A row of eight binary inputs labeled D7 to D0, each connected to a black box with red dots indicating connections.
+   - These inputs are connected via blue lines to a component labeled "LUT" (Look-Up Table).
+
+4. **LUT Component:**
+   - The LUT has inputs numbered 0 to 8 and a single output labeled "out."
+
+5. **Output Section:**
+   - The output from the LUT is connected to a series of components and lines leading to four 7-segment displays.
+   - These displays are arranged horizontally and are labeled from left to right as "-", "100s", "10s", and "1s."
+
+6. **7-Segment Displays:**
+   - Each display is connected via blue lines and black boxes with red dots indicating connection points.
+   - The displays are shown with the number "8" in red, indicating all segments are active.
+
+7. **Connections and Labels:**
+   - Various connections are labeled with numbers and ranges, such as "0-24," "0-7," "8-15," "16-23," etc.
+   - The connections are made using blue lines, and black boxes with red dots are used to indicate connection points.
+
+8. **Overall Layout:**
+   - The diagram is enclosed in a dashed box, indicating the boundary of the circuit schematic.
+
+This schematic likely represents a digital circuit for displaying numerical values using 7-segment displays, with inputs for testing and a signed/unsigned toggle.
+
+=== seven_segment_display_labelled.png ===
+The image depicts a seven-segment display diagram, commonly used in digital clocks and electronic meters. The display is outlined in a black rectangle with eight labeled points (a, b, c, d, e, f, g, h) marked by blue dots along the perimeter. 
+
+Inside the rectangle, there are seven red segments labeled with lowercase letters:
+
+- Segment "a" is horizontal at the top.
+- Segments "b" and "f" are vertical on the right and left sides, respectively, connecting the top and middle segments.
+- Segment "g" is horizontal in the middle.
+- Segments "c" and "e" are vertical on the right and left sides, respectively, connecting the middle and bottom segments.
+- Segment "d" is horizontal at the bottom.
+
+Point "h" is marked at the bottom right corner, outside the rectangle, indicating a decimal point. 
+
+The segments are arranged to form the shape of the number "8" when all are illuminated.
+
+=== seven_segment_display_8.png ===
+The image depicts a schematic of a seven-segment display connected to a series of wires and terminals. Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The central part of the image is a seven-segment display.
+   - The display is shown in a rectangular outline with thick black borders.
+   - It displays the number "8" using red segments. There are seven segments in total, each shaped like a bar, and all are illuminated.
+
+2. **Connections:**
+   - There are wires connecting the display to terminals at the top and bottom.
+   - The wires are depicted in light green and dark green colors.
+   - Each segment of the display is connected to a terminal via these wires.
+
+3. **Terminals:**
+   - At the top, there are five circular terminals arranged horizontally, each enclosed in a black square.
+   - At the bottom, there are also five circular terminals in a similar arrangement.
+   - The terminals are colored in green, with red dots indicating connection points.
+
+4. **Additional Details:**
+   - Blue dots are used to indicate connection points on the wires.
+   - A gray circle is present on the right side of the display, possibly indicating a specific connection or feature.
+
+This schematic likely represents the wiring and connections for a seven-segment display used in electronic devices.
+
+=== seven_segment_display_pla.png ===
+The image is a detailed circuit diagram, likely representing a digital logic circuit or a schematic for a specific electronic component. Here's a detailed description:
+
+1. **Layout**:
+   - The diagram is vertically oriented, with components and connections laid out in a grid-like fashion.
+   - The left side features a series of vertical lines and symbols, indicating various inputs or connections.
+   - The right side has horizontal lines extending from the vertical lines, leading to different components or outputs.
+
+2. **Components**:
+   - The diagram includes various electronic symbols, such as transistors, gates, or other logic components.
+   - There are multiple horizontal and vertical lines, representing electrical connections or wires.
+   - Red dots are present at intersections, likely indicating connection points or nodes.
+
+3. **Connections**:
+   - Blue lines dominate the diagram, showing the paths of electrical connections between components.
+   - The lines are organized in a structured manner, with many crossing over each other, indicating a complex network of connections.
+
+4. **Annotations**:
+   - There are labels or annotations in black text adjacent to certain lines or components, likely indicating specific signals, voltages, or component identifiers.
+
+5. **Visual Style**:
+   - The diagram uses a clear and precise style, typical of technical schematics, with a focus on clarity and accuracy in representing the circuit's layout.
+
+This diagram would be used for technical documentation, troubleshooting, or designing electronic circuits, providing a detailed map of how the components are interconnected.
+
+=== two_lut_and_mux.png ===
+The image is a schematic diagram illustrating a digital logic circuit. Here's a detailed description:
+
+1. **Inputs:**
+   - There are eight input lines labeled `D0` to `D7` at the top left of the diagram. These inputs are connected to a series of horizontal lines that feed into two separate blocks.
+
+2. **Logic Blocks:**
+   - There are two rectangular blocks labeled "Unsigned" and "Signed," each with eight input lines numbered from 0 to 7 on the left side.
+   - Each block is marked as "LUT" (Look-Up Table) at the bottom.
+
+3. **Connections:**
+   - The input lines `D0` to `D7` are connected to both the "Unsigned" and "Signed" blocks.
+   - Each block has an output line labeled "out" on the right side.
+
+4. **Output and Logic Gate:**
+   - The outputs from both the "Unsigned" and "Signed" blocks are connected to a logic gate represented by a triangle with a circle at the point, indicating a multiplexer or selector.
+   - The output of this gate is connected to a horizontal line leading to the right.
+
+5. **Control Signal:**
+   - There is a control line labeled "signed" at the bottom, connected to a circle with a square around it, indicating a switch or control input.
+
+6. **Color and Style:**
+   - The connections are depicted in blue lines, and the components are outlined in black.
+   - The labels and numbers are in black and gray.
+
+This diagram likely represents a circuit that selects between signed and unsigned interpretations of the input data based on the control signal.
+
+=== real_seven_segment_display.png ===
+The image shows a seven-segment display, commonly used in electronic devices to display numerical information. The display is positioned upright, with its pins extending horizontally from the back. 
+
+### Description:
+
+- **Shape and Structure**: 
+  - The display is rectangular with a white casing.
+  - It features a dark gray or black front panel where the segments are visible.
+  
+- **Segments**:
+  - The segments form the number "0" and include a decimal point at the bottom right.
+  - Each segment is a light color, contrasting with the darker background.
+
+- **Pins**:
+  - There are multiple metal pins protruding from the back, used for connecting the display to a circuit.
+
+- **Lighting and Reflection**:
+  - The surface on which the display rests is reflective, showing a faint reflection of the display.
+
+This type of display is often used in digital clocks, calculators, and other devices requiring numerical output.
+
+=== seven_segment_display_0.png ===
+The image depicts a schematic representation of a seven-segment display, commonly used in digital clocks and electronic meters to display numerical information. Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The central part of the image is a rectangular area representing a seven-segment display.
+   - It consists of seven individual segments arranged to form the number "0". These segments are colored red.
+   - The segments are labeled from top to bottom and left to right as follows:
+     - Top horizontal segment
+     - Top-right vertical segment
+     - Bottom-right vertical segment
+     - Bottom horizontal segment
+     - Bottom-left vertical segment
+     - Top-left vertical segment
+     - Middle horizontal segment (shown in gray)
+
+2. **Connecting Wires:**
+   - There are green lines representing wires connecting the segments to the top and bottom sections of the image.
+   - Each wire is connected to a small circle at both ends, indicating connection points or nodes.
+   - The circles at the top and bottom are colored green, blue, and red, indicating different connections or circuit paths.
+
+3. **Top and Bottom Sections:**
+   - Both the top and bottom sections have a series of five squares arranged horizontally.
+   - Each square contains a colored circle (green) connected by a red node to the wires leading to the display.
+
+4. **Overall Layout:**
+   - The entire setup is enclosed in a black outline, indicating the boundary of the display and its connections.
+
+This schematic is likely used to illustrate how a seven-segment display is wired and how it functions to display numbers.
+
+=== seven_segment_display_5.png ===
+The image depicts a seven-segment display schematic, commonly used in digital clocks and electronic meters to display numbers. Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The main feature is a large rectangular area representing a seven-segment display.
+   - It consists of seven individual segments arranged to form the number "2".
+   - The segments are colored red, with the top, middle, and bottom segments fully lit, and the top right and bottom left segments also lit. The top left and bottom right segments are not lit and are shown in gray.
+
+2. **Connecting Lines:**
+   - There are vertical lines connecting the display to two sets of horizontal lines at the top and bottom.
+   - The lines are colored in alternating shades of green and dark green, with small blue dots at the junctions where they connect to the display.
+
+3. **Top and Bottom Sections:**
+   - Both the top and bottom sections have a series of five small circles enclosed in a rectangular box.
+   - The circles are colored in shades of green, alternating between light and dark.
+   - Each circle is connected to a vertical line that leads to the seven-segment display.
+
+4. **Color Coding:**
+   - Red segments indicate active parts of the display.
+   - Gray segments indicate inactive parts.
+   - Green lines and circles are used for connections and possibly represent electrical pathways or signals.
+
+This schematic is likely used for educational or illustrative purposes to show how a seven-segment display operates.
+
+=== lut_with_seven_segment_displays_-86.png ===
+The image is a schematic diagram of a digital circuit for an output display system. Here's a detailed description:
+
+1. **Title and Border:**
+   - The diagram is titled "Output Display" at the top left corner.
+   - It is enclosed within a dashed border.
+
+2. **Components:**
+   - **Input Section:**
+     - A green rectangular button labeled "Test" is connected to a block labeled `output_test`.
+     - There is a labeled section with `D7` to `D0` indicating 8 data input lines.
+
+   - **Logic Unit:**
+     - A block labeled "LUT" (Look-Up Table) with inputs numbered 0 to 8.
+     - The `signed` input is connected to the LUT, indicating it may handle signed numbers.
+
+   - **Output Section:**
+     - Three 7-segment displays are shown, each capable of displaying a single digit.
+     - The displays are connected to the LUT through a series of lines and logic gates.
+     - The segments of the displays are colored red, indicating active segments.
+
+3. **Connections:**
+   - Green lines represent data paths, connecting inputs to the LUT and then to the displays.
+   - Blue lines indicate control or additional logic paths, labeled with hexadecimal values (`3F`, `7F`, `7D`).
+   - Red dots indicate connection points or nodes where lines intersect.
+
+4. **Labels and Annotations:**
+   - Various labels such as `100s`, `10s`, `1s` are used to indicate the digit position or significance.
+   - Numbers and letters like `0-24`, `0-7`, `8-15`, `16-23` are used to denote ranges or specific values.
+
+5. **Visual Elements:**
+   - The 7-segment displays have a realistic appearance with segments colored red to show active segments.
+   - The diagram uses a combination of colors (green, blue, red) to differentiate between types of connections and components.
+
+This schematic is likely used for educational or design purposes to illustrate how a digital output display system can be constructed using a LUT and 7-segment displays.
+
+=== seven_segment_display_3.png ===
+The image depicts a seven-segment display diagram, commonly used in digital clocks and electronic devices to display numbers. Here's a detailed description:
+
+1. **Seven-Segment Display:**
+   - The main part of the image is a rectangular area representing a seven-segment display.
+   - The display is outlined in black and contains seven individual segments.
+   - The segments are arranged to form the number "3."
+   - The segments are colored in red, indicating they are active or "on."
+   - The inactive segments are shown in gray.
+
+2. **Wiring and Connections:**
+   - There are vertical lines connecting to the top and bottom of the display.
+   - The lines are colored in green and represent electrical connections.
+   - At the top and bottom, there are small circles in green and red, indicating connection points or terminals.
+   - Blue dots are present at intersections, possibly representing junctions or nodes.
+
+3. **Top and Bottom Sections:**
+   - Both the top and bottom sections have a series of five small squares outlined in black.
+   - Inside each square, there are green circles, possibly representing LEDs or connection points.
+
+This diagram is likely used for educational purposes to illustrate how a seven-segment display is wired and functions.
+
+=== seven_segment_display_7.png ===
+The image depicts a schematic representation of a 7-segment display connected to a circuit. Here is a detailed description:
+
+1. **7-Segment Display:**
+   - The display is rectangular with seven segments arranged to form numbers.
+   - Segments are colored in two shades: red and gray.
+   - The red segments are lit, forming the number "2."
+   - The gray segments are unlit.
+
+2. **Connections:**
+   - The display is connected to a series of lines above and below it.
+   - There are four lines at the top and four at the bottom.
+   - The lines are colored green and light green, with small red and blue circles indicating connection points.
+
+3. **Top Section:**
+   - Four green circles are aligned horizontally at the top.
+   - Each circle is connected to a vertical line.
+   - The leftmost three lines are light green, and the rightmost line is dark green.
+   - Red circles are present where the lines meet the top of the display.
+
+4. **Bottom Section:**
+   - Four green circles are aligned horizontally at the bottom.
+   - Each circle is connected to a vertical line.
+   - All lines are dark green.
+   - Red circles are present where the lines meet the bottom of the display.
+
+This schematic likely represents how a 7-segment display can be wired in a circuit to show the number "2."
+
+=== single_lut_input_pattern_breakdown_table.png ===
+The image is a table that documents 8-bit numbers and their corresponding seven-segment display bit patterns. It is divided into two main sections: unsigned and signed integer patterns.
+
+### Table Structure:
+
+- **Columns:**
+  1. **Signed**: Indicates whether the number is signed (1) or unsigned (0).
+  2. **8 Bit Number**: Displays the binary representation of the number.
+  3. **Seven Segment Display Bit Pattern**: Placeholder for the bit pattern used in seven-segment displays.
+
+### Content:
+
+- **Unsigned Integer Patterns:**
+  - The signed column has a value of 0.
+  - The 8-bit numbers range from `00000000` to `11111111`.
+  - The seven-segment display bit pattern section is labeled "Unsigned Integer Patterns" but does not show specific patterns.
+
+- **Signed Integer Patterns:**
+  - The signed column has a value of 1.
+  - The 8-bit numbers range from `00000000` to `11111111`.
+  - The seven-segment display bit pattern section is labeled "Signed Integer Patterns" but does not show specific patterns.
+
+### Visuals:
+
+- The table uses horizontal and vertical lines to separate columns and sections.
+- Ellipses (`...`) are used to indicate continuation of the pattern sequence.
+
+This table is likely used for documentation or educational purposes to illustrate how binary numbers are represented and potentially displayed on a seven-segment display, though specific bit patterns for the display are not detailed in the image.
+

@@ -358,7 +358,9 @@ if __name__ == "__main__":
     COSINE_THRESHOLD: float = 0.9
 
     chunker = RAGChunking()
-    with open("AI_Course/Lecture_Notes/ch3_csp_games1_parsed.txt", "r") as f:
+    with open(
+        "Artificial_Intelligence/Lecture_Notes/ch3_csp_games1_parsed.txt", "r"
+    ) as f:
         markdown_content = f.read()
 
     # Create strategy demonstrations with different parameter combinations

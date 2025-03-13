@@ -1,0 +1,232 @@
+=== 5_output_alu_difference_a.png ===
+The image is a digital circuit diagram featuring several components connected by lines, representing wires. Here is a detailed description:
+
+1. **Registers**:
+   - There are two registers labeled "A" and "B". Each has inputs labeled "D", "C", and "en" (enable), and an output labeled "Q".
+
+2. **Add Component**:
+   - Below the registers, there is an "Add" component with inputs labeled "a", "b", and "c", and outputs labeled "S" (sum) and "Co" (carry out).
+
+3. **Logic Gates**:
+   - An OR gate is present, with multiple inputs and a single output leading to the "Add" component.
+
+4. **Switches and LEDs**:
+   - At the top left, there is a set of 8 switches labeled from 0 to 7.
+   - At the bottom left, there is a set of 8 LEDs, also labeled from 0 to 7.
+
+5. **Connections**:
+   - The switches are connected to the inputs of the registers and the logic gate.
+   - The outputs from the registers and the "Add" component are connected to the LEDs.
+   - Various green and blue lines represent the connections between components, indicating data paths.
+
+6. **Control Inputs**:
+   - There are control inputs labeled "Ai", "Ao", "Bi", "Bo", "ALU", and "sub" at the bottom center, each with an associated switch.
+
+7. **Miscellaneous**:
+   - A clock input is present at the top left, labeled with a clock symbol.
+   - The lines are color-coded: green for control signals and blue for data lines.
+
+This diagram represents a simple arithmetic logic unit (ALU) setup, capable of performing basic operations like addition, controlled by the switches and visualized through the LEDs.
+
+=== 2_load_15_a_pulse.png ===
+The image is a digital circuit diagram featuring several components connected by lines representing electrical connections. Here’s a detailed description:
+
+1. **Registers and Components:**
+   - Two main registers labeled "A" and "B" are present. Each register has inputs labeled "D", "C", and "en" (enable), and an output labeled "Q".
+   - An "Add" component with inputs labeled "a", "b", and "c" and outputs "S" (sum) and "Co" (carry out).
+   - An OR gate with two inputs and one output.
+   - Two sets of horizontal lines at the top and bottom, each with eight labeled connections (0 to 7).
+
+2. **Connections:**
+   - The registers "A" and "B" are interconnected with the "Add" component and the OR gate.
+   - The outputs from the registers feed into the "Add" component.
+   - The OR gate receives inputs from a vertical line connected to a set of switches or inputs labeled 0 to 7.
+   - The output of the OR gate is connected to the "Add" component.
+
+3. **Inputs and Outputs:**
+   - At the bottom, there are labeled outputs: "Aᵢ", "Aₒ", "Bᵢ", "Bₒ", "ALUₒ", and "sub".
+   - These outputs are connected to various parts of the circuit, indicating control or data flow.
+
+4. **Lines and Colors:**
+   - The diagram uses blue and green lines to indicate different types of connections or signals.
+   - Blue lines primarily connect the registers and the "Add" component.
+   - Green lines connect the external inputs and outputs, as well as some internal connections.
+
+5. **Additional Elements:**
+   - A small box labeled "C" at the top left, connected to the circuit, possibly representing a clock or control signal.
+   - Inverters are present at certain points, indicated by small triangles with a circle at the tip.
+
+This circuit likely represents a simple arithmetic logic unit (ALU) or a similar digital processing unit, with registers for storing data and an adder for performing arithmetic operations.
+
+=== 1_load_15_a.png ===
+The image is a schematic diagram of a digital circuit, likely representing a simple arithmetic logic unit (ALU) or a similar computational component. Here's a detailed description:
+
+1. **Registers**:
+   - There are two main registers labeled "A" and "B". Each register is depicted as a box with inputs labeled "D", "C", and "en" (enable). These registers are used to store binary data.
+
+2. **Input/Output**:
+   - At the top and bottom of the diagram, there are sets of 8 circles labeled 0 to 7, representing 8-bit input/output lines.
+
+3. **Logic Gates**:
+   - An OR gate is present in the middle of the diagram, receiving inputs from a set of switches or lines labeled 0 to 7.
+
+4. **Adder**:
+   - There is an "Add" component, which likely represents an adder circuit. It has inputs labeled "a", "b", and "c" and outputs labeled "S" (sum) and "Co" (carry out).
+
+5. **Control Lines**:
+   - Several control lines are depicted in green and blue, connecting various components. These lines are used to control data flow and operations within the circuit.
+
+6. **Multiplexers/Selectors**:
+   - The diagram includes multiplexers or selectors, indicated by triangular symbols, which direct the flow of data based on control signals.
+
+7. **Switches**:
+   - There are switches or indicators at the bottom labeled "Ai", "Ao", "Bi", "Bo", "ALU", and "sub", which likely control various operations or modes of the ALU.
+
+8. **Connections**:
+   - The diagram shows a complex network of connections between the components, indicating the flow of data and control signals.
+
+9. **Color Coding**:
+   - Green lines are used for control signals, while blue lines are used for data paths, helping to distinguish between different types of connections.
+
+This schematic is useful for understanding the operation of a simple ALU, showing how data is stored, manipulated, and outputted based on control signals.
+
+=== 4_load_4_b_pulse.png ===
+The image is a schematic diagram of a digital circuit, likely representing a basic arithmetic logic unit (ALU) or a similar computational component. Here's a detailed description:
+
+1. **Components**:
+   - **Registers**: There are two labeled registers, "A" and "B". Each register has inputs labeled "D" and outputs labeled "Q", with an enable line "en".
+   - **Add/Subtract Unit**: There is an "Add" component with inputs labeled "a", "b", and "c" and outputs labeled "S" and "Co".
+   - **Logic Gates**: Includes an OR gate with multiple inputs and a single output.
+   - **Inverters**: There are several inverters (triangular symbols with a circle at the tip) used to invert signals.
+
+2. **Connections**:
+   - The diagram uses blue and green lines to represent connections between components.
+   - Green lines are used primarily for control signals and outputs.
+   - Blue lines are used for data paths between components.
+
+3. **Inputs/Outputs**:
+   - There are multiple input switches at the top and bottom, labeled 0 to 7.
+   - Outputs are shown at the bottom with circles, labeled 0 to 7.
+   - There are additional labeled outputs at the bottom right: \(A_i\), \(A_o\), \(B_i\), \(B_o\), \(ALU_o\), and \(sub\).
+
+4. **Labels**:
+   - The top left has a label "C" with a square symbol next to it.
+   - Lines are labeled with numbers indicating the bit-width of the connections, such as "4".
+
+5. **Layout**:
+   - The layout is organized with registers on the right, logic gates in the center, and input/output interfaces on the top and bottom.
+   - The schematic is structured to show the flow of data from inputs through processing units to outputs.
+
+This diagram is likely used for educational or design purposes to illustrate how basic arithmetic and logic operations are implemented in digital circuits.
+
+=== 7_output_a.png ===
+The image is a digital circuit diagram featuring several components connected by lines, indicating the flow of signals. Here's a detailed description:
+
+1. **Components:**
+   - **Registers (A and B):** There are two registers labeled "A" and "B". Each register has inputs labeled "D", "C", and "en", and an output labeled "Q".
+   - **Add Component:** Labeled "Add", it has inputs "a", "b", and "c", and outputs "S" and "Co".
+   - **Logic Gate:** An OR gate is present, receiving inputs from a vertical array of switches.
+   - **Inverters:** There are three inverters, each connected to the outputs of the registers and the add component.
+
+2. **Connections:**
+   - **Inputs and Outputs:**
+     - On the top left, there's a set of switches labeled 7 to 0, connected to the circuit via blue lines.
+     - On the bottom left, there's a set of outputs labeled 7 to 0.
+     - On the bottom right, there are outputs labeled "Aᵢ", "Aₒ", "Bᵢ", "Bₒ", "ALUₒ", and "sub".
+
+3. **Lines:**
+   - **Blue Lines:** These indicate data paths connecting the switches to the registers, the add component, and the logic gate.
+   - **Green Lines:** These represent control or additional data paths connecting the components and outputs.
+
+4. **Labels:**
+   - The circuit is labeled with a large "C" on the top left, possibly indicating a control or clock signal.
+   - The lines are labeled with numbers and letters, indicating specific connections or data paths (e.g., "B", "4").
+
+5. **Switches and Indicators:**
+   - A vertical array of switches is connected to the OR gate, with each switch labeled 0 to 7.
+   - The outputs on the bottom right are connected to circular indicators, possibly LEDs or test points.
+
+This diagram likely represents a simple arithmetic logic unit (ALU) or a similar digital processing circuit, with registers for storing data, an adder for arithmetic operations, and logic gates for control functions.
+
+=== 6_output_alu_difference_a_pulse.png ===
+The image is a digital circuit diagram featuring several components connected by lines representing wires. Here's a detailed description:
+
+1. **Registers**:
+   - Two registers labeled "A" and "B" are present. Each has inputs labeled "D", "C", and "en" (enable), and outputs labeled "Q".
+   - Both registers have 7-bit connections, indicated by the number "7" on the wires.
+
+2. **Add Component**:
+   - There is an "Add" component with inputs labeled "a", "b", and "c", and outputs labeled "S" (sum) and "Co" (carry out).
+
+3. **Logic Gate**:
+   - An OR gate is present, with two inputs and one output.
+
+4. **Switches and LEDs**:
+   - At the top left, there is a set of 8 switches labeled "0" to "7".
+   - At the bottom left, there is a set of 8 LEDs labeled "0" to "7".
+
+5. **Control Inputs**:
+   - At the bottom right, there are control inputs labeled "Aᵢ", "A₀", "Bᵢ", "B₀", "ALU₀", and "sub".
+
+6. **Connections**:
+   - Green and blue lines represent the connections between components.
+   - The green lines seem to represent control signals, while the blue lines represent data paths.
+
+7. **Miscellaneous**:
+   - A clock signal is indicated by a square with a waveform symbol next to the switches.
+   - The circuit seems to perform arithmetic operations, possibly addition and subtraction, given the presence of an adder and a "sub" control input.
+
+The diagram is likely part of a digital logic design, possibly for an arithmetic logic unit (ALU) or similar computational circuit.
+
+=== 0_base.png ===
+The image depicts a digital logic circuit diagram. Here's a detailed description:
+
+1. **Registers and Components**:
+   - Two main registers labeled "A" and "B", each with inputs labeled "D", "C", and "en" and outputs labeled "Q".
+   - An "Add" component with inputs labeled "a", "b", and "c", and outputs labeled "S" and "Co".
+   - An OR gate with two inputs and one output.
+
+2. **Connections**:
+   - Green and blue lines represent the wiring connections between components.
+   - The registers "A" and "B" are connected to the "Add" component.
+   - The output of the OR gate feeds into the "Add" component.
+   - The outputs of the registers and the "Add" component are connected to various points in the circuit.
+
+3. **Inputs and Outputs**:
+   - There are two sets of inputs/outputs on the left side, each with 8 lines labeled from 0 to 7.
+   - On the bottom right, there are six labeled inputs/outputs: "Aᵢ", "Aₒ", "Bᵢ", "Bₒ", "ALUₒ", and "sub".
+
+4. **Visual Elements**:
+   - The circuit includes several NOT gates (inverters) represented by triangles with a small circle at the tip.
+   - The OR gate is represented by a curved shape with two inputs converging into one output.
+
+5. **Additional Features**:
+   - The circuit includes a clock input labeled "C" on the left side.
+   - Green circles indicate connection points or junctions in the wiring.
+
+This diagram likely represents a simple arithmetic logic unit (ALU) or a similar digital circuit used for basic arithmetic operations.
+
+=== 3_load_4_b.png ===
+The image depicts a digital logic circuit diagram, likely representing a simple arithmetic logic unit (ALU) setup. Here's a detailed description:
+
+1. **Components:**
+   - **Registers (A and B):** Two registers labeled "A" and "B" are present, each with inputs for data (D), clock (C), and enable (en). These are used to store binary values.
+   - **Add Component:** An "Add" block is present, which likely performs arithmetic operations. It has inputs labeled a, b, and c, and an output labeled S (sum).
+   - **Logic Gates:** An OR gate is depicted, combining multiple inputs into a single output.
+   - **Inverters:** There are multiple inverters (NOT gates) that invert the input signal.
+
+2. **Connections:**
+   - **Data Buses:** Green and blue lines represent data buses connecting different components. The green lines are primarily used for control signals, while the blue lines are for data transfer.
+   - **Inputs and Outputs:** 
+     - At the top, there is a set of switches labeled 0 to 7, which likely serve as input for binary data.
+     - At the bottom, there is another set of switches labeled 0 to 7, likely representing output indicators such as LEDs.
+   - **Control Panel:** At the bottom right, there are labeled controls: Ai, Ao, Bi, Bo, ALUo, and sub, which likely control the operation of the ALU, such as input selection and operation mode (e.g., subtraction).
+
+3. **Labels:**
+   - The circuit is labeled with various signals and control lines, such as "C" for clock or control, and "F" for function, indicating the flow and purpose of signals.
+
+4. **Overall Layout:**
+   - The diagram is organized with inputs on the top, processing components in the middle, and outputs at the bottom. The layout is typical for visualizing data flow from input to output through processing units.
+
+This diagram is likely used for educational purposes or as a schematic for designing a simple ALU in digital electronics.
+

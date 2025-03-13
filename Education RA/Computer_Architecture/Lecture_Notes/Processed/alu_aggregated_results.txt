@@ -1,0 +1,273 @@
+=== esap_alu_load_data_into_registers.png ===
+The image depicts a digital circuit diagram with two identical sections side by side. Each section includes the following components and connections:
+
+1. **Registers (A and B):**
+   - Two D-type flip-flop registers labeled "A" and "B".
+   - Each register has inputs labeled D, C, and an enable (en) line.
+   - Outputs from these registers are connected to other components.
+
+2. **Adders:**
+   - A component labeled "Add" with inputs a, b, and c, and outputs S and Co.
+   - The adder is connected to the outputs of the registers and other components.
+
+3. **Logic Gates:**
+   - An AND gate is present, taking multiple inputs and providing a single output.
+   - The gate is connected to switches and other components.
+
+4. **Switches and Indicators:**
+   - A set of switches at the top and bottom, labeled 0 to 7.
+   - Indicators or LEDs are connected to these switches, showing binary states.
+
+5. **Connections:**
+   - Green and blue lines represent connections between components, indicating data paths and control signals.
+   - Lines are labeled with numbers or letters indicating their function or data width (e.g., F, 0, 4).
+
+6. **Control Inputs:**
+   - Control inputs labeled "C" are connected to the circuit, possibly representing clock or control signals.
+
+7. **Output Indicators:**
+   - At the bottom, there are labeled outputs: Ai, Ao, Bi, Bo, ALUo, and sub, indicating different output states or functions.
+
+This diagram likely represents a simple arithmetic logic unit (ALU) or a similar digital processing unit, with registers for storing operands, an adder for arithmetic operations, and control logic for managing data flow.
+
+=== esap_alu_output_difference_to_a_post_clock.png ===
+The image is a digital circuit diagram featuring several components and connections. Here’s a detailed description:
+
+1. **Registers**:
+   - Two registers labeled "A" and "B" are present. Each register has inputs labeled D, C, and Q, with an enable (en) input. The registers are connected via blue lines.
+
+2. **Add Component**:
+   - There is an "Add" component with inputs labeled a, b, and c, and outputs S and Co. This component is connected to the registers and other parts of the circuit.
+
+3. **Logic Gates**:
+   - An OR gate is present, connected to a series of inputs labeled 0-7.
+
+4. **Switches and Indicators**:
+   - At the top left, there is a set of switches labeled 0-7, with corresponding indicators. These are connected to the circuit via green lines.
+   - At the bottom left, another set of switches labeled 0-7 is present.
+
+5. **Connections**:
+   - The circuit uses blue and green lines to connect various components. The blue lines primarily connect the registers and the add component, while the green lines connect switches and other components.
+
+6. **Control Inputs**:
+   - At the bottom right, there are labeled control inputs: Ai, Ao, Bi, Bo, ALUo, and sub. These are connected to the circuit with green lines.
+
+7. **Clock Signal**:
+   - A clock signal is indicated by a square wave symbol labeled "C" at the top left, connected to the circuit.
+
+This diagram represents a digital system, likely an arithmetic logic unit (ALU) or similar computational circuit, with registers, logic gates, and control inputs for performing operations.
+
+=== esap_alu_output_sum.png ===
+The image is a digital circuit diagram featuring a combination of logic gates, registers, and an arithmetic logic unit (ALU). Here's a detailed description:
+
+1. **Registers**:
+   - Two registers labeled "A" and "B" are present. Each has inputs labeled D, C, and En, and outputs connected to arrows indicating data flow.
+
+2. **Logic Gates**:
+   - An OR gate is shown, with multiple inputs connected to a series of switches or indicators labeled 0-7.
+
+3. **Arithmetic Logic Unit (ALU)**:
+   - The ALU is labeled "Add" with inputs a, b, and c, and outputs S and Co. It is connected to other components through blue and green lines.
+
+4. **Connections**:
+   - The diagram uses blue and green lines to indicate different signal paths. Blue lines are primarily used for data flow between components, while green lines seem to represent control signals or additional data paths.
+
+5. **Switches and Indicators**:
+   - At the top and bottom of the diagram, there are two sets of switches or indicators labeled 0-7. These are connected to the circuit, likely for input or output purposes.
+
+6. **Control Inputs**:
+   - At the bottom right, there are labeled inputs: Ai, Ao, Bi, Bo, ALUo, and sub. These likely control various operations within the circuit.
+
+7. **Miscellaneous**:
+   - A small square labeled "C" is present at the top left, possibly representing a clock or control signal.
+   - The diagram includes hexadecimal addresses like 0x13, indicating specific data paths or memory addresses.
+
+The diagram is a representation of a simple digital system, possibly a part of a CPU or a similar computational unit, showing data flow and control logic.
+
+=== alu_symbol.png ===
+The image is a diagram of an arithmetic logic unit (ALU) represented in a trapezoidal shape with a notch at the top. The ALU is colored light blue and has several labeled arrows indicating inputs and outputs.
+
+### Inputs:
+1. **Integer Operand A**: An arrow pointing downward into the left side of the trapezoid, labeled "A".
+2. **Integer Operand B**: An arrow pointing downward into the right side of the trapezoid, labeled "B".
+3. **Status**: An arrow pointing rightward into the left side of the trapezoid.
+4. **Opcode**: An arrow pointing rightward into the left side of the trapezoid, below the "Status" arrow.
+
+### Outputs:
+1. **Status**: An arrow pointing rightward out of the right side of the trapezoid.
+2. **Integer Result Y**: An arrow pointing downward out of the bottom center of the trapezoid, labeled "Y".
+
+The diagram visually represents the flow of data through an ALU, with operands and control signals as inputs and the result and status as outputs.
+
+=== esap_alu_vs_architecture_overview.png ===
+The image is a detailed diagram of a computer architecture, specifically focusing on the Arithmetic Logic Unit (ALU) and its integration with other components. It is divided into two main sections: the ALU on the left and a block diagram of a simple computer system on the right.
+
+### Left Section: ALU Diagram
+
+- **Test Button (Green Box):** A button labeled "Test" is present, likely for testing the ALU functionality.
+- **Clock Signal (Red Box):** A clock signal is indicated, which is essential for synchronizing operations within the ALU.
+- **Registers:**
+  - **Register A (Green Box):** Contains a flip-flop circuit for storing data, with inputs and outputs connected to the ALU.
+  - **Register B (Pink Box):** Similar to Register A, used for storing another operand.
+- **Adder/Subtractor Circuit (Cyan Box):** Includes logic gates and an adder circuit for performing arithmetic operations.
+- **Control Lines and Buses (Orange Lines):** Various lines connect different components, indicating data flow and control signals.
+
+### Right Section: Computer System Block Diagram
+
+- **Clock (Red Box):** A block labeled "Clock" at the top, providing timing signals to the system.
+- **Memory and Registers:**
+  - **Memory Address Register:** Connected to RAM for addressing memory locations.
+  - **RAM:** For storing data and instructions.
+  - **Instruction Register:** Holds the current instruction being executed.
+  - **Control Signals:** Derived from the instruction register to control other components.
+- **Registers:**
+  - **Register A (Green Box):** Corresponds to the ALU's Register A, used for storing operands.
+  - **Register B (Pink Box):** Corresponds to the ALU's Register B.
+- **Arithmetic Logic Unit (Cyan Box):** Performs arithmetic and logic operations, connected to both registers and the bus.
+- **Program Counter:** Keeps track of the next instruction to be executed.
+- **Output Register and Display:** For displaying results of computations.
+- **Bus (Orange Arrow):** A central bus facilitating data transfer between components.
+
+### Connections and Data Flow
+
+- The diagram shows a clear flow of data and control signals between the ALU and other components, illustrating how instructions are processed and executed within the system. The use of color-coded boxes helps in identifying different sections and their functions.
+
+=== esap_architecture_overview.png ===
+The image is a block diagram representing a simplified computer architecture. It is divided into two main sections, separated by a central vertical bus labeled "BUS." The components are connected by arrows indicating the flow of data and control signals.
+
+### Left Side Components:
+
+1. **Clock**: 
+   - Positioned at the top left.
+   - Provides timing signals to synchronize operations.
+
+2. **Memory Address Register**:
+   - Below the clock.
+   - Connected to the bus with an arrow pointing towards it.
+
+3. **Memory**:
+   - Contains a dashed box labeled "Memory" with "RAM" inside it.
+   - RAM is connected to the bus with a bidirectional arrow.
+
+4. **Instruction Register**:
+   - Below the memory section.
+   - Connected to the bus with an arrow pointing towards it.
+
+5. **Control Signals**:
+   - At the bottom left.
+   - Receives input from the instruction register.
+
+### Right Side Components:
+
+1. **Program Counter**:
+   - Positioned at the top right.
+   - Connected to the bus with an arrow pointing towards it.
+
+2. **Register A**:
+   - Below the program counter.
+   - Connected to the bus with an arrow pointing towards it.
+   - Outputs to the Arithmetic Logic Unit (ALU).
+
+3. **Arithmetic Logic Unit (ALU)**:
+   - Labeled with "(+, -)" indicating basic operations.
+   - Receives input from Register A and Register B.
+
+4. **Register B**:
+   - Below Register A.
+   - Connected to the bus with an arrow pointing towards it.
+   - Outputs to the ALU.
+
+5. **Output Register and Display**:
+   - Positioned at the bottom right.
+   - Connected to the bus with an arrow pointing towards it.
+
+### Central Component:
+
+- **BUS**:
+  - A vertical arrow labeled "BUS" in the center.
+  - Connects all components, facilitating data transfer between them.
+
+The diagram illustrates the flow of data and control signals within a basic computer system, showing how different components interact through the central bus.
+
+=== alu_digital_symbol.png ===
+The image depicts a stylized diagram of a digital logic component, likely an arithmetic logic unit (ALU). The shape is a yellow, vertically oriented, irregular hexagon with a bold black outline. The hexagon is split into two sections by a diagonal line, giving it a distinctive arrow-like shape pointing to the right.
+
+**Inputs and Outputs:**
+
+- **Inputs (on the left side, marked with blue dots):**
+  - **A**: Positioned at the top left.
+  - **Op**: Below A.
+  - **B**: Below Op.
+  - **Ci**: Positioned at the bottom left.
+
+- **Outputs (on the right side, marked with red dots):**
+  - **Y**: Positioned at the top right.
+  - **Zero**: Below Y.
+  - **Neg**: Below Zero.
+  - **Carry**: Positioned at the bottom right.
+
+**Labels:**
+
+- The labels are written in gray text inside the yellow area, corresponding to the inputs and outputs.
+
+This diagram is likely used to represent the functionality of an ALU, showing how inputs are processed to produce outputs like result (Y), zero flag, negative flag, and carry flag.
+
+=== esap_alu.png ===
+The image is a schematic diagram of an Arithmetic Logic Unit (ALU) circuit. Here's a detailed description:
+
+1. **Layout and Components**:
+   - The diagram is enclosed in a dashed rectangular box labeled "ALU" at the top.
+   - There are several interconnected components, including registers, logic gates, and switches.
+
+2. **Top Section**:
+   - A green button labeled "Test" with a smaller label "alu_test" is present on the left.
+   - Below the button, there is a set of eight horizontal switches labeled from 0 to 7, each with a binary digit (0 or 1) next to them.
+
+3. **Registers**:
+   - Two registers labeled "A" and "B" are present in the middle section. Each register has inputs labeled "D" and "C" and an output with an inverter symbol (triangle with a circle).
+
+4. **Logic Gates**:
+   - An AND gate is present below the registers, receiving inputs from multiple lines and producing an output that connects to an adder.
+
+5. **Adder**:
+   - An adder component is labeled "Add" with inputs "a", "b", and "c" and an output with an inverter symbol.
+
+6. **Connections**:
+   - Blue lines represent the connections between components, forming a network of inputs and outputs.
+   - The connections link the switches, registers, logic gates, and adder, indicating the flow of data.
+
+7. **Bottom Section**:
+   - A set of eight horizontal outputs labeled from 0 to 7 is present, similar to the top section.
+   - Below these outputs, there are five circular connectors labeled "A1", "A0", "B1", "B0", "ALU0", and "Sub".
+
+8. **Additional Elements**:
+   - A square labeled "C" with a line extending from it is present on the left side, possibly representing a clock or control signal.
+
+This diagram represents a simplified ALU circuit, showing how data flows through registers, logic gates, and an adder to perform arithmetic and logic operations.
+
+=== esap_alu_output_difference_to_a.png ===
+The image is a digital circuit diagram featuring various components connected by wires. Here's a detailed description:
+
+1. **Registers**:
+   - Two registers labeled "A" and "B" are present, each with inputs labeled D, C, and Q, and an enable input (en).
+   - These registers are connected by blue wires, indicating data paths.
+
+2. **Logic Gates**:
+   - An AND gate is present, receiving inputs from a set of switches and providing output to the adder.
+
+3. **Adder**:
+   - A component labeled "Add" with inputs a, b, and c, and outputs S and Co (carry out).
+
+4. **Switches and Indicators**:
+   - Two rows of switches are present at the top and bottom left, labeled 0 to 7, with corresponding circular indicators.
+   - A set of labeled indicators at the bottom right: Ai, A0, Bi, B0, ALU0, U0, and sub.
+
+5. **Connections**:
+   - Green and blue lines represent the wiring, with green likely indicating control signals and blue for data paths.
+   - Lines connect the registers, adder, and logic gate to the switches and indicators.
+
+6. **Clock Signal**:
+   - A clock signal is present, labeled "C," indicating synchronization for the registers.
+
+This diagram likely represents a simple arithmetic logic unit (ALU) or a similar digital processing unit, showcasing basic operations like addition and logic operations.
+

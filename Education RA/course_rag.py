@@ -14,11 +14,11 @@ from preprocessing import process_exam_file
 logging.basicConfig(level=logging.DEBUG)
 
 # Path to documents
-KNOWLEDGE_DIR = Path(r"AI_Course/Lecture_Notes").resolve()
+KNOWLEDGE_DIR = Path(r"Artificial_Intelligence/Lecture_Notes").resolve()
 # Path to exams
-EXAM_DIR = Path(r"AI_Course/Exams").resolve()
+EXAM_DIR = Path(r"Artificial_Intelligence/Exams").resolve()
 # Output directory
-OUTPUT_DIR = Path("AI_Course/Exams/generated_rag_answers").resolve()
+OUTPUT_DIR = Path("Artificial_Intelligence/Exams/generated_rag_answers").resolve()
 
 # Define the working directory for LightRAG
 WORKING_DIR = "./lightrag"

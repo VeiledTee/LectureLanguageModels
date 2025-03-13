@@ -1,0 +1,102 @@
+=== subtraction.png ===
+The image is a schematic diagram of a digital circuit designed for subtraction. Here's a detailed description:
+
+1. **Title and Labels:**
+   - The top of the diagram is labeled "Subtraction."
+   - There is a smaller label "subtraction_test" next to a green button labeled "Test."
+
+2. **Inputs:**
+   - There are two sets of 8-bit inputs labeled `a` and `b`.
+   - The inputs `a` are labeled from `a0` to `a7`.
+   - The inputs `b` are labeled from `b0` to `b7`.
+   - Each input is represented by a vertical stack of circles, numbered 0 to 7.
+
+3. **Subtraction Control:**
+   - There is a single input labeled "sub" connected to a circle.
+
+4. **Logic Gates and Components:**
+   - An XOR gate is present, with one input connected to the "sub" control and the other to the `b` inputs.
+   - The output of the XOR gate is connected to an "Add" block.
+
+5. **Adder Block:**
+   - The "Add" block has three inputs labeled `a`, `b`, and `C_in`.
+   - The output is labeled `S` and `C_out`.
+
+6. **Outputs:**
+   - The outputs are labeled from `O0` to `O7`.
+   - Each output is represented by a vertical stack of circles, numbered 0 to 7.
+
+7. **Connections:**
+   - Blue lines represent the connections between inputs, the XOR gate, the adder block, and the outputs.
+   - The `a` inputs are directly connected to the adder block.
+   - The `b` inputs pass through the XOR gate before reaching the adder block.
+
+8. **Visual Style:**
+   - The diagram uses a combination of black, blue, and red lines.
+   - The circles representing inputs and outputs are outlined in black with a white fill.
+   - The "Test" button is green with black text.
+
+This schematic likely represents a simple digital circuit for performing binary subtraction using an adder and XOR gates to handle two's complement arithmetic.
+
+=== twos_complement_negation.png ===
+The image is a schematic diagram illustrating a two's complement negation circuit. Here's a detailed description:
+
+1. **Title**: The top of the diagram is labeled "Two's Complement Negation."
+
+2. **Test Button**: On the upper left, there is a green rectangle labeled "Test" within a section titled "negation test."
+
+3. **Inputs**: 
+   - On the left side, there are eight labeled input lines (`i_0` to `i_7`), each connected to a vertical bus.
+   - These inputs are connected to a NOT gate, which inverts the signals.
+
+4. **NOT Gate**: 
+   - The NOT gate is represented by a triangle with a circle at its tip, indicating inversion.
+   - The output of the NOT gate is connected to an adder.
+
+5. **Adder**:
+   - The adder is depicted as a rectangular block with inputs labeled `a`, `b`, and `C_i` (carry in), and outputs labeled `S` (sum) and `C_o` (carry out).
+   - The inverted signals from the NOT gate are fed into the `b` input of the adder.
+   - The `C_i` input is connected to a constant high signal (logic 1), indicating the addition of 1 for two's complement negation.
+
+6. **Outputs**:
+   - On the right side, there are eight labeled output lines (`O_0` to `O_7`), each connected to a vertical bus.
+   - These outputs represent the result of the two's complement negation.
+
+7. **Connections**:
+   - Blue lines indicate the connections between components, with red dots showing junctions.
+   - The diagram uses a consistent color scheme for clarity.
+
+8. **Layout**:
+   - The components are neatly arranged within a dashed border, indicating the boundary of the circuit diagram.
+
+This schematic is a typical representation of a two's complement negation circuit, used to invert and add one to a binary number, effectively calculating its negative value in binary arithmetic.
+
+=== finger_counting_binary_19.png ===
+The image shows a hand against a black background making the "I Love You" sign in American Sign Language (ASL). The thumb, index finger, and pinky are extended, while the middle and ring fingers are folded down. The hand is positioned upright with the palm facing the viewer. The lighting highlights the contours of the hand, emphasizing the gesture. There is no ASCII art present in the image.
+
+=== 123_with_cash.png ===
+The image displays Canadian currency, including banknotes and coins. Here's a detailed description:
+
+1. **Banknotes:**
+   - **$100 Bill:**
+     - Color: Predominantly brown and beige.
+     - Features a portrait of a historical figure on the left side.
+     - The number "100" is prominently displayed.
+     - Contains a transparent security strip with holographic elements.
+     - The word "SPECIMEN" is printed in red across the note.
+
+   - **$10 Bills (Two Identical Notes):**
+     - Color: Predominantly purple.
+     - Features a portrait of a historical figure on the left side.
+     - The number "10" is prominently displayed.
+     - Contains a transparent security strip with holographic elements.
+     - The word "SPECIMEN" is printed in red across each note.
+
+2. **Coins:**
+   - Three identical coins are shown.
+   - Color: Gold.
+   - Each coin features an image of a ship on the water.
+   - The year "2005" is inscribed at the bottom of each coin.
+
+The layout is organized with the $100 bill on the left, the two $10 bills in the center, and the three coins aligned vertically on the right. The background is plain, emphasizing the currency items.
+
