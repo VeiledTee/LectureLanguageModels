@@ -297,10 +297,10 @@ def evaluate_answers(
 
 if __name__ == "__main__":
     ANSWER_DIR = Path(
-        os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers")
+        os.getenv("ANSWER_DIR")
     )
-    EXAM_DIR = Path(os.getenv("EXAM_DIR", "Artificial_Intelligence/Exams"))
-    RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR", "Artificial_Intelligence/Rubrics"))
+    EXAM_DIR = Path(os.getenv("EXAM_DIR"))
+    RUBRIC_DIR = Path(os.getenv("RUBRIC_DIR"))
 
     # Get all answer files
     answer_files = sorted(list(ANSWER_DIR.glob("*_answers.txt")), reverse=True)
@@ -357,8 +357,15 @@ if __name__ == "__main__":
             exam_name = filename_parts[0]
             model_name = "_".join(filename_parts[1:-1])
 
-            gold_path = EXAM_DIR / f"{exam_name}_soln_parsed.txt"
+            # find rubric file
             rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
+
+            # Find gold file using glob pattern
+            gold_pattern = f"{exam_name}*_parsed.txt"
+            gold_files = list(EXAM_DIR.glob(gold_pattern))
+
+            if len(gold_files) == 1:
+                gold_path = gold_files[0]
 
             if not gold_path.exists():
                 print(f"Gold file {gold_path} not found, skipping")
