@@ -1,3 +1,4 @@
+import platform
 import logging
 import os
 import httpx
@@ -15,6 +16,7 @@ import openai
 import requests
 from docling.document_converter import DocumentConverter
 from dotenv import load_dotenv
+from pdf2image import convert_from_path
 from pydantic import BaseModel
 from io import BytesIO
 import base64
@@ -98,6 +100,130 @@ class Config:
 
 
 config: Config = Config()
+
+
+def process_exam_file(file_path: Path) -> list[str]:
+    """Process an answerless exam file into individual questions."""
+    with open(file_path, "r", encoding="utf-8") as f:
+        input_text = f.read()
+        questions: list[str] = parse_quiz(str(input_text))
+    print(f"Processed {len(questions)} questions from {file_path.name}")
+    return questions
+
+
+def parse_quiz(md_text: str) -> list[str]:
+    """
+    Parse markdown text representing a quiz with hierarchical sections.
+
+    Headers (lines starting with '#' characters) signify sections, subsections, and questions.
+    Lines between headers are considered content for the preceding header.
+    The hierarchy is built dynamically based on header levels. If a header of a lower level is found,
+    the current stack is popped until the header level matches. The function returns a list of
+    concatenated paths (using ' > ') from the root to each leaf node.
+
+    Args:
+        md_text (str): The markdown text to parse.
+
+    Returns:
+        list[str]: A list of full question paths in the form "Section > Subsection > ... > Question".
+    """
+    lines: list[str] = md_text.splitlines()
+    root: list[dict[str, Any]] = []
+    stack: list[dict[str, Any]] = []
+
+    for line in lines:
+        line = line.rstrip()
+        if not line.strip():
+            continue
+        if line.startswith("#"):
+            # Determine header level and text.
+            level = 0
+            while level < len(line) and line[level] == "#":
+                level += 1
+            header = line[level:].strip()
+            node: dict[str, Any] = {
+                "level": level,
+                "header": header,
+                "content": "",
+                "children": [],
+            }
+            # Pop until the top of the stack is of a lower level.
+            while stack and stack[-1]["level"] >= level:
+                stack.pop()
+            if stack:
+                stack[-1]["children"].append(node)
+            else:
+                root.append(node)
+            stack.append(node)
+        else:
+            # Append non-header content to the current header.
+            if stack:
+                current = stack[-1]
+                current["content"] = (
+                    (current["content"] + " " + line.strip()).strip()
+                    if current["content"]
+                    else line.strip()
+                )
+
+    questions: list[str] = []
+
+    def traverse(path: list[str], node: dict[str, Any]) -> None:
+        text = node["header"]
+        if node["content"]:
+            text += " " + node["content"]
+        new_path = path + [text]
+        if not node["children"]:
+            questions.append(" > ".join(new_path))
+        else:
+            for child in node["children"]:
+                traverse(new_path, child)
+
+    for node in root:
+        traverse([], node)
+
+    return questions
+
+
+def rename_split_files(source_dir, delimiter='_'):
+    """
+    Rename files by splitting filenames on a specified delimiter and keeping the part after the first occurrence.
+
+    Args:
+        source_dir (str): Path to directory containing files to rename
+        delimiter (str): Character/string to split filenames on (default '_')
+
+    Returns:
+        tuple: (success_count, skipped_count, conflict_count)
+    """
+    success = 0
+    skipped = 0
+    conflict = 0
+
+    for filename in os.listdir(source_dir):
+        old_path = os.path.join(source_dir, filename)
+
+        if not os.path.isfile(old_path):
+            continue
+
+        # Split on first occurrence of delimiter
+        parts = filename.split(delimiter, 1)
+
+        if len(parts) == 2:
+            new_name = parts[1]
+            new_path = os.path.join(source_dir, new_name)
+
+            if os.path.exists(new_path):
+                print(f"Conflict: '{new_name}' already exists. Skipping '{filename}'.")
+                conflict += 1
+            else:
+                os.rename(old_path, new_path)
+                print(f"Renamed: '{filename}' -> '{new_name}'")
+                success += 1
+        else:
+            print(f"Skipped: '{filename}' (no '{delimiter}' delimiter found)")
+            skipped += 1
+
+    return success, skipped, conflict
 
 
 async def download_github_directory():
@@ -539,6 +665,97 @@ async def convert_markdown_to_json(markdown_path: Path, output_type: str) -> Non
         logger.error(f"JSON conversion failed for {markdown_path}: {str(e)}")
 
 
+async def convert_note_to_images(pdf_path: Path, file_type: str) -> int:
+    if file_type == "lecture":
+        output_dir = config.directories["lecture_image_output"] / pdf_path.stem
+    else:
+        output_dir = config.directories["exam_image_output"] / pdf_path.stem
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    existing_pages: set[str] = {f.name for f in output_dir.glob("page_*.*")}
+    processed: int = 0
+
+    try:
+        # Auto-detect OS and set poppler path
+        system = platform.system().lower()
+        poppler_config = {
+            "windows": r"C:\poppler\Library\bin",
+            "linux": "/usr/bin",
+            "darwin": "/opt/homebrew/bin"  # macOS (Homebrew)
+        }
+
+        poppler_path = poppler_config.get(system)
+        if poppler_path and not Path(poppler_path).exists():
+            logger.warning(f"Poppler path {poppler_path} not found, using system PATH")
+            poppler_path = None
+
+        images: list[Any] = convert_from_path(
+            str(pdf_path),
+            dpi=200,
+            thread_count=4,
+            fmt=config.image_format.lower(),
+            poppler_path=poppler_path
+        )
+
+        for i, image in enumerate(images, 1):
+            page_name: str = f"page_{i:03d}.{config.image_format.lower()}"
+            if page_name not in existing_pages:
+                image.save(
+                    output_dir / page_name,
+                    config.image_format,
+                    quality=config.image_quality,
+                )
+                processed += 1
+                logger.info(f"Converted page {i} of {pdf_path.name}")
+
+        return processed
+
+    except Exception as e:
+        logger.error(f"Error processing {pdf_path}: {str(e)}")
+        return 0
+
+
+async def process_image_directory() -> None:
+    input_path = config.directories["lecture_image_output"]
+    output_path = config.directories["lecture_image_output"]
+
+    logger.info(f"Processing lecture images from {input_path} to {output_path}")
+
+    # Process all subdirectories
+    for subdir in sorted(input_path.iterdir()):
+        if not subdir.is_dir():
+            continue
+
+        # Directly use directory name for output file
+        md_filename = f"{subdir.name}.md"
+        md_path = output_path / md_filename
+
+        # Process all images in subdirectory
+        combined_content = [f"# {subdir.name}\n\n"]
+        image_paths = sorted(subdir.glob("page_*.png"))
+
+        for img_path in image_paths:
+            try:
+                text = await extract_text_from_image(img_path)
+                combined_content.append(
+                    f"## {img_path.stem.replace('page_', '').lstrip('0')}\n\n"
+                    f"{text}\n\n"
+                    f"![Source Image]({img_path.relative_to(input_path)})\n"
+                    "---\n"
+                )
+                logger.info(f"Processed {img_path.name}")
+            except Exception as e:
+                logger.error(f"Failed to process {img_path}: {str(e)}")
+
+        # Write consolidated file
+        async with aiofiles.open(md_path, "w", encoding="utf-8") as f:
+            await f.write("\n".join(combined_content))
+        logger.info(f"Created lecture file: {md_path}")
+
+        # Convert to JSON
+        # await convert_markdown_to_json(md_path, "lectures")
+
+
 async def process_notes() -> None:
     pdf_files: list[tuple[Path, str]] = []
     if config.process_lectures:
@@ -552,18 +769,22 @@ async def process_notes() -> None:
         pdf_files += [(path, "exam") for path in exam_files]
         logger.debug(f"Found {len(exam_files)} exam PDFs")
     logger.info(f"Total PDFs to process: {len(pdf_files)}")
-    return None
-    # async with anyio.create_task_group() as tg:
-    #     for pdf_file, file_type in pdf_files:
-    #         tg.start_soon(convert_note_to_images, pdf_file, file_type)
+    async with anyio.create_task_group() as tg:
+        for pdf_file, file_type in pdf_files:
+            tg.start_soon(convert_note_to_images, pdf_file, file_type)
 
 
 async def main() -> None:
-    # Existing processing
     await download_github_directory()
-    # await process_github_content()
-    # await process_notes()
+    await process_github_content()
+    await process_notes()
+    await process_image_directory()
 
 
 if __name__ == "__main__":
     anyio.run(main)
+
+    # # Renaming PDFs
+    # source_directory = ""  # Path to dir with PDFs to be renamed
+    # results = rename_underscore_files(source_directory)
+    # print(f"\nResults: {results[0]} renamed, {results[1]} skipped, {results[2]} conflicts")
