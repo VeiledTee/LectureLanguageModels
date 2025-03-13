@@ -1,0 +1,511 @@
+=== two_bit_decoder.png ===
+The image is a diagram of a two-bit decoder circuit. Here is a detailed description:
+
+1. **Title and Labeling:**
+   - The top of the diagram is labeled "Two Bit Decoder."
+   - Below it, there's a label "2 bit decoder" with a subscript "test."
+
+2. **Test Button:**
+   - A green rectangular button labeled "Test" is present, likely indicating a simulation or testing feature.
+
+3. **Inputs:**
+   - Two inputs are labeled as \( \text{input}_a \) and \( \text{input}_b \).
+   - These inputs are represented as circles on the left side of the diagram.
+
+4. **Logic Gates:**
+   - The circuit consists of four AND gates arranged vertically.
+   - Each AND gate has two inputs and one output.
+   - The inputs to the AND gates are connected to \( \text{input}_a \) and \( \text{input}_b \) through a series of lines.
+
+5. **Connections:**
+   - The lines connecting the inputs to the AND gates are blue.
+   - Some lines have small circles indicating NOT operations (inversion) before entering the AND gates.
+
+6. **Outputs:**
+   - There are four outputs labeled \( \text{output}_0 \), \( \text{output}_1 \), \( \text{output}_2 \), and \( \text{output}_3 \).
+   - Each output is connected to the output of an AND gate.
+
+7. **Logical Functionality:**
+   - The circuit is designed to decode a 2-bit binary input into one of four outputs.
+   - Each output corresponds to one of the possible combinations of the inputs \( \text{input}_a \) and \( \text{input}_b \).
+
+This diagram is a typical representation of a digital logic circuit used for decoding binary inputs into distinct outputs.
+
+=== two_bit_mux.png ===
+The image is a diagram of a two-bit multiplexer. Here's a detailed description:
+
+- **Title**: "Two Bit Multiplexer" is written at the top.
+- **Box**: The entire diagram is enclosed in a dashed rectangular box.
+- **Label**: On the left side, there's a label "2 bit mux_test" with a green button labeled "Test" below it.
+- **Inputs**:
+  - Two inputs are labeled `input_a` and `input_b` on the left side, each represented by a line with a circle at the end.
+- **Select Line**:
+  - A line labeled `select` runs vertically from the top, with a circle at the end.
+- **Logic Gates**:
+  - Two AND gates are horizontally aligned, each receiving two inputs.
+  - The top AND gate receives `input_a` and the inverted `select` signal (indicated by a small circle on the input line).
+  - The bottom AND gate receives `input_b` and the `select` signal.
+- **OR Gate**:
+  - The outputs of the two AND gates are fed into an OR gate.
+- **Output**:
+  - The output of the OR gate is labeled `output_2`, represented by a line with a circle at the end on the right side.
+
+The connections between the components are shown with blue lines, and the logic gates are depicted with standard symbols.
+
+=== combining_output_signals_bad.png ===
+The image is a schematic diagram of a digital logic circuit. It features two logic gates and a connection to an output. Here's a detailed description:
+
+1. **Logic Gates**:
+   - There are two identical logic gates depicted in the image. Each gate has two inputs and one output.
+   - The gates appear to be AND gates, as indicated by their shape (a D-like curve on the right side).
+
+2. **Inputs**:
+   - Each gate has two inputs on the left side, represented by horizontal blue lines entering the gates.
+   - The top gate has one input connected to a small circle, which could represent a NOT operation or a specific input condition.
+
+3. **Connections**:
+   - The outputs of both gates are connected to a single horizontal blue line.
+   - This line leads to a point where it joins with another line, forming a T-junction.
+
+4. **Output**:
+   - The combined line from the gates leads to a circle with a dot inside, representing the final output.
+   - The output is labeled as "output₂" to the right of the circle.
+
+5. **Color and Style**:
+   - The lines are primarily blue, with small red dots indicating connection points.
+   - The gates and output circle are outlined in black.
+
+This diagram likely represents a simple digital circuit where the output is determined by the logic operations of the two gates.
+
+=== or_with_and_and_not_gates.png ===
+The image is a diagram of a digital logic circuit titled "OR with AND and NOT Gates." It is enclosed in a dashed rectangular border. Here is a detailed description of the components and layout:
+
+1. **Title and Subtitle:**
+   - The main title at the top is "OR with AND and NOT Gates."
+   - Below the title, there is a subtitle "OR with AND_test" with a green rectangle labeled "Test."
+
+2. **Inputs:**
+   - There are two inputs labeled \( in_C \) and \( in_D \).
+   - Each input is represented by a square with a circle inside, indicating a logic input terminal.
+
+3. **Logic Gates:**
+   - Each input is connected to a NOT gate (inverter), represented by a triangle with a small circle at the output.
+   - The outputs of the NOT gates are connected to an AND gate, represented by a D-shaped symbol.
+   - The output of the AND gate is connected to another NOT gate.
+   - The final output is labeled \( out_b \), represented by a circle with a dot inside, indicating a logic output terminal.
+
+4. **Connections:**
+   - Blue lines represent the connections between the gates and inputs/outputs.
+   - Red dots indicate connection points.
+
+This diagram illustrates a logic circuit where the inputs \( in_C \) and \( in_D \) are first inverted, then fed into an AND gate, and the result is inverted again to produce the output \( out_b \).
+
+=== de_morgans_law_1.png ===
+The image features a Venn diagram on a blue background. There are two overlapping circles:
+
+1. **Circle A**: Located on the left, labeled "A" in black text.
+2. **Circle B**: Located on the right, labeled "B" in black text.
+
+The overlapping region between circles A and B is highlighted in yellow.
+
+Below the Venn diagram, there is a logical expression written in black text:
+
+\[
+\overline{A} \cup \overline{B} \equiv \overline{A \cap B}
+\]
+
+This expression represents De Morgan's Law, illustrating the relationship between union and intersection in set theory.
+
+=== decoder_symbol.png ===
+The image depicts a simple schematic of a digital decoder circuit. Here's a detailed description:
+
+1. **Decoder Block:**
+   - The main component is labeled "Decoder" and is enclosed within a dashed rectangle.
+   - The decoder is represented by a trapezoidal shape with a wide end on the right and a narrow end on the left.
+   - There are four output lines extending from the wide end, each terminating in a circle. These lines are labeled with binary numbers (0, 1).
+
+2. **Input Connections:**
+   - On the left side, there is a small rectangular block with two circular inputs.
+   - Two lines extend from these inputs, labeled with binary numbers (0, 1).
+   - These lines are connected to the narrow end of the decoder.
+
+3. **Wiring:**
+   - The wiring is depicted in blue, with connections marked by small red circles at junctions.
+   - The input lines are connected to the decoder, indicating the flow of signals.
+
+4. **Labels:**
+   - The decoder is clearly labeled above the trapezoidal shape.
+   - Binary labels (0, 1) are used to indicate the logic levels on the input and output lines.
+
+This schematic represents a basic digital decoder, which is used to decode binary input signals into a set of outputs.
+
+=== and_with_or_and_not_gates.png ===
+The image is a schematic diagram illustrating a logic circuit using OR and NOT gates to achieve an AND function. Below is a detailed description:
+
+1. **Title and Labels**:
+   - The top of the diagram has the title: "AND with OR and NOT Gates."
+   - Below the title, there is a label: "AND with OR_test" with a green box labeled "Test."
+
+2. **Inputs**:
+   - Two inputs are labeled \( in_a \) and \( in_b \).
+   - Each input is connected to a NOT gate (inverter), represented by a triangle with a small circle at the tip.
+
+3. **Logic Gates**:
+   - The outputs of the two NOT gates are connected to an OR gate. The OR gate is depicted as a curved shape with two inputs converging into one output.
+   - The output of the OR gate is connected to another NOT gate.
+
+4. **Output**:
+   - The final output from the second NOT gate is labeled \( out_a \).
+   - The output is depicted with a circle at the end, indicating an inversion.
+
+5. **Connections**:
+   - All connections between gates and inputs/outputs are shown with blue lines.
+   - Red dots indicate connection points on the lines.
+
+6. **Visual Style**:
+   - The diagram is enclosed in a dashed-line rectangle.
+   - The logic gates and connections are drawn in a bold style for clarity.
+
+This schematic demonstrates how NOT and OR gates can be combined to perform the function of an AND gate.
+
+=== pla_example_1.png ===
+The image is a diagram of a Programmable Logic Array (PLA) example. Here's a detailed description:
+
+1. **Title and Labels**:
+   - The top left corner has the title "PLA Example 1".
+   - Below the title, there's a label "pla example 1" with a superscript "test".
+
+2. **Button**:
+   - A green rectangular button labeled "Test" is located near the top left.
+
+3. **Inputs**:
+   - Two inputs are labeled as `input₀` and `input₁`.
+   - Each input is represented by a circle with a line extending to the right.
+
+4. **Logic Gates**:
+   - Four AND gates are arranged vertically. Each has two inputs and one output.
+   - The inputs to the AND gates are connected to `input₀` and `input₁` through blue lines.
+   - The outputs of the AND gates are connected to three OR gates.
+
+5. **Connections**:
+   - Blue lines represent the connections between inputs, AND gates, and OR gates.
+   - The lines are neatly organized, with intersections marked by dots.
+
+6. **Outputs**:
+   - Three outputs are labeled as `output₀`, `output₁`, and `output₂`.
+   - Each output is represented by a circle with a line extending to the left from the OR gates.
+
+7. **Gate Arrangement**:
+   - The AND gates feed into the OR gates, which in turn produce the outputs.
+   - The arrangement suggests a typical PLA structure where multiple inputs are combined through AND gates and then summed through OR gates to produce outputs.
+
+8. **Color Scheme**:
+   - The diagram uses blue lines for connections and black outlines for the gates.
+   - The "Test" button is highlighted in green.
+
+This diagram illustrates a basic example of a PLA circuit, showing how inputs are processed through logic gates to produce specific outputs.
+
+=== pla_symbol.png ===
+The image is a diagram of a digital circuit involving a Look-Up Table (LUT). Here's a detailed description:
+
+- On the left side, there are three horizontal lines entering a rectangular block labeled "LUT." These lines are inputs, numbered 0, 1, and 2 from top to bottom. Each line has a small red dot indicating a connection point.
+
+- The LUT block has one output line labeled "out," which exits the block on the right side. This line is also marked with a red dot at the connection point.
+
+- The output line splits into two paths. One path continues straight to the right, labeled "0-3," and connects to a vertical line with four horizontal lines branching off it. These horizontal lines are numbered 0 to 3 from bottom to top, each with a red dot at the connection point.
+
+- The second path from the output line branches downward and connects to the vertical line mentioned above, labeled "0."
+
+- The lines and connections are primarily blue, with black outlines for the blocks and lines. The red dots indicate connection points.
+
+- The overall layout is a simple representation of a logic circuit using a LUT to process inputs and produce outputs.
+
+=== four_bit_mux.png ===
+The image is a schematic diagram of a four-bit multiplexer. Here's a detailed description:
+
+1. **Title**: "Four Bit Multiplexer" is written at the top.
+
+2. **Components**:
+   - **Inputs**: There are four inputs labeled as `input_w`, `input_x`, `input_y`, and `input_z` on the left side.
+   - **Select Lines**: Two select lines are labeled `select_b` and `select_a` at the top.
+   - **Output**: There is one output labeled `output_4` on the right side.
+
+3. **Logic Gates**:
+   - The diagram includes several logic gates, primarily AND and OR gates.
+   - Each input is connected to an AND gate.
+   - The outputs of the AND gates are connected to an OR gate, which leads to the final output.
+
+4. **Connections**:
+   - The select lines are connected to the AND gates to control which input is passed to the output.
+   - The connections are depicted with blue lines, indicating the flow of signals through the circuit.
+
+5. **Test Box**:
+   - There is a green box labeled "Test" on the left side, indicating a testing component or feature.
+
+6. **Layout**:
+   - The diagram is organized with inputs on the left, logic gates in the center, and the output on the right.
+   - The select lines are positioned at the top, controlling the logic gates.
+
+The diagram is enclosed within a dashed border, indicating the boundary of the schematic.
+
+=== and_gate_for_01010010.png ===
+The image depicts a logic gate diagram, specifically an OR gate. Here's a detailed description:
+
+- **Structure**: The diagram features a classic OR gate shape, which resembles a curved shape on the right side with a pointed end.
+- **Inputs**: There are five horizontal blue lines entering the gate from the left side. Each line has a small circle at the point where it meets the vertical black line, indicating inputs.
+- **Output**: A single horizontal blue line exits the gate from the right side. There is a small red circle where the line exits the gate, indicating the output.
+- **Colors**: The input and output lines are blue, the circles at the inputs are black, and the output circle is red. The main body of the gate is outlined in black.
+
+This diagram represents a 5-input OR gate, where the output is true if at least one of the inputs is true.
+
+=== mux_symbol.png ===
+The image illustrates a schematic of a multiplexer circuit. Here's a detailed description:
+
+1. **Multiplexer Block**: 
+   - The central element is a multiplexer, depicted as a trapezoidal shape with a dashed outline labeled "Multiplexer."
+   - It has four horizontal input lines on the left and one output line on the right.
+
+2. **Inputs**:
+   - There are four input lines entering the multiplexer from the left. Each line is represented by a horizontal blue line with a red dot at the connection point to the multiplexer.
+   - These inputs are vertically aligned.
+
+3. **Output**:
+   - A single blue line exits the multiplexer on the right, representing the output. It terminates in a circular end.
+
+4. **Control Lines**:
+   - Below the multiplexer, there is a set of control lines. Two horizontal lines are connected to a vertical line that enters the bottom of the multiplexer.
+   - The control lines are labeled "0" and "1" on the left side, indicating binary control inputs.
+
+5. **Connections**:
+   - All lines are depicted in blue with red dots at connection points, indicating active connections.
+
+6. **Labels**:
+   - The entire multiplexer block is labeled with the word "Multiplexer" above it.
+
+This schematic represents a basic digital multiplexer, which selects one of several input signals and forwards the selected input to a single output line based on the control inputs.
+
+=== and_gate_for_01.png ===
+The image is a diagram of a logic gate, specifically a NOR gate. Here's a detailed description:
+
+- **Shape**: The gate has a distinctive shape with a curved back and a pointed front, typical of OR and NOR gates.
+- **Inputs**: There are two horizontal blue lines on the left side, representing the inputs to the gate. Each line connects to the curved side of the gate.
+- **Output**: A single horizontal blue line extends from the pointed side of the gate on the right, representing the output.
+- **Circle**: There is a small circle at the output end of the gate, indicating the NOT operation, which is characteristic of a NOR gate.
+- **Colors**: The lines are blue, and the small circle at the output is red.
+
+This diagram represents a NOR gate, which outputs true only when both inputs are false.
+
+=== and_gate_for_00.png ===
+The image depicts a digital logic gate symbol, specifically a NOR gate. Here's a detailed description:
+
+1. **Shape**: 
+   - The NOR gate is represented by a curved shape resembling a shield or a rounded triangle with a pointed end on the right side.
+
+2. **Inputs**:
+   - There are two horizontal lines entering the gate from the left side, representing the two inputs. Each line has a small circle at the point where it meets the gate, indicating inversion (typical for NOR gates).
+
+3. **Output**:
+   - A single horizontal line exits the gate from the right side, representing the output. This line also has a small circle where it connects to the gate, indicating the NOT operation inherent in a NOR gate.
+
+4. **Colors**:
+   - The input and output lines are blue, while the small circles at the input and output are red.
+
+This symbol is commonly used in digital electronics to represent a NOR gate, which outputs true only when all inputs are false.
+
+=== merge-4-split-4.png ===
+The image is a schematic diagram representing a network or circuit connection. Here's a detailed description:
+
+- **Structure**: The diagram consists of two main vertical sections on the left and right, connected by horizontal lines.
+  
+- **Left Section**:
+  - Contains four vertically stacked green circles within a rectangular outline.
+  - Each circle is connected to the right section by a green line.
+  - The circles are labeled from top to bottom with numbers 3, 2, 1, and 0 in gray.
+
+- **Right Section**:
+  - Contains four green circles arranged vertically, each within its own circular outline.
+  - Each circle is connected to the left section by a green line.
+  - The circles are labeled from top to bottom with numbers 3, 2, 1, and 0 in gray.
+
+- **Connections**:
+  - The green lines connecting the circles are intersected by small red and blue dots.
+  - The horizontal connections between the two sections have labels "0-3" and "3-0" in gray, indicating possible paths or connections.
+
+- **Colors**:
+  - Green circles and lines represent the main connections.
+  - Red and blue dots indicate intersections or nodes along the connections.
+  - Black outlines frame the sections and circles.
+
+This diagram likely represents a network or circuit with specific pathways and nodes, possibly for educational or technical documentation purposes.
+
+=== mux_demux_symbols.png ===
+The image illustrates a digital circuit diagram featuring a multiplexer and a demultiplexer connected by a single line. Here's a detailed description:
+
+### Multiplexer Section
+- **Inputs:** Four lines on the left, each with a green circle indicating input points.
+- **Control Line:** A blue line labeled "0" connects to the multiplexer, indicating the control signal.
+- **Output:** A single green line exits the multiplexer, representing the combined output.
+
+### Demultiplexer Section
+- **Input:** The single green line from the multiplexer enters the demultiplexer.
+- **Control Line:** A blue line labeled "0" connects to the demultiplexer, indicating the control signal.
+- **Outputs:** Four lines on the right, each with a green circle indicating output points.
+
+### Additional Components
+- **Control Inputs:** Below both the multiplexer and demultiplexer, there are small components with two inputs each, labeled "0" and "1" in black text, connected by green and blue lines.
+
+### Labels
+- The multiplexer is labeled "Multiplexer" and the demultiplexer is labeled "Demultiplexer," both enclosed in dashed boxes.
+
+### Colors
+- **Green:** Represents data lines.
+- **Blue:** Represents control lines.
+- **Red:** Indicates connection points within the multiplexer and demultiplexer.
+
+The diagram visually represents how a multiplexer selects one of several input signals and forwards it to a single line, which is then distributed by the demultiplexer to one of several outputs based on control signals.
+
+=== venn_diagram_and_or_not.png ===
+The image consists of three Venn diagrams, each representing different logical operations, with corresponding labels below each diagram.
+
+1. **First Diagram (Left):**
+   - Two overlapping circles labeled "x" and "y."
+   - The overlapping region is shaded red, representing the logical conjunction (AND) operation.
+   - Below the diagram, the expression "x ∧ y" is written.
+
+2. **Second Diagram (Middle):**
+   - Two overlapping circles labeled "x" and "y."
+   - Both circles, including the overlapping region, are shaded red, representing the logical disjunction (OR) operation.
+   - Below the diagram, the expression "x ∨ y" is written.
+
+3. **Third Diagram (Right):**
+   - Two overlapping circles labeled "x" and "y."
+   - The area outside both circles is shaded red, representing the logical negation (NOT) operation of "x."
+   - Below the diagram, the expression "¬x" is written.
+
+Each diagram is enclosed in a rectangular border. The shading highlights the areas corresponding to the logical operations depicted.
+
+=== pla_example_2.png ===
+The image is a schematic diagram of a Programmable Logic Array (PLA) labeled "PLA Example 2." It illustrates the connections and logic gates used to process inputs and generate outputs.
+
+### Components:
+
+1. **Inputs:**
+   - Three inputs are labeled as `input_a`, `input_b`, and `input_c`. Each input line is connected to a series of logic gates.
+
+2. **Logic Gates:**
+   - The diagram features multiple AND gates on the left side. Each AND gate has three inputs, corresponding to the three input lines.
+   - The outputs of the AND gates are connected to OR gates on the right side.
+
+3. **Connections:**
+   - The input lines are connected to the AND gates through horizontal lines.
+   - Vertical lines connect the outputs of the AND gates to the inputs of the OR gates.
+
+4. **Outputs:**
+   - Four outputs are labeled as `output_a`, `output_b`, `output_c`, and `output_d`. Each output is connected to the output of an OR gate.
+
+5. **Test Button:**
+   - There is a green button labeled "Test" on the upper left, indicating a testing function for the PLA.
+
+### Visual Layout:
+
+- The inputs are on the left, feeding into the AND gates.
+- The AND gates are arranged vertically, with their outputs leading to the OR gates.
+- The OR gates are aligned vertically on the right, each producing one of the four outputs.
+- The entire layout is neatly organized, with blue lines indicating connections between components.
+
+This diagram is a typical representation of a PLA, showing how inputs are processed through a series of logic gates to produce specific outputs.
+
+=== de_morgans_law_2.png ===
+The image is a Venn diagram set against a blue background. It features two overlapping circles:
+
+1. **Left Circle (A)**: Labeled "A" and filled with a light yellow color.
+2. **Right Circle (B)**: Labeled "B" and also filled with a light yellow color.
+
+The overlapping region of the two circles is shaded in a darker yellow, indicating the intersection of sets A and B.
+
+Below the Venn diagram, there is a logical expression:
+
+- \(\overline{A} \cap \overline{B} \equiv \overline{A \cup B}\)
+
+This expression represents a logical equivalence involving the complement and union of sets A and B.
+
+The overall design is simple and uses contrasting colors to clearly differentiate between the sets and their intersection.
+
+=== venn_diagram_nand_not_xor.png ===
+The image consists of three panels, each depicting a Venn diagram with two overlapping circles labeled "x" and "y." The background of each panel is red, and the diagrams illustrate different logical operations.
+
+1. **First Panel (Left):**
+   - Two circles labeled "x" and "y" overlap.
+   - The area outside both circles is shaded red.
+   - This represents the logical operation ¬(x ∨ y), meaning "not (x or y)."
+
+2. **Second Panel (Middle):**
+   - Two circles labeled "x" and "y" overlap.
+   - Only the overlapping area (intersection) is shaded black.
+   - This represents the logical operation ¬(x ∧ y), meaning "not (x and y)."
+
+3. **Third Panel (Right):**
+   - Two circles labeled "x" and "y" overlap.
+   - The non-overlapping parts of both circles are shaded red.
+   - This represents the logical operation x ⊕ y, meaning "x exclusive or y."
+
+Each panel visually represents a different logical expression using the Venn diagram format.
+
+=== single_bit_decoder.png ===
+The image is a diagram of a "Single Bit Decoder." It is enclosed within a dashed border. Here's a detailed description:
+
+- **Title**: "Single Bit Decoder" is written at the top.
+- **Subtitle**: "1 bit decoder" with a subscript "test" is written below the title.
+- **Test Button**: A green rectangular button labeled "Test" is located under the subtitle.
+- **Input**: 
+  - Labeled as "input" on the left side.
+  - Represented by a circle with a square around it.
+  - A line extends from the input circle to the right.
+- **Logic Gate**:
+  - An inverter (NOT gate) is placed on the line extending from the input.
+  - The inverter is represented by a triangle with a small circle at the tip.
+- **Outputs**:
+  - Two outputs are labeled "output_a" and "output_b".
+  - "output_a" is connected to the line after the inverter.
+  - "output_b" is connected to the line before the inverter.
+  - Both outputs are represented by circles with double outlines.
+
+- **Connections**:
+  - The line from the input splits into two paths: one going through the inverter to "output_a" and another bypassing the inverter directly to "output_b".
+  - The lines are colored blue.
+
+The diagram effectively shows how a single bit input is decoded into two outputs using a NOT gate.
+
+=== signals_as_bits.png ===
+The image depicts a series of four quantum circuit diagrams, each labeled with numbers 0, 1, 2, and 3. Each diagram consists of two vertical lines connecting three circles. Here's a detailed description:
+
+1. **Diagram 0**:
+   - Two vertical lines are shown.
+   - Both lines are dark green.
+   - At the top of each line is a dark green circle inside a black square.
+   - The bottom of each line connects to a dark green circle with a black outline.
+
+2. **Diagram 1**:
+   - Two vertical lines are shown.
+   - The left line is dark green, and the right line is light green.
+   - The top of the left line has a dark green circle inside a black square.
+   - The top of the right line has a light green circle inside a black square.
+   - The bottom of the left line connects to a dark green circle with a black outline.
+   - The bottom of the right line connects to a light green circle with a black outline.
+
+3. **Diagram 2**:
+   - Two vertical lines are shown.
+   - The left line is light green, and the right line is dark green.
+   - The top of the left line has a light green circle inside a black square.
+   - The top of the right line has a dark green circle inside a black square.
+   - The bottom of the left line connects to a light green circle with a black outline.
+   - The bottom of the right line connects to a dark green circle with a black outline.
+
+4. **Diagram 3**:
+   - Two vertical lines are shown.
+   - Both lines are light green.
+   - At the top of each line is a light green circle inside a black square.
+   - The bottom of each line connects to a light green circle with a black outline.
+
+Each vertical line has a small red dot near the top and a small blue dot near the bottom, indicating connection points. The diagrams represent different states or configurations in a quantum circuit.
+

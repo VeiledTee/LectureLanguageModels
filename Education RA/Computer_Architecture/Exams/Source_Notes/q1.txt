@@ -1,0 +1,58 @@
+# Computer Architecture Quiz
+## 1. Explain how a transistor functions as a switch in digital circuits.
+//// ANSWER: A transistor controls current flow through its terminals via the voltage at its control terminal. When a high voltage is applied, it enters saturation (on state) and allows current to flow; when low, it goes into cutoff (off state) and blocks current.
+
+## 2. Draw and explain the truth table for a NAND gate.
+//// ANSWER: For a 2-input NAND gate, the truth table is:
+
+| Input A | Input B | Output |
+|---------|---------|--------|
+| 0       | 0       | 1      |
+| 0       | 1       | 1      |
+| 1       | 0       | 1      |
+| 1       | 1       | 0      |
+
+This shows that the NAND gate outputs 0 only when both inputs are 1; otherwise, it outputs 1.
+
+## 3. Describe how a multiplexer works and provide an example of its use in a digital system.
+//// ANSWER: A multiplexer (MUX) selects one input from several based on control signals and routes it to a single output. For example, a MUX can select between multiple sensor signals to send the chosen one to a microprocessor.
+
+## 4. Explain the role of the datapath and control unit in a CPU.
+//// ANSWER: The datapath performs arithmetic and logical operations and handles data movement between registers and memory. The control unit decodes instructions and generates signals to coordinate these operations, enabling the CPU to execute programs.
+
+## 5. What are the primary differences between assembly language and high-level programming languages?
+//// ANSWER: Assembly language is a low-level language that closely maps to machine code and requires manual management of hardware resources. High-level languages offer abstraction, easier readability, and portability by automating many hardware details.
+
+## 6. Describe how a MOSFET works in digital circuits.
+//// ANSWER: A MOSFET (Metal-Oxide-Semiconductor Field-Effect Transistor) uses voltage at its gate to create a conductive channel between the source and drain. In enhancement mode, a gate voltage forms the channel (turning it on); without it, the channel is absent (turning it off).
+
+## 7. Define Boolean algebra and explain its role in digital logic design.
+//// ANSWER: Boolean algebra is a mathematical system using binary variables (0 and 1) and logical operations (AND, OR, NOT) to create expressions. It is fundamental in designing and simplifying digital circuits.
+
+## 8. What is a flip-flop, and how is it used in digital circuits?
+//// ANSWER: A flip-flop is a bistable circuit that stores one bit of data. Triggered by clock signals, it changes state and is used as a building block for registers, counters, and memory elements.
+
+## 9. Explain the concept of a clock cycle in a CPU and its significance.
+//// ANSWER: A clock cycle is the basic time unit during which a CPU processes part of an instruction. The CPU’s clock speed, measured in cycles per second, directly affects how many operations can be performed, influencing overall performance.
+
+## 10. Discuss the differences between volatile and non-volatile memory.
+//// ANSWER: Volatile memory (e.g., RAM) loses its stored data when power is removed, making it ideal for temporary storage. Non-volatile memory (e.g., ROM, flash) retains data without power, suitable for long-term storage.
+
+## 11. Describe what cache memory is and how it improves system performance.
+//// ANSWER: Cache memory is a small, fast memory located close to the CPU that stores frequently accessed data. It reduces the time needed to retrieve data from main memory, thus enhancing system performance.
+
+## 12. What is pipelining in a CPU, and what are its benefits and challenges?
+//// ANSWER: Pipelining overlaps multiple instruction stages (fetch, decode, execute) concurrently, increasing instruction throughput. However, it introduces hazards (data, control, structural) that may require techniques like stalling to resolve.
+
+## 13. Explain the key differences between RISC and CISC architectures.
+//// ANSWER: RISC (Reduced Instruction Set Computer) uses a small, optimized set of instructions for fast execution, while CISC (Complex Instruction Set Computer) employs a larger, more complex set that can perform multiple operations in one instruction, trading off simplicity for functionality.
+
+## 14. How do buses function within a computer system?
+//// ANSWER: Buses are communication channels that transfer data, addresses, and control signals between components like the CPU, memory, and peripherals, ensuring coordinated data exchange across the system.
+
+## 15. Outline the steps of the fetch-decode-execute cycle.
+//// ANSWER: The cycle consists of:
+- **Fetch:** Retrieving the instruction from memory.
+- **Decode:** Interpreting the instruction to determine the operation.
+- **Execute:** Carrying out the instruction, such as performing a computation or moving data.
+This cycle repeats continuously to process program instructions.

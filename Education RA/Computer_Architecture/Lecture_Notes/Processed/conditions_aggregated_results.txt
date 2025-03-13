@@ -1,0 +1,175 @@
+=== control_logic_9_bit_input.png ===
+The image consists of three sections, each containing text and a visual element resembling a brace.
+
+1. **Left Section:**
+   - Text: "CSZ"
+   - Below the text is a large, bold brace symbol.
+   - Underneath the brace, the word "Flags" is written.
+
+2. **Middle Section:**
+   - Text: "XXXX"
+   - Below the text is a large, bold brace symbol.
+   - Underneath the brace, the word "Operator" is written.
+
+3. **Right Section:**
+   - Text: "YY"
+   - Below the text is a large, bold brace symbol.
+   - Underneath the brace, the word "Count" is written.
+
+Each section is aligned horizontally, with the text at the top, the brace in the middle, and the descriptive word at the bottom. The braces are visually similar, with a thick, curved design.
+
+=== status_flags_5_minus_5_after_data_to_a.png ===
+The image is a schematic diagram of a digital circuit, likely an arithmetic logic unit (ALU) component. Here's a detailed description:
+
+1. **Components and Connections:**
+   - **Input Lines:** There are multiple horizontal lines labeled from 0 to 7 on the left side, indicating an 8-bit input bus.
+   - **AND Gate:** An AND gate is connected to the input lines. The output of the AND gate is connected to an "Add" block.
+   - **Add Block:** This block has inputs labeled "a," "b," and "cᵢ" and outputs labeled "s" and "cₒ." It appears to perform addition.
+   - **Subtraction Control:** There is a labeled "sub" control with a green circle, indicating a switch or control signal for subtraction.
+   - **Output Lines:** The output from the "Add" block connects to another set of lines labeled from 0 to 7.
+   - **OR Gate:** An OR gate is connected to the output lines, leading to a circle labeled "Zflag."
+   - **Flags:** There are three flags labeled "Zflag," "Sflag," and "Cflag," each connected to different parts of the circuit.
+
+2. **Color Coding:**
+   - **Blue Lines:** Represent data paths or buses.
+   - **Green Lines:** Indicate control signals or specific paths for operations.
+   - **Red Dots:** Indicate connection points or junctions.
+
+3. **Functionality:**
+   - The circuit seems to perform arithmetic operations, with the ability to switch between addition and subtraction.
+   - The flags likely represent status outputs: "Zflag" for zero, "Sflag" for sign, and "Cflag" for carry.
+
+4. **Layout:**
+   - The layout is organized with inputs on the left, processing in the center, and outputs on the right.
+   - The use of gates and labeled blocks suggests logical operations and arithmetic processing.
+
+This diagram is typical for illustrating the logic and data flow in a digital arithmetic circuit.
+
+=== control_logic_with_flags.png ===
+The image is a schematic diagram of a digital circuit. Here's a detailed description:
+
+1. **Background and Layout:**
+   - The diagram is set against a black background.
+   - It features various components connected by blue lines representing wires or connections.
+
+2. **Components:**
+   - **Test Label:** At the top left, there is a green box labeled "Test."
+   - **Counter:** Central to the diagram is a component labeled "Counter" with inputs and outputs:
+     - Inputs: "enout," "C ovf," and "clr" are labeled on the left side.
+     - Outputs: Four outputs labeled "Q3," "Q2," "Q1," and "Q0" on the right side.
+   - **LUT (Look-Up Table):** Below the counter, there is a component labeled "LUT" with inputs numbered 0 to 8 and an output labeled "out."
+   - **Switches:** 
+     - At the top right, there is a set of four switches labeled "m," "n," "1," and "0."
+     - At the bottom, there is a row of 18 switches labeled from "0" to "17."
+
+3. **Connections:**
+   - The switches at the top are connected to the counter's outputs.
+   - The counter outputs are connected to the LUT inputs.
+   - The LUT has an output labeled "out" leading to the right.
+
+4. **Visual Style:**
+   - The connections are depicted as blue lines with red dots indicating connection points.
+   - Text labels are in white or light gray.
+
+This schematic likely represents a digital circuit involving a counter and a look-up table, used for testing or demonstration purposes.
+
+=== state_flag_signals.png ===
+The image is a flowchart diagram with a light green box labeled "Test" at the top left. Below it, there are several horizontal blue lines with red dots at the left end, representing connectors or steps. These lines are aligned vertically and connected to a central vertical line, which then extends horizontally to the right.
+
+To the right of the central vertical line, there is another horizontal blue line with a red dot at its left end. This line is shorter and positioned slightly above the main horizontal line extending from the central vertical line.
+
+The entire diagram is set against a white background, and the lines and dots are used to illustrate connections or pathways in a process. The diagram is simple, with minimal text and a clear layout.
+
+=== status_flags_observing_alu.png ===
+The image is a schematic diagram of a digital circuit, likely representing an arithmetic logic unit (ALU) or a similar component. Here's a detailed description:
+
+1. **Components and Connections:**
+   - **Inputs:**
+     - There are two sets of 8 lines labeled 0 to 7 on the left side, likely representing 8-bit binary inputs.
+     - A single line labeled "sub" with a circle at the end, which might be used to control subtraction operations.
+
+   - **Logic Gates:**
+     - An AND gate is shown, taking inputs from the 8 lines and the "sub" line. The output is connected to the "Add" block.
+
+   - **Add Block:**
+     - A block labeled "Add" with inputs labeled `a`, `b`, and `cᵢ` (carry in), and outputs labeled `s` (sum) and `cₒ` (carry out).
+     - The output `s` is connected to another set of 8 lines labeled 0 to 7.
+
+   - **Outputs:**
+     - The 8 lines from the "Add" block are connected to an OR gate.
+     - The output of the OR gate is connected to a circle labeled `Zₓₗₐg`, which might indicate a zero flag.
+     - Two additional circles labeled `Sₓₗₐg` and `Cₓₗₐg` are connected to the circuit, likely representing status flags for sign and carry.
+
+2. **Visual Style:**
+   - The lines are primarily blue, with red dots indicating connection points.
+   - The gates and blocks are outlined in black.
+
+3. **Functionality:**
+   - The circuit seems to perform arithmetic operations, possibly addition and subtraction, based on the presence of the "sub" control line.
+   - The flags (`Zₓₗₐg`, `Sₓₗₐg`, `Cₓₗₐg`) suggest that the circuit provides status outputs, such as zero, sign, and carry flags, which are common in ALUs.
+
+This diagram is likely part of a larger system, such as a CPU or microcontroller, where arithmetic operations are required.
+
+=== adder_flags_register.png ===
+The image is a digital circuit diagram featuring an 8-bit adder and a register. Here's a detailed description:
+
+1. **Title**: The diagram is labeled "Test" in a green box at the top left corner.
+
+2. **Inputs**:
+   - Two sets of 8-bit inputs are on the left side, labeled from 0 to 7. These are connected to the adder.
+   - Each input line is marked with a red dot indicating connection points.
+
+3. **Adder**:
+   - The central component is labeled "Add."
+   - It has inputs labeled `a` and `b` for the two 8-bit numbers and `c0` for the carry-in.
+   - The output is labeled `s` (0-7) for the sum and `c1` for the carry-out.
+
+4. **Outputs**:
+   - The sum output (s 0-7) is on the right side, connected to another set of lines labeled 0 to 7.
+   - A carry-out line is also present.
+
+5. **Register**:
+   - Below the adder, there is a register labeled "Reg."
+   - It has inputs `D` (0-2), `C`, and `en` (enable).
+   - The output is labeled `Q` (0-2).
+
+6. **Connections**:
+   - Blue lines represent the connections between components.
+   - Red dots indicate connection points or junctions.
+
+7. **Layout**:
+   - The components are arranged in a rectangular layout with inputs on the left, processing in the center, and outputs on the right.
+
+This diagram represents a simple digital circuit for adding two 8-bit numbers and storing the result in a register.
+
+=== status_flags_5_minus_5_before_data_to_a.png ===
+The image is a schematic diagram of a digital circuit, likely an arithmetic logic unit (ALU) or a similar component. Here's a detailed description:
+
+1. **Components and Connections:**
+   - **Multiplexer (MUX):** On the left, there is a vertical array of lines labeled 0 to 7, with blue and green connections. This appears to be a multiplexer or a similar component.
+   - **Logic Gates:** 
+     - An AND gate is shown with two inputs and one output. The inputs are connected to the multiplexer and another line.
+     - An OR gate is present, combining several inputs into one output.
+   - **Adder/Subtractor Block:** 
+     - A block labeled "Add" with inputs labeled `a`, `b`, and `cᵢ` and outputs `s` and `cₒ`.
+   - **Control Signal:**
+     - A control line labeled "sub" with a green circle, indicating a switch or control input for subtraction.
+   - **Flags:**
+     - `Z_flag`, `S_flag`, and `C_flag` are outputs, likely representing zero, sign, and carry flags respectively. They are connected to the outputs of the logic gates.
+
+2. **Connections:**
+   - Blue, green, and black lines represent different signal paths.
+   - The blue lines are primarily used for data paths.
+   - The green lines are used for control signals and flag outputs.
+   - The black lines are used for structural connections between components.
+
+3. **Functionality:**
+   - The circuit appears to perform arithmetic operations, with the ability to add or subtract based on the control signal "sub."
+   - The logic gates are used to process the outputs and set the appropriate flags (`Z_flag`, `S_flag`, `C_flag`).
+
+4. **Visual Elements:**
+   - The diagram uses color coding (blue, green, black) to differentiate between types of signals.
+   - Red dots indicate connection points or junctions between lines.
+
+This schematic likely represents a simplified ALU circuit, showing how basic arithmetic operations are controlled and how flags are set based on the results.
+

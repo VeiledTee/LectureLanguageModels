@@ -1,0 +1,617 @@
+=== RAM_with_bus_no_register.png ===
+The image is a schematic diagram of an electronic circuit. Here's a detailed description:
+
+1. **Components**:
+   - **Clock Signal (C)**: Represented by a square wave symbol, connected to several lines in the circuit.
+   - **RAM Input (RAMᵢ) and Output (RAMₒ)**: Two labeled circular connectors indicating input and output for RAM.
+   - **Data Bus (D0-D7)**: An 8-bit data bus at the top of the diagram, labeled D0 to D7, with connections to a horizontal bar.
+   - **Switch**: A small switch labeled with ranges 0-7 and 0-3, indicating selectable connections.
+   - **RAM Module**: A rectangular block on the right labeled with A (address), str (store), C (clock), ld (load), and RAM, with connections to other parts of the circuit.
+
+2. **Connections**:
+   - Blue lines represent electrical connections between components.
+   - The clock signal (C) is connected to multiple points, including the RAM module.
+   - The data bus connects to the RAM module and other parts of the circuit.
+   - The switch connects different parts of the circuit, allowing for selection between different data lines.
+
+3. **Layout**:
+   - The circuit is organized with the data bus at the top, RAM module on the right, and connectors on the left.
+   - Lines intersect at various points, indicating connections between different components.
+
+4. **Labels**:
+   - Components and connections are clearly labeled for identification.
+   - The use of colors (blue lines) helps distinguish connections.
+
+This schematic is likely part of a digital system involving data storage and retrieval, using RAM and a clock signal for synchronization.
+
+=== memory_abstract_idea.png ===
+The image is a table that maps binary numbers to lowercase alphabetic characters. It consists of two columns. The left column contains 4-bit binary numbers, and the right column contains corresponding lowercase letters from 'a' to 'p'. Each row represents a mapping between a binary number and a letter.
+
+Here is the detailed mapping:
+
+```
++------+---+
+| 0000 | a |
+| 0001 | b |
+| 0010 | c |
+| 0011 | d |
+| 0100 | e |
+| 0101 | f |
+| 0110 | g |
+| 0111 | h |
+| 1000 | i |
+| 1001 | j |
+| 1010 | k |
+| 1011 | l |
+| 1100 | m |
+| 1101 | n |
+| 1110 | o |
+| 1111 | p |
++------+---+
+```
+
+Each row is separated by horizontal lines, and the table is enclosed in a border. The binary numbers are listed in ascending order.
+
+=== 4x4_bit_memory.png ===
+The image consists of a grid of four rows and four columns, making a total of sixteen rectangles. Each rectangle is outlined with a thick black border and positioned horizontally. 
+
+On the sides of each rectangle, there are small colored circles. The left side of each rectangle has two blue circles, one at the top and one at the bottom. The right side of each rectangle has two red circles, also positioned at the top and bottom.
+
+The arrangement of the rectangles and circles is consistent across the grid, creating a uniform pattern throughout the image.
+
+=== register_symbol.png ===
+The image is a diagram of a digital logic component, specifically a register. Here's a detailed description:
+
+- The diagram is a square with a thick black outline.
+- Inside the square, there are several labels: "D", "C", "en", "Reg", and "Q".
+- "D" is located at the top left corner inside the square.
+- "C" is in the middle left side, next to a black triangle pointing to the right, indicating a clock input.
+- "en" is located at the bottom left corner inside the square.
+- "Reg" is centered at the bottom inside the square.
+- "Q" is at the middle right side inside the square.
+- There are three blue circles on the left side of the square, aligned with "D", "C", and "en", representing input pins.
+- There is one red circle on the right side of the square, aligned with "Q", representing an output pin.
+
+This diagram represents a register with data input (D), clock input (C), enable input (en), and output (Q).
+
+=== register_symbol_with_word_size.png ===
+The image consists of two main components: a diagram of a digital logic register and a configuration dialog box.
+
+### Register Diagram:
+- **Shape**: The register is represented as a square with a thick black border.
+- **Inputs and Outputs**:
+  - **D (Data Input)**: Located on the left side, marked with a blue circle.
+  - **C (Clock Input)**: Positioned on the left side, marked with a blue circle.
+  - **en (Enable Input)**: Also on the left side, marked with a blue circle.
+  - **Q (Output)**: On the right side, marked with a red circle.
+- **Labels**: 
+  - "D", "C", "en", and "Q" are labeled inside the square.
+  - "Reg" is labeled below the square in gray text.
+- **Symbol**: A triangle pointing to the right is on the left side, indicating the direction of data flow.
+
+### Register Configuration Dialog Box:
+- **Title**: "Register"
+- **Tabs**: Two tabs labeled "Basic" and "Advanced".
+- **Basic Tab**:
+  - **Data Bits**: A dropdown menu with the number "8" selected.
+  - **Label**: An empty text field for labeling.
+  - **Inverted Inputs**: A dropdown menu with "none" selected.
+- **Buttons**:
+  - "Help", "Cancel", and "OK" are at the bottom for user interaction.
+
+The image is likely a screenshot from a digital circuit design software, showing a register component and its configuration options.
+
+=== D_flip_flop.png ===
+The image depicts a schematic diagram of a D Flip-Flop circuit. Here's a detailed description:
+
+1. **Title and Labels**:
+   - The top left corner has the label "D Flip-Flop".
+   - Below it, there is a smaller label "D Flip-Flop_test" with a green box labeled "Test".
+
+2. **Inputs**:
+   - Two inputs are labeled "D" and "C" at the bottom left. 
+   - "D" is connected to a circle symbol, and "C" is connected to a square wave symbol, indicating a clock input.
+
+3. **Logic Gates**:
+   - The circuit consists of several logic gates:
+     - Two NOT gates (inverters) are present, each with a triangle and a small circle at the tip.
+     - Four NAND gates are depicted with the standard shape, each having two inputs and one output.
+
+4. **Connections**:
+   - The "D" input connects to one of the NOT gates and one of the NAND gates.
+   - The "C" input connects directly to two NAND gates.
+   - Outputs from the NOT gates feed into the NAND gates.
+   - The outputs of the NAND gates are interconnected in a feedback loop, forming a latch structure.
+
+5. **Outputs**:
+   - Two outputs are labeled "Q" and "Q̅" (Q bar) on the right side.
+   - These outputs are connected to the outputs of the NAND gates.
+
+6. **Wiring**:
+   - Blue lines represent the wiring connections between the components.
+   - The wiring forms a characteristic cross-coupled structure typical of flip-flop circuits.
+
+This diagram illustrates the internal logic of a D Flip-Flop, showing how the inputs are processed through logic gates to produce stable outputs.
+
+=== 1_bit_memory.png ===
+The image features a simple diagram labeled "1 Bit Memory" at the bottom in a bold, black font. The main element is a thick black rectangle, representing a memory cell. 
+
+- On the left side of the rectangle, there are two blue circles, one above the other.
+- On the right side, there are two red circles, also positioned vertically.
+
+The circles likely represent inputs and outputs or states of the memory cell. The design is minimalistic, focusing on the concept of a 1-bit memory unit.
+
+=== SR_latch.png ===
+The image is a schematic diagram of an SR Latch, a type of flip-flop used in digital circuits. Here is a detailed description:
+
+1. **Title and Labels**:
+   - The top left corner has the label "SR Latch" in bold.
+   - Below it, there is a smaller label "SR Latch_test" with a green rectangle labeled "Test".
+
+2. **Components**:
+   - The diagram is enclosed in a dashed rectangle, indicating the boundary of the SR Latch circuit.
+   - There are two inputs labeled "R" (Reset) and "S" (Set) on the left side.
+   - Two outputs are labeled "Q" and "Q̅" (Q bar) on the right side.
+
+3. **Logic Gates**:
+   - The circuit consists of two NOR gates, represented by the standard NOR gate symbols (a curved line with a small circle at the output).
+   - The output of each NOR gate is fed back to the input of the other, creating a cross-coupled configuration.
+
+4. **Connections**:
+   - The "R" input connects to the top NOR gate, and the "S" input connects to the bottom NOR gate.
+   - The output of the top NOR gate is connected to the "Q" output, and the output of the bottom NOR gate is connected to the "Q̅" output.
+   - The feedback connections are shown as intersecting lines between the two NOR gates.
+
+5. **Visual Style**:
+   - The connections are depicted with blue lines.
+   - Small red circles indicate the inputs to the NOR gates.
+   - The diagram uses a clean and simple style for clarity, with all elements clearly labeled.
+
+This diagram illustrates the basic structure and function of an SR Latch, showing how the inputs and outputs are interconnected through NOR gates.
+
+=== 1_bit_register.png ===
+The image depicts a schematic diagram of a 1-bit register. Here's a detailed description:
+
+- **Title**: "1 Bit Register" is written at the top.
+- **Label**: "Register_test" is labeled near the top left, with a green box labeled "Test" beneath it.
+- **Inputs**:
+  - **D**: A square input labeled "D" with a circle inside, connected by a blue line.
+  - **EN**: Another square input labeled "EN" with a circle inside, connected by a blue line.
+  - **C**: A square input labeled "C" with a clock symbol inside, connected by a blue line.
+- **Components**:
+  - **Multiplexer**: A triangular symbol with a "0" inside, receiving inputs from "D" and "EN".
+  - **D Flip-Flop**: A rectangular symbol labeled with "D" and "C" on the left side, and "Q" and "Q̅" on the right side.
+- **Output**:
+  - **Q**: The output is labeled "Q" with a double circle symbol at the end of the blue line.
+- **Connections**:
+  - The "D" input connects to the multiplexer.
+  - The "EN" input connects to the multiplexer.
+  - The multiplexer output connects to the "D" input of the flip-flop.
+  - The "C" input connects to the "C" input of the flip-flop.
+  - The "Q" output from the flip-flop connects to the final output labeled "Q".
+
+The entire diagram is enclosed within a dashed rectangular border. The lines connecting the components are blue, and connection points are marked with red dots.
+
+=== 4_bit_memory.png ===
+The image consists of four identical rectangular frames arranged horizontally in a row. Each frame has a thick black border and contains four circles placed at the midpoints of each side. The circles on the left side of each rectangle are blue, and the circles on the right side are red. The interior of each rectangle is white, and there are no additional details or patterns within the frames. The overall layout is simple and symmetrical.
+
+=== 4x4_memory_with_plexers.png ===
+The image depicts a digital circuit diagram, likely representing a memory array or a similar structure. Here's a detailed description:
+
+1. **General Layout**:
+   - The diagram is organized in a grid-like structure with several interconnected components.
+   - There are three main sections: Address Line, Data In Lines, and Data Out Lines.
+
+2. **Components**:
+   - **Multiplexers/Demultiplexers**: 
+     - There are four trapezoidal shapes labeled with a "0" at the top left corner, bottom left, bottom center, and bottom right. These likely represent multiplexers or demultiplexers.
+   - **Rectangular Blocks**:
+     - The grid contains multiple small rectangular blocks connected by lines, which may represent memory cells or logic gates.
+
+3. **Connections**:
+   - **Address Line**:
+     - A single horizontal line on the left labeled "Address Line" connects to the first multiplexer/demultiplexer.
+   - **Data In Lines**:
+     - A set of horizontal lines at the top labeled "Data In Lines" connect to the top of each column of rectangular blocks.
+   - **Data Out Lines**:
+     - A set of horizontal lines at the bottom labeled "Data Out Lines" connect to the bottom multiplexer/demultiplexer.
+
+4. **Wiring**:
+   - Blue lines represent the wiring between components, forming a network of connections.
+   - Red dots indicate connection points or nodes where lines intersect or connect to components.
+
+5. **Flow**:
+   - The flow of data or signals likely moves from the Address Line through the grid of components, influenced by the Data In Lines, and exits through the Data Out Lines.
+
+This diagram likely represents a simplified model of a digital logic circuit, possibly a memory array or a data routing structure.
+
+=== two_bit_signals.png ===
+The image consists of four pairs of shapes arranged in a 2x2 grid. Each pair includes a square on the left and a circle on the right, connected by a line. Here's a detailed description:
+
+### Top Left Pair:
+- **Square**: Contains a dark green circle.
+- **Line**: A dark green line connects the square to the circle. It has a small red dot near the square and a blue dot near the circle.
+- **Circle**: Contains a dark green circle with a black outline.
+
+### Top Right Pair:
+- **Square**: Contains a dark green circle.
+- **Line**: A dark green line connects the square to the circle. It has a small red dot near the square and a blue dot near the circle.
+- **Circle**: Contains a dark green circle with a black outline.
+
+### Bottom Left Pair:
+- **Square**: Contains a light green circle.
+- **Line**: A light green line connects the square to the circle. It has a small red dot near the square and a blue dot near the circle.
+- **Circle**: Contains a light green circle with a black outline.
+
+### Bottom Right Pair:
+- **Square**: Contains a light green circle.
+- **Line**: A light green line connects the square to the circle. It has a small red dot near the square and a blue dot near the circle.
+- **Circle**: Contains a light green circle with a black outline.
+
+The image uses a consistent color scheme with green shades, and the lines have small red and blue dots indicating connection points.
+
+=== esap_alu_ram_vs_architecture_overview.png ===
+The image is a diagram illustrating a simple computer architecture, focusing on the Arithmetic Logic Unit (ALU) and RAM integration. It is divided into two main sections, with various components highlighted in different colors for clarity.
+
+### Left Section:
+- **ALU with RAM Test**: Labeled at the top, indicating the focus of the diagram.
+- **Test Button**: A green button labeled "Test" is present.
+- **Address Register**: Enclosed in a light green box, it includes components labeled "A", "B", "C", "D", and "RAM", with lines connecting them.
+- **Register A**: Highlighted in a green box, labeled "A", with a triangular symbol indicating data flow.
+- **Register B**: Highlighted in a magenta box, labeled "B", with a similar triangular symbol.
+- **Adder**: Enclosed in a cyan box, includes an AND gate symbol and connections to other components.
+- **Control Inputs**: At the bottom, there are labeled inputs: RAM0, RAM1, address, A0, B0, ALU0, and sub.
+
+### Right Section:
+- **Clock**: Enclosed in a red box at the top, indicating the timing control of the system.
+- **Memory Address Register**: Highlighted in a light green box, connected to RAM.
+- **RAM**: Positioned below the Memory Address Register, showing data flow.
+- **Program Counter**: Positioned at the top, connected to the bus.
+- **Register A**: Highlighted in a green box, connected to the bus and ALU.
+- **Arithmetic Logic Unit (ALU)**: Highlighted in a cyan box, labeled with operations (+, -).
+- **Register B**: Highlighted in a magenta box, connected to the ALU.
+- **Instruction Register**: Positioned below the RAM, leading to Control Signals.
+- **Control Signals**: Positioned below the Instruction Register, indicating control flow.
+- **Output Register and Display**: Positioned at the bottom, indicating the final output stage.
+
+### Central Bus:
+- An orange vertical line labeled "BUS" runs through the center, connecting various components, indicating data flow between them.
+
+The diagram uses color coding and directional arrows to show the flow of data and control signals, providing a clear representation of a basic computer architecture involving an ALU and RAM.
+
+=== 4x4_memory_write_en.png ===
+The image is a schematic diagram of a digital circuit, likely a part of a register or memory system. Here’s a detailed description:
+
+1. **Clock Signal (C):**
+   - Located at the top left, represented by a square wave symbol connected to a line.
+
+2. **Enable Signals:**
+   - Two enable signals, labeled `ENw` and `ENr`, are represented by green circles connected to lines.
+
+3. **Address Lines (A0, A1):**
+   - Two address lines labeled `A0` and `A1` are shown with binary switches (0 and 1) connected to blue lines.
+
+4. **Multiplexer:**
+   - A multiplexer is present, indicated by a trapezoidal shape with inputs and a single output line.
+
+5. **AND Gates:**
+   - Four AND gates are visible, each with multiple inputs and a single output. The gates are connected to the multiplexer and other lines.
+
+6. **Registers:**
+   - Four registers are depicted on the right side, each labeled with `D`, `C`, `en`, `Q`, and `Reg`. These represent data input, clock, enable, and output.
+
+7. **Connections:**
+   - Green lines represent the connections between components, indicating the flow of signals through the circuit.
+
+This schematic likely represents a simple memory or register file, where the address lines select which register to read from or write to, controlled by the enable signals and synchronized with a clock.
+
+=== eight_bit_signals.png ===
+The image consists of a vertical arrangement of seven identical graphical elements. Each element includes the following components:
+
+1. **Left Side:**
+   - A black square containing a green circle. The circle is positioned centrally within the square.
+   - A red dot is located on the right edge of the square, aligned horizontally with the center of the circle.
+
+2. **Connecting Line:**
+   - A horizontal line extends from the red dot to the right. The line is either light green or dark green, alternating with each row.
+
+3. **Right Side:**
+   - The line connects to a larger black-outlined circle containing a smaller green circle inside. The inner circle matches the color of the line it connects to.
+   - A small blue dot is placed on the left edge of the larger circle, where the line meets it.
+
+The elements are evenly spaced vertically, creating a uniform pattern. The alternating colors of the lines and inner circles provide a visual distinction between each row.
+
+=== address_register_and_RAM.png ===
+The image is a schematic diagram titled "Address Register and RAM." It illustrates a circuit design for handling address and RAM operations. Here's a detailed description:
+
+1. **Title and Labels**:
+   - The top of the diagram is labeled "Address Register and RAM."
+   - Below it, there's a section labeled "Address and RAM_test" with a green button labeled "Test."
+
+2. **Components**:
+   - **Flip-Flops**: At the top, there is a row of eight flip-flops labeled from 0 to 7, indicating a data bus or register.
+   - **Connections**: Blue lines represent the connections between various components, indicating electrical pathways.
+
+3. **Inputs and Outputs**:
+   - On the left side, there are three labeled input points:
+     - "address"
+     - "RAM_i"
+     - "RAM_o"
+   - These inputs are connected to the rest of the circuit via blue lines.
+
+4. **Logic Gates and Registers**:
+   - A clock signal is represented by a square wave symbol labeled "C."
+   - There is a component labeled "Address Reg" with inputs "D", "C", and "en" and an output "Q."
+   - Another component labeled "RAM" with inputs "A_str" and "C_ld" and an output "D."
+
+5. **Data Path**:
+   - The circuit shows a data path from the inputs through the address register to the RAM module.
+   - The connections are marked with numbers like "0-7" and "4-7," indicating data lines or bus widths.
+
+6. **Additional Elements**:
+   - At the bottom, there is another row of eight circles labeled from 0 to 7, likely representing output or additional data lines.
+
+This schematic is likely used for educational or testing purposes to demonstrate how address registers and RAM interact in a digital circuit.
+
+=== D_flip_flop_symbol.png ===
+The image is a schematic representation of a D flip-flop, a type of digital storage element used in electronics. Here's a detailed description:
+
+- **Shape**: The main body of the flip-flop is represented by a rectangle.
+- **Inputs and Outputs**:
+  - **D (Data input)**: Located on the left side of the rectangle, marked with a blue circle.
+  - **C (Clock input)**: Also on the left side, below the D input, marked with a blue triangle pointing to the right.
+  - **Q (Output)**: Positioned on the right side of the rectangle, marked with a red circle.
+  - **Q̅ (Complementary output)**: Below the Q output, marked with a red circle and a horizontal line above the Q to indicate negation.
+
+- **Labels**: 
+  - Inside the rectangle, the letters "D," "C," "Q," and "Q̅" are labeled in gray, corresponding to their respective inputs and outputs.
+
+This diagram is a typical representation used in digital electronics to illustrate the function and connections of a D flip-flop.
+
+=== clock_signal.png ===
+The image displays a horizontal sequence of black rectangles, each separated by a small gap, creating a pattern. This sequence is enclosed within a dashed rectangular border. To the left of the sequence, the letter "C" is visible, partially enclosed by the dashed border. The overall appearance resembles a stylized representation of a barcode or a series of connected blocks.
+
+=== 4x4_ram_with_plexers_clock_en.png ===
+The image is a schematic diagram of a digital circuit, likely representing a small RAM (Random Access Memory) module. Here's a detailed description:
+
+1. **Title and Labels:**
+   - The top left corner is labeled "RAM."
+   - There is a green button labeled "RAM_test" with "Test" written inside.
+
+2. **Inputs and Outputs:**
+   - On the left side, there are labeled inputs:
+     - `C` with a clock symbol.
+     - `EN_w` and `EN_r` for enable write and enable read.
+     - `A_0` and `A_1` for address inputs, with binary values `0` and `1`.
+   - On the top, there are data inputs/outputs labeled `D_3`, `D_2`, `D_1`, and `D_0`.
+   - On the bottom, there are outputs labeled `O_3`, `O_2`, `O_1`, and `O_0`.
+
+3. **Logic Gates and Components:**
+   - The circuit includes several AND gates, each with multiple inputs.
+   - There are multiple D flip-flops labeled "D C Q en Reg," indicating they are used for data storage.
+   - Multiplexers are present, indicated by triangular symbols with multiple inputs and one output.
+   - Inverters (NOT gates) are used at the bottom before the outputs `O_3`, `O_2`, `O_1`, and `O_0`.
+
+4. **Connections:**
+   - The address inputs `A_0` and `A_1` are connected to the multiplexers and AND gates, controlling which data is accessed or modified.
+   - The enable signals `EN_w` and `EN_r` are connected to the control inputs of the D flip-flops and logic gates, managing read and write operations.
+   - The clock input `C` is connected to the clock inputs of the D flip-flops, synchronizing data operations.
+   - Data lines are routed through the circuit, connecting inputs `D_3` to `D_0` to the flip-flops and logic gates, and then to the outputs `O_3` to `O_0`.
+
+This schematic is a simplified representation of a memory circuit, demonstrating how data is stored, accessed, and manipulated using digital logic components.
+
+=== 4x4_memory_read_en.png ===
+The image is a schematic diagram featuring a series of digital logic components and connections. Here's a detailed description:
+
+1. **Multiplexers**: 
+   - There are four multiplexers arranged horizontally. Each multiplexer has multiple inputs on the left side, indicated by green lines, and a single output on the right side.
+   - Each multiplexer is labeled with a "0" at the top right corner.
+
+2. **Connections**:
+   - The green lines represent the input connections to the multiplexers.
+   - A blue line runs horizontally across the diagram, connecting the outputs of the multiplexers. This line is labeled with "0" at various points.
+
+3. **Inverters**:
+   - Below the blue line, there are four inverters (triangular symbols with a circle at the tip), each connected to the green lines.
+   - The inverters are connected to circular outputs labeled \( O_3, O_2, O_1, \) and \( O_0 \).
+
+4. **Output Nodes**:
+   - Each inverter leads to a circular node, which is labeled with \( O_3, O_2, O_1, \) and \( O_0 \) respectively from left to right.
+
+5. **Color Coding**:
+   - Green lines indicate input connections.
+   - Blue lines indicate the main data path or bus.
+
+The diagram appears to represent a digital circuit with multiplexers and inverters, possibly part of a larger system for data selection and output.
+
+=== D_latch_with_enable.png ===
+The image is a schematic diagram of a D Latch with Enable. Here's a detailed description:
+
+1. **Title and Labels:**
+   - The top of the diagram is labeled "D Latch with Enable."
+   - Below that, it says "D Latch with Enable_test" with a green rectangle labeled "Test."
+
+2. **Inputs:**
+   - There are two inputs on the left side:
+     - `EN` (Enable) is connected to a circle with a red dot.
+     - `D` (Data) is connected to another circle with a red dot.
+
+3. **Logic Gates:**
+   - The `EN` input is connected to an inverter (NOT gate) which outputs a signal labeled "R."
+   - The inverted `EN` signal and the `D` signal are each connected to separate AND gates.
+   - The outputs of the AND gates are labeled "R" and "S."
+
+4. **SR Latch:**
+   - The outputs of the AND gates are connected to a pair of NOR gates arranged in a cross-coupled configuration, forming an SR latch.
+   - The output of the first NOR gate is labeled `Q`.
+   - The output of the second NOR gate is labeled `Q̅` (Q bar).
+
+5. **Connections:**
+   - The `R` output from the NOT gate is connected to one input of the first AND gate.
+   - The `S` output from the `D` input is connected to one input of the second AND gate.
+   - The outputs of the AND gates are connected to the inputs of the NOR gates.
+   - The outputs of the NOR gates are cross-coupled back to the inputs of the opposite NOR gate.
+
+6. **Lines and Nodes:**
+   - Blue lines represent the connections between components.
+   - Red dots indicate connection nodes.
+
+This diagram represents a D latch with an enable signal, where the data input `D` is latched when the enable `EN` is active.
+
+=== 8_bit_register.png ===
+The image is a schematic diagram of an 8-bit register. Here's a detailed description:
+
+1. **Title**: The diagram is labeled "8 Bit Register" at the top.
+
+2. **Register Test Section**: 
+   - There is a section labeled "Register_test" with a green button labeled "Test."
+
+3. **Inputs and Outputs**:
+   - **Inputs**: 
+     - There are several inputs on the left side:
+       - `C` (Clock): Represented by a square with a clock symbol.
+       - `EN` (Enable): Represented by a square.
+       - `D0` to `D7`: Data inputs, each represented by a square with a label (`D0`, `D1`, ..., `D7`).
+   - **Outputs**:
+     - `Q0` to `Q7`: Outputs, each represented by a circle with a label (`Q0`, `Q1`, ..., `Q7`).
+
+4. **Logic Gates**:
+   - Each data input (`D0` to `D7`) is connected to an AND gate.
+   - The AND gates have two inputs: one from the data input and one from the enable (`EN`) line.
+
+5. **Flip-Flops**:
+   - Each AND gate output is connected to a D flip-flop.
+   - The flip-flops have clock inputs connected to the clock (`C`) line.
+   - Each flip-flop has a `Q` output connected to the corresponding output (`Q0` to `Q7`).
+
+6. **Connections**:
+   - Blue lines represent the connections between components.
+   - The clock and enable lines are connected vertically across all flip-flops and AND gates.
+
+7. **Layout**:
+   - The components are arranged vertically in a column.
+   - Each bit (from `D0` to `D7`) follows the same pattern: data input to AND gate, AND gate to flip-flop, flip-flop to output.
+
+This diagram represents a typical 8-bit register with enable and clock inputs, using D flip-flops to store each bit of data.
+
+=== esap_alu_ram.png ===
+The image is a schematic diagram of an Arithmetic Logic Unit (ALU) with RAM. Here is a detailed description:
+
+1. **Title and Labels:**
+   - The top left corner is labeled "ALU with RAM" followed by a subscript "test."
+   - A green button labeled "Test" is present near the top left.
+
+2. **Components:**
+   - **Registers:**
+     - Three registers labeled "Address," "A," and "B" are present.
+     - Each register has inputs labeled "D" and "C" and outputs labeled "Q" and "en" (enable).
+   - **RAM:**
+     - A RAM component is labeled with inputs "A," "str" (store), "ld" (load), and "C."
+   - **Adders:**
+     - An adder labeled "Add" with inputs "a," "b," and "c" and an output "S."
+   - **Logic Gates:**
+     - An OR gate is present, combining multiple inputs.
+
+3. **Connections:**
+   - Blue lines represent connections between components.
+   - The registers and RAM are interconnected, with data lines feeding into the adder.
+   - The adder's output is connected back to the registers.
+
+4. **Inputs/Outputs:**
+   - At the top, there is a set of 8 toggle switches labeled from 0 to 7.
+   - At the bottom, there are labeled inputs/outputs: "RAM₀," "RAM₁," "address," "Aᵢ," "Aₒ," "Bᵢ," "Bₒ," "ALUₒ," and "sub."
+
+5. **Visual Elements:**
+   - The diagram includes visual indicators like arrows showing data flow direction.
+   - Small circles at the ends of lines indicate connection points.
+
+6. **Additional Features:**
+   - A clock symbol labeled "C" is present, indicating timing control.
+   - The diagram uses a grid layout for clarity, with components aligned horizontally and vertically.
+
+This schematic represents a basic ALU setup with RAM, showing how data is processed and stored.
+
+=== one_bit_signals.png ===
+The image consists of two horizontal switch diagrams, one labeled "Off" and the other "On."
+
+1. **Top Diagram (Off):**
+   - On the left, there is a dark green circle inside a black square.
+   - A dark green line extends horizontally to the right from the circle.
+   - There is a small red circle at the start of the line and a small blue circle at the end of the line.
+   - On the right, the line connects to a dark green circle inside a black outlined circle.
+   - The word "Off" is written to the right of the circle.
+
+2. **Bottom Diagram (On):**
+   - On the left, there is a light green circle inside a black square.
+   - A light green line extends horizontally to the right from the circle.
+   - There is a small red circle at the start of the line and a small blue circle at the end of the line.
+   - On the right, the line connects to a light green circle inside a black outlined circle.
+   - The word "On" is written to the right of the circle.
+
+The diagrams visually represent the states of a switch, with color changes indicating the transition between "Off" and "On."
+
+=== ram_symbols.png ===
+The image shows two diagrams representing RAM modules. Each diagram is a rectangular block with labeled components inside and outside the block. 
+
+### Left Diagram:
+- The rectangle is labeled "RAM" at the bottom.
+- Inside the rectangle, there are vertical labels:
+  - "A" at the top.
+  - "Din" below "A".
+  - "str" below "Din".
+  - "C" below "str".
+  - "ld" at the bottom.
+- To the right of the rectangle, there is a label "D" with a red dot next to it.
+- On the left side of the rectangle, there are blue dots aligned with each label inside, and an arrow pointing to the left.
+
+### Right Diagram:
+- The rectangle is labeled "RAM" at the bottom.
+- Inside the rectangle, there are vertical labels:
+  - "A" at the top.
+  - "str" below "A".
+  - "C" below "str".
+  - "ld" at the bottom.
+- To the right of the rectangle, there is a label "D" with a red dot next to it.
+- On the left side of the rectangle, there are blue dots aligned with each label inside, and an arrow pointing to the left.
+
+Both diagrams are similar, with the left diagram having an additional "Din" label compared to the right diagram.
+
+=== driver_symbol.png ===
+The image depicts a schematic symbol for an operational amplifier (op-amp). It consists of a triangular shape pointing to the right. 
+
+- The triangle is outlined in black.
+- There are three nodes connected to the triangle:
+  - One blue circle is at the top of the triangle, representing the non-inverting input.
+  - Another blue circle is on the left side of the triangle, representing the inverting input.
+  - A red circle is on the right side of the triangle, representing the output.
+
+This symbol is commonly used in electronic circuit diagrams to represent an op-amp.
+
+=== D_latch.png ===
+The image is a diagram of a D latch circuit. It includes the following components and connections:
+
+1. **Title and Labeling:**
+   - The top of the diagram is labeled "D Latch."
+   - There is a label "D Latch_test" with a green button labeled "Test" on the left side.
+
+2. **Inputs and Outputs:**
+   - The input is labeled "D" and is represented by a square with a circle inside it on the left side.
+   - There are two outputs on the right side, labeled "Q" and "Q̅" (Q bar).
+
+3. **Logic Gates:**
+   - The circuit includes an inverter (NOT gate), represented by a triangle with a circle at the tip.
+   - Two NAND gates are present, each represented by a curved line with two inputs and a circle at the output.
+
+4. **Connections:**
+   - The input "D" connects directly to the lower NAND gate and also to the inverter.
+   - The output of the inverter connects to the upper NAND gate.
+   - The outputs of the NAND gates are cross-coupled, meaning the output of one gate is connected to an input of the other gate.
+   - The output of the upper NAND gate is labeled "R" and connects to the output "Q."
+   - The output of the lower NAND gate is labeled "S" and connects to the output "Q̅."
+
+5. **Wiring:**
+   - The wiring is shown in blue, with lines connecting the gates and inputs/outputs.
+   - There are small red dots indicating junctions where wires meet.
+
+This diagram represents the logic design of a D latch, showing how the input "D" is processed through the gates to produce the outputs "Q" and "Q̅."
+

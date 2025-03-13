@@ -84,10 +84,13 @@ def process_exams(ollama_pipeline: LLMQASystem):
     Args:
         ollama_pipeline: An instance of LLMQASystem used to generate answers.
     """
-    exam_dir = Path(os.getenv("EXAM_DIR", "Artificial_Intelligence/Exams"))
+    exam_dir = Path(os.getenv("EXAM_DIR"))
     output_dir = Path(
-        os.getenv("ANSWER_DIR", "Artificial_Intelligence/Exams/generated_answers")
+        os.getenv("ANSWER_DIR")
     )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     for exam_file in exam_dir.glob("*_answerless.txt"):
         try:
             start_time = time.time()
