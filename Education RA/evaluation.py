@@ -305,117 +305,123 @@ if __name__ == "__main__":
     # Get all answer files
     answer_files = sorted(list(ANSWER_DIR.glob("*_answers.txt")), reverse=True)
 
-    # CSV path and processed file check
-    csv_path = (
-        ANSWER_DIR
-        / f"evaluation_results_{os.getenv('EVALUATION_MODEL').split(':')[0].replace('.', '-')}.csv"
-    )
-    processed_files = set()
-    csv_mode = "w"
+    eval_models: str = os.getenv("EVALUATION_MODEL")
+    models: list[str] = [m.strip() for m in eval_models.split(",")]
 
-    # Read existing processed files
-    if csv_path.exists():
-        with open(csv_path, "r", newline="", encoding="utf-8") as csvfile:
-            reader = csv.DictReader(csvfile)
-            processed_files = {row["filename"] for row in reader if "filename" in row}
-        csv_mode = "a"
+    print(f"\tGrading exams found at {EXAM_DIR}\n\tUsing rubrics from {RUBRIC_DIR}\n\tRubrics evaluated by {models}")
 
-    # Filter out processed files AND files containing "rag" in name
-    skipped_files = [f for f in answer_files if f.name in processed_files]
-    answer_files = [f for f in answer_files if f.name not in processed_files]
-
-    for skipped_file in skipped_files:
-        skip_reason = (
-            "already graded"
-            if skipped_file.name in processed_files
-            else "contains 'rag'"
+    for evaluation_model in models:
+        # CSV path and processed file check
+        csv_path = (
+            ANSWER_DIR
+            / f"evaluation_results_{os.getenv('EVALUATION_MODEL').split(':')[0].replace('.', '-')}.csv"
         )
-        print(f"Skipping file: {skipped_file.name} ({skip_reason})")
+        processed_files = set()
+        csv_mode = "w"
 
-    with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
-        fieldnames = [
-            "filename",
-            "bleu",
-            "rouge1",
-            "rougeL",
-            "token_f1",
-            "bert_f1",
-            "jaccard",
-            "total_awarded",
-            "total_possible",
-            "quiz_score",
-        ]
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        # Read existing processed files
+        if csv_path.exists():
+            with open(csv_path, "r", newline="", encoding="utf-8") as csvfile:
+                reader = csv.DictReader(csvfile)
+                processed_files = {row["filename"] for row in reader if "filename" in row}
+            csv_mode = "a"
 
-        # Write header only for new files
-        if csv_mode == "w":
-            writer.writeheader()
-        print(f"Processing {len(answer_files)} files")
-        for answer_file in answer_files:
-            print(f"\nProcessing file: {answer_file.name}")
-            filename_parts = answer_file.stem.split("_")
-            exam_name = filename_parts[0]
-            model_name = "_".join(filename_parts[1:-1])
+        # Filter out processed files AND files containing "rag" in name
+        skipped_files = [f for f in answer_files if f.name in processed_files]
+        answer_files = [f for f in answer_files if f.name not in processed_files]
 
-            # find rubric file
-            rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
+        for skipped_file in skipped_files:
+            skip_reason = (
+                "already graded"
+                if skipped_file.name in processed_files
+                else "contains 'rag'"
+            )
+            print(f"Skipping file: {skipped_file.name} ({skip_reason})")
 
-            # Find gold file using glob pattern
-            gold_pattern = f"{exam_name}*_parsed.txt"
-            gold_files = list(EXAM_DIR.glob(gold_pattern))
+        with open(csv_path, csv_mode, newline="", encoding="utf-8") as csvfile:
+            fieldnames = [
+                "filename",
+                "bleu",
+                "rouge1",
+                "rougeL",
+                "token_f1",
+                "bert_f1",
+                "jaccard",
+                "total_awarded",
+                "total_possible",
+                "quiz_score",
+            ]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
-            if len(gold_files) == 1:
-                gold_path = gold_files[0]
+            # Write header only for new files
+            if csv_mode == "w":
+                writer.writeheader()
+            print(f"Processing {len(answer_files)} files")
+            for answer_file in answer_files:
+                print(f"\nProcessing file: {answer_file.name}")
+                filename_parts = answer_file.stem.split("_")
+                exam_name = filename_parts[0]
+                model_name = "_".join(filename_parts[1:-1])
 
-            if not gold_path.exists():
-                print(f"Gold file {gold_path} not found, skipping")
-                continue
+                # find rubric file
+                rubric_path = RUBRIC_DIR / f"{exam_name}_rubric.txt"
 
-            if not rubric_path.exists():
-                print(f"Rubric {rubric_path} not found, skipping")
-                continue
+                # Find gold file using glob pattern
+                gold_pattern = f"{exam_name}*_parsed.txt"
+                gold_files = list(EXAM_DIR.glob(gold_pattern))
 
-            try:
-                gold_answers = extract_answers(gold_path)
-                generated_answers = extract_answers(answer_file)
+                if len(gold_files) == 1:
+                    gold_path = gold_files[0]
 
-                metrics = evaluate_answers(
-                    answers_to_evaluate=generated_answers,
-                    gold_standard_answers=gold_answers,
-                    rubric_file=rubric_path,
-                    verbose=True,
-                )
+                if not gold_path.exists():
+                    print(f"Gold file {gold_path} not found, skipping")
+                    continue
 
-                score_pct = (
-                    round(
-                        (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
+                if not rubric_path.exists():
+                    print(f"Rubric {rubric_path} not found, skipping")
+                    continue
+
+                try:
+                    gold_answers = extract_answers(gold_path)
+                    generated_answers = extract_answers(answer_file)
+
+                    metrics = evaluate_answers(
+                        answers_to_evaluate=generated_answers,
+                        gold_standard_answers=gold_answers,
+                        rubric_file=rubric_path,
+                        verbose=True,
                     )
-                    if metrics["total_possible"] > 0
-                    else 0.0
-                )
 
-                writer.writerow(
-                    {
-                        "filename": answer_file.name,
-                        "bleu": round(metrics["bleu"], 4),
-                        "rouge1": round(metrics["rouge1"], 4),
-                        "rougeL": round(metrics["rougeL"], 4),
-                        "token_f1": round(metrics["token_f1"], 4),
-                        "bert_f1": round(metrics["bert_f1"], 4),
-                        "jaccard": round(metrics["jaccard"], 4),
-                        "total_awarded": round(metrics["total_awarded"], 1),
-                        "total_possible": int(metrics["total_possible"]),
-                        "quiz_score": score_pct,
-                    }
-                )
+                    score_pct = (
+                        round(
+                            (metrics["total_awarded"] / metrics["total_possible"]) * 100, 2
+                        )
+                        if metrics["total_possible"] > 0
+                        else 0.0
+                    )
 
-                print(
-                    f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_possible']} | BERTScore: {metrics['bert_f1']:.4f} |"
-                )
-                csvfile.flush()
+                    writer.writerow(
+                        {
+                            "filename": answer_file.name,
+                            "bleu": round(metrics["bleu"], 4),
+                            "rouge1": round(metrics["rouge1"], 4),
+                            "rougeL": round(metrics["rougeL"], 4),
+                            "token_f1": round(metrics["token_f1"], 4),
+                            "bert_f1": round(metrics["bert_f1"], 4),
+                            "jaccard": round(metrics["jaccard"], 4),
+                            "total_awarded": round(metrics["total_awarded"], 1),
+                            "total_possible": int(metrics["total_possible"]),
+                            "quiz_score": score_pct,
+                        }
+                    )
 
-            except Exception as e:
-                print(f"Error processing {answer_file}: {str(e)}")
-                continue
+                    print(
+                        f"| Score: {score_pct}% | Scored: {metrics['total_awarded']} | Total: {metrics['total_possible']} | BERTScore: {metrics['bert_f1']:.4f} |"
+                    )
+                    csvfile.flush()
 
-    print(f"\nEvaluation complete! Results saved to {csv_path}")
+                except Exception as e:
+                    print(f"Error processing {answer_file}: {str(e)}")
+                    continue
+
+        print(f"\nEvaluation complete! Results saved to {csv_path}")
