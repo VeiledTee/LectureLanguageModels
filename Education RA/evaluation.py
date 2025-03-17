@@ -134,7 +134,7 @@ def extract_rubric(rubric_file: Path, question_number: int) -> str:
 
 
 def evaluate_with_rubric(
-    rubric_text: str, query: str, student_answer: str
+    ollama_model: str, rubric_text: str, query: str, student_answer: str
 ) -> tuple[float, float]:
     """Evaluates a student answer using an LLM-based rubric scorer.
 
@@ -166,7 +166,7 @@ def evaluate_with_rubric(
     Your evaluation score:"""
 
     response = ollama.generate(
-        model=str(os.getenv("EVALUATION_MODEL")),
+        model=str(ollama_model),
         prompt=prompt,
         options={
             "temperature": 0.0,
@@ -193,6 +193,7 @@ def evaluate_answers(
     answers_to_evaluate: list[str],
     gold_standard_answers: list[str],
     rubric_file: Path,
+    ollama_model: str,
     verbose: bool = False,
 ) -> dict[str, float]:
     """Evaluate generated answers against gold standards using multiple metrics and rubric scoring.
@@ -242,7 +243,7 @@ def evaluate_answers(
         try:
             rubric_text = extract_rubric(rubric_file, question_num)
             awarded, possible = evaluate_with_rubric(
-                rubric_text, f"Question {question_num}", gen
+                ollama_model, rubric_text, f"Question {question_num}", gen
             )
         except Exception as e:
             print(f"Error evaluating rubric for Q{question_num}: {str(e)}")
@@ -308,14 +309,21 @@ if __name__ == "__main__":
     eval_models: str = os.getenv("EVALUATION_MODEL")
     models: list[str] = [m.strip() for m in eval_models.split(",")]
 
-    print(f"\tGrading exams found at {EXAM_DIR}\n\tUsing rubrics from {RUBRIC_DIR}\n\tRubrics evaluated by {models}")
+    print(f"{'-'*50}\n"
+          f"\tGrading exams found at {EXAM_DIR}\n"
+          f"\tUsing rubrics from {RUBRIC_DIR}\n"
+          f"\tRubrics evaluated by {models}\n"
+          f"{'-'*50}")
 
     for evaluation_model in models:
         # CSV path and processed file check
         csv_path = (
             ANSWER_DIR
-            / f"evaluation_results_{os.getenv('EVALUATION_MODEL').split(':')[0].replace('.', '-')}.csv"
+            / f"evaluation_results_{evaluation_model.split(':')[0].replace('.', '-')}.csv"
         )
+
+        ANSWER_DIR.mkdir(parents=True, exist_ok=True)
+
         processed_files = set()
         csv_mode = "w"
 
@@ -389,6 +397,7 @@ if __name__ == "__main__":
                         answers_to_evaluate=generated_answers,
                         gold_standard_answers=gold_answers,
                         rubric_file=rubric_path,
+                        ollama_model=evaluation_model,
                         verbose=True,
                     )
 
