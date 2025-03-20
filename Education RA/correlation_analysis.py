@@ -1,3 +1,5 @@
+import os
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -89,7 +91,7 @@ def correlation_analysis(csv_path):
 
 
 if __name__ == "__main__":
-    answer_dir = Path("Artificial_Intelligence/Exams/generated_answers")
+    answer_dir = Path(os.getenv("ANSWER_DIR"))
     csv_files = list(answer_dir.glob("*.csv"))
 
     if not csv_files:
