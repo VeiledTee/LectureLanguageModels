@@ -1,0 +1,75 @@
+###### True or False: Using similar techniques used in Strassen's matrix multiplication algorithm, the Floyd-Warshall algorithm's running time can be improved to O(Vlog2 7).
+###### True or False: For graphs G = (V, E) where E = O(V1.5), Johnson's algorithm is asymptotically faster than Floyd-Warshall.
+###### True or False: Consider the directed graph where each vertex represents a subproblem in a dynamic program, and there is an edge from p to q if and only if subproblem p depends on (recursively calls) subproblem q. Then this graph is a directed rooted tree.
+###### True or False: In a connected, weighted graph, every lowest weight edge is always in some minimum spanning tree.
+###### True or False: For a connected, weighted graph with n vertices and exactly n edges, it is possible to find a minimum spanning tree in O(n) time.
+###### True or False: For a flow network with an integer capacity on every edge, the Ford–Fulkerson algorithm runs in time O((V + E) |f|) where |f| is the maximum flow.
+###### True or False: Let C = (S, V \ S) be a minimum cut in a flow network. If we strictly increase the capacity of every edge across C, then the maximum flow of the network must increase.
+###### True or False: Every linear program has a unique optimal solution.
+###### True or False: 3SAT cannot be solved in polynomial time, even if P = NP.
+###### Repeatedly selecting a vertex of maximum degree, and deleting the incident edges, is a 2-approximation algorithm for Vertex Cover.
+###### Draw the shortest path from Boston to New York in the following graph if m = ∞. Charging stations are marked as circles.
+###### Draw the shortest path from Boston to New York in the following (identical) graph if m = 100.
+###### Give an algorithm to solve the problem. For full credit, your algorithm should run in O(VE + V2 log V) time.
+###### Give a greedy algorithm that outputs an ordering of the psets that minimizes the total penalty for all the psets. Analyze the running time and prove correctness.
+###### First look at the special case where the maze is just a single path of length |E| from s to t, and all the edges have capacity 1 (see below). Exactly how many nights are required for the teens to escape?
+###### Give an algorithm to calculate the minimum number of nights to escape, by making calls to the magic algorithm. Analyze your time complexity in terms of V, E, m, a, and T(V, E, m).
+###### Now give the “magic” algorithm, and analyze its time complexity.
+###### Give an algorithm to find a driver assignment di ∈ Si for each day i such that no person j has to drive more than their limit lj. (The algorithm should output “no” if there is no such assignment.)
+###### Give a polynomial-time algorithm to determine whether a directed graph G contains either a cycle or a Hamiltonian path (or both).
+###### Show that it is NP-hard to decide whether a directed graph G' contains both a cycle and a Hamiltonian Path, by giving a reduction from the HAMILTONIAN PATH problem: given a graph G, decide whether it has a Hamiltonian path. (Recall from recitation that the HAMILTONIAN PATH problem is NP-complete.)
+###### True or False: With all equal-sized intervals, a greedy algorithm based on earliest start time will always select the maximum number of compatible intervals.
+###### True or False: The problem of weighted interval scheduling can be solved in O(n log n) time using dynamic programming.
+###### True or False: If we divide an array into groups of 3, find the median of each group, recursively find the median of those medians, partition, and recurse, then we can obtain a linear-time median-finding algorithm.
+###### True or False: If we used the obvious Θ(n²) merge algorithm in the divide-and-conquer convex-hull algorithm, the overall time complexity would be O(n² log n).
+###### Van Emde Boas sort (where we insert all numbers, find the min, and then repeatedly call SUCCESSOR) can be used to sort n = lg u numbers in O(lg u·
+###### True or False: Van Emde Boas on n integers between 0 and u 1 supports successor queries in O(lg lg u) worst-case time using O(n) space.
+###### True or False: In the potential method for amortized analysis, the potential energy should never go negative.
+###### True or False: The quicksort algorithm that uses linear-time median finding to run in worst-case O(n log n) time requires O(n) auxiliary space.
+###### True or False: Searching in a skip list takes O(log n) time with high probability, but could take Ω(2n) time with nonzero probability.
+###### The following collection H = {h1,h2, h3} of hash functions is uni-versal, where each hash function maps the universe U = {A, B, C, D} of keys into the range {0, 1, 2} according to the following table:
+###### Point out Ben's mistake in one sentence; no calculation needed. (Ben swears he has calculated FFT F and inverse FFT F-¹ correctly.)
+###### Give the fastest data structure you can for this problem, measured according to worst-case time.
+###### Design a data structure to maintain a set S of n distinct integers that supports the following two operations:
+###### Describe an O(n)-time randomized algorithm for testing whether p(x) · q(x) = r(x) that satisfies the following properties:
+###### Prove that your algorithm satisfies Property 1.
+###### Prove that your algorithm satisfies Property 2.
+###### Design a randomized algorithm to check whether p(x) · q(x) = r(x) that is correct with probability at least 1 ε. Analyze your algorithm in terms of n and 1/ε.
+###### Define TLij to be maximum tastiness value in the top-left quadrant of cell (i, j): TLi,j = max{Ta,b | 1 ≤ a ≤ i, 1 ≤ b ≤ j}. Find a dynamic programming algorithm to compute TLi,j, for all 1 < i < n and 1 < j < m, in O(nm) time.
+###### Use the idea in part (a) to obtain an O(nm) algorithm to find the tastiest dish.
+###### Give a naïve algorithm running in O(m + n) time.
+###### If m = n, give an algorithm that runs in O(lgn) time.
+###### Give an algorithm that runs in O(lg(min{m, n})) time, for any m and n.
+###### True or False: Suppose algorithm A has two steps, and A succeeds if both the steps succeed. If the two steps succeed with probability $p_1$ and $p_2$ respectively, then A succeeds with probability $p_1p_2$.
+###### True or False: If the divide-and-conquer convex hull algorithm (from Lecture 2) used a $\Theta(n^2)$ strategy to discover the maximum and minimum tangents, the overall algorithm would run in $O(n^2 \log n)$ time.
+###### True or False: In order to get an expected O(n log n) runtime for “paranoid" quicksort (from Lecture 3), we require the recursive divide step to split the array into two subarrays each of at least $\frac{1}{4}$ the size of the original array.
+###### True or False: A binary min-heap with n elements supports INSERT in O(log n) amortized time and DELETE-MIN in 0 amortized time.
+###### The hash family H = {$h_1, h_2$} is universal, where $h_1, h_2 : $ {1, 2, 3} $\rightarrow$ {0, 1} are defined by the following table:
+###### True or False: Recall the $O(n^3 lg n)$ matrix-multiplication algorithm to compute shortest paths, where we replaced the matrix-multiplication operator pair (*, +) with (+, min). If we instead replace the operator pair with (+, *), then we compute the product of the weights of all paths between each pair of vertices.
+###### True or False: Negating all the edge weights in a weighted undirected graph G and then finding the minimum spanning tree gives us the maximum-weight spanning tree of the original graph G.
+###### In a graph with unique edge weights, the spanning tree of second-lowest weight is unique.
+###### In the recursion of the Floyd-Warshall algorithm:
+###### True or False: Consider a network of processes based on an arbitrary undirected graph G = (V, E) with a distinguished vertex $v_0 \in V$. The process at each vertex $v \in V$ starts with a positive integer $x_v$. The goal is for the process at $v_0$ to compute the maximum $max_{v \in V} x_v$. There is an asynchronous distributed algorithm that solves this problem using $O(diam^2d)$ time and $O(|E| + diam \cdot n)$ messages.
+###### True or False: Suppose a file server stores a hash of every file in addition to the file contents. When you download a file from the server, you also download the hash and confirm that it matches the file. This system securely verifies that the downloaded file has not been modified by an adversary, provided the hash function has collision resistance.
+###### True or False: Suppose Alice, Bob, and Charlie secretly generate a, b and c, respectively, and publish $g^a \mod p, g^b \mod p$, and $g^c \mod p$, where p is a prime. Then, Alice, Bob, and Charles can each compute $g^{abc} \mod p$ as a shared secret known only to the three of them.
+###### True or False: The number of memory transfers used by the best cache-oblivious algorithm is always at least the number of memory transfers used by the best external-memory algorithm for the same problem.
+###### True or False: If there is a time-optimal divide-and-conquer algorithm for a problem, then that algorithm is also optimal with respect to memory transfers in the cache-oblivious model.
+###### What extra information needs to be stored at each node? Describe how to answer an AVERAGE(x) query in $O(lg n)$ time using this extra information.
+###### Describe how to modify INSERT to maintain this information. Briefly justify that the worst-case running time for INSERT remains O(lgn).
+###### Suppose we send Forrest k reminders for each of n events. What is the expected number of appointments Forrest will remember? Give your answer in terms of k and n.
+###### Suppose we send Forrest k reminders for a single event. How should we set k with respect to n so that Forrest will remember the event with high probability, i.e., 1 – 1/nº?
+###### Suppose we send Forrest k reminders for each of n events. How should we set k with respect to n so that Forrest will remember all the events with high probability, i.e., 1 – 1/nº?
+###### Assume that Prof. Chopin decides to learn exactly k pieces. Prove that he needs to consider only the k lowest $p_i$s and the k highest $t_j$s.
+###### Assuming part (a), give an efficient greedy algorithm to determine whether Prof. Chopin can learn exactly k pieces. Argue its correctness.
+###### Using part (b) as a black box, give an efficient algorithm that finds the maximum number of pieces Prof. Chopin can learn. Analyze its running time.
+###### Draw the residual graph $G_f$ of G with respect to f.
+###### List the vertices in the shortest augmenting path, that is, the augmenting path with the fewest possible edges.
+###### Perform the augmentation. What is the value of the resulting flow?
+###### Give a straightforward algorithm that checks whether any subset of k projects can be completed to solve the decisional problem. Analyze its time complexity in terms of m, n, and k.
+###### Is your algorithm in part (a) fixed-parameter tractable? Briefly explain.
+###### Show that the problem is NP-hard via a reduction from 3D matching.
+###### Describe a greedy approximation algorithm for this problem.
+###### Show that your algorithm from part (a) is a 2-approximation algorithm.
+###### Let S be any maximal independent set of G' (i.e., adding any other vertex to
+###### Now consider a synchronous network of processes based on the graph G, where every vertex knows an upper bound ∆ on the degree. Give a distributed algorithm to find a vertex (∆ + 1)-coloring of G, i.e., a mapping from vertices in V to colors in {0, 1, . . . , ∆} such that adjacent vertices have distinct colors. The process associated with each vertex should output its color. Argue correctness.
+###### Analyze the expected time and communication costs for solving the coloring problem in this way, including the cost of Luby's algorithm.

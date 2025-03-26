@@ -1,0 +1,396 @@
+###### True or False: Using similar techniques used in Strassen's matrix multiplication algorithm, the Floyd-Warshall algorithm's running time can be improved to O(Vlog2 7).
+//// ANSWER: False. There is no way to define negation.
+
+###### True or False: For graphs G = (V, E) where E = O(V1.5), Johnson's algorithm is asymptotically faster than Floyd-Warshall.
+//// ANSWER: True. O(VE + V2 log V) = 0(V³) when E = o(V2).
+
+###### True or False: Consider the directed graph where each vertex represents a subproblem in a dynamic program, and there is an edge from p to q if and only if subproblem p depends on (recursively calls) subproblem q. Then this graph is a directed rooted tree.
+//// ANSWER: False. It is a Directed Acyclic Graphic (DAG).
+
+###### True or False: In a connected, weighted graph, every lowest weight edge is always in some minimum spanning tree.
+//// ANSWER: True. It can be the first edge added by Kruskal's algorithm.
+
+###### True or False: For a connected, weighted graph with n vertices and exactly n edges, it is possible to find a minimum spanning tree in O(n) time.
+//// ANSWER: True. This graph only contains one cycle, which can be found by a DFS. Just remove the heaviest edge in that cycle.
+
+###### True or False: For a flow network with an integer capacity on every edge, the Ford–Fulkerson algorithm runs in time O((V + E) |f|) where |f| is the maximum flow.
+//// ANSWER: True. There can be O(|f|) iterations because each iteration increases the flow by at least 1.
+
+###### True or False: Let C = (S, V \ S) be a minimum cut in a flow network. If we strictly increase the capacity of every edge across C, then the maximum flow of the network must increase.
+//// ANSWER: False. There could be another min cut whose capacity does not change. Then the max flow remains the same.
+
+###### True or False: Every linear program has a unique optimal solution.
+//// ANSWER: False. There can be many optimal solutions if the objective function is parallel to one of the constrains.
+
+###### True or False: 3SAT cannot be solved in polynomial time, even if P = NP.
+//// ANSWER: False. If P = NP, then all problems in P are also NP-hard, and these problems have polynomial-time algorithms.
+
+## Repeatedly selecting a vertex of maximum degree, and deleting the incident edges, is a 2-approximation algorithm for Vertex Cover.
+//// ANSWER: False: it can be as bad as a log-log approximation, see L17 notes.
+
+## Draw the shortest path from Boston to New York in the following graph if m = ∞. Charging stations are marked as circles.
+//// ANSWER: See image on page 4 of the pdf.
+
+## Draw the shortest path from Boston to New York in the following (identical) graph if m = 100.
+//// ANSWER: See image on page 4 of the pdf.
+
+## Give an algorithm to solve the problem. For full credit, your algorithm should run in O(VE + V2 log V) time.
+//// ANSWER: Our algorithm consists of two steps – the first step involves running Johnson's algorithm on the original graph G to obtain shortest path lengths for every pair of vertices. Let d(u, v) represent the length of the shortest path between vertices u and v in G.
+For the second step, we build a graph G' with vertex set C. For every pair of vertices u and v in the new graph G', draw an edge between u and v with weight δ(u, v) if δ(u, v) ≤ m and ∞ otherwise.
+Now, run Dijkstra's algorithm on G' between Boston and New York to get the shortest path. (Note that New York and Boston have charging stations and so are vertices in the graph G').
+Running Johnson's algorithm on the original graph G takes O(VE + V² log V). Creating the graph G' takes O(E) time, and running Dijkstra's algorithm on G' takes O(V2 + V log V) time; this gives a total runtime complexity of O(VE + V² log V).
+
+## Give a greedy algorithm that outputs an ordering of the psets that minimizes the total penalty for all the psets. Analyze the running time and prove correctness.
+//// ANSWER: Sort by increasing di/ci and do the problem sets in that order. This takes O(N log N) time.
+Proof – If unsorted, we can improve by swapping.
+di/ci > dj/cjcjdi + (cidi + cjdj) > cidj + (cidi + cjdj)
+=
+cj(di+dj) + cidi > ci(di + dj) + cjdj
+
+## First look at the special case where the maze is just a single path of length |E| from s to t, and all the edges have capacity 1 (see below). Exactly how many nights are required for the teens to escape?
+//// ANSWER: |E| + m - 1 or |V| + m – 2. Em or Vm will get partial credits.
+
+## Give an algorithm to calculate the minimum number of nights to escape, by making calls to the magic algorithm. Analyze your time complexity in terms of V, E, m, a, and T(V, E, m).
+//// ANSWER: Do a binary search. A sequential scan will get partial credits. The maximum number of nights can be bounded by O(E+m) (or O(V+m), O(Em)) according to part(a). Therefore, we need to run the “magic” algorithm O(log(E+m)) times. Each run takes no more than O((E + m)ºT(V, E, m)) time. So in total, the runtime is O((E + m)º log(E + m)T(V, E, m)).
+
+## Now give the “magic” algorithm, and analyze its time complexity.
+//// ANSWER: Model this as a max flow problem. Construct a graph G' = (V', E') where
+V' = {(v, i) | v ∈ V, 0 ≤ i ≤ k}. For all 0 ≤ i ≤ k−1, connect (v, i) to (v, i+1) with
+capacity (or m); this represents teens can stay at a vertex for the night. For every
+edge (u, v) in the original graph, connect (u, i) to (v, i + 1) with capacity c((u, v));
+this represents c((u, v)) teens can travel from u to v in a night.
+The new source s' is the vertex (s, 0) and the new sink t' is the vertex (t, k − 1). If the
+max flow from s' to t' is no less than m, then people can escape within k nights. Runtime: Both of the following are accepted. There are V = O(kV') vertices and E' = O(k(V + E)) edges in G'. Applying Edmonds-Karp algorithm, the total time complexity is O(VE2) = O(k3V(V + E)²). If using Ford-Fulkerson runtime, notice that we can actually stop if the max flow reaches m. So at most m iterations are needed. Runtime can be O(m(V' + E')) = O(mk(V + E)).
+
+## Give an algorithm to find a driver assignment di ∈ Si for each day i such that no person j has to drive more than their limit lj. (The algorithm should output “no” if there is no such assignment.)
+//// ANSWER: First, we create a graph with following vertices:
+1.a super source s and a super sink t
+2.vertex pi for each person who wants to carpool
+3.vertex dj for each day of the class.
+Then create the following edges:
+1.s to pi with capacity of lj
+2.pi to dj with capacity of 1 if person i needs to carpool on day j
+3.d; to t with weight 1 for all j.
+Finally, run max flow from s to t, and find f. If |f| = m, return that person i will drive on day j if
+the edge (pi, dj) has non-zero flow. If |f| < m, then return no valid assignment.
+
+## Give a polynomial-time algorithm to determine whether a directed graph G contains either a cycle or a Hamiltonian path (or both).
+//// ANSWER: To solve the problem, we simply run DFS on G. If a cycle exists, DFS will traverse a vertex twice and can report the cycle. If no cycle exists, then the graph is a DAG.
+If the graph is a DAG, then we can run a topological sort on the graph. If there is a complete, or unique, ordering of every vertex in the graph, the graph has a Hamiltonian Path, and we accept the graph.
+
+## Show that it is NP-hard to decide whether a directed graph G' contains both a cycle and a Hamiltonian Path, by giving a reduction from the HAMILTONIAN PATH problem: given a graph G, decide whether it has a Hamiltonian path. (Recall from recitation that the HAMILTONIAN PATH problem is NP-complete.)
+//// ANSWER: We construct a graph G' = (V', E') from G, where
+V' = {U1, U2, U3} UV
+U
+E' = {(41, 42), (И₂, Из), (из, И₁) } ∪ {(u₁, V) : v ∈ V} U E
+G' always has a cycle of length 3 - (U1, U2, U3). For any Hamiltonian Path P in G,
+(u2, 43, 41, P) is a Hamiltonian Path in G'. For any Hamiltonian Path P' in G', P'
+must be of the form (u2, 43, 41, P), where P is a Hamiltonian path for G. Thus in all
+cases, solving B(G') is equivalent to solving Hamiltonian Path for G.
+
+###### True or False: With all equal-sized intervals, a greedy algorithm based on earliest start time will always select the maximum number of compatible intervals.
+//// ANSWER: True. The algorithm is equivalent to the earliest finish time algorithm.
+
+###### True or False: The problem of weighted interval scheduling can be solved in O(n log n) time using dynamic programming.
+//// ANSWER: True. The algorithm was covered in recitation.
+
+###### True or False: If we divide an array into groups of 3, find the median of each group, recursively find the median of those medians, partition, and recurse, then we can obtain a linear-time median-finding algorithm.
+//// ANSWER: False. T(n) = T(n/3) + T(2n/3) + O(n) does not solve to T(n) = O(n). The array has to be broken up into groups of at least 5 to obtain a linear-time algorithm.
+
+###### True or False: If we used the obvious Θ(n²) merge algorithm in the divide-and-conquer convex-hull algorithm, the overall time complexity would be O(n² log n).
+//// ANSWER: False. The time complexity would satisfy the recurrence T(n) = 2T(n/2) + Θ(n²), which solves to (n²) by the Master Theorem.
+
+## Van Emde Boas sort (where we insert all numbers, find the min, and then repeatedly call SUCCESSOR) can be used to sort n = lg u numbers in O(lg u·
+True or False: lg lg lg u) time.
+//// ANSWER: False. Inserting into the tree and then finding all the successors will take n lg lg(u) time, which in terms of u is lg(u) · lg lg(u).
+
+###### True or False: Van Emde Boas on n integers between 0 and u 1 supports successor queries in O(lg lg u) worst-case time using O(n) space.
+//// ANSWER: False. We use (u) space or do randomization.
+
+###### True or False: In the potential method for amortized analysis, the potential energy should never go negative.
+//// ANSWER: True.
+
+###### True or False: The quicksort algorithm that uses linear-time median finding to run in worst-case O(n log n) time requires O(n) auxiliary space.
+//// ANSWER: False. It can be implemented with O(log n) auxiliary space.
+
+###### True or False: Searching in a skip list takes O(log n) time with high probability, but could take Ω(2n) time with nonzero probability.
+//// ANSWER: True. A skip list could be of any height with nonzero probability, depending on its random choices.
+
+## The following collection H = {h1,h2, h3} of hash functions is uni-versal, where each hash function maps the universe U = {A, B, C, D} of keys into the range {0, 1, 2} according to the following table:
+X
+ABCD
+h₁(x) 1011
+h2(x) 0101
+True or False: h3(x) 2 2 10
+//// ANSWER: False. A and C collide with probability 2/3.
+
+## Point out Ben's mistake in one sentence; no calculation needed. (Ben swears he has calculated FFT F and inverse FFT F-¹ correctly.)
+//// ANSWER: The resulting polynomial is of degree 2, so Ben need to pad a and b with zeroes. (Or Ben need at least 3 samples to do FFT).
+
+## Give the fastest data structure you can for this problem, measured according to worst-case time.
+//// ANSWER: Initialization takes O(nlg(1g(n))) time to insert all the yellow elements into a VEB tree, V.
+More importantly, each operation takes O(lg lg(n)) time. When a user asks to MARK-YELLOW(i), then call V.insert(i) which takes O(lglg(n)) time. When a user asks to MARK-GREY(i), then call V.delete(i) which takes O(lglg(n)) time. When a user asks to NEXT-YELLOW(i), then call V.successor(i) which takes O(lg lg(n)) time.
+
+## Design a data structure to maintain a set S of n distinct integers that supports the following two operations:
+1. INSERT(x, S): insert integer x into S.
+2. REMOVE-BOTTOM-HALF(S): remove the smallest [$\frac{n}{2}$] integers from S.
+Describe your algorithm and give the worse-case time complexity of the two operations. Then carry out an amortized analysis to make INSERT(x, S) run in amortized O(1) time, and REMOVE-BOTTOM-HALF(S) run in amortized 0 time.
+//// ANSWER: Use a singly linked list to store those integers. To implement INSERT(x, S), we append the new integer to the end of the linked list. This takes (1) time. To implement REMOVE-BOTTOM-HALF(S), we use the median finding algorithm taught in class to find the median number, and then go through the list again to delete all the numbers smaller or equal than the median. This takes Θ(n) time.
+Suppose the runtime of REMOVE-BOTTOM-HALF(S) is bounded by cn for some constant c. For amortized analysis, use Φ = 2cn as our potential function. Therefore, the amortized cost of an insertion is 1 + ΔΦ = 1 + 2c = Θ(1). The amortized cost of REMOVE-BOTTOM-HALF(S) is
+cn + ∆Φ = cn + (−2c × $\frac{n}{2}$) = 0.
+
+## Describe an O(n)-time randomized algorithm for testing whether p(x) · q(x) = r(x) that satisfies the following properties:
+1. If the two sides are equal, the algorithm outputs YES.
+2. If the two sides are unequal, the algorithm outputs NO with probability at least $\frac{1}{2}$.
+//// ANSWER: Pick a value a ∈ [1, 4n], and check whether p(a)q(a) = r(a). The algorithm outputs YES if the two sides are equal, and NO otherwise. It takes O(n) time to evaluate the three polynomials of degree O(n). Thus the overall running time of the algorithm is O(n).
+
+## Prove that your algorithm satisfies Property 1.
+//// ANSWER: If p(x) · q(x) = r(x), then both sides will evaluate to the same thing for any input.
+
+## Prove that your algorithm satisfies Property 2.
+//// ANSWER: s(x) = r(x) - p(x) · q(x) is a degree-2n polynomial, and thus has at most 2n roots. Then
+Pr{s(a) = 0} ≤ $\frac{2n}{4η}$ = $\frac{1}{2}$
+
+## Design a randomized algorithm to check whether p(x) · q(x) = r(x) that is correct with probability at least 1 ε. Analyze your algorithm in terms of n and 1/ε.
+//// ANSWER: We run part a m times, and output YES if and only if all answers output YES. In other words, we amplify the probability of success via repetition.
+Our test works with probability > 1 - ($\frac{1}{2}$)m. Thus we need
+1 - $\frac{1}{2}$$\leq$ ε
+⇒ m ≥ log$\frac{1}{ε}$.
+
+## Define TLij to be maximum tastiness value in the top-left quadrant of cell (i, j): TLi,j = max{Ta,b | 1 ≤ a ≤ i, 1 ≤ b ≤ j}. Find a dynamic programming algorithm to compute TLi,j, for all 1 < i < n and 1 < j < m, in O(nm) time.
+//// ANSWER: When trying to calculate TLi,j, we see that the maximum can be at cell (i, j). If not, it must lie either in the rectangle from (1, 1) to (i, j – 1), or the rectangle from (1, 1) to (i – 1,j), or both. These three overlapping cases cover our required
+rectangle. We have then,
+TLi,j = max{Ti,j, TLi−1,j, TLi,j−1}
+For the base cases, we can just set TL0,j = TL¿,0 = 0 for all valid values of i and j.
+We can compute the DP value for each state in O(1) time. There are nm states, so our algorithm is O(nm).
+
+## Use the idea in part (a) to obtain an O(nm) algorithm to find the tastiest dish.
+//// ANSWER: In part (a) we calculated range maximum for the top-left quadrant. We can similarly define range maximums for the other quadrants. Let BLi,j = max{Ta,b |
+i ≤ a ≤ n,1 ≤ b ≤ j}, TRi,j = max{Ta,ь | 1 ≤ a ≤ i,j ≤ b ≤ m}, and
+BRi,j = max{Ta,b | i ≤ a ≤ n,j ≤ b ≤ m}. Each of these can be computed in
+O(nm) time similar to TL.
+To calculate the tastiest dish Prof. Child can cook when she stands at cell (i, j) (1 <
+i < n and 1 < j < m), we now just need to compute the product TLi−1,j−1BLi+1,j−1 TRi−1,j+1BRi+1,j+1
+and pick the maximum product. This can be done in O(nm) time.
+
+## Give a naïve algorithm running in O(m + n) time.
+//// ANSWER: Merge the two sorted arrays (which takes O(m + n) time) and find the median using linear-time selection.
+
+## If m = n, give an algorithm that runs in O(lgn) time.
+//// ANSWER: Pick the median m₁ for A and median m2 for B. If m₁ = m2, return
+m1. If m₁ > m2, remove the second half of A and the first half of B. Then we get
+two subarrays with size n/2. Repeat until both arrays are smaller than a constant.
+m1 < m2 is symmetric.
+
+## Give an algorithm that runs in O(lg(min{m, n})) time, for any m and n.
+//// ANSWER: Without loss of generality, assume |A| = m > n = |B|. We can safely remove elements A[0 : m-n/2] and A[m+n/2 : m 1] because none of these elements can
+be the median of A + B. After this process, we get two arrays of size approximately
+n. Then we can run part (b). The complexity is O(lg(min(m, n)))
+
+###### True or False: Suppose algorithm A has two steps, and A succeeds if both the steps succeed. If the two steps succeed with probability $p_1$ and $p_2$ respectively, then A succeeds with probability $p_1p_2$.
+//// ANSWER: False. Unless the two steps are independent.
+
+###### True or False: If the divide-and-conquer convex hull algorithm (from Lecture 2) used a $\Theta(n^2)$ strategy to discover the maximum and minimum tangents, the overall algorithm would run in $O(n^2 \log n)$ time.
+//// ANSWER: False. The recurrence would be $T(n) = 2T(\frac{n}{2}) + \Theta(n^2)$ whose solution is $T(n) = \Theta(n^2)$.
+
+###### True or False: In order to get an expected O(n log n) runtime for “paranoid" quicksort (from Lecture 3), we require the recursive divide step to split the array into two subarrays each of at least $\frac{1}{4}$ the size of the original array.
+//// ANSWER: False. As long as it is a constant fraction of the original array, we can get the bound.
+
+###### True or False: A binary min-heap with n elements supports INSERT in O(log n) amortized time and DELETE-MIN in 0 amortized time.
+//// ANSWER: True. Same amortization as in class for insert/delete in 2-3 trees.
+
+## The hash family H = {$h_1, h_2$} is universal, where $h_1, h_2 : $ {1, 2, 3} $\rightarrow$ {0, 1} are defined by the following table:
+
+True or False: (For example, $h_1(3) = 0.$)
+//// ANSWER: False. Consider elements 1 and 3: $h_1$ and $h_2$ both cause a collision between them, so in particular a uniformly random hash function chosen from H causes a collision between 1 and 3 with probability 1, greater than the 1/2 allowed for universal hashing (since there are 2 hash buckets).
+
+###### True or False: Recall the $O(n^3 lg n)$ matrix-multiplication algorithm to compute shortest paths, where we replaced the matrix-multiplication operator pair (*, +) with (+, min). If we instead replace the operator pair with (+, *), then we compute the product of the weights of all paths between each pair of vertices.
+//// ANSWER: False. If the graph has a cycle, there are infinitely many paths between some pairs of vertices, so the product ought to be $\pm \infty$, yet the matrix-multiplication algorithm will compute finite values if the original matrix has all finite values (e.g., a clique).
+
+###### True or False: Negating all the edge weights in a weighted undirected graph G and then finding the minimum spanning tree gives us the maximum-weight spanning tree of the original graph G.
+//// ANSWER: True.
+
+## In a graph with unique edge weights, the spanning tree of second-lowest weight is unique.
+//// ANSWER: False, can construct counter-example.
+
+## In the recursion of the Floyd-Warshall algorithm:
+
+$d_{uv}^{(k)} = min \{ d_{uv}^{(k-1)}, d_{uk}^{(k-1)} + d_{kv}^{(k-1)} \}$,
+
+True or False: $d_{uv}^{(k)}$ represents the length of the shortest path from vertex u to vertex v that contains at most k edges.
+//// ANSWER: False. $d_{uv}^{(k)}$ is the length of the shortest path from vertex u to vertex v that only uses vertex {1, 2, ... k} as intermediate nodes.
+
+###### True or False: Consider a network of processes based on an arbitrary undirected graph G = (V, E) with a distinguished vertex $v_0 \in V$. The process at each vertex $v \in V$ starts with a positive integer $x_v$. The goal is for the process at $v_0$ to compute the maximum $max_{v \in V} x_v$. There is an asynchronous distributed algorithm that solves this problem using $O(diam^2d)$ time and $O(|E| + diam \cdot n)$ messages.
+//// ANSWER: True.
+Using the algorithm from Problem 10-2, we can construct a BFS tree rooted at $v_0$ within the given time and message bounds. The root process can broadcast a signal telling all the processes that the tree is completed. Then the processes can use the tree for convergecasting their values, computing the max as the messages move up the tree. The broadcast and convergecast phases do not exceed the bounds for the BFS construction.
+
+###### True or False: Suppose a file server stores a hash of every file in addition to the file contents. When you download a file from the server, you also download the hash and confirm that it matches the file. This system securely verifies that the downloaded file has not been modified by an adversary, provided the hash function has collision resistance.
+//// ANSWER: False. This scheme is not secure because the adversary can simply replace the file with any file and the hash of that file, and you cannot tell the difference.
+
+###### True or False: Suppose Alice, Bob, and Charlie secretly generate a, b and c, respectively, and publish $g^a \mod p, g^b \mod p$, and $g^c \mod p$, where p is a prime. Then, Alice, Bob, and Charles can each compute $g^{abc} \mod p$ as a shared secret known only to the three of them.
+//// ANSWER: False. For example, Alice only knows a, $g^b$ and $g^c$, so she can compute $g^{ab}$ and $g^{ac}$ but not $g^{abc}$.
+
+###### True or False: The number of memory transfers used by the best cache-oblivious algorithm is always at least the number of memory transfers used by the best external-memory algorithm for the same problem.
+//// ANSWER: True. Make implicit memory transfers explicit, using LRU.
+
+###### True or False: If there is a time-optimal divide-and-conquer algorithm for a problem, then that algorithm is also optimal with respect to memory transfers in the cache-oblivious model.
+//// ANSWER: False. Example: binary search.
+
+## What extra information needs to be stored at each node? Describe how to answer an AVERAGE(x) query in $O(lg n)$ time using this extra information.
+//// ANSWER: Each node x should store x. size — the size of the subtree rooted at x — and x.sum — the sum of all the key values in the subtree rooted at x. For a value
+x > 0, let $S_x$ be the set of all keys less than or equal to x. Let $A_x$ and $B_x$ be the sum
+and the size of $S_x$.
+We can compute $A_x$ as follows. Let u be the leaf with smallest key larger than x.
+Finding u from the root only takes O(lgn) time by using SEARCH in a 2-3 tree. Now
+consider the path from the root of the tree to u. Clearly, $A_x$ is the sum of all leaves
+that are on the left of this path. Therefore, $A_x$ can be computed by summing up all
+y. sum's for every node y that is a left sibling of a node in the path. Since there are
+only lg n such nodes y's, computing $A_x$ only takes O(lg n) time.
+Computing $B_x$ is similar: instead of summing up y. sum, we sum up y.size. There-
+fore, it also takes O(lg n) time to compute $B_x$.
+Therefore, AVERAGE(x) which is $\frac{A_x}{B_x}$ can be answered in O(lg n)) time.
+
+## Describe how to modify INSERT to maintain this information. Briefly justify that the worst-case running time for INSERT remains O(lgn).
+//// ANSWER: Maintaining x. size is similar to what was covered in recitation and home-
+work. Maintaining x. sum is exactly the same: when a node x gets inserted, we simply
+increase y.sum for every ancestor y of x by the amount x.key. When a node splits,
+we recompute the x.sum attribute for the split nodes and its parent. Hence, INSERT
+still runs in worst-case time O(lgn).
+
+## Suppose we send Forrest k reminders for each of n events. What is the expected number of appointments Forrest will remember? Give your answer in terms of k and n.
+//// ANSWER: These are all independent events. So linearity of expectation applies.
+Each given event has been remembered with probability $1 - 2^{-k}$. So in expectation
+n(1 - $2^{-k}$) appointments are remembered.
+
+## Suppose we send Forrest k reminders for a single event. How should we set k with respect to n so that Forrest will remember the event with high probability, i.e., 1 – 1/nº?
+//// ANSWER: This problem is equivalent to how many times we must flip a coin to get a
+head with high probability. The probability of k tails in a row is $1/2^k$. Thus exactly
+$\alpha lg n$ coin flips suffice.
+
+## Suppose we send Forrest k reminders for each of n events. How should we set k with respect to n so that Forrest will remember all the events with high probability, i.e., 1 – 1/nº?
+//// ANSWER: We must send at least k = $\Omega(lg n)$ reminders, because we needed this
+many reminders to remember one event with high probability.
+If we send k = (a + 1) lg n reminders, then each event is remembered with proba-
+bility 1 - $1/n^{\alpha + 1}$. By a union bound, we know that all events are remembered with
+probability 1 - $1/n^{\alpha}$. So, the number of reminders needed is k = $O(lg n)$.
+
+## Assume that Prof. Chopin decides to learn exactly k pieces. Prove that he needs to consider only the k lowest $p_i$s and the k highest $t_j$s.
+//// ANSWER: Assume there exists a selection of teachers and pieces for learning k pieces.
+Let the set of lowest k pieces be $P_k$. If there is a piece in our selection that is $\notin P_k$,
+then we must have a piece in $P_k$ not in the final selection. If we swap the one with
+the higher cost ($\notin P_k$) with the one with lower cost ($\in P_k$), the new selection thus
+made will still be valid, because if the higher time cost was fulfilled in the previous
+selection, the lower time cost in the new selection will still be fulfilled. In this way,
+we can swap pieces until all of them are $\in P_k$.
+Similarly, we can swap the teachers for those of higher value until they are the ones
+with the k highest times.
+
+## Assuming part (a), give an efficient greedy algorithm to determine whether Prof. Chopin can learn exactly k pieces. Argue its correctness.
+//// ANSWER: Let us sort all the teachers and pieces in increasing order beforehand. Call the sorted lists P and T. We see that if a solution exists, there is also one in which P₁
+is paired with $T_{n−k+1}$, $P_2$ is paired with $T_{n−k+2}$ and so on.
+So for each 1 ≤ i ≤ k, the greedy algorithm checks if $P_i < T_{n-k+i}$. If it is, then we
+don't need to use the shared time for this piece. If it is not, we need to use $T_{n-k+i} - P_i$
+of the shared time. We can add up these values. In the end, if the total shared time we
+need is > T, we return false. Otherwise, we return true.
+This takes O(k) time, apart from the initial sorting.
+
+## Using part (b) as a black box, give an efficient algorithm that finds the maximum number of pieces Prof. Chopin can learn. Analyze its running time.
+//// ANSWER: Notice that if $k_{max}$ is the maximum value of pieces we can learn, we can
+also learn k pieces for any k ≤ $k_{max}$. This suggests that we binary search over the
+value of k.
+We try O(log n) values during the binary search, and checking each value takes O(n)
+time. This takes O(n log n) time. The sorting also took O(n log n) time, so the algo-
+rithm takes O(n log n) time overall.
+
+## Draw the residual graph $G_f$ of G with respect to f.
+//// ANSWER:
+
+## List the vertices in the shortest augmenting path, that is, the augmenting path with the fewest possible edges.
+//// ANSWER: s→3→2→5→t
+or
+s→3→2→6→t
+
+## Perform the augmentation. What is the value of the resulting flow?
+//// ANSWER: 26. The augmenting flow has value 1.
+
+## Give a straightforward algorithm that checks whether any subset of k projects can be completed to solve the decisional problem. Analyze its time complexity in terms of m, n, and k.
+//// ANSWER: For each (2) subsets of k projects, check whether any employee is required
+by more than one project. This can be done simply by going each of the k projects p,
+marking the employees in $E_p$ as needed, and if any employee is marked twice, then
+this subset fails. Output "yes" if any subset of k project can be completed, and “no”
+otherwise.
+The time complexity is (1) m because there are (2) subsets of size k and we pay O(m)
+time per subset (because all but one employee will be marked only once). Asymptoti-
+cally, this is $(n/k)^k m$.
+
+## Is your algorithm in part (a) fixed-parameter tractable? Briefly explain.
+//// ANSWER: No. An FPT algorithms requires a time complexity of $n^{o(1)} f(k)$. By con-
+trast, in our running time, the exponent on n increases with k.
+
+## Show that the problem is NP-hard via a reduction from 3D matching.
+Recall the 3D matching problem: You are given three sets X, Y, Z, each of size m;
+a set T ⊆ X × Y × Z of triples; and an integer k. The goal is to determine whether
+there is a subset S ⊆ T of (at least) k disjoint triples.
+//// ANSWER: Each (x, y, z) ∈ T becomes a project that requires employees $E_{(x,y,z)} =$
+{$e_x, e_y, e_z$}. Thus n = |T|, E = X U Y U Z, and m = |X| + |Y|+|Z|. We set k to be
+the same in both problems. The size of the matching is equal to the number of projects
+that can be completed because both problems model disjointness: if k projects can be
+completed, a subset S of size k can be found, and vice versa. The reduction takes
+polynomial time.
+
+## Describe a greedy approximation algorithm for this problem.
+//// ANSWER: Let Jj to be the set of jobs that Mj will run, and Tj to be the total time it
+machine Mj is busy (i.e., $T_j = \sum_{i\in J_j} t_i$). Initially, $J_j = \emptyset$, and $T_j = 0$ for all j.
+For i = 1, . . ., n, assign job i to machine Mj such that $T_j = min_{1<k<m}(T_k)$. That is,
+$J_j = J_j U i$ and $T_j = T_j + t_i$. Output $J_j$'s.
+This runs in O(nlgm) time by keeping a min-heap of the machines based on the
+current total runtime of each machine.
+
+## Show that your algorithm from part (a) is a 2-approximation algorithm.
+//// ANSWER: A lower bound to the optimal is L = max(= $\frac{1}{m}\sum_{1<i<n} t_i$, $max_i(t_i)$) since the
+best you can do is to evenly divide the fractional jobs, and it has to run for at least as
+long as the longest job.
+Now let $M_e$ be the machine that runs for the longest, and let $i^*$ be the last job that was
+assigned to $M_e$ using the greedy algorithm. Let $T_l^*$ be the total run time of all jobs of
+$M_j$ immediately before assigning $i^*$; $T_l^* = min_j T_j^*$. Then we have
+$m\cdot T_l \leq \sum T_l^* = \sum t_i \leq \sum t_i m \cdot L$
+which implies that $T_l^* < L$. Putting it together, we have $T_l = T_l^* + t_{i^*} \leq L + t_{i^*} \leq 2L \leq 2OPT$. Therefore, this is a 2-approximation algorithm.
+
+## Let S be any maximal independent set of G' (i.e., adding any other vertex to
+S would violate independence). Prove that, for each vertex v ∈ V, S contains exactly
+one of the ∆ + 1 vertices in V' of the form (v, i). Hint: Use the Pigeonhole Principle.
+//// ANSWER: It cannot contain more than one, since all of these are connected in G' and
+that would violate independence.
+Now suppose for contradiction that, for some particular u, S contains no vertices of
+the form (u, i). Then by maximality, every vertex of the form (u, i) must have some
+G'-neighbor in S. Since that neighbor is not of the form (u, *), it must be of the form
+(v, i), for some v with (u, v) ∈ E.
+Thus, each of the △+1 vertices of the form (u, i) has some neighbor of the form (v, i)
+in S, where (u,v) ∈ E. Since u has at most A neighbors in G, by the Pigeonhole
+Principle, there must be two different values of i, say i₁ and 12, for which there is a
+single v such that (u, i₁) is a G'-neighbor of (v, i₁), (u, i₂) is a G'-neighbor of (v, i₂),
+and both (v, i₁) and (v, i2) are in S. That is a contradiction because S can contain at
+most one vertex of the form (v, *).
+
+## Now consider a synchronous network of processes based on the graph G, where every vertex knows an upper bound ∆ on the degree. Give a distributed algorithm to find a vertex (∆ + 1)-coloring of G, i.e., a mapping from vertices in V to colors in {0, 1, . . . , ∆} such that adjacent vertices have distinct colors. The process associated with each vertex should output its color. Argue correctness.
+//// ANSWER: The “colors” will be chosen from {0, 1, . . . , ∆}.
+The nodes of G simulate an MIS algorithm for G'. Specifically, the node associated
+with vertex u of G simulates the ∆ + 1 nodes associated with vertices of the form
+(u, i) of G'. The algorithm produces an MIS S for G', where each node of G learns
+which of its simulated nodes correspond to vertices in S. By Part (a), for each vertex u
+of G, there is a unique color i such that (u, i) ∈ S; the node associated with u chooses
+this color i.
+Obviously, this strategy uses at most ∆ + 1 colors. To see that no two neighbors in G
+are colored with the same color, suppose for contradiction that neighbors u and v are
+colored with the same color, say i. That means that both (u, i) and (v, i) are in S. But
+(u, i) and (v, i) are neighbors in G', contradicting the independence property for S.
+
+## Analyze the expected time and communication costs for solving the coloring problem in this way, including the cost of Luby's algorithm.
+//// ANSWER: The costs are just those of solving MIS on G'; the final decisions are local
+and don't require any extra rounds.
+Time (number of rounds): The expected time to solve MIS on G' is O(lg (n· ∆)),
+because the number of nodes in G' is n· (∆ + 1). The O(lg (n· ∆)) bound can be
+simplified to O(lgn).
+Communication (number of messages): The expected number of messages is O(Elg n),
+corresponding to O(lg n) rounds and messages on all edges (in both directions) at each
+round.

@@ -1,0 +1,160 @@
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The student clearly describes a dynamic‐programming algorithm that defines appropriate subproblems, relates them via a correct recurrence (tracking play restrictions over days), uses topological order or recursion with memoization, specifies proper base cases, and argues the O(n) running time.
+- **Partial Credit (4–9 pts):** The student outlines most parts of the DP formulation (subproblems, recurrence, base cases) and shows the idea behind O(n) work per subproblem but omits details (e.g. the exact restriction on plays or precise recurrence).
+- **No Credit:** The answer either misidentifies the problem structure or fails to describe a correct O(n)-time algorithm.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer correctly defines a four–parameter subproblem capturing indices and counts, gives the correct recurrence for matching Charlie’s DNA to parts of Alice’s and Bob’s sequences, specifies the acyclic dependency and base cases, and shows that the overall work is O(n⁴).
+- **Partial Credit (4–9 pts):** The answer gives a recurrence and base cases but may confuse the roles of indices or does not fully justify the O(n⁴) bound.
+- **No Credit:** The answer does not present a valid DP formulation for determining whether Charlie is a fraud.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The student describes a DP algorithm with subproblems parameterized by the plate index, remaining calorie budget, and required sweet count; provides the recurrence comparing “take” versus “skip” choices; correctly states base cases and shows the total number of subproblems is O(nks), yielding O(nks) time.
+- **Partial Credit (4–9 pts):** The answer gives a correct high-level idea or recurrence but lacks clarity on one aspect (e.g. the handling of sweet plates or precise recurrence details) or does not clearly justify the running time.
+- **No Credit:** The answer omits the essential DP formulation or provides an incorrect recurrence.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer clearly defines subproblems that capture the minimum cost to catch monsters using either purchase or ride-share, gives the proper recurrence with choices, details the acyclic dependency and base case, and correctly argues the overall O(n²) time by counting subproblems and work per subproblem.
+- **Partial Credit (4–9 pts):** The answer outlines a strategy with correct options (purchase vs. ride-share) but omits some details (such as precise recurrence or base case) or does not fully justify the O(n²) time.
+- **No Credit:** The answer does not address the cost minimization with a proper recurrence or yields an incorrect time analysis.
+//// RUBRIC: **Total Points: 16**
+- **Full Credit (16 pts):** The answer presents a clever reduction by “layering” the original graph into k+1 copies, explains the one-to-one correspondence between paths and cycles containing exactly k edges, and shows that running a DAG shortest–paths algorithm on the new graph yields the minimum cycle weight in O(k|E|) time.
+- **Partial Credit (6–15 pts):** The answer captures the idea of “unrolling” the graph or layering but may be imprecise in describing the correspondence or the exact running time.
+- **No Credit:** The answer fails to describe a method to count or detect cycles with exactly k edges or does not achieve the stated time bound.
+//// RUBRIC: **Total Points: 18**
+- **Full Credit (18 pts):** The student explains how to transform the original graph into one with three copies per vertex (one for each color), adds inter–vertex “switching” edges with the appropriate penalty, runs SSSP from each colored source, and combines the results to yield a path with minimum color cost in O(|E| + |V| log |V|) time.
+- **Partial Credit (7–17 pts):** The answer shows the idea of splitting vertices by color and using Dijkstra’s algorithm but lacks complete details regarding construction of G′ or fails to mention how color changes add to cost.
+- **No Credit:** The answer does not include the graph transformation or the connection between switching cost and the color–labeled path.
+//// RUBRIC: **Total Points: 18**
+- **Full Credit (18 pts):** The answer clearly models the journey as a layered, acyclic graph where vertices represent (city, day) pairs; gives the construction of edges with appropriate expense weights; explains how to run DAG relaxation to check if a path costing ≤ b exists; and argues that the total time is O(nd).
+- **Partial Credit (7–17 pts):** The student outlines a time–expanded graph approach but omits details (e.g. precise edge weights or base cases) or does not fully justify the O(nd) bound.
+- **No Credit:** The answer fails to map the trip into a graph structure or does not yield the correct running time.
+//// RUBRIC: **Total Points: 18**
+- **Full Credit (18 pts):** The solution constructs a graph that “unrolls” each vertex into k+1 copies, uses Bellman–Ford on the new DAG, and clearly explains how the minimum–weight path corresponds to the cycle through v with exactly k edges, with complete justification of the O(k|E|) bound.
+- **Partial Credit (7–17 pts):** The answer suggests a layered graph method but omits key details (such as the correspondence between layers and cycle edges) or provides a vague time analysis.
+- **No Credit:** The answer does not present a valid method for finding a cycle with exactly k edges.
+//// RUBRIC: **Total Points: 18**
+- **Full Credit (18 pts):** The answer details the re–weighting strategy (using vertex potentials) to ensure all edge weights are positive, describes how to run Dijkstra’s algorithm on the transformed graph, and correctly relates the computed path weight back to the maximum remaining energy, with clear justification of the O(n log n) running time.
+- **Partial Credit (7–17 pts):** The student mentions using re–weighting and Dijkstra but may lack a clear explanation of why the transformation preserves shortest paths or does not fully account for the battery constraints.
+- **No Credit:** The answer does not explain how to obtain a valid path from s to t or fails to justify the running time.
+//// RUBRIC: **Total Points: 8**
+- **Full Credit (8 pts):** The answer correctly states that the worst-case running time for the first function is O(n²) (by processing all n² pairs) and shows that the expected running time is O(n²) using properties of hash tables.
+- **Partial Credit (3–7 pts):** The answer identifies the O(n²) bound for worst-case or expected time correctly but does not justify both cases fully.
+- **No Credit:** The answer states an incorrect running time or fails to analyze both worst-case and expected scenarios.
+//// RUBRIC: **Total Points: 8**
+- **Full Credit (8 pts):** The answer succinctly states the expected running time as O(n) for the function, with a brief explanation based on expected O(1) hash table operations and linear scanning.
+- **Partial Credit (3–7 pts):** The answer gives the expected time without clarifying the underlying assumptions about hash table behavior.
+- **No Credit:** The answer gives an incorrect expected running time or omits analysis.
+//// RUBRIC: **Total Points: 8**
+- **Full Credit (8 pts):** The student correctly identifies that the worst-case running time for the second function is O(n + k) by accounting for the cost of processing both the input array and the range of integers up to k.
+- **Partial Credit (3–7 pts):** The answer provides the correct bound without a detailed explanation or misstates the contribution of k.
+- **No Credit:** The answer states an incorrect worst-case running time.
+//// RUBRIC: **Total Points: 8**
+- **Full Credit (8 pts):** The answer correctly states the expected running time as O(n + k) and justifies it by noting that hash table operations yield constant expected time per insertion or lookup.
+- **Partial Credit (3–7 pts):** The answer states the correct time without explaining the use of hash tables or the additive factor k.
+- **No Credit:** The answer gives an incorrect expected running time.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer identifies that only the root (or first element) can have the smallest key, and clearly explains why only a specific array position (e.g. A) is possible.
+- **Partial Credit (3–9 pts):** The answer states the correct item but does not justify why others are impossible based on heap properties.
+- **No Credit:** The answer names an incorrect set of items or does not justify the selection.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer correctly lists the set of positions (B, C, D, E, F, G) that could hold the third smallest key, with reasoning based on the heap’s structure and ordering constraints.
+- **Partial Credit (3–9 pts):** The answer lists most correct items but omits one or two possibilities or provides only a brief rationale.
+- **No Credit:** The answer lists an incorrect set or fails to refer to heap order properties.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer correctly identifies that only items in the lower half (F, G, H, I, J) can have the largest key and justifies this by referring to the heap property.
+- **Partial Credit (3–9 pts):** The answer gives the correct set with minimal explanation or omits a part of the justification based on heap structure.
+- **No Credit:** The answer lists an incorrect set of items or does not use the heap property for justification.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer provides the correct array representation of the max–heap both before and after H.delete_max(), matching the expected output and showing an understanding of heap re–balancing.
+- **Partial Credit (3–9 pts):** The answer provides a mostly correct representation with one minor error in the ordering or missing an element.
+- **No Credit:** The answer is incorrect or incomplete in describing the heap array after deletion.
+//// RUBRIC: **Total Points: 10**
+- **Full Credit (10 pts):** The answer correctly performs S.delete_at(3) including rotations and then lists the leaves in the correct traversal order.
+- **Partial Credit (3–9 pts):** The answer shows the deletion and rotation process but the final leaf order has a small error.
+- **No Credit:** The answer does not correctly perform the deletion or misidentifies the leaves.
+//// RUBRIC: **Total Points: 20**
+- **Full Credit (20 pts):** The answer correctly explains that counting sort (or radix sort) is optimal since friend numbers are in the range [0, n) and justifies the O(n) worst-case bound with clear reference to the lower bound of Ω(n).
+- **Partial Credit (8–19 pts):** The answer identifies the use of a linear-time sort but provides an incomplete justification or does not fully explain why other sorts would be suboptimal.
+- **No Credit:** The answer suggests a comparison–based sort or gives an incorrect running time.
+//// RUBRIC: **Total Points: 20**
+- **Full Credit (20 pts):** The answer correctly states that a comparison sort is necessary for sorting by book weight, cites the Ω(n log n) lower bound, and recommends an algorithm like merge sort with proper justification.
+- **Partial Credit (8–19 pts):** The answer mentions the need for comparison sorting but omits the lower–bound argument or does not name a specific algorithm.
+- **No Credit:** The answer incorrectly suggests a linear-time sort or fails to justify the Ω(n log n) requirement.
+//// RUBRIC: **Total Points: 20**
+- **Full Credit (20 pts):** The answer clearly explains that bravery cannot be quantified numerically, but the Sorting Sock can identify the bravest student in O(1) time; it then describes a selection process (akin to priority queue sort) that runs in O(n) per extraction, leading to overall optimal O(n) time.
+- **Partial Credit (8–19 pts):** The answer identifies that repeated maximum selection is needed but does not fully explain why the process is optimal or omits details on how bravery is determined.
+- **No Credit:** The answer proposes an algorithm that incorrectly assumes numerical values for bravery or gives an incorrect running time.
+//// RUBRIC: **Total Points: 20**
+- **Full Credit (20 pts):** The answer presents an algorithm that, by considering all pairs from arrays A and B and using a hash table to check for –c in C, runs in expected O(n²) time and clearly explains the correctness and expected analysis.
+- **Partial Credit (8–19 pts):** The answer gives the overall idea and expected time bound but omits details about handling hash table operations or fails to justify the expected performance fully.
+- **No Credit:** The answer proposes an algorithm with an incorrect time bound or does not account for all three arrays.
+//// RUBRIC: **Total Points: 15**
+- **Full Credit (15 pts):** The answer describes a procedure that walks up the Sequence AVL Tree from v to the root, correctly computing the number of nodes preceding v using stored subtree sizes, and argues the O(log n) worst-case time.
+- **Partial Credit (5–14 pts):** The answer provides the basic idea of counting ancestors or using subtree sizes but does not clearly describe how to combine these counts along the upward path.
+- **No Credit:** The answer fails to use subtree information or yields an incorrect algorithm for determining the index.
+//// RUBRIC: **Total Points: 20**
+- **Full Credit (20 pts):** The answer specifies a data structure design that maintains a Set AVL tree per pipe, maps pipes to trees via a hash table, uses a binary min heap to efficiently retrieve the closest pairs (or lonely holes), and explains how the auxiliary hash table maps items to their positions in the heap.
+- **Partial Credit (8–19 pts):** The answer mentions several appropriate data structures but omits one or more details (e.g. how to update the heap or maintain pointers) needed for worst-case guarantees.
+- **No Credit:** The answer fails to suggest a combined structure that supports the operations in worst-case O(·) time or proposes an unrelated data structure.
+//// RUBRIC: **Total Points: 20**
+- **Full Credit (20 pts):** The answer clearly describes maintaining a single augmented Set AVL tree with node attributes (size, prefix, suffix, and substring values) and explains how each property is updated in O(1) time per node, ensuring worst-case operation bounds.
+- **Partial Credit (8–19 pts):** The answer identifies the need for augmented attributes and provides a general idea of updating them but does not fully explain how each attribute is computed or maintained.
+- **No Credit:** The answer does not use tree augmentation or provides a method that does not achieve worst-case performance.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and explains that 2^(2η) grows much faster than any linear (or Θ(2η)) function; hence, constants in exponents matter.
+- **Partial Credit (1–3 pts):** The answer states “False” but gives only a brief or unclear justification about the exponential growth.
+- **No Credit:** The answer states “True” or does not reference the significance of constants in exponents.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and explains that by applying the Master Theorem (Case II), the recurrence T(n) = 2T(n/3) + n² yields T(n) = O(n² log n), not O(n²).
+- **Partial Credit (1–3 pts):** The answer states “False” but gives an incomplete explanation or an incorrect application of the Master Theorem.
+- **No Credit:** The answer states “True” or fails to analyze the recurrence properly.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “True” and explains that performing O(1) amortized operations n times results in a worst-case total of O(n) time.
+- **Partial Credit (1–3 pts):** The answer states “True” but does not explicitly connect amortized cost with worst-case total cost.
+- **No Credit:** The answer states “False” or misinterprets the definition of amortization.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and gives a counterexample from the merge step showing that an element can be compared to O(n) items, refuting the claim.
+- **Partial Credit (1–3 pts):** The answer states “False” but provides only a vague counterexample or insufficient explanation.
+- **No Credit:** The answer states “True” or fails to identify the error in the claim.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and explains that if one could build a Set AVL Tree from a min–heap in O(n) comparisons, it would contradict the Ω(n log n) lower bound for comparison sorting.
+- **Partial Credit (1–3 pts):** The answer states “False” but does not clearly articulate the connection to the sorting lower bound.
+- **No Credit:** The answer states “True” or provides an unrelated argument.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and explains that BFS can encounter already–processed vertices without indicating a cycle in a directed acyclic graph.
+- **Partial Credit (1–3 pts):** The answer states “False” but gives only a brief or unclear counterexample.
+- **No Credit:** The answer states “True” or fails to demonstrate why BFS cannot be used to detect directed cycles.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and clarifies that a witness vertex indicates reachability from a negative–weight cycle, not that it lies on one.
+- **Partial Credit (1–3 pts):** The answer states “False” but does not clearly explain the distinction between being reachable from and being on a cycle.
+- **No Credit:** The answer states “True” or does not distinguish the two cases.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “True” and explains that in complete (dense) graphs, both Floyd–Warshall and Johnson’s algorithm run in O(V³) time.
+- **Partial Credit (1–3 pts):** The answer states “True” but omits mentioning the density of the graph or how Johnson’s algorithm’s time simplifies in that case.
+- **No Credit:** The answer states “False” or provides an incorrect asymptotic comparison.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “True” and explains that Subset Sum is a special case of 0–1 Knapsack, so a poly–time algorithm for Knapsack would yield one for Subset Sum.
+- **Partial Credit (1–3 pts):** The answer states “True” but does not clearly explain the reduction from Subset Sum to 0–1 Knapsack.
+- **No Credit:** The answer states “False” or does not establish the relationship.
+//// RUBRIC: **Total Points: 4**
+- **Full Credit (4 pts):** The answer correctly states “False” and explains that having a pseudopolynomial–time algorithm does not rule out the possibility of a polynomial–time algorithm, since any poly–time algorithm is also pseudopolynomial.
+- **Partial Credit (1–3 pts):** The answer states “False” but gives an incomplete explanation of the relationship between pseudopolynomial and polynomial time.
+- **No Credit:** The answer states “True” or misinterprets the definitions.
+//// RUBRIC: **Total Points: 14**
+- **Full Credit (14 pts):** The answer describes constructing an array of edge weights, sorting it in O(|E| log |E|) time, and then using binary search with reachability tests (via BFS/DFS) to determine the largest k such that Gₖ is not connected, and correctly accounts for the overall O(|E| log |E|) time.
+- **Partial Credit (5–13 pts):** The answer outlines the binary search approach but omits details (such as the reachability test or how the search range is adjusted) or does not fully justify the time bound.
+- **No Credit:** The answer fails to produce a valid algorithm or gives an incorrect time complexity.
+//// RUBRIC: **Total Points: 14**
+- **Full Credit (14 pts):** The answer clearly models the trip as a layered acyclic graph (cities by day), describes how to construct edges with expense weights, uses DAG relaxation to compute shortest paths, and shows the overall O(nd) time.
+- **Partial Credit (5–13 pts):** The answer suggests a time–expanded graph but omits precise details on edge weights or does not fully justify the running time.
+- **No Credit:** The answer does not map the driving problem into a graph or fails to obtain the required time bound.
+//// RUBRIC: **Total Points: 18**
+- **Full Credit (18 pts):** The answer describes a multi–step algorithm that first computes unweighted distances using only red edges, then extends to green and finally blue edges by constructing auxiliary graphs and running SSSP (using BFS, Dijkstra, and Bellman–Ford respectively), and correctly shows that the overall time is O(|V|).
+- **Partial Credit (7–17 pts):** The answer explains the idea of processing edges in stages by color but omits one of the steps or does not clearly justify the O(|V|) bound.
+- **No Credit:** The answer fails to decompose the problem by edge color or yields an incorrect algorithm.
+//// RUBRIC: **Total Points: 16**
+- **Full Credit (16 pts):** The answer details sorting S into an array, defines the subproblem x(i, j) for counting (m, k)-separated subsets, gives the recurrence distinguishing between using and skipping A[i] (with the proper index jump f(i)), and correctly analyzes O(n²m) time (noting possible optimizations).
+- **Partial Credit (6–15 pts):** The answer provides a recurrence and counts subproblems but lacks clarity on how f(i) is determined or the complete recurrence.
+- **No Credit:** The answer does not formulate a valid DP recurrence for (m, k)-separated subsets or misstates the time complexity.
+//// RUBRIC: **Total Points: 18**
+- **Full Credit (18 pts):** The answer provides a clear DP formulation that partitions guests into two groups (left/right of the Queen), defines subproblems with parameters for current index and seating counts, specifies the recurrence with associated hatred costs, and argues that there are O(n³) subproblems with O(1) work each.
+- **Partial Credit (7–17 pts):** The answer describes the general idea of partitioning and cost minimization but omits details in the recurrence or fails to explain the cubic time bound.
+- **No Credit:** The answer does not provide a valid algorithm or does not relate the seating order to minimizing mutual hatred.
