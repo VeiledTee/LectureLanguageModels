@@ -77,6 +77,7 @@ class PineconeRAG:
         start_time = time.time()
         batch = []
         for file_path in directory.glob("*.txt"):
+            print(file_path)
             try:
                 # Get filename for metadata
                 filename = file_path.name
@@ -84,17 +85,34 @@ class PineconeRAG:
                 # Use preprocessing.py's markdown parser
                 sections = load_markdown_sections(str(file_path))
 
+                if not sections:  # Empty dictionary case
+                    with open(str(file_path), 'r', encoding='utf-8') as notes_file:
+                        content = notes_file.read()
+                        lines = content.split('\n')
+
+                        if len(lines) > 1:  # Multi-line content
+                            sections = {
+                                           f"Path NA - Line {i + 1}": line.strip()
+                                           for i, line in enumerate(lines)
+                                           if line.strip()  # Skip empty lines
+                                       } or {'Path NA': 'Empty file'}  # Fallback if all lines empty
+                        else:  # Single-line or empty content
+                            stripped = content.strip()
+                            sections = {'Path NA': stripped or 'Empty file'}
+
                 # Process hierarchical sections
                 for section_path, content in sections.items():
                     # Generate chunks with filename in metadata
                     chunks = self._process_section(
                         content=content,
                         section_path=section_path,
-                        filename=filename,  # Changed parameter name for clarity
+                        filename=filename,
                     )
+                    print(section_path, content)
 
                     # Add to batch with embeddings
                     batch.extend(self._create_vectors(chunks, filename))
+                    print(len(batch))
 
                     # Upsert in configured batches
                     if len(batch) >= batch_size:
