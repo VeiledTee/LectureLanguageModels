@@ -665,18 +665,25 @@ async def convert_markdown_to_json(markdown_path: Path, output_type: str) -> Non
         logger.error(f"JSON conversion failed for {markdown_path}: {str(e)}")
 
 
-def convert_json_to_markdown(json_data):
+def convert_json_exam_to_markdown(json_data, output_file: Path):
     output = []
     for problem in json_data:
-        for subquestion in problem.get("subquestions", []):
-            # Format the problem number and question
-            output.append(f"## {subquestion['problem_number']}. {subquestion['question']}")
-            # Add the answer
-            output.append(f"//// ANSWER: {subquestion['answer']}\n")
+        # Format the problem number and question
+        output.append(f"###### {problem['question']}")
+        # Add the answer
+        output.append(f"//// ANSWER: {problem['answer']}\n")
 
     # Join all lines and write to a file
-    with open("q1_parsed_converted.txt", "w") as f:
+    with open(output_file, "w", encoding='utf-8') as f:
         f.write("\n".join(output))
+
+
+def convert_json_notes_to_markdown(json_data, output_file: Path):
+    answers = [item['answer'] for item in json_data]
+
+    # Save answers to a text file
+    with open(output_file, 'w', encoding='utf-8') as txt_file:
+        txt_file.write('\n'.join(answers))
 
 
 async def convert_note_to_images(pdf_path: Path, file_type: str) -> int:
