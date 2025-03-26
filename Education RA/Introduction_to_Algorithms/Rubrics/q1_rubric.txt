@@ -1,0 +1,238 @@
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer clearly states “False” and explains that the technique used in Strassen’s algorithm cannot be adapted because there is no proper notion of “negation” for the matrix‐operations.
+Partial Credit (2–3 pts): Answer correctly indicates “False” but provides an incomplete or vague explanation.
+No Credit: Answer states “True” or offers no justification linking the negation issue to the method.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “True” and correctly explains that for sparse graphs (with E = O(V^1.5)), Johnson’s algorithm (O(VE + V² log V)) improves over Floyd–Warshall’s O(V³) running time.
+Partial Credit (2–3 pts): Answer correctly states “True” but the explanation lacks clarity or omits the asymptotic reasoning.
+No Credit: Answer states “False” or does not reference the proper asymptotic comparison.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer correctly states “False” and explains that the dependency graph for dynamic programs is not a rooted tree but a Directed Acyclic Graph (DAG).
+Partial Credit (2–3 pts): Answer indicates “False” with an incomplete explanation (e.g. mentioning cycles without noting the DAG structure).
+No Credit: Answer states “True” or gives an explanation unrelated to the DAG property.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “True” and correctly explains that a lowest‐weight edge (often added first by Kruskal’s algorithm) must appear in some minimum spanning tree.
+Partial Credit (2–3 pts): Answer states “True” but with a minimal or unclear explanation.
+No Credit: Answer states “False” or gives an incorrect reasoning.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “True” and explains that with exactly one cycle (n vertices, n edges), one can find the cycle (e.g. via DFS) and remove its heaviest edge to obtain an MST in O(n) time.
+Partial Credit (2–3 pts): Answer states “True” but the method for finding the cycle or identifying the heaviest edge is unclear or incomplete.
+No Credit: Answer states “False” or does not provide any MST construction rationale.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “True” and correctly reasons that for integer capacities, each Ford–Fulkerson augmentation increases flow by at least one unit, leading to O((V+E)|f|) iterations.
+Partial Credit (2–3 pts): Answer states “True” but lacks a clear connection between integer capacities and the bound on iterations.
+No Credit: Answer states “False” or omits the unit–increase argument.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “False” and explains that increasing all edges in one min cut may not raise the max flow if another min cut remains unchanged.
+Partial Credit (2–3 pts): Answer states “False” but provides an imprecise explanation regarding alternative min cuts.
+No Credit: Answer states “True” or offers no relevant justification.
+//// RUBIC: Total Points: 4
+
+Full Credit (4 pts): Answer states “False” and correctly notes that linear programs can have many optimal solutions when the objective function is parallel to a constraint.
+Partial Credit (2–3 pts): Answer states “False” without a clear explanation linking parallel constraints to multiple optima.
+No Credit: Answer states “True” or fails to address the possibility of non–unique solutions.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “False” and explains that if P = NP then every problem in NP (including NP–complete ones) would have a polynomial–time algorithm, making the statement false.
+Partial Credit (2–3 pts): Answer states “False” but with an incomplete or confused explanation regarding the implications of P = NP.
+No Credit: Answer states “True” or does not address the relationship between P, NP, and NP–hardness.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Answer states “False” and correctly notes that repeatedly deleting the vertex of maximum degree can yield an approximation ratio far worse than 2 (e.g. logarithmic factors).
+Partial Credit (2–3 pts): Answer states “False” with a vague reference to a known approximation bound but omits specific details.
+No Credit: Answer states “True” or gives a justification unrelated to the approximation ratio.
+//// RUBRIC: Total Points: 7
+Full Credit (7 pts): Drawing correctly depicts a valid shortest–path from Boston to New York using the provided graph details and charging station locations (even if referenced from the image).
+Partial Credit (3–6 pts): Drawing shows a reasonable attempt but includes minor errors (e.g. missing a charging station or slight mislabeling of vertices).
+No Credit: Drawing is incorrect or missing key elements required by the problem.
+//// RUBRIC: Total Points: 7
+Full Credit (7 pts): Drawing correctly shows the shortest path under m = 100 with proper adherence to the distance constraint between charging stations.
+Partial Credit (3–6 pts): Drawing is mostly correct but contains minor mistakes regarding distances or station placements.
+No Credit: Drawing fails to respect the m = 100 constraint or is largely incorrect.
+//// RUBRIC: Total Points: 6
+Full Credit (6 pts): Provides a two–step algorithm: first running Johnson’s algorithm to get all–pairs shortest paths, then constructing a new graph among charging stations and running Dijkstra’s algorithm, along with a correct runtime analysis.
+Partial Credit (3–5 pts): Outlines the two–step approach but misses some details (e.g. omitting the construction of graph G′ or an incomplete runtime analysis).
+No Credit: Fails to describe the proper algorithm or provides an algorithm with incorrect time complexity.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Greedy algorithm correctly sorts psets by increasing dᵢ/cᵢ, includes an O(N log N) runtime analysis, and offers a brief swapping argument to justify optimality.
+Partial Credit (5–9 pts): Provides the correct ordering or runtime analysis but omits the justification via swapping or provides an incomplete proof.
+No Credit: Gives an incorrect algorithm or omits both analysis and justification.
+//// RUBRIC: Total Points: 7
+Full Credit (7 pts): Answer correctly derives the exact number of nights (|E| + m – 1 or |V| + m – 2) and acknowledges that alternate expressions merit partial credit.
+Partial Credit (3–6 pts): Answer provides a formula that is close but may have minor arithmetic or indexing errors.
+No Credit: Answer is unrelated or completely incorrect regarding the number of nights.
+//// RUBRIC: Total Points: 7
+Full Credit (7 pts): Binary search approach is clearly described with the correct bound (O(log(E + m)) iterations) and proper analysis using T(V,E,m).
+Partial Credit (3–6 pts): Mentions binary search but provides an incomplete runtime analysis or leaves out a key factor in the bound.
+No Credit: Describes a sequential scan or an algorithm that does not utilize binary search.
+//// RUBRIC: Total Points: 6
+Full Credit (6 pts): Provides the “magic” algorithm by reducing the problem to a max–flow computation on an appropriately constructed time–expanded graph and offers one correct runtime analysis variant.
+Partial Credit (3–5 pts): Correctly suggests a max–flow formulation but with incomplete details on graph construction or time complexity.
+No Credit: Fails to capture the max–flow idea or gives an entirely incorrect formulation.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Constructs the correct flow–network with a super source, super sink, and proper capacities on edges (person to day) so that a max flow of value m yields a valid assignment.
+Partial Credit (5–9 pts): Provides a flow–network idea that is mostly correct but omits details (e.g. capacities on certain edges or how to interpret the flow solution).
+No Credit: Does not use a flow formulation or produces an algorithm that does not ensure a valid assignment.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Uses DFS to detect cycles and, if none are found, correctly applies a topological sort to determine whether a unique vertex ordering (Hamiltonian path) exists.
+Partial Credit (5–9 pts): Mentions DFS or topological sort but fails to combine them or omits the check for a complete ordering.
+No Credit: Provides an algorithm that does not address both cycle detection and the Hamiltonian path condition.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Provides a clear reduction from the Hamiltonian Path problem to the problem of deciding if G′ contains both a cycle and a Hamiltonian path, with a complete construction and explanation.
+Partial Credit (5–9 pts): Outlines a reduction but leaves out some details of the construction or correctness argument.
+No Credit: Fails to provide a reduction or gives an incorrect reduction.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Correctly states “True” and notes that for equal–sized intervals, the greedy (earliest–start) algorithm is equivalent to the earliest–finish time algorithm that is optimal.
+Partial Credit (2–3 pts): States “True” without mentioning the equivalence or gives an imprecise rationale.
+No Credit: States “False” or provides an unrelated explanation.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and correctly identifies that the weighted interval scheduling algorithm runs in O(n log n) time.
+Partial Credit (2–3 pts): Provides the correct answer without citing the algorithm’s running time derivation.
+No Credit: States “False” or does not address the dynamic programming approach.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and explains that grouping into 3’s yields the recurrence T(n)=T(n/3)+T(2n/3)+O(n), which does not lead to linear time.
+Partial Credit (2–3 pts): States “False” but offers only a minimal or unclear justification.
+No Credit: States “True” or does not mention the recurrence issue.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and correctly explains via the recurrence T(n)=2T(n/2)+Θ(n²) that the overall time remains Θ(n²).
+Partial Credit (2–3 pts): States “False” without mentioning the recurrence or error in merging.
+No Credit: States “True” or provides an incorrect recurrence analysis.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and explains that the overall cost for VEB sort remains dominated by n·lg lg(u) time.
+Partial Credit (2–3 pts): States “False” with a brief or incomplete runtime comment.
+No Credit: States “True” or gives an unrelated explanation.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and mentions that using van Emde Boas for successor queries requires more than O(n) space or must use randomization.
+Partial Credit (2–3 pts): States “False” without clear explanation.
+No Credit: States “True” or does not explain the space/time tradeoff.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and accepts that in the potential method the potential function is chosen to remain non–negative.
+Partial Credit (2–3 pts): States “True” but provides minimal justification.
+No Credit: States “False” or ignores the non–negative potential requirement.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and correctly explains that the quicksort variant can be implemented using O(log n) auxiliary space, not O(n).
+Partial Credit (2–3 pts): States “False” without citing the space–reuse argument.
+No Credit: States “True” or fails to address the auxiliary space optimization.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and explains that although skip list search is O(log n) with high probability, there is a nonzero chance for a much slower query.
+Partial Credit (2–3 pts): States “True” without noting the worst-case possibility.
+No Credit: States “False” or gives an incorrect time bound.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and explains that the given collection of hash functions is not universal because certain key pairs collide with probability exceeding the allowed bound.
+Partial Credit (2–3 pts): States “False” without a clear probability analysis.
+No Credit: States “True” or does not discuss collision probabilities.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and notes that unless the two steps are independent, the success probability of the overall algorithm is not simply p₁p₂.
+Partial Credit (2–3 pts): States “False” with an incomplete explanation regarding independence.
+No Credit: States “True” or gives no reasoning about independence.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and correctly shows that the recurrence T(n)=2T(n/2)+Θ(n²) solves to Θ(n²), not O(n² log n).
+Partial Credit (2–3 pts): States “False” but omits details on solving the recurrence.
+No Credit: States “True” or provides an incorrect recurrence solution.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and explains that for “paranoid” quicksort any constant fraction (not just 1/4) suffices for the expected O(n log n) bound.
+Partial Credit (2–3 pts): States “False” with an incomplete explanation of the constant fraction requirement.
+No Credit: States “True” or does not mention the fraction needed.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and cites the standard amortized analysis for binary min–heap operations.
+Partial Credit (2–3 pts): States “True” without discussing the amortization details.
+No Credit: States “False” or provides an incorrect amortization argument.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and provides a counterexample (e.g. keys 1 and 3 always collide) to show that the hash family is not universal.
+Partial Credit (2–3 pts): States “False” without a clear example or probability analysis.
+No Credit: States “True” or offers no justification.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and explains that replacing (+, min) with (+, *) does not capture the intended product over an infinite number of paths (especially in the presence of cycles).
+Partial Credit (2–3 pts): States “False” with a vague mention of cycles or infinite paths.
+No Credit: States “True” or fails to discuss the impact of cycles.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and correctly reasons that negating all weights and then finding the MST produces the maximum–weight spanning tree.
+Partial Credit (2–3 pts): States “True” without a clear explanation of why the MST algorithm applies after negation.
+No Credit: States “False” or does not explain the connection.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and notes that even in a graph with unique edge weights, a counterexample can show that the second–lowest spanning tree is not unique.
+Partial Credit (2–3 pts): States “False” without providing any counterexample reasoning.
+No Credit: States “True” or gives no supporting argument.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and clearly explains that d₍uv₎^(k) represents the shortest path using only intermediate vertices {1,…,k} (not paths with at most k edges).
+Partial Credit (2–3 pts): States “False” but offers an incomplete explanation of the role of intermediate vertices.
+No Credit: States “True” or misinterprets the recursion.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and correctly explains that by constructing a BFS tree (with subsequent broadcast and convergecast), one can achieve the stated time and message bounds.
+Partial Credit (2–3 pts): States “True” with a minimal or partially correct reference to BFS without covering all phases.
+No Credit: States “False” or gives an unrelated algorithm.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and explains that simply downloading a hash does not protect against an adversary replacing both the file and its hash.
+Partial Credit (2–3 pts): States “False” without discussing the adversary’s capabilities.
+No Credit: States “True” or fails to mention the replacement vulnerability.
+//// RUBIC: Total Points: 4
+
+Full Credit (4 pts): States “False” and correctly explains that knowing only g^a, g^b, and g^c does not enable computation of g^(abc) because the necessary combined exponent information is missing.
+Partial Credit (2–3 pts): States “False” with an incomplete explanation regarding the missing multiplicative step.
+No Credit: States “True” or does not discuss the independence of exponents.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “True” and correctly reasons that an optimal cache–oblivious algorithm cannot do fewer memory transfers than the best external–memory algorithm when using a proper replacement policy (e.g. LRU).
+Partial Credit (2–3 pts): States “True” without addressing the comparison between memory models.
+No Credit: States “False” or offers an unrelated explanation.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “False” and provides a counterexample (e.g. binary search) to show that time–optimality does not imply cache–oblivious optimality.
+Partial Credit (2–3 pts): States “False” without citing a concrete counterexample.
+No Credit: States “True” or fails to relate time and memory–transfer efficiency.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Clearly identifies that each node must store both its subtree size and the sum of its keys, and explains how to traverse the search path (using left–sibling information) to compute AVERAGE(x) in O(log n) time.
+Partial Credit (5–9 pts): Mentions one or both extra pieces of information but provides an incomplete explanation for answering AVERAGE(x).
+No Credit: Does not identify the necessary extra information or does not explain how to use it.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Explains that during INSERT, the algorithm updates each affected node’s size and sum (both during normal insertion and node splits) and justifies that the updates incur O(log n) overhead per insert.
+Partial Credit (5–9 pts): Describes how to update either size or sum but omits details on splits or the overall O(log n) bound.
+No Credit: Fails to mention updating the extra information or provides an incorrect update method.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Correctly computes the expected number of remembered appointments as n·(1 – 2^(–k)) and explains the use of linearity of expectation over independent events.
+Partial Credit (2–3 pts): Provides the correct expression without explaining the independence or the linearity principle.
+No Credit: Provides an incorrect expression or does not justify the expected value.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Shows that for a single event, sending k reminders gives a failure probability of 2^(–k), so setting k = Ω(log n) (with an appropriate constant) ensures success with probability 1 – 1/n^α.
+Partial Credit (2–3 pts): States that k should be proportional to log n but does not derive the constant factor or explain the coin–flip analogy.
+No Credit: Provides an incorrect dependency on n or omits the high–probability argument.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Correctly argues that to ensure all n events are remembered with high probability, k must be Ω(log n) (using a union bound over events).
+Partial Credit (2–3 pts): Indicates k is logarithmic in n but fails to use a union bound or provide detailed reasoning.
+No Credit: States an incorrect relationship between k and n.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Provides a clear argument that only the k lowest pᵢ’s and the k highest tⱼ’s need to be considered by showing that any swap with a higher–cost piece or lower–value teacher would only improve (or not worsen) the overall cost.
+Partial Credit (5–9 pts): Mentions swapping or ordering arguments but does not fully justify why other pieces/teachers can be disregarded.
+No Credit: Fails to provide a convincing argument or gives an incorrect justification.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Describes a greedy algorithm that first sorts the pieces and teachers, pairs the lowest–cost pieces with the highest–time teachers in a natural order, and then checks if the extra self–learning time does not exceed T; includes a brief correctness argument.
+Partial Credit (5–9 pts): Outlines the sorting and pairing idea but omits some details (e.g. how the extra time is computed or the full correctness argument).
+No Credit: Proposes an algorithm that does not relate the sorted orders or gives an incorrect pairing method.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Uses binary search over k and correctly argues that if k pieces can be learned then so can any k′ ≤ k; provides the O(n log n) runtime analysis including the cost of sorting.
+Partial Credit (5–9 pts): Mentions binary search but leaves out details of the feasibility check or the runtime analysis.
+No Credit: Does not use binary search or provides an algorithm that does not correctly compute the maximum number of pieces.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Provides a clear, correctly labeled residual graph diagram that reflects all forward and backward edges with the correct capacities based on the given flow f.
+Partial Credit (2–3 pts): Provides a diagram that shows most of the correct edges but has minor labeling or capacity errors.
+No Credit: Provides an incorrect or incomplete diagram (or no diagram at all).
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Lists a valid shortest augmenting path (e.g. s → 3 → 2 → 5 → t or the alternative provided) that minimizes the number of edges.
+Partial Credit (2–3 pts): Provides a path that is almost correct but is missing a vertex or includes an extra vertex.
+No Credit: Lists a path that is clearly not the shortest or does not include the correct endpoints.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): Correctly states that the augmenting flow has value 1 and computes the new overall flow (26) accurately.
+Partial Credit (2–3 pts): Identifies the augmenting flow value correctly but makes an arithmetic error in the final flow computation.
+No Credit: Fails to identify the correct augmenting flow or computes an incorrect final flow value.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Provides a straightforward algorithm that checks every subset of k projects by verifying that no employee is assigned to more than one project, and correctly analyzes the time complexity as roughly (n/k)ᵏ·m.
+Partial Credit (5–9 pts): Describes a subset–checking method but omits details on how employees are marked or provides only a loose time complexity analysis.
+No Credit: Proposes an algorithm that does not correctly address the subset constraint or offers an incorrect time analysis.
+//// RUBRIC: Total Points: 4
+Full Credit (4 pts): States “No” and correctly explains that the algorithm is not fixed–parameter tractable because the exponent on n grows with k, violating the FPT requirement.
+Partial Credit (2–3 pts): States “No” without sufficient explanation of the FPT definition.
+No Credit: States “Yes” or gives no justification regarding the dependence on k.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Provides a complete reduction from 3D matching by mapping each triple (x, y, z) to a project (requiring employees corresponding to x, y, and z) and shows the equivalence in selecting k disjoint triples and completing k projects, with all steps clearly explained.
+Partial Credit (5–9 pts): Gives a reduction that captures the basic idea but omits one or two details of the mapping or the equivalence argument.
+No Credit: Fails to produce a reduction or gives an incorrect mapping between the problems.
+//// RUBRIC: Total Points: 10
+Full Credit (10 pts): Describes a greedy approximation algorithm for scheduling jobs to machines that clearly assigns each job to the machine with the current minimum load and provides a brief justification of its approximation quality.
+Partial Credit (5–9 pts): Explains the greedy assignment without a complete analysis of its performance or omits a clear description of the update rule for each machine’s load.
+No Credit: Proposes an algorithm that does not follow a greedy strategy or fails to explain how the approximation is achieved.

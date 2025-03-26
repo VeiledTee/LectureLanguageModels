@@ -1,0 +1,524 @@
+###### Describe a O(n)-time algorithm to determine the maximum amount of lottery winnings Tiff can win in the next n days by playing the lottery infrequently.
+//// ANSWER: 1. Subproblems
+• Let L(i) be the cash payout of playing the lottery on day i ∈ {1,...,n}
+• Need to keep track of most recent two plays (or equivalently, restrictions on future plays)
+• x(i, j): maximum lottery winnings playing on suffix of days from i to n,
+  assuming play on day i and next allowable play is on day i + j
+• for i ∈ {1,...,n} and j ∈ {1,..., 6}
+
+2. Relate
+• Tiffany will play again on some day in future. Guess!
+• It is never optimal to go 11 days without playing the lottery, as playing on the 6th day
+  would be valid and strictly increase winnings
+• The next play can be on day i + k for k ∈ {j, ... , 11}
+• If next play on i + k for k ∈ {1,..., 6}, next allowable play is on day i + 7
+• If next play on i + k for k ∈ {7,..., 11}, next allowable play is on day i + k + 1
+• x(i, j) = L(i) + max{x(i + k, max{1, 7 − k}) | k ∈ {i, ... , 11} and i + k ≤ n}
+
+3. Topo
+• Subproblems x(i, j) only depend on strictly larger i, so acyclic
+
+4. Base
+• x(n, j) = L(i) for all j ∈ {1,..., 6}
+
+5. Original
+• Solve subproblems via recursive top-down or iterative bottom-up
+• Guess first play (within first seven days)
+• Solution to original problem is max{x(i, 1) | i ∈ {1,..., 7}}
+• (Can store parent pointers to reconstruct days played)
+
+6. Time
+• # subproblems: 6n
+• work per subproblem: O(1)
+• work for original: O(1)
+• O(n) running time
+
+
+###### Describe an O(n^4)-time algorithm to determine whether Charlie is a fraud.
+//// ANSWER: 1. Subproblems
+• Let A, B, and C be the relevant length-n DNA sequences from Alice, Bob, and Charlie.
+• Want to match some characters of A and B to all characters of C.
+• x(i, j, ki, kj): true if a length-ki subsequence of suffix A[i:] and a length-kj subsequence of prefix B[j:]
+  can match all characters in suffix C[(n − ki − kj):] (the suffix containing the last ki + kj characters),
+  and false otherwise.
+• Defined for i, j ∈ {0,...,n} and ki, kj ∈ {0,...,n/2} (assume n is even).
+
+2. Relate
+• Must match character C[i]; if A[i] = C[i] or B[i] = C[i], recurse on remainder.
+• Alternatively, do not use either A[i] or B[i].
+• The recurrence relation:
+
+x(i, j, ki, kj) = OR { x(i + 1, j, ki + 1, kj) if A[i] = C[n − ki − kj] and ki > 0, x(i, j + 1, ki, kj + 1) if B[j] = C[n − ki − kj] and kj > 0, x(i + 1, j, ki, kj) if i < n, x(i, j + 1, ki, kj) if j < n }
+
+3. Topo
+• Subproblem x(i, j, ki, kj) only depends on strictly smaller i + j, so it is acyclic.
+
+4. Base
+• x(n, n, 0, 0) is true (all matched!).
+• x(n, j, ki, kj) is false if ki > 0 (no more characters in A).
+• x(i, n, ki, kj) is false if kj > 0 (no more characters in B).
+
+5. Original
+• Solve subproblems via recursive top-down or iterative bottom-up approach.
+• Solution to the original problem is x(n, n, n/2, n/2).
+
+6. Time
+• Number of subproblems: O(n⁴).
+• Work per subproblem: O(1).
+• Overall time complexity: O(n⁴).
+
+
+###### Describe an O(nks)-time algorithm to find the maximum volume of food Obert can eat given his diet.
+//// ANSWER: 1. Subproblems
+• x(i, j, s0): maximum volume of food possible when purchasing a suffix of plates pᵢ to pₙ₋₁,
+  using at most j calories and ordering exactly s0 sweet plates.
+• Defined for i ∈ {0,...,n}, j ∈ {0,...,k}, s0 ∈ {0,...,s}.
+
+2. Relate
+• Either order plate pᵢ or not. Guess!
+• If ordering pᵢ, gain vᵢ in volume but use cᵢ calories.
+• If pᵢ is sweet, must order one fewer sweet plate.
+• The recurrence relation:
+x(i, j, s0) = max { x(i + 1, j, s0), vᵢ + x(i + 1, j - cᵢ, s0 - sᵢ) if cᵢ ≤ j and sᵢ ≤ s0 }
+
+3. Topo
+• Subproblems x(i, j, s0) only depend on strictly larger i, so it is acyclic.
+
+4. Base
+• x(n, j, 0) = 0 for any j (no more plates to eat).
+• x(n, j, s0) = −∞ for s0 > 0 and any j (no more plates, but still need to eat sweet).
+
+5. Original
+• Solution given by x(0, k, s).
+
+6. Time
+• Number of subproblems: O(nks).
+• Work per subproblem: O(1).
+• Overall time complexity: O(nks).
+
+
+###### Given the price lists of in-game purchases and ride sharing trips between all pairs of monsters, describe an O(n²)-time algorithm to determine the minimum amount of money Kash must spend in order to catch all n monsters, assuming that she starts at the location of monster m₁.
+//// ANSWER: 1. Subproblems
+• x(i, j): minimum cost of catching monsters mᵢ to mₙ, starting at location mⱼ for j ≤ i.
+
+2. Relate
+• If already at the location of monster mᵢ, catch it for free!
+• Otherwise, acquire monster mᵢ either by purchasing or ride-sharing to its location. Guess!
+• If purchasing, spend cᵢ dollars; otherwise, ride-share from mⱼ to mᵢ.
+• The recurrence relation:
+
+x(i, j) = min { x(i + 1, j) if j = i, cᵢ + x(i + 1, j), s(j, i) + x(i, i) }
+
+3. Topo
+• Subproblems x(i, j) only depend on strictly larger i + j, so it is acyclic.
+
+4. Base
+• x(n + 1, j) = 0 for any j (no cost when no monsters are left to catch).
+
+5. Original
+• Solution given by x(1, 1).
+
+6. Time
+• Number of subproblems: O(n²).
+• Work per subproblem: O(1).
+• Overall time complexity: O(n²).
+
+
+###### Given a weighted, directed graph G = (V, E, w) with positive and negative edge weights, and given a particular vertex v ∈ V, describe an O(k|E|)-time algorithm to return the minimum weight of any cycle containing vertex v that also has exactly k edges, or return that no such cycle exists. Recall that a cycle may repeat vertices/edges.
+//// ANSWER: Assume all vertices in G are reachable from v so that |V| = O(|E|); otherwise, run BFS or DFS to solve single source reachability from v, and replace G with the subgraph reachable from v in O(|E|) time. Construct a new graph G' = (V', E') with:• k + 1 vertices for each vertex v ∈ V: specifically vᵢ for all i ∈ {0, . . ., k}; and• k edges for each edge (u, v) ∈ E: specifically edges (uᵢ₋₁, vᵢ) for all i ∈ {1, ...,k}.Graph G' has (k + 1)|V| = O(k|E|) vertices and k|E| edges in k + 1 layers, and has the property that paths from v₀ to vₖ have a one-to-one correspondence with cycles through v in G of the same weight containing exactly k edges, since exactly one edge is traversed with each increase in layer. So solve SSSP from v₀ in G' to return the minimum weight path to vₖ. Since edges in G' always increase in subscript, G' is a DAG, so we can solve SSSP using DAG relaxation in linear time with respect to the size of G'. So together with initial pruning, this algorithm takes O(k|E|) time in total.
+
+###### Given a 3-color labeling c : E → {red, green, blue} of a connected, weighted, undirected graph G = (V, E, w) containing only positive edge weights, and given two vertices s,t ∈ V, describe an efficient algorithm to return a path from s to t having minimum color cost.
+//// ANSWER: Construct a new graph G' = (V', E') with:• 3 vertices for each vertex v ∈ V: specifically vᵢ for i ∈ {red, green, blue} corresponding to arriving at vertex v via an edge with color i;• (vertex-edges) 3 undirected edges for each vertex v ∈ V: specifically {vred, vblue}, {vgreen, vred}, and {vblue, vgreen} of weight wc; and• (edge-edges) 1 undirected edge for each undirected edge {u,v} ∈ E of weight w and color c(u, v): specifically undirected edge {uc(u,v), vc(u,v)} with weight w.Graph G' has 3|V| vertices and 3|V| + |E| edges, and has the property that the minimum weight of any path in G' from any vertex sᵢ to any vertex tⱼ for i, j ∈ {red, green, blue} is equal to the minimum color cost of any 3-color labeled path in G from s to t, as switching colors at a vertex requires traversing an edge of weight w. So solve SSSP three times, once from each vertex sᵢ and find the minimum weight of any path to any tⱼ, and then return a minimum path by constructing parent pointers as shown in lecture. Since this graph only has positive edge weights, we can solve SSSP using Dijkstra in O(|V| + |E| + |V|log |V|) = O(|E| + |V|log|V|) time.
+
+###### Ranger Raargorn needs to deliver a message from her home town of Tina's Mirth to the town of Riverdell, but the towns of Midgard have been overrun by an army of k Orks. Raargorn has a map of the n towns and 3n roads in Midgard, where each road connects a pair of towns in both directions. Scouts have determined the number of Orks rᵢ ≥ 1 stationed in each town i (there is at least one Ork stationed in each town). Describe an O(k)-time algorithm to find a path from Tina's Mirth to Riverdell on which Raargorn will encounter the fewest total Orks in towns along the way.
+//// ANSWER: Construct a graph G = (V, E) with:• a chain of rᵢ vertices (v₁, ..., vᵣᵢ) connected by rᵥ – 1 edges for each town v, i.e., unweighted directed edge (vᵢ, vᵢ₊₁) for all i ∈ {1, . . ., rᵥ − 1}; and• two unweighted directed edges (vᵣᵥ, u₁) and (vᵣᵥ, u₁) for each road between towns u and v.Graph G has ∑ rᵥ = k vertices and 2(3n) + ∑(rᵥ − 1) = 5n + k edges. Since there is at least one Ork in each town, k ≥ n, so G has size O(k). Let s and t correspond to the towns of Tina's Mirth and Riverdell respectively. Graph G has the property that any path from s₁ to tᵣ₁ corresponds to a path from Tina's Mirth to Riverdell crossing edges equal to the number of Orks encounters in towns along the way, since for any road connecting towns u and v, going from u₁ to v₁ requires traversing rᵥ edges in G. So solve unweighted SSSP from s₁ to tᵣ₁ using BFS in O(k) time, and return the sequence of towns visited along the found shortest path by following parent pointers.
+
+###### Given a cycle-sparse graph, describe an O(|V|³)-time algorithm to return the number of negative-weight cycles in G.
+//// ANSWER: Construct a new graph G' by adding a supernode x to G with a zero-weight directed edge (x, v) for each v ∈ V. Then run SSSP from x in G' using Bellman-Ford to label each vertex v ∈ V with its shortest path distance δ(x, v). For each v ∈ V, δ(x,v) = −∞ if and only if v is reachable from a negative-weight cycle in G (since adding x does not add or remove any cycles). Further, for any directed edge (u, v), if δ(x, u) = δ(x,v) = -∞, then both u and v are each reachable from the same simple negative-weight cycle (since v is reachable from u and each vertex is reachable from at most one simple negative-weight cycle).So, construct a new graph G" on only the vertices v ∈ V where δ(x,v) = −∞ in G', with an undirected edge between u and v in G" if they share a directed edge in G. Graph G" has the property that the number of connected components in G" equals the number of negative-weight cycles in G, so count and return the number of connected components in G" using Full-BFS or Full-DFS. This algorithm takes O(|V|+|E|) time to construct G', O(|V||E|) time to run Bellman-Ford, O(|V|+|E|) time to construct G", and then O(|V|+|E|) time to count connected components in G", leading to an O(|V||E|) = O(|V|³) running time in total.
+
+###### Assuming she departs s at half capacity, [b/2], describe an O(nlogn)-time algorithm to determine the maximum amount of energy Bellham can have in her battery upon reaching t.
+//// ANSWER: Construct graph G with a vertex for each of the n locations in Norway and a directed edge for each of the O(n) roads: specifically for each road from location u to v, add directed edge (u, v) weighted by J(u,v). Then [b/2] minus the weight of a minimum-weight path from s to t in G would correspond to the maximum energy Bellham could have upon reaching t; or at least it would be if she did not either exceed or exhaust her tank along the way.First we show that every minimum-weight path from s to t in G is simple. It suffices to show that every directed cycle in G has positive weight. Consider cycle (c₀, ..., cₖ₋₁, cₖ = c₀). C has weight ∑ᵢ₌₁ᵏ J(cᵢ₋₁, cᵢ) > ∑ᵢ₌₁ᵏ mg(h(cᵢ) - h(cᵢ₋₁)) = 0, as desired.Any simple path in G traverses at most n - 1 edges, so the magnitude of its weight is at most (n - 1)k < b/2. Thus [b/2] minus the weight of any simple path in G will always be > 0 and < b (so Bellham cannot exhaust or exceed her tank by driving on a simple path from s to t).Lastly, we find the weight of a minimum-weight path from s to t by solving SSSP. Unfortunately using Bellman-Ford takes O(n²) time which is too slow. However, we can re-weight edges in G to be positive while preserving shortest paths by exploiting the provided vertex potentials, similar to Johnson's algorithm. Specifically, create new graph G', identical to G, except change the weight of each edge (u, v) to J(u, v) – mg(h(v) – h(u)) > 0. This transformation preserves shortest paths since the weight of each path from, e.g., a to b changes by the same amount, namely by mg(h(b) – h(a)). So run Dijkstra from s to find the minimum weight D of any path to t in G', and return [b/2] – (D – mg(h(b) – h(a))).Constructing G takes O(n) time, reweighting to G' also takes O(n) time, and then running Dijkstra from s in G' takes O(n log n) time, leading to O(n log n) time in total.
+
+###### For each function, state its worst-case running times in terms of n and k.
+//// ANSWER: O(n²)
+
+###### For each function, state its expected running times in terms of n and k.
+//// ANSWER: O(n)
+
+###### For each function, state its worst-case running times in terms of n and k.
+//// ANSWER: O(n + k)
+
+###### For each function, state its expected running times in terms of n and k.
+//// ANSWER: O(n + k)
+
+###### State which item(s) in the array could have the key with the smallest integer
+//// ANSWER: A
+
+###### State which item(s) in the array could have the key with the third smallest integer
+//// ANSWER: B, C, D, E, F, G
+
+###### State which item(s) in the array could have the key with the largest integer
+//// ANSWER: F, G, H, I, J
+
+###### State the array representation of H, first before and then after performing the operation H.delete_max().
+//// ANSWER: Before: [93, 85, 38, 23, 63, 11, 13, 17]
+After: [85, 63, 38, 23, 17, 11, 13]
+
+###### Perform operation S.delete_at(3) on S including any rotations, and then list the items stored in the leaves of s in traversal order, after the operation has completed.
+//// ANSWER: (17,85, 11, 13)
+
+###### For House Puffle Huff, students must be sorted by friend number, i.e., how many of the other n 1 incoming students they are friends with, which can be determined in O(1) time.
+//// ANSWER: Friend numbers are non-negative integers less than n, so we can use counting sort to sort the students in worst-case O(n) time. (Radix sort also works with the same running time.) Since we have to compute friend number for each student, any algorithm will take at least Ω(n) time, so this is optimal.
+
+###### For House Craven Law, students must be sorted by the weight of their books. Book weights cannot be measured precisely, but the Sorting Sock has a scale that can determine in O(1) time whether one set of books has total weight greater than, less than, or equal to another set of books.
+//// ANSWER: A scale weighing is a comparison with a constant number of outcomes, so the comparison sort Ω(nlogn) lower bound applies. So we cannot do better than by using an worst-case O(nlogn) sorting algorithm, e.g., merge sort, using the scale to compare one student's books against another's.
+
+###### For House Driven Gore, students must be sorted by bravery, which can't be directly measured or quantified, but for any set of students, the Sorting Sock can determine the bravest among them in O(1) time, e.g., by presenting the students with a scary situation.
+//// ANSWER: We can't quantify bravery, so we can't hope to use any integer-based algorithms. However, the Sorting Sock can find a student of maximum bravery in O(1) time, so we repeatedly find and select a bravest student among all previously unselected students in worst-case O(n) time, which is again optimal. (This is priority queue sort, using the Sorting Sock as the priority queue to find the maximum.)
+
+###### For House Leather Skin, students must be sorted by their magical lineage: how many of a student's ancestors within the previous 3[log n] + 4 generations were magical. Recall that humans, magical or not, always have two parents in the previous generation, unlike binary tree nodes which have at most one. Assume the Sorting Sock can compute the magical lineage of a student in O(1) time.
+//// ANSWER: Each student has at most 2k ancestors in the kth generation preceding. Thus the number of wizard ancestors will be a non-negative number bounded above by 3 3 [log n]+4 2k < 23(logn+1)+5 = 2823 logn = 28n3log2 = O(n) for any c > 3 log 2. Thus we can use radix sort to sort the students by their magical lineage in worst-case O(n) time, which is again optimal.
+
+###### Given three arrays A, B, C, each containing n integers, give an O(n²)-time algorithm to find whether some a ∈ A, some b ∈ B, and some c∈ C have zero sum, i.e., a + b + c = 0. State whether your running time is worst-case, expected, and/or amortized.
+//// ANSWER: For each pair of numbers (a, b) ∈ A × B, store a + b in a hash table H. Then return Yes if -c appears in H for any c ∈ C, and return No otherwise.
+Correctness: If any -c appears in H for any c∈ C, then –C a' + b' for some (a', b') ∈ A × B so a' + b + c = 0. Otherwise, there is no c∈ C for which -c = a' + b' for any (a', b') ∈ A × B.
+Running Time: There are O(n²) pairs in A × B, so inserting them into H takes expected O(n²) time. Then checking whether each -c appears in H takes expected O(1) time each, and expected O(n) in total. So this algorithm runs in expected O(n²) time.
+
+###### Given a Sequence AVL Tree T containing n nodes, and a pointer to a node v from T, describe an O(log n)-time algorithm to return the (zero-indexed) index i of node v in the traversal order of T.
+//// ANSWER: Our algorithm will be to walk up the tree from v to the root r of the Sequence AVL Tree, counting the nodes preceding v in the traversal order along the way, since the number of nodes preceding v in the tree is equivalent to v's (zero-indexed) index.
+Let #v(u) be the number of vertices preceding v in a vertex u's subtree, where v is in the subtree of u. Then #v(v) = v.left.size if v has a left child and zero otherwise; and can be computed in O(1) time. Then, for every ancestor of u starting from v, we compute #v(u.parent) from #(u). There are two cases:
+• Case 1, u is the left child of u.parent: then all the nodes preceding v in the subtree of u.parent are in the subtree of u, so set #v(u.parent) = #(u).
+• Case 2, u is the right child of u.parent: then all nodes in the left subtree of u.parent precede v (as does u), so set #v(u.parent) = 1+u.parent.left.size + #v(u).
+Then return #v(r), since this is the number of nodes preceding v in r's subtree (i.e., the entire tree). Correctness is argued within the algorithm description. This algorithm spends worst-case O(1) work for each ancestor of v, so since the Sequence AVL Tree is balanced, the number of ancestors is bounded by O(log n), and the algorithm runs in worst-case O(log n) time.
+
+###### Describe a database supporting the following operations, where k is the number of recorded but unpatched holes in the network at the time of the operation.
+//// ANSWER: To implement the database, maintain the following data structures:
+• A Set AVL tree Tp for each pipe p containing all the unpatched holes in p keyed by hole distance
+• A Hash Table D mapping each pipe p to its tree Tp
+• A Binary Min Heap Q containing each consecutive pair of holes (p, d1, d2) appearing on the same pipe p with key being the distance |d2 – d₁| between them, and any lonely holes (p, d)
+(holes that are alone on their pipes) with key ∞ (when multiple stored items have the same key, we store them in a Hash Table keyed by (p, d1, d2) or (p, d))
+• A Hash Table C mapping each consecutive hole pair (p, d1, d2) or lonely hole (p, d), to their location in Q.
+
+###### Describe a database supporting the following worst-case operations:
+//// ANSWER: To implement the database, maintain a single Set AVL Tree T containing each user ID and their status, keyed by ID. In additional, augment each node x in T with four subtree properties:
+• x.size: the number of IDs in the subtree (as discussed in lecture).
+• x.suffix = (d, m): the smallest ID d in the subtree for which each of the m IDs d' ≥ d in the subtree is active, or None. Computable in O(1) time as either the suffix (dr, MR) of the right subtree, or if MR is equal to the size of the right subtree and × is active, return the suffix (dL, ML) of the left subtree but add MR + 1 to M₁ (or (x.key, MR + 1) if left suffix is None).
+• x.prefix = (d, m): the largest ID d in the subtree for which each of the m IDs d' ≤ d in the subtree is active, or None. Computable in O(1) time as either the prefix (d₁, ML) of the right subtree, or if m₁ is equal to the size of the left subtree and × is active, return the prefix (dR, MR) of the right subtree but add ML+1 to MR (or (x.key, m₁+1) if right prefix is None).
+• x.substring = (a,b,m): a, b are IDs from the subtree where each of the m IDs d in the subtree with a ≤ d ≤ b is active and m is maximized. Computable in O(1) time by tak- ing the max of the substring within either left or right subtree, or the substring spanning the two subtrees if x is active. Specifically, consider the substrings of left and right subtrees, (AL, BL, ML) and (ar, bR, MR) respectively, and then if x is active, consider the suffix of the left subtree (d₁, m'₁) and the prefix of the right subtree (dR, M'R). Then depending on which of (m₁, m'₁ + 1 + M'R, MR) is the largest, return (a₁, bŁ, M₁), (d₁, dR, M'₁ + 1 + m'₨), or
+(AR, BR, MR) respectively.
+
+###### 2^{2η} ∈ Θ(2η).
+//// ANSWER: False. This statement is equivalent to saying k² ∈ O(k) for k = 2n. Constants in exponents matter asymptotically!
+
+###### If T(n) = 2T (n) + n² and T(1) = Θ(1), then T(n) = O(n²).
+//// ANSWER: False. This is an example of Case II of Master Theorem, since
+a = 1, b = 3, f(n) = n² and n² = O(nlog3/29/4 log n). Thus, the recurrence
+evaluates to T(n) = O(n² log n), which is not O(n²).
+
+###### Performing an O(1) amortized operation n times on an initially empty
+data structure takes worst-case O(n) time.
+//// ANSWER: True. This is the definition of amortization.
+
+###### Given an array A containing n comparable items, sort A using merge sort. While
+sorting, each item in A is compared with O(log n) other items of A.
+//// ANSWER: False. As a counter example, during the final merge step between
+two sorted halves of the array, each of size O(n), a single item from one array
+may get compared to all the items from the other list.
+
+###### Given a binary min-heap storing n items with comparable keys, one can build a
+Set AVL Tree containing the same items using O(n) comparisons.
+//// ANSWER: False. If such an algorithm A existed, we would be able to sort an
+array of comparable items in O(n) time, which would contradict the Ω(n log n)
+comparison sort lower bound. Specifically, we could build a binary min-heap
+from the array using O(n) comparisons, use A to construct a Set AVL Tree in
+O(n) comparisons, and then return its traversal order.
+
+###### Given a directed graph G = (V, E), run breadth-first search from a vertex s ∈ V.
+While processing a vertex u, if some v ∈ Adj+(u) has already been processed,
+then G contains a directed cycle.
+//// ANSWER: False. BFS can't be used to find directed cycles. A counterexample
+is V = {s, a, b,t} and E = {(s, t), (s, a), (a, b), (b, t)}. Running BFS from s
+will first process vertices in levels {s}, then {a, t}, then {b}. When processing
+vertex b, vertex t ∈ Adj+(b) has already been processed, yet G is a DAG.
+
+###### Run Bellman-Ford on a weighted graph G = (V, E, w) from a vertex s ∈ V. If
+there is a witness v ∈ V, i.e., δινι(ς,υ) < διν−1(s, v), then v is on a negative-
+weight cycle of G.
+//// ANSWER: False. A witness is only guaranteed to be reachable from a negative-
+weight cycle; it may not actually be on a negative-weight cycle.
+
+###### Floyd-Warshall and Johnson's Algorithm solve all-pairs shortest paths in the
+same asymptotic running time when applied to weighted complete graphs, i.e.,
+graphs where every vertex has an edge to every other vertex.
+//// ANSWER: True. A complete graph is dense, i.e., |E| = Θ(|V|²), so Johnson's
+algorithm runs in O(|V|² log |V| + |V||E|) = O(|V|³) time, which is the same
+as Floyd-Warshall.
+
+###### If there is an algorithm to solve 0-1 Knapsack in polynomial time, then there is
+also an algorithm to solve Subset Sum in polynomial time.
+//// ANSWER: True. Subset Sum is the special case of 0-1 Knapsack. Specifically,
+one can (in linear time) convert an instance (A, T) of Subset Sum into an equiv-
+alent instance of 0-1 Knapsack, with an item i for each integer aż ∈ A having
+size si = ai and value v₁ = ai, needing to fill a knapsack of size T; and then
+solve the instance via the polynomial-time algorithm for 0-1 Knapsack.
+
+###### Suppose a decision problem A has a pseudopolynomial-time algorithm to solve A.
+If P ≠ NP, then A is not solvable in polynomial time.
+//// ANSWER: False. A problem could have a pseudopolynomial-time algorithm
+and a polynomial-time algorithm. In fact, any polynomial-time algorithm is
+also a pseudopolynomial-time algorithm!
+
+###### Given a connected undirected weighted graph G = (V, E, w), where every edge has a unique
+integer weight, describe an O(|E|log |E|)-time algorithm to determine the largest value of k such
+that Gk is not connected.
+//// ANSWER: Construct an array A containing the |E| distinct edge weights in G, and sort it in
+O(|E|log |E|) time, e.g., using merge sort. We will binary search to find k. Specifically, consider
+an edge weight k' in A (initially the median edge weight), and run a reachability algorithm (e.g.,
+Full-BFS or Full-DFS) to compute the reachability of an arbitrary vertex x ∈ V in O(|E|) time.
+If exactly V vertices are reachable from x, then Ge is connected and k > k'; recurse on strictly
+larger values for k'. Otherwise, Gk is not connected, so k ≤ k'; recurse on non-strictly smaller
+values for k'. By dividing the search range by a constant fraction at each step (i.e., by always
+choosing the median index weight of the unsearched space), binary search will terminate after
+O(log |E|) steps, identifying the largest value of k such that Gk is not connected. This algorithm
+takes O(|E|log |E|) time to sort, and computes reachability of a vertex in O(|E|) time, O(log |E|)
+times, so this algorithm runs in O(|E| log |E|) time in total.
+
+###### Describe an O(nd)-time algorithm to determine whether it is possible for Dal and Sean to drive
+from Yew Nork to Fan Sancrisco in at most d days, spending at most b on expenses along the way.
+//// ANSWER: Let C = {Co, . . ., Cn-1}, and let cs denote Yew Nork and let ct denote Fan Sancrisco.
+Construct a graph G with:
+• a vertex (ci, d') for each city c₁ ∈ C and day d' ∈ {0, . . ., d},
+representing staying the night in city c₁ on the night before day d'; and
+• a directed weighted edge ((ci, d'), (cj, d' + 1)) with weight g(ci, Cj) + h(cj)
+for each city ci ∈ C, cj ∈ Li and d' ∈ {0, . . ., d – 1}.
+Then the weight of any path in G from vertex (cs,0) to any vertex (ct, d') for d' ∈ {0,...,d}
+corresponds to the expenses incurred along a driving route from Yew Nork to Fan Sancrisco in
+at most d days (assuming they stay the night upon reaching ct; other assumptions are also okay).
+G is acyclic, since each edge always connects a vertex from a smaller day to a larger day, so run
+DAG Relaxation to compute single-source shortest paths from (cs, 0) in G. Then return whether
+d((cs, 0), (Ct, d')) ≤ b for any d' ∈ {0,...d}. G has O(nd) vertices and O(nd) edges (since
+|Li| ≤ 10 for all i∈ {0,...,n – 1}), so DAG relaxation runs in O(nd) time and checking all
+destination values takes O(d) time, leading to O(nd) time in total.
+
+###### Given G, c, a red vertex s ∈ Vr, and a blue vertex t ∈ V♭, describe an O(|V|)-time algorithm to
+compute d(s, t), the minimum weight of any path from s to t.
+//// ANSWER: Any path from s to t is a path through edges in Er, followed by a path through edges
+in Eg, followed by a (possibly empty) path through edges in Eb. So we compute minimum weight
+distances in G incrementally, first using edges in Er, then using edges in Eg, then edges in Eb.
+Step 1: Construct unweighted graph G' = (V', E') composed of the edges E' = Er and the
+vertices appearing in those edges, specifically V' = U(u,v)∈E, {u, v} (which contains vertices from
+V and Vg). Run breadth-first search from s in G' to compute unweighted distances. Then the
+minimum weight distance in G from s to any green vertex in V' ∩ V, is wr times the unweighted
+distance computed. G' has size O(|V|), so this step takes O(|V|) time.
+Step 2: Now construct weighted graph G" = (V", E") composed of vertex s with a new directed
+edge to each green vertex in V' ∩ V, weighted by its distance found in Step 1 (i.e., the minimum
+weight of any path from s to that vertex), along with weighted edges Eg and the vertices appearing
+in those edges. All the weights in G" are positive, so run Dijkstra from s in G" to compute
+minimum weight distances. Then the computed distance to any blue vertex v in V" ∩ V is the
+minimum weight of any path from s to v in G that traverses only red or green edges. G" has size
+O(1 + |Vg| + |Eg|) = O(|V|0.99), so this step takes O(|V|0.99 log |V|0.99) = O(|V|) time.
+Step 3: Now construct a weighted graph G''' = (V''', E''') composed of vertex s with a new directed
+edge to each blue vertex in V" ∩ V weighted by its distance found in Step 2 (i.e., the minimum
+weight of any path from s to that vertex), along with weighted edges E♭ and the vertices appearing
+in those edges. Weights in G'' may be positive or negative, so run Bellman-Ford from s in G'' to
+compute weighted minimum weight distances. Then the computed distance to t is the minimum
+weight of any path from s to t in G, as desired. G'' has size O(1 + |V6| + |E6|) = O(√VI), so
+this step takes O(√[V]√[V]) = 0(|V|) time, leading to O(|V|) time in total.
+
+###### Describe an O(n²m)-time algorithm to count the number of (m, k)-separated subsets of S.
+//// ANSWER: 1. Subproblems
+• First sort the integers in S increasing into array A in O(n log n) time, e.g., via merge sort
+• where A = (ao,..., an-1)
+• x(i, j): the number of (j, k)-separated subsets of suffix A[i :]
+• for i ∈ {0, . . ., n} and j ∈ {0, ...,m}
+2. Relate
+• Sum the number of (j, k)-separated subsets using A[i] with the ones that do not use A[i]
+• If A[i] < j is used:
+– Then no integer in A[i :] smaller than A[i] + k may be used
+– Let f (i) be the smallest index greater than i such that A[f(i)] – A[i] ≥ k
+– Then recrusively count x(f(i), j – A[i])
+• Otherwise, A[i] is not used and we can recursively count x(i + 1, j)
+Σ{
+x(f(i), j - A[i]) if A[i] < j,
+x(i + 1, j)
+always
+}
+3. Topo
+3. Topo
+• Subproblem x(i, j) only depends on strictly larger i, so acyclic
+4. Base
+• x(n, 0) = 1, the empty subset can always be acheived
+• x(n, j) = 0 for j > 0, empty sets cannot sum to a positive number
+5. Original
+• x(0, m), the number of (m, k)-separated subsets of A
+6. Time
+• # subproblems: (n + 1)(m + 1) = O(nm)
+• Work per subproblem: O(n) to find f(i) by linear scan
+• O(n²m) time in total
+• (Note that it is possible to compute f(i) in O(log n) time via binary search, or in amor-
+tized O(1) time from f (i - 1), but these optimizations are not necessariy for full points.)
+
+###### Given Ted's guest information, describe an O(n³)-time algorithm to determine a respectful seating
+order that minimizes the sum of mutual hatred between pairs of guests seated next to each other.
+//// ANSWER: 1. Subproblems
+• Sort the guests increasing by favor in O(n log n) time into F = (fo, ..., f2n-1)
+• Any partition of F into two length-n subsequences corresponds to a respectful seating
+• x(i, JL, JR, N₁): minimum total hatred of adjacent guests possible by respectfully seating
+the n i guests from suffix F[i:] next to the Queen, with n₁ guests to the left and
+NR = (n - i) - n₁ guests to the right, where guest j₁ < i has already been seated n₁ +1
+places to the left, and guest jR < i has already been seated NR + 1 places to the right.
+• for i∈ {0, . . ., 2n}, JL, JR ∈ {−1, ..., 2n − 1} and n₁ ∈ {0,...,n}
+where either j₁ = i − 1 or j₨ = i − 1
+• Let d(−1,i) = d(i, −1) = 0 for all i ∈ {0, . . ., 2n – 1} (no hatred at the end of table)
+2. Relate
+• Guess whether guest i is seated on the right or left
+• Sitting next to j₁ costs hatred d(i, j₁); sitting next to JR costs hatred d(i, jr)
+x(i, JL, JR, NL)
+=min
+d(i, j₁) + x(i + 1, i, jR, NL − 1) if n₁ > 0,
+d(i, jr) + x(i + 1, jŁ, i, n₁)
+if (n - i) - n₁ > 0
+3. Topo: Subproblem x(i, JL, JR, NL) only depends on strictly larger i, so acyclic
+4. Base: x(2n, JL, JR, 0) = 0 for all jL, JR ∈ {0, . . ., 2n} (no hatred if no guests)
+5. Original: x(0, -1, -1, n), min hatred of adjacent guests by respectfully seating all guests
+6. Time
+• # subproblems: though there are four parameters, there are only O(n³) subproblems for
+which either j₁ = i 1 or j = i -1
+• Work per subproblem: O(1), so O(n³) time in total
+
+###### Given an array A containing n distinct positive integers, describe an O(n²)-time algorithm to determine
+whether four integers from A form a Pythagorean Quad, where integers from A may appear more
+than once in the Quad. State whether your running time is worst-case, expected, and/or amortized.
+//// ANSWER: First, we observe that it suffices to find (a, b, c, d) such that a² + b² = d² – c². Let P
+be the set of n² ordered pairs of integers from A, where integers in A may be repeated in a pair.
+Construct an empty hash table H, and for each pair (a, b) ∈ P, compute and insert value a² + b²
+into H. Then for each pair (c, d) ∈ P, compute and lookup value d² – c² in H. If the value is in
+H, then some a² + b² equals some d² – c², so return that a Pythagorean Quad exists. Otherwise,
+if no d² - c² exists in H, then return that a Pythagorean Quad does not exist. Each a² + b² or
+d² – c² value takes constant time to compute, so computing them all takes worst-case O(n²) time,
+while inserting them into or looking them up in the hash table takes expected O(n²) time, so this
+algorithm runs expected in O(n²) time in total.
+
+###### Describe a database to store animal sightings, supporting the following four operations, where n
+is the number of sightings stored in the database at the time of the operation. State whether your
+running times are worst-case, expected, and/or amortized.
+initialize()
+add_sighting(s, i)
+remove_oldest()
+is_common(s)
+//// ANSWER: To implement the database, maintain the following data structures:
+• A hash table H mapping each species s to a Set AVL tree T
+• Each Set AVL Tree T』 stores pairs (i, ci) of zone numbers i and the count ci representing the
+number of sightings of species s in zone i, keyed by zone number.
+• Augment each node x in each T, by the maximum number of sightings x.m of any zone in
+the subtree of x. x.m can be maintained in O(1) time from the augmentations of x's children,
+specifically x.m = max{x.left.m,x.key,x.right.m}.
+• A doubly-linked list L of all current sightings (s, i) in the order in which they were added to
+the database (oldest at the front).
+To implement initialize(), initialize an empty H and empty L in worst-case O(1) time.
+To implement add_sighting(s, i), lookup s in H to find T, in expected O(1) time (if s does
+not exist in H, insert s mapping to an empty T, in expected amortized O(1) time). Then find zone
+i in Ts. If zone i is not in Ts, insert (i, 1) into Ts. Otherwise, i is in Ts, so remove (i, ci) from Ts
+and reinsert (i, c₁ + 1). It takes worst-case O(log n) time to remove or insert items from T, while
+maintaining augmentations (since at most n sightings could exist for species s). Lastly, Insert (s, i)
+to the back of L in worst-case O(1) time. Thus this operation takes O(log n) expected amortized
+time, and maintains the invariants of the database directly.
+To implement remove_oldest (), remove the oldest pair (s, i) from the front of L in worst-case
+O(1) time. Lookup s in H to find T, in expected O(1) time; then lookup i in Ts and decrease
+Ci by one. If ci is decreased to zero, remove i from Ts. If Ts becomes empty, remove s from
+H in expected amortized O(1) time. This operation takes O(log n) expected amortized time, and
+maintains the invariants of the database directly.
+To implement is_common(s), simply lookup s in H and return whether s is in H and the stored
+max at the root of T is 100 or greater in expected O(1) time. This operation is correct based on
+the invariants of the data structure.
+
+###### Given a k-even-mixed array A containing n distinct integers for k = [n/lgn], describe an O(n)-time algorithm to
+sort A.
+//// ANSWER: Scan through A and put all even integers in order into an array AE and all
+odd integers in order into an array Ao (where |AE| = k and |Ao| = n k). Ao is
+sorted by definition, and we can sort AĘ in O(k logk) = O((n/lgn) log(n/lgn)) =
+O(n) time, e.g., via merge sort. Then we can merge sorted AE and Ao back into A in
+O(n) time using the merge step of merge sort, using O(n) time in total.
+
+###### Let A be an array of n pairs of positive integers (xi, Yi) with Xi, Yi < n²
+for all i ∈ {0, . . ., n − 1}. The power of pair (x, y) is the integer x + nº. Describe an
+O(n)-time algorithm to sort the pairs in A increasing by power.
+//// ANSWER: First note that x < ny for any integer y > 1 and for any x ∈ {0, . . ., n²−1}.
+Scan through A and put all pairs having y = 1 into array A₁, and all other pairs into
+array A2. Sort A₁ directly by computing and comparing their respective powers x+n.
+Since these values are bounded above by O(n²), sort A₁ in O(n) time using Radix
+sort. To sort A2, use tuple sort, sorting first by x values and then by y values (since
+power is more sensitive to changes in y). Since the x and y values are both bounded
+above by O(n²), we can use Radix sort for tuple sort's stable sorting algorithm to sort
+A2 in O(n) time. Then merge A₁ and A2 back into A in O(n) time using the merge
+step of merge sort, using O(n) time in total.
+
+###### Given an n × m array representing an image, describe an O(nm)-time algorithm to count the number of blobs in the image.
+//// ANSWER: Construct a graph G with a vertex per white pixel, with an undirected edge between two vertices if the pixels associated with them are both white and share an edge of the grid. This graph has size at most O(nm) vertices and at most O(nm) edges (as pixels share edges with at most four other pixels), so can be constructed in O(nm) time. Each connected component of this graph corresponds to a blob, so run Full-BFS or Full-DFS to count the number of connected components in G in O(nm) time.
+
+###### Given a connected undirected graph G = (V, E) with strictly positive weights w : E → Z+ where |E| = |V|, describe an O(|V|)-time algorithm to determine a path from vertex s to vertex t of minimum weight.
+//// ANSWER: Given two vertices in a weighted tree containing only positive weight edges, there is a unique simple path between them which is also the minimum weight path. A depth-first search from any source vertex s in the tree results in a directed DFS tree in O(|V|) time (since |E| = |V| – 1). Then relaxing edges in topological sort order of the directed DFS tree computes minimum weight paths from s in O(|V|) time. Since G has one cycle, our strategy will be to break the cycle by removing an edge, and then compute the minimum weight path from s to t in the resultant tree.
+First, we find the vertex v closest to s on the cycle by running depth-first search from s in O(|V|) time (since |E| = |V|). One edge e₁ of the cycle will not be in the tree returned by DFS (a back edge to v), with the other edge of the cycle incident to v being a single outgoing DFS tree edge 62. If s is on the cycle, v = s; otherwise the unique path from s to v does not contain e1 or e2.
+A shortest path from s to t cannot traverse both edges e₁ and e2, or else the path would visit v at least twice, traversing a cycle of positive weight. Removing either e1 or e2 results in a tree, at least one of which contains the minimum weight path from s to t. Thus, find the minimum weight path from s to t in each tree using the algorithm described above, returning the minimum of the two in O(|V|) time.
+
+###### Describe an O(nlog n)-time algorithm to find the shortest driving route from the power plant back home that avoids driving within driving distance k of a doughnut shop (or determine no such route exists).
+//// ANSWER: Construct a graph G with a vertex for each of the n city locations, and an undirected edge between two locations if there is a road connecting them, with each edge weighted by the positive length of its corresponding road. The degree of each vertex is bounded by a constant (i.e., 5), so the number of edges in G is O(n). First, we identify vertices that are within driving distance k of a doughnut shop location: create an auxiliary vertex x with a 0-weight outgoing edge from x to every doughnut shop location, and run Dijkstra from x. Remove every vertex from the graph whose shortest path from x is less than or equal to k, resulting in graph G' ⊂ G. If either p or h are not in G', then no route exists. Otherwise, run Dijkstra from p in G'. If no path exists to h, then no valid route exists. Otherwise, Dijkstra finds a shortest path from p to h, so return it (via parent pointers). This algorithm runs Dijkstra twice. Since the size of either graph is O(|V|), Dijkstra runs in O(|V| log |V|) = O(nlog n) time (e.g. using a binary heap to implement a priority queue).
+
+###### Given directed graph G = (V, E) having arbitrary edge weights w : E → Z and two vertices s, t ∈ V, describe an O(|V|³)-time algorithm to find the minimum weight of any path from s to t containing at least |V| edges.
+//// ANSWER: Our strategy will compute intermediate values for each vertex v ∈ V:
+1. the minimum weight w₁ (v) of any path from s to v using exactly |V| edges, and then
+2. the minimum weight w₂(v) of any path from v to t using any number of edges.
+First, to compute (1), we make a duplicated graph similar to Bellman-Ford, but without edges corresponding to remaining at a vertex. Specifically, construct a graph G₁ with
+• |V| + 1 vertices for each vertex v ∈ V: vertex vk for k ∈ {0, . . ., |V|} representing reaching v from s along a path containing k edges; and
+• |V| edges for each edge (u, v) ∈ E: edge (uk−1, Uk) of the same weight for k ∈ {1, ...,|V|}.
+Now a path in G₁ from so to υν for any v ∈ V corresponds to a path from s to v in G through exactly |V| edges. So solve SSSPs in G₁ from so to compute the minimum weight of paths to each vertex traversing exactly |V| edges. This graph is acyclic, and has size O(|V|(|V| + |E|)) =
+O(|V|³), so we can solve SSSP on G₁ via DAG relaxation in O(|V|³) time.
+Second, to compute (2), we make a new graph G2 from G where every edge is reversed. Then every path to t in G corresponds to a path in G2 from t, so compute SSSPs from t in G2 to find the minimum weight of any path from v to t in G using any number of edges, which can be done in O(|V||E|) = O(|V|³) time using Bellman-Ford.
+Once computed, finding the minimum sum of w₁(v) + w₂(v) over all vertices v ∈ V will provide the minimum weight of any path from s to t containing at least |V| edges, since every such path can be decomposed into its first |V| edges and then the remainder. This loop takes O(|V|) time, so the algorithm runs in O(|V|³) time in total.
+
+###### Design a database to help Criminal Seafood maintain its wait list supporting the following operations, each in O(1) time. State whether each operation running time is worst-case, amortized, and/or expected.
+//// ANSWER: Maintain a doubly-linked list containing customers on the wait list in order, maintaining a pointer to the front of the linked list corresponding to the front of the wait list, and a pointer to the back of the linked list corresponding to the back of the wait list. Also maintain a hash table mapping each customer name to the linked list node containing that customer. To implement $add\_name(x)$, create a new linked list node containing name x and add it to the back of the linked list in worst-case O(1) time. Then add name x to the hash table pointing to the newly created node in amortized expected O(1) time. To implement $remove\_name (x)$, lookup name x in the hash table in and remove the mapped node from the linked list in expected O(1) time. Lastly, to implement $seat ()$, remove the node from the front of the linked list containing name x, remove name x from the hash table, and then return x, in amortized expected O(1) time.
+
+###### Describe a database that can store Mether's sensor data and support the following operations, each in worst-case O(log n) time where n is the number of measurements in the database at the time of the operation.
+//// ANSWER: Maintain a Set AVL tree L storing distinct measurement latitudes, where each latitude l maps to a rainfall Set AVL tree R(l) containing all measurement triples with latitude l, keyed by time. We only store nodes associated with measurements, so the height of each Set AVL tree is bounded by O(log n). For each rainfall tree, augment each node p with the maximum rainfall p.m of any measurement within p's subtree. This augmentation can be maintained in constant time at a node p by taking the maximum of the rainfall at p and the augmented maximums of p's left and right children (if they exist); thus this augmentation can be maintained without effecting the asymptotic running time of standard AVL tree operations.
+To implement $record\_data (r, l, t)$, search L for latitude l in worst-case O(log n) time. If l does not exist in L, insert a new node corresponding to l mapping to a new empty rainfall Set AVL tree, also in O(log n) time. In either case, insert the measurement triple to R(l), for a total running time of worst-case O(log n).
+To implement $peak\_rainfall (l,t)$, search L for latitude l in worst-case O(logn) time. If l does not exist, return zero. Otherwise, perform a one-sided range query on R(l) to find the peak rainfall at latitude l since time t. Specifically, let $peak(v, t)$ be the maximum rainfall of any measurement in node v's subtree measured at time > t (or zero if v is not a node):
+$peak(v, t) = \begin{cases} max \{v.item.r, v.right.m, peak(v.left, t)\} & \text{if } v.t > t \\ peak(v.right, t) & \text{if } v.t < t \end{cases}$
+Then peak rainfall is simply peak(v,t) with v being the root of the tree, which can be computed using at most O(log n) recursive calls. So this operation runs in worst-case O(log n) time.
+
+###### Indicate whether the given running times of each of problems (3), (4), and (5) are polynomial or pseudopolynomial by circling the appropriate word below. One can answer this question without actually solving problems (3), (4), and (5).
+//// ANSWER: Problem 3: Number Scrabble
+Polynomial
+
+###### Indicate whether the given running times of each of problems (3), (4), and (5) are polynomial or pseudopolynomial by circling the appropriate word below. One can answer this question without actually solving problems (3), (4), and (5).
+//// ANSWER: Problem 4: Limited-Unlimited
+Pseudopolynomial
+
+###### Indicate whether the given running times of each of problems (3), (4), and (5) are polynomial or pseudopolynomial by circling the appropriate word below. One can answer this question without actually solving problems (3), (4), and (5).
+//// ANSWER: Problem 5: Office Hour Optimization Polynomial
+
+###### Given T and P, describe an O(n + m)-time algorithm to return a gameplay of maximum total value.
+//// ANSWER: To solve this problem, it would be useful to be able to check whether a particular array of at most 10 positive integers is a playable word. Construct an empty hash table D and insert each $p_i$ for $i \in {0, . . ., m – 1}$ into D, mapping to its value $v(p_i)$. Each hash table insertion takes expected constant time (as each $p_i$ has constant size), so constructing D takes expected O(m) time.
+Now we solve the problem via dynamic programming.
+1. Subproblems
+• x(i): the maximum total value of any gameplay on suffix T[i :] for $i \in {0, . . ., n}$
+2. Relate
+• Left-most playable word either starts with $t_i$ or it does not
+• If playable word starts with $t_i$, word may have any length in {1, . . ., 10} (Guess!)
+• $x(i) = max\{x(i+1)}\cup\{D[T[i : i + j]] + x(i + j)\
+ 3. Topo
+• x(i) only depends on subproblems with strictly larger i, so acyclic
+4. Base
+• x(n) = 0 (empty gameplay admits no value)
+5. Original
+• Solve subproblems via recursive top down or iterative bottom up
+• x(0) is the maximum value of any gameplay on T
+• Store parent pointers to reconstruct an optimal gameplay
+6. Time
+• # subproblems: n + 1 = O(n)
+• Work per subproblem: expected O(1)
+• Together with hash table construction, yields expected O(n + m) time
+• (See scratch S2 for common mistakes)
+
+###### Given a target sum m and two disjoint sets A and B, each containing exactly n distinct positive integers, describe an O(nm)-time algorithm to determine whether m is the sum of any limited-unlimited sequence S of A and B, i.e., $m = \sum_{s \in S} s$.
+###### Describe an O(n³)-time algorithm to determine whether it is possible to assign the students equally to the three breakout rooms (i.e., n students to each room) while providing strictly positive help to every student, and if possible, return the maximum total benefit to students of any such assignment.

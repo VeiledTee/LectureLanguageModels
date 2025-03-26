@@ -1,0 +1,2139 @@
+QUESTION: Describe a O(n)-time algorithm to determine the maximum amount of lottery winnings Tiff can win in the next n days by playing the lottery infrequently. //// ANSWER: 1. Subproblems • Let L(i) be the cash payout of playing the lottery on day i ∈ {1,...,n} • Need to keep track of most recent two plays (or equivalently, restrictions on future plays) • x(i, j): maximum lottery winnings playing on suffix of days from i to n, assuming play on day i and next allowable play is on day i + j • for i ∈ {1,...,n} and j ∈ {1,..., 6} 2. Relate • Tiffany will play again on some day in future. Guess! • It is never optimal to go 11 days without playing the lottery, as playing on the 6th day would be valid and strictly increase winnings • The next play can be on day i + k for k ∈ {j, ... , 11} • If next play on i + k for k ∈ {1,..., 6}, next allowable play is on day i + 7 • If next play on i + k for k ∈ {7,..., 11}, next allowable play is on day i + k + 1 • x(i, j) = L(i) + max{x(i + k, max{1, 7 − k}) | k ∈ {i, ... , 11} and i + k ≤ n} 3. Topo • Subproblems x(i, j) only depend on strictly larger i, so acyclic 4. Base • x(n, j) = L(i) for all j ∈ {1,..., 6} 5. Original • Solve subproblems via recursive top-down or iterative bottom-up • Guess first play (within first seven days) • Solution to original problem is max{x(i, 1) | i ∈ {1,..., 7}} • (Can store parent pointers to reconstruct days played) 6. Time • # subproblems: 6n • work per subproblem: O(1) • work for original: O(1) • O(n) running time
+//// ANSWER: To determine the maximum amount of lottery winnings Tiff can win in the next \( n \) days by playing infrequently, we can design an efficient algorithm with a time complexity of \( O(n) \). Here's how it works:
+
+### Subproblems Definition
+
+1. **Subproblem Structure**: Define \( x(i, j) \) as the maximum lottery winnings achievable from day \( i \) to day \( n \), given that Tiff plays on day \( i \) and her next allowable play is on day \( i + j \). Here, \( i \in \{1, \ldots, n\} \) and \( j \in \{1, \ldots, 6\} \).
+
+2. **Cash Payout**: Let \( L(i) \) represent the cash payout of playing the lottery on day \( i \).
+
+### Relation Between Subproblems
+
+3. **Recursive Relation**:
+   - If Tiff plays again after \( k \) days (where \( j \leq k \leq 11 \)), then:
+     - For \( k \in \{1, \ldots, 6\} \), the next allowable play is on day \( i + 7 \).
+     - For \( k \in \{7, \ldots, 11\} \), the next allowable play is on day \( i + k + 1 \).
+
+   - The recursive relation is:
+     \[
+     x(i, j) = L(i) + \max_{k \in \{j, \ldots, 11\}, i+k \leq n} \left( x(i+k, \max(1, 7-k)) \right)
+     \]
+
+### Topological Order and Base Cases
+
+4. **Topological Order**: The subproblems \( x(i, j) \) only depend on solutions for larger values of \( i \), ensuring an acyclic dependency.
+
+5. **Base Case**:
+   - For the last day \( n \), if Tiff plays, her winnings are simply \( L(n) \). Thus, \( x(n, j) = L(n) \) for all \( j \in \{1, \ldots, 6\} \).
+
+### Solving the Original Problem
+
+6. **Solution to the Original Problem**:
+   - Solve the subproblems using either a recursive top-down approach with memoization or an iterative bottom-up dynamic programming approach.
+   - The solution is found by determining the maximum winnings achievable if Tiff plays on any of the first seven days:
+     \[
+     \text{max\_winnings} = \max_{i \in \{1, \ldots, 7\}} x(i, 1)
+     \]
+
+### Time Complexity
+
+7. **Time Complexity**:
+   - There are \( 6n \) subproblems.
+   - Each subproblem requires constant time \( O(1) \) to compute due to the bounded range of \( k \).
+   - Thus, the total running time is \( O(n) \).
+
+This algorithm efficiently computes the maximum possible lottery winnings by leveraging dynamic programming with a clear structure for subproblems and dependencies.
+
+QUESTION: Describe an O(n^4)-time algorithm to determine whether Charlie is a fraud. //// ANSWER: 1. Subproblems • Let A, B, and C be the relevant length-n DNA sequences from Alice, Bob, and Charlie. • Want to match some characters of A and B to all characters of C. • x(i, j, ki, kj): true if a length-ki subsequence of suffix A[i:] and a length-kj subsequence of prefix B[j:] can match all characters in suffix C[(n − ki − kj):] (the suffix containing the last ki + kj characters), and false otherwise. • Defined for i, j ∈ {0,...,n} and ki, kj ∈ {0,...,n/2} (assume n is even). 2. Relate • Must match character C[i]; if A[i] = C[i] or B[i] = C[i], recurse on remainder. • Alternatively, do not use either A[i] or B[i]. • The recurrence relation: x(i, j, ki, kj) = OR { x(i + 1, j, ki + 1, kj) if A[i] = C[n − ki − kj] and ki > 0, x(i, j + 1, ki, kj + 1) if B[j] = C[n − ki − kj] and kj > 0, x(i + 1, j, ki, kj) if i < n, x(i, j + 1, ki, kj) if j < n } 3. Topo • Subproblem x(i, j, ki, kj) only depends on strictly smaller i + j, so it is acyclic. 4. Base • x(n, n, 0, 0) is true (all matched!). • x(n, j, ki, kj) is false if ki > 0 (no more characters in A). • x(i, n, ki, kj) is false if kj > 0 (no more characters in B). 5. Original • Solve subproblems via recursive top-down or iterative bottom-up approach. • Solution to the original problem is x(n, n, n/2, n/2). 6. Time • Number of subproblems: O(n⁴). • Work per subproblem: O(1). • Overall time complexity: O(n⁴).
+//// ANSWER: To determine whether Charlie is a fraud using an \(O(n^4)\)-time algorithm, we need to analyze the given DNA sequences from Alice (A), Bob (B), and Charlie (C). The goal is to see if some characters of A and B can be matched to all characters in C. Here's how the algorithm works:
+
+### Subproblems
+
+1. **Define Subproblem**: 
+   - Let \(x(i, j, k_i, k_j)\) be a boolean value that indicates whether:
+     - A length-\(k_i\) subsequence of suffix \(A[i:]\) and
+     - A length-\(k_j\) subsequence of prefix \(B[j:]\)
+   - Can match all characters in the suffix \(C[(n − k_i − k_j):]\), which contains the last \(k_i + k_j\) characters.
+   - The indices \(i, j\) range from 0 to \(n\), and \(k_i, k_j\) range from 0 to \(n/2\) (assuming \(n\) is even).
+
+### Relation
+
+2. **Recurrence Relation**:
+   - To determine if the subproblem \(x(i, j, k_i, k_j)\) can be true, consider:
+     - If \(A[i] = C[n − k_i − k_j]\) and \(k_i > 0\), then recurse with \(x(i + 1, j, k_i + 1, k_j)\).
+     - If \(B[j] = C[n − k_i − k_j]\) and \(k_j > 0\), then recurse with \(x(i, j + 1, k_i, k_j + 1)\).
+     - If neither character is used, consider:
+       - Recurse with \(x(i + 1, j, k_i, k_j)\) if \(i < n\).
+       - Recurse with \(x(i, j + 1, k_i, k_j)\) if \(j < n\).
+
+3. **Logical OR**:
+   - The subproblem is true if any of the above conditions lead to a true result.
+
+### Topological Order
+
+4. **Acyclic Dependency**:
+   - Each subproblem \(x(i, j, k_i, k_j)\) depends only on subproblems with strictly smaller \(i + j\), ensuring an acyclic dependency graph.
+
+### Base Cases
+
+5. **Base Conditions**:
+   - \(x(n, n, 0, 0)\) is true because all characters are matched.
+   - \(x(n, j, k_i, k_j)\) is false if \(k_i > 0\) (no more characters in A).
+   - \(x(i, n, k_i, k_j)\) is false if \(k_j > 0\) (no more characters in B).
+
+### Solving the Original Problem
+
+6. **Solution**:
+   - Use a recursive top-down or iterative bottom-up approach to solve the subproblems.
+   - The solution to the original problem is given by \(x(n, n, n/2, n/2)\), which checks if half of A and B can match all of C.
+
+### Time Complexity
+
+7. **Complexity Analysis**:
+   - There are \(O(n^4)\) subproblems since each of \(i, j, k_i, k_j\) ranges up to \(n\).
+   - Each subproblem requires constant time \(O(1)\) due to the fixed number of recursive calls.
+   - Thus, the overall time complexity is \(O(n^4)\).
+
+By following this algorithm, you can determine if Charlie's DNA sequence can be matched by combining subsequences from Alice and Bob, thereby identifying whether Charlie might be a fraud.
+
+QUESTION: Describe an O(nks)-time algorithm to find the maximum volume of food Obert can eat given his diet. //// ANSWER: 1. Subproblems • x(i, j, s0): maximum volume of food possible when purchasing a suffix of plates pᵢ to pₙ₋₁, using at most j calories and ordering exactly s0 sweet plates. • Defined for i ∈ {0,...,n}, j ∈ {0,...,k}, s0 ∈ {0,...,s}. 2. Relate • Either order plate pᵢ or not. Guess! • If ordering pᵢ, gain vᵢ in volume but use cᵢ calories. • If pᵢ is sweet, must order one fewer sweet plate. • The recurrence relation: x(i, j, s0) = max { x(i + 1, j, s0), vᵢ + x(i + 1, j - cᵢ, s0 - sᵢ) if cᵢ ≤ j and sᵢ ≤ s0 } 3. Topo • Subproblems x(i, j, s0) only depend on strictly larger i, so it is acyclic. 4. Base • x(n, j, 0) = 0 for any j (no more plates to eat). • x(n, j, s0) = −∞ for s0 > 0 and any j (no more plates, but still need to eat sweet). 5. Original • Solution given by x(0, k, s). 6. Time • Number of subproblems: O(nks). • Work per subproblem: O(1). • Overall time complexity: O(nks).
+//// ANSWER: To solve the problem of finding the maximum volume of food Obert can eat given his diet, we need to design an algorithm with a time complexity of \(O(nks)\), where \(n\) is the number of plates, \(k\) is the maximum calories he can consume, and \(s\) is the number of sweet plates he must order. Here's how you can construct such an algorithm:
+
+### Subproblems
+
+Define the subproblem as:
+- **\(x(i, j, s_0)\):** The maximum volume of food Obert can eat by purchasing a suffix of plates from \(p_i\) to \(p_{n-1}\), using at most \(j\) calories and ordering exactly \(s_0\) sweet plates.
+
+The subproblem is defined for:
+- \(i \in \{0, \ldots, n\}\)
+- \(j \in \{0, \ldots, k\}\)
+- \(s_0 \in \{0, \ldots, s\}\)
+
+### Recurrence Relation
+
+To relate the subproblems, consider two choices for each plate \(p_i\):
+1. **Do not order plate \(p_i\):** 
+   - The solution is simply \(x(i + 1, j, s_0)\).
+
+2. **Order plate \(p_i\):**
+   - Gain a volume of \(v_i\) from the plate.
+   - Use \(c_i\) calories for this plate.
+   - If \(p_i\) is sweet, reduce the number of remaining sweet plates by 1.
+
+The recurrence relation becomes:
+\[ 
+x(i, j, s_0) = \max \left\{ x(i + 1, j, s_0), v_i + x(i + 1, j - c_i, s_0 - s_i) \right\} 
+\]
+subject to the conditions \(c_i \leq j\) and \(s_i \leq s_0\). Here, \(s_i = 1\) if plate \(p_i\) is sweet, otherwise \(s_i = 0\).
+
+### Topological Order
+
+The subproblems are naturally ordered by decreasing \(i\) because each subproblem \(x(i, j, s_0)\) depends only on subproblems with a larger index \(i+1\). This ensures an acyclic dependency structure.
+
+### Base Cases
+
+- **\(x(n, j, 0) = 0\):** When there are no more plates to consider, the maximum volume is zero regardless of calories.
+- **\(x(n, j, s_0) = -\infty\) for \(s_0 > 0\):** If there are still sweet plates required but none left to order, it's impossible to satisfy the condition.
+
+### Original Problem
+
+The solution to the original problem is given by:
+\[ 
+x(0, k, s) 
+\]
+This represents the maximum volume of food Obert can eat starting from plate \(p_0\) with a calorie limit of \(k\) and needing exactly \(s\) sweet plates.
+
+### Time Complexity
+
+- **Number of subproblems:** There are \(n \times (k+1) \times (s+1)\) subproblems, which is \(O(nks)\).
+- **Work per subproblem:** Each subproblem requires constant time \(O(1)\) to compute due to the simple max operation.
+- **Overall time complexity:** The total time complexity is therefore \(O(nks)\).
+
+This algorithm efficiently computes the maximum volume of food Obert can eat while adhering to his dietary constraints.
+
+QUESTION: Given the price lists of in-game purchases and ride sharing trips between all pairs of monsters, describe an O(n²)-time algorithm to determine the minimum amount of money Kash must spend in order to catch all n monsters, assuming that she starts at the location of monster m₁. //// ANSWER: 1. Subproblems • x(i, j): minimum cost of catching monsters mᵢ to mₙ, starting at location mⱼ for j ≤ i. 2. Relate • If already at the location of monster mᵢ, catch it for free! • Otherwise, acquire monster mᵢ either by purchasing or ride-sharing to its location. Guess! • If purchasing, spend cᵢ dollars; otherwise, ride-share from mⱼ to mᵢ. • The recurrence relation: x(i, j) = min { x(i + 1, j) if j = i, cᵢ + x(i + 1, j), s(j, i) + x(i, i) } 3. Topo • Subproblems x(i, j) only depend on strictly larger i + j, so it is acyclic. 4. Base • x(n + 1, j) = 0 for any j (no cost when no monsters are left to catch). 5. Original • Solution given by x(1, 1). 6. Time • Number of subproblems: O(n²). • Work per subproblem: O(1). • Overall time complexity: O(n²).
+//// ANSWER: To solve the problem of determining the minimum amount of money Kash must spend to catch all \( n \) monsters, starting at the location of monster \( m_1 \), we can use a dynamic programming approach. Here's a detailed breakdown of the algorithm:
+
+### Subproblems
+
+Define \( x(i, j) \) as the minimum cost of catching monsters from \( m_i \) to \( m_n \), starting at the location of monster \( m_j \). The condition is \( j \leq i \).
+
+### Recurrence Relation
+
+For each subproblem \( x(i, j) \):
+
+1. **If already at the location of monster \( m_i \):** 
+   - Catch it for free: 
+     \[
+     x(i, j) = x(i + 1, j)
+     \]
+   This is applicable when \( j = i \).
+
+2. **If not at the location of monster \( m_i \):**
+   - **Purchase option:** Spend \( c_i \) dollars to catch it:
+     \[
+     x(i, j) = c_i + x(i + 1, j)
+     \]
+   - **Ride-share option:** Ride-share from \( m_j \) to \( m_i \):
+     \[
+     x(i, j) = s(j, i) + x(i + 1, i)
+     \]
+
+The recurrence relation combines these options:
+\[
+x(i, j) = \min \{ x(i + 1, j), c_i + x(i + 1, j), s(j, i) + x(i + 1, i) \}
+\]
+
+### Topological Order
+
+The subproblems \( x(i, j) \) depend only on strictly larger indices \( (i+1, j) \) and \( (i+1, i) \). This ensures the problem is acyclic, allowing us to solve it in a topological order from largest \( i \) down to 1.
+
+### Base Case
+
+The base case for the recursion is:
+\[
+x(n + 1, j) = 0
+\]
+for any \( j \), as there are no monsters left to catch when \( i > n \).
+
+### Original Problem Solution
+
+The solution to the original problem, which is the minimum cost to catch all monsters starting at \( m_1 \), is given by:
+\[
+x(1, 1)
+\]
+
+### Time Complexity
+
+- **Number of subproblems:** There are \( O(n^2) \) subproblems since \( i \) and \( j \) range from 1 to \( n \).
+- **Work per subproblem:** Each subproblem requires constant time \( O(1) \) due to the fixed number of operations in the recurrence relation.
+- **Overall time complexity:** The algorithm runs in \( O(n^2) \) time.
+
+This approach efficiently computes the minimum cost by leveraging dynamic programming and ensuring that each subproblem is solved only once.
+
+QUESTION: Given a weighted, directed graph G = (V, E, w) with positive and negative edge weights, and given a particular vertex v ∈ V, describe an O(k|E|)-time algorithm to return the minimum weight of any cycle containing vertex v that also has exactly k edges, or return that no such cycle exists. Recall that a cycle may repeat vertices/edges. //// ANSWER: Assume all vertices in G are reachable from v so that |V| = O(|E|); otherwise, run BFS or DFS to solve single source reachability from v, and replace G with the subgraph reachable from v in O(|E|) time. Construct a new graph G' = (V', E') with:• k + 1 vertices for each vertex v ∈ V: specifically vᵢ for all i ∈ {0, . . ., k}; and• k edges for each edge (u, v) ∈ E: specifically edges (uᵢ₋₁, vᵢ) for all i ∈ {1, ...,k}.Graph G' has (k + 1)|V| = O(k|E|) vertices and k|E| edges in k + 1 layers, and has the property that paths from v₀ to vₖ have a one-to-one correspondence with cycles through v in G of the same weight containing exactly k edges, since exactly one edge is traversed with each increase in layer. So solve SSSP from v₀ in G' to return the minimum weight path to vₖ. Since edges in G' always increase in subscript, G' is a DAG, so we can solve SSSP using DAG relaxation in linear time with respect to the size of G'. So together with initial pruning, this algorithm takes O(k|E|) time in total.
+//// ANSWER: To address the problem of finding the minimum weight cycle containing a specific vertex \( v \) with exactly \( k \) edges in a weighted directed graph \( G = (V, E, w) \), we can use an algorithm that constructs a new graph and leverages properties of Directed Acyclic Graphs (DAGs). Here's how the solution works:
+
+### Step-by-Step Algorithm
+
+1. **Initial Pruning:**
+   - First, ensure all vertices in \( G \) are reachable from \( v \). If not, perform a Breadth-First Search (BFS) or Depth-First Search (DFS) to find the subgraph of \( G \) that is reachable from \( v \). This step ensures we only consider relevant parts of the graph and can be done in \( O(|E|) \) time.
+
+2. **Graph Construction:**
+   - Construct a new graph \( G' = (V', E') \) where:
+     - For each vertex \( u \in V \), create \( k + 1 \) vertices in \( G' \): \( u_0, u_1, \ldots, u_k \).
+     - For each edge \( (u, v) \in E \), create \( k \) edges in \( G' \): \( (u_{i-1}, v_i) \) for \( i = 1, 2, \ldots, k \). The weight of each edge \( (u_{i-1}, v_i) \) is the same as the original edge \( (u, v) \).
+
+3. **Properties of \( G' \):**
+   - The graph \( G' \) has \( (k + 1)|V| = O(k|E|) \) vertices and \( k|E| \) edges.
+   - It is structured in \( k + 1 \) layers, where each layer corresponds to a step in the cycle of length \( k \).
+
+4. **Finding Minimum Weight Path:**
+   - In \( G' \), paths from \( v_0 \) to \( v_k \) correspond directly to cycles through \( v \) in \( G \) with exactly \( k \) edges.
+   - Since each edge in \( G' \) moves from one layer to the next, \( G' \) is a Directed Acyclic Graph (DAG).
+
+5. **Shortest Path Calculation:**
+   - Use DAG shortest path algorithms to find the minimum weight path from \( v_0 \) to \( v_k \) in \( G' \). This can be done efficiently because \( G' \) is acyclic.
+   - The time complexity for this step is linear with respect to the size of \( G' \), which is \( O(k|E|) \).
+
+6. **Result:**
+   - If a path from \( v_0 \) to \( v_k \) exists, it represents the minimum weight cycle through \( v \) in \( G \) with exactly \( k \) edges.
+   - If no such path exists, then there is no cycle of length \( k \) containing \( v \).
+
+### Conclusion
+
+This algorithm efficiently finds the desired cycle by transforming the problem into a shortest path problem on a DAG. The construction and processing of \( G' \) ensure that the solution can be found in \( O(k|E|) \) time, making it suitable for graphs where \( |V| = O(|E|) \).
+
+QUESTION: Given a 3-color labeling c : E → {red, green, blue} of a connected, weighted, undirected graph G = (V, E, w) containing only positive edge weights, and given two vertices s,t ∈ V, describe an efficient algorithm to return a path from s to t having minimum color cost. //// ANSWER: Construct a new graph G' = (V', E') with:• 3 vertices for each vertex v ∈ V: specifically vᵢ for i ∈ {red, green, blue} corresponding to arriving at vertex v via an edge with color i;• (vertex-edges) 3 undirected edges for each vertex v ∈ V: specifically {vred, vblue}, {vgreen, vred}, and {vblue, vgreen} of weight wc; and• (edge-edges) 1 undirected edge for each undirected edge {u,v} ∈ E of weight w and color c(u, v): specifically undirected edge {uc(u,v), vc(u,v)} with weight w.Graph G' has 3|V| vertices and 3|V| + |E| edges, and has the property that the minimum weight of any path in G' from any vertex sᵢ to any vertex tⱼ for i, j ∈ {red, green, blue} is equal to the minimum color cost of any 3-color labeled path in G from s to t, as switching colors at a vertex requires traversing an edge of weight w. So solve SSSP three times, once from each vertex sᵢ and find the minimum weight of any path to any tⱼ, and then return a minimum path by constructing parent pointers as shown in lecture. Since this graph only has positive edge weights, we can solve SSSP using Dijkstra in O(|V| + |E| + |V|log |V|) = O(|E| + |V|log|V|) time.
+//// ANSWER: To address the problem of finding a path from vertex \( s \) to vertex \( t \) in a graph \( G = (V, E, w) \) with minimum color cost, we can use an efficient algorithm involving the construction of a new graph \( G' \). Here's how it works:
+
+### Graph Construction
+
+1. **Vertices in \( G' \):**
+   - For each vertex \( v \in V \), create three vertices: \( v_{\text{red}} \), \( v_{\text{green}} \), and \( v_{\text{blue}} \). These represent the state of arriving at \( v \) via an edge colored red, green, or blue, respectively.
+
+2. **Edges within each vertex in \( G' \):**
+   - For each original vertex \( v \in V \), add three edges:
+     - An edge between \( v_{\text{red}} \) and \( v_{\text{blue}} \) with weight \( w_c \).
+     - An edge between \( v_{\text{green}} \) and \( v_{\text{red}} \) with weight \( w_c \).
+     - An edge between \( v_{\text{blue}} \) and \( v_{\text{green}} \) with weight \( w_c \).
+
+3. **Edges corresponding to original edges in \( G \):**
+   - For each edge \( \{u, v\} \in E \) with color \( c(u, v) \), add an edge between \( u_{c(u,v)} \) and \( v_{c(u,v)} \) with weight equal to the original weight \( w(u, v) \).
+
+### Properties of \( G' \)
+
+- **Vertices:** The graph \( G' \) has \( 3|V| \) vertices.
+- **Edges:** It contains \( 3|V| + |E| \) edges.
+
+The construction ensures that any path in \( G' \) from a starting vertex \( s_i \) to an ending vertex \( t_j \) corresponds to a path in the original graph \( G \) with minimal color cost. This is because switching colors at a vertex in \( G \) requires traversing one of the internal edges in \( G' \), which has weight \( w_c \).
+
+### Algorithm
+
+1. **Single Source Shortest Path (SSSP):**
+   - Use Dijkstra's algorithm to solve the SSSP problem from each of the three starting vertices \( s_{\text{red}} \), \( s_{\text{green}} \), and \( s_{\text{blue}} \) in \( G' \).
+   - For each starting vertex, compute the shortest path to all other vertices.
+
+2. **Find Minimum Path:**
+   - Determine the minimum weight among the paths from any \( s_i \) to any \( t_j \) (where \( i, j \in \{\text{red}, \text{green}, \text{blue}\} \)).
+
+3. **Reconstruct Path:**
+   - Use parent pointers maintained during Dijkstra's execution to reconstruct the path corresponding to this minimum weight.
+
+### Complexity
+
+- The time complexity for solving SSSP using Dijkstra's algorithm is \( O(|E| + |V|\log|V|) \).
+- Since we perform SSSP three times (once from each color state of \( s \)), the total time complexity remains \( O(3(|E| + |V|\log|V|)) = O(|E| + |V|\log|V|) \).
+
+This approach efficiently finds a path with minimum color cost by leveraging the properties of graph transformation and shortest path algorithms.
+
+QUESTION: Ranger Raargorn needs to deliver a message from her home town of Tina's Mirth to the town of Riverdell, but the towns of Midgard have been overrun by an army of k Orks. Raargorn has a map of the n towns and 3n roads in Midgard, where each road connects a pair of towns in both directions. Scouts have determined the number of Orks rᵢ ≥ 1 stationed in each town i (there is at least one Ork stationed in each town). Describe an O(k)-time algorithm to find a path from Tina's Mirth to Riverdell on which Raargorn will encounter the fewest total Orks in towns along the way. //// ANSWER: Construct a graph G = (V, E) with:• a chain of rᵢ vertices (v₁, ..., vᵣᵢ) connected by rᵥ – 1 edges for each town v, i.e., unweighted directed edge (vᵢ, vᵢ₊₁) for all i ∈ {1, . . ., rᵥ − 1}; and• two unweighted directed edges (vᵣᵥ, u₁) and (vᵣᵥ, u₁) for each road between towns u and v.Graph G has ∑ rᵥ = k vertices and 2(3n) + ∑(rᵥ − 1) = 5n + k edges. Since there is at least one Ork in each town, k ≥ n, so G has size O(k). Let s and t correspond to the towns of Tina's Mirth and Riverdell respectively. Graph G has the property that any path from s₁ to tᵣ₁ corresponds to a path from Tina's Mirth to Riverdell crossing edges equal to the number of Orks encounters in towns along the way, since for any road connecting towns u and v, going from u₁ to v₁ requires traversing rᵥ edges in G. So solve unweighted SSSP from s₁ to tᵣ₁ using BFS in O(k) time, and return the sequence of towns visited along the found shortest path by following parent pointers.
+//// ANSWER: To solve Ranger Raargorn's problem of finding a path with the fewest total Orks encountered from Tina's Mirth to Riverdell in the graph described, we can use an algorithm based on transforming the original problem into one that allows us to apply Breadth-First Search (BFS) efficiently. Here’s how you can construct and solve this problem:
+
+### Problem Transformation
+
+1. **Graph Construction:**
+   - For each town \( v \) with \( r_v \) Orks, create a chain of \( r_v \) vertices labeled \( v_1, v_2, \ldots, v_{r_v} \).
+   - Connect these vertices with directed edges such that there is an edge from \( v_i \) to \( v_{i+1} \) for each \( i \in \{1, 2, \ldots, r_v-1\} \). This represents the Orks in town \( v \).
+   - For every road between towns \( u \) and \( v \), add directed edges from \( u_{r_u} \) to \( v_1 \) and from \( v_{r_v} \) to \( u_1 \). These edges represent moving between the two towns.
+
+2. **Graph Properties:**
+   - The total number of vertices in this graph is \( k = \sum r_v \), which corresponds to the total number of Orks.
+   - The total number of edges is \( 5n + k \), where \( n \) is the number of towns and each town contributes \( r_v - 1 \) internal edges plus two external edges for each road.
+
+3. **Path Correspondence:**
+   - A path from \( s_1 \) (the first vertex in Tina's Mirth) to \( t_{r_t} \) (the last vertex in Riverdell) in this graph corresponds to a path from Tina's Mirth to Riverdell in the original problem.
+   - The number of edges traversed in this path equals the total Orks encountered along the way.
+
+### Algorithm
+
+1. **Breadth-First Search (BFS):**
+   - Use BFS starting from \( s_1 \) to find the shortest path to \( t_{r_t} \).
+   - Since each edge represents a single Ork, BFS will naturally find the path with the fewest total Orks encountered.
+   - The BFS runs in \( O(k) \) time because it processes each vertex and edge at most once.
+
+2. **Path Reconstruction:**
+   - During BFS, maintain parent pointers to reconstruct the shortest path from \( s_1 \) to \( t_{r_t} \).
+   - Once BFS completes, backtrack using these pointers to determine the sequence of towns visited in the original graph.
+
+### Conclusion
+
+By transforming the problem into a graph where each Ork is represented as a vertex and roads are represented by edges between chains of vertices, we can efficiently find the path with the fewest Orks encountered using BFS. This approach leverages the properties of unweighted shortest paths to solve the problem in \( O(k) \) time, making it suitable for large values of \( k \).
+
+QUESTION: Given a cycle-sparse graph, describe an O(|V|³)-time algorithm to return the number of negative-weight cycles in G. //// ANSWER: Construct a new graph G' by adding a supernode x to G with a zero-weight directed edge (x, v) for each v ∈ V. Then run SSSP from x in G' using Bellman-Ford to label each vertex v ∈ V with its shortest path distance δ(x, v). For each v ∈ V, δ(x,v) = −∞ if and only if v is reachable from a negative-weight cycle in G (since adding x does not add or remove any cycles). Further, for any directed edge (u, v), if δ(x, u) = δ(x,v) = -∞, then both u and v are each reachable from the same simple negative-weight cycle (since v is reachable from u and each vertex is reachable from at most one simple negative-weight cycle).So, construct a new graph G" on only the vertices v ∈ V where δ(x,v) = −∞ in G', with an undirected edge between u and v in G" if they share a directed edge in G. Graph G" has the property that the number of connected components in G" equals the number of negative-weight cycles in G, so count and return the number of connected components in G" using Full-BFS or Full-DFS. This algorithm takes O(|V|+|E|) time to construct G', O(|V||E|) time to run Bellman-Ford, O(|V|+|E|) time to construct G", and then O(|V|+|E|) time to count connected components in G", leading to an O(|V||E|) = O(|V|³) running time in total.
+//// ANSWER: To determine the number of negative-weight cycles in a cycle-sparse graph \( G \), we can use the following algorithm, which runs in \( O(|V|^3) \) time:
+
+1. **Construct Graph \( G' \):**
+   - Add a new supernode \( x \) to the original graph \( G \).
+   - For each vertex \( v \in V \), add a directed edge from \( x \) to \( v \) with zero weight.
+   - The resulting graph is \( G' = (V', E') \) where \( V' = V \cup \{x\} \).
+
+2. **Run Bellman-Ford Algorithm:**
+   - Use the Bellman-Ford algorithm starting from the supernode \( x \) to compute shortest path distances \( \delta(x, v) \) for each vertex \( v \in V \).
+   - If \( \delta(x, v) = -\infty \), it indicates that \( v \) is reachable from a negative-weight cycle in \( G \).
+
+3. **Identify Reachable Vertices:**
+   - Let \( R \) be the set of vertices \( v \in V \) such that \( \delta(x, v) = -\infty \).
+   - These vertices are those that can reach or be reached from a negative-weight cycle.
+
+4. **Construct Graph \( G'' \):**
+   - Create a new graph \( G'' \) using only the vertices in \( R \).
+   - Add an undirected edge between two vertices \( u, v \in R \) if there is a directed edge \( (u, v) \) in \( G \).
+
+5. **Count Connected Components:**
+   - The number of connected components in \( G'' \) corresponds to the number of negative-weight cycles in \( G \).
+   - Use either Full-BFS or Full-DFS to count these connected components.
+
+6. **Time Complexity Analysis:**
+   - Constructing \( G' \) takes \( O(|V|) \) time.
+   - Running Bellman-Ford on \( G' \) takes \( O(|V||E|) \) time.
+   - Constructing \( G'' \) involves checking edges between vertices in \( R \), taking \( O(|V| + |E|) \) time.
+   - Counting connected components in \( G'' \) also takes \( O(|V| + |E|) \) time.
+
+Since the graph is cycle-sparse, \( |E| = O(|V|^2) \). Therefore, the overall running time of the algorithm is \( O(|V||E|) = O(|V|^3) \).
+
+This approach effectively identifies and counts the negative-weight cycles in the original graph \( G \) by leveraging properties of shortest paths and connectivity in modified graphs.
+
+QUESTION: Assuming she departs s at half capacity, [b/2], describe an O(nlogn)-time algorithm to determine the maximum amount of energy Bellham can have in her battery upon reaching t. //// ANSWER: Construct graph G with a vertex for each of the n locations in Norway and a directed edge for each of the O(n) roads: specifically for each road from location u to v, add directed edge (u, v) weighted by J(u,v). Then [b/2] minus the weight of a minimum-weight path from s to t in G would correspond to the maximum energy Bellham could have upon reaching t; or at least it would be if she did not either exceed or exhaust her tank along the way.First we show that every minimum-weight path from s to t in G is simple. It suffices to show that every directed cycle in G has positive weight. Consider cycle (c₀, ..., cₖ₋₁, cₖ = c₀). C has weight ∑ᵢ₌₁ᵏ J(cᵢ₋₁, cᵢ) > ∑ᵢ₌₁ᵏ mg(h(cᵢ) - h(cᵢ₋₁)) = 0, as desired.Any simple path in G traverses at most n - 1 edges, so the magnitude of its weight is at most (n - 1)k < b/2. Thus [b/2] minus the weight of any simple path in G will always be > 0 and < b (so Bellham cannot exhaust or exceed her tank by driving on a simple path from s to t).Lastly, we find the weight of a minimum-weight path from s to t by solving SSSP. Unfortunately using Bellman-Ford takes O(n²) time which is too slow. However, we can re-weight edges in G to be positive while preserving shortest paths by exploiting the provided vertex potentials, similar to Johnson's algorithm. Specifically, create new graph G', identical to G, except change the weight of each edge (u, v) to J(u, v) – mg(h(v) – h(u)) > 0. This transformation preserves shortest paths since the weight of each path from, e.g., a to b changes by the same amount, namely by mg(h(b) – h(a)). So run Dijkstra from s to find the minimum weight D of any path to t in G', and return [b/2] – (D – mg(h(b) – h(a))).Constructing G takes O(n) time, reweighting to G' also takes O(n) time, and then running Dijkstra from s in G' takes O(n log n) time, leading to O(n log n) time in total.
+//// ANSWER: To determine the maximum amount of energy Bellham can have upon reaching her destination \( t \), we need to construct a graph-based solution that efficiently computes the minimum-weight path from her starting location \( s \). Here's how you can achieve this in \( O(n \log n) \) time:
+
+### Step-by-Step Algorithm
+
+1. **Graph Construction:**
+   - Create a directed graph \( G \) where each vertex represents one of the \( n \) locations.
+   - Add a directed edge for each road between locations \( u \) and \( v \), with weight \( J(u, v) \).
+
+2. **Cycle Weight Analysis:**
+   - Show that every cycle in \( G \) has positive weight to ensure all minimum-weight paths are simple (no repeated vertices).
+   - For a cycle \( (c_0, c_1, ..., c_k = c_0) \), calculate the weight as:
+     \[
+     \sum_{i=1}^{k} J(c_{i-1}, c_i) > mg(h(c_i) - h(c_{i-1})) = 0
+     \]
+   - This ensures no negative cycles exist, allowing for simple paths.
+
+3. **Path Weight Constraints:**
+   - Any simple path in \( G \) has a weight less than \( b/2 \), ensuring that subtracting this from \( [b/2] \) results in a positive value and does not exceed the battery capacity \( b \).
+
+4. **Reweighting for Positive Edges:**
+   - Use vertex potentials to reweight edges, making all edge weights positive while preserving shortest paths.
+   - Define new graph \( G' \) with weights:
+     \[
+     J'(u, v) = J(u, v) - mg(h(v) - h(u))
+     \]
+   - This transformation ensures \( J'(u, v) > 0 \).
+
+5. **Shortest Path Calculation:**
+   - Use Dijkstra's algorithm from vertex \( s \) in graph \( G' \) to find the minimum-weight path to \( t \).
+   - The time complexity of Dijkstra’s algorithm with a priority queue is \( O(n \log n) \), suitable for our needs.
+
+6. **Compute Maximum Energy:**
+   - Let \( D \) be the weight of the shortest path from \( s \) to \( t \) in \( G' \).
+   - The maximum energy Bellham can have upon reaching \( t \) is:
+     \[
+     [b/2] - (D - mg(h(t) - h(s)))
+     \]
+
+### Time Complexity
+
+- Constructing graph \( G \) and reweighting to \( G' \) both take \( O(n) \).
+- Running Dijkstra's algorithm on \( G' \) takes \( O(n \log n) \).
+
+Thus, the entire process runs in \( O(n \log n) \) time.
+
+This approach efficiently computes the maximum energy Bellham can have by leveraging graph theory and shortest path algorithms with edge reweighting to handle potential negative weights.
+
+QUESTION: For each function, state its worst-case running times in terms of n and k. //// ANSWER: O(n²)
+//// ANSWER: To analyze the problem described, we need to consider the dynamic programming approach used for solving the piano fingering optimization problem. The goal is to minimize the total difficulty of playing a sequence of notes with certain constraints on finger assignments.
+
+### Problem Breakdown:
+
+1. **Subproblems Definition:**
+   - \( x(i, f) \): Represents the minimum total difficulty for playing notes from \( t_i \) to \( t_{n-1} \), starting with finger \( f \) on note \( t_i \).
+   - Constraints: \( 0 < i < n \) and \( 1 \leq f < F \).
+
+2. **Recurrence Relation:**
+   - For each subproblem, we guess the next finger assignment \( f' \) for \( t_{i+1} \):
+     \[
+     x(i, f) = \min_{1 \leq f' < F} \{ x(i + 1, f') + d(t_i, f, t_{i+1}, f') \}
+     \]
+   - Here, \( d(t_i, f, t_{i+1}, f') \) is the difficulty of transitioning from finger \( f \) on note \( t_i \) to finger \( f' \) on note \( t_{i+1} \).
+
+3. **Base Case:**
+   - \( x(n-1, f) = 0 \): No transitions are needed after the last note.
+
+4. **Order of Computation:**
+   - The subproblems are solved in topological order by decreasing \( i \), with any order for \( f \).
+
+### Time Complexity Analysis:
+
+- **Number of Subproblems:** 
+  - There are \( n \times F \) subproblems since we consider each note position \( i \) and each finger \( f \).
+
+- **Work per Subproblem:**
+  - For each subproblem \( x(i, f) \), we compute the minimum over all possible next fingers \( f' \). This involves checking up to \( F \) possibilities.
+  - Thus, the work done for each subproblem is \( O(F) \).
+
+- **Total Time Complexity:**
+  - The total time complexity is calculated by multiplying the number of subproblems by the work per subproblem:
+    \[
+    O(n \times F) \times O(F) = O(nF^2)
+    \]
+
+### Conclusion:
+
+The worst-case running time for solving this problem using dynamic programming is \( O(nF^2) \). This accounts for evaluating each subproblem and considering all possible finger transitions.
+
+If the question asks for a specific function's running time in terms of \( n \) and \( k \), where \( k = F \), then the worst-case running time remains \( O(nk^2) \).
+
+Therefore, the answer to the question "state its worst-case running times in terms of \( n \) and \( k \)" is:
+
+**\( O(nk^2) \)**
+
+QUESTION: For each function, state its expected running times in terms of n and k. //// ANSWER: O(n)
+//// ANSWER: To address the problem context provided, we need to analyze the expected running time for functions related to the subproblem structure described. The original problem involves minimizing difficulty in piano fingering with constraints on finger transitions and notes.
+
+### Subproblems and Running Time Analysis
+
+1. **Subproblems Definition**:
+   - \( x(i, f) \): Minimum total difficulty for playing notes from \( t_i \) to \( t_{n-1} \), starting with finger \( f \) on note \( t_i \).
+   - Constraints: \( 0 < i < n \) and \( 1 \leq f < F \).
+
+2. **Relation Between Subproblems**:
+   - For each subproblem, we guess the next finger \( f' \) for \( t_{i+1} \):
+     \[
+     x(i, f) = \min_{1 \leq f' < F} \{ x(i + 1, f') + d(t_i, f, t_{i+1}, f') \}
+     \]
+   - This involves considering \( F-1 \) possible transitions for each subproblem.
+
+3. **Topological Order**:
+   - The subproblems are solved in decreasing order of \( i \), with any order for \( f \).
+
+4. **Base Case**:
+   - \( x(n-1, f) = 0 \) since there are no transitions after the last note.
+
+5. **Running Time Calculation**:
+   - There are \( n \times F \) subproblems.
+   - Each subproblem requires considering \( F-1 \) possible next fingers, leading to \( O(F) \) work per subproblem.
+   - Total running time: \( O(n \times F^2) \).
+
+### Expected Running Time in Terms of \( n \) and \( k \)
+
+The problem statement mentions a function with expected running time \( O(n) \). This suggests that the context or specific function being referred to is likely simplified or optimized beyond the general subproblem structure.
+
+- **Simplified Function**: If a specific function within this framework has been optimized to run in \( O(n) \), it might involve:
+  - Precomputed values or heuristics reducing complexity.
+  - Special cases where transitions are limited or pre-determined, effectively reducing the problem size.
+
+### Conclusion
+
+The general running time for solving the subproblems as described is \( O(n \times F^2) \). However, if a specific function within this context has been optimized to run in \( O(n) \), it likely involves additional constraints or optimizations not detailed in the general description.
+
+QUESTION: For each function, state its worst-case running times in terms of n and k. //// ANSWER: O(n + k)
+//// ANSWER: To analyze the problem described, we need to consider the subproblems and their relationships as outlined:
+
+1. **Subproblem Definition**: The subproblem \( x(i, f) \) represents the minimum total difficulty for playing notes from \( t_i \) to \( t_{n-1} \), starting with finger \( f \) on note \( ti \). Here, \( 0 < i < n \) and \( 1 < f < F \).
+
+2. **Relation Between Subproblems**: The relation is given by:
+   \[
+   x(i, f) = \min_{1 \leq f' < F} \{ x(i + 1, f') + d(t_i, f, t_{i+1}, f') \}
+   \]
+   This means for each note \( t_i \), you choose the next finger \( f' \) to minimize the total difficulty.
+
+3. **Topological Order**: The subproblems are solved in decreasing order of \( i \) (the index of the notes), and any order for \( f \).
+
+4. **Base Case**: For the last note, \( x(n-1, f) = 0 \) since there are no transitions after the last note.
+
+5. **Original Problem**: The goal is to find the minimum difficulty starting from the first note with any finger, i.e., \( \min_{1 \leq f < F} \{ x(0, f) \} \).
+
+### Running Time Analysis
+
+- **Number of Subproblems**: There are \( n \times F \) subproblems because for each note \( t_i \) (from 1 to \( n-1 \)), there are \( F \) possible starting fingers.
+
+- **Work per Subproblem**: For each subproblem \( x(i, f) \), you need to consider all possible next fingers \( f' \). This involves checking up to \( F \) possibilities for each of the \( n-1 \) notes. Thus, the work done per subproblem is \( O(F) \).
+
+- **Total Work**: The total work across all subproblems is:
+  \[
+  O(n \times F^2)
+  \]
+  This accounts for solving each of the \( n \times F \) subproblems with \( O(F) \) work per subproblem.
+
+### Conclusion
+
+The worst-case running time in terms of \( n \) (number of notes) and \( F \) (number of fingers) is:
+\[
+O(n \times F^2)
+\]
+
+This analysis shows that the complexity depends on both the number of notes and the square of the number of fingers, not directly on any other parameters like the number of different notes.
+
+QUESTION: For each function, state its expected running times in terms of n and k. //// ANSWER: O(n + k)
+//// ANSWER: The problem you're dealing with involves analyzing the time complexity of a dynamic programming solution related to piano fingering optimization. Let's break down the components and their expected running times in terms of \( n \) (the number of notes) and \( F \) (the range of fingers, analogous to \( k \) in your question).
+
+### Problem Breakdown
+
+1. **Subproblems**: 
+   - You have subproblems defined as \( x(i, f) \), which represent the minimum total difficulty for playing notes from \( t_i \) to \( t_{n-1} \) starting with finger \( f \) on note \( t_i \).
+   - There are \( n \times F \) such subproblems since \( 0 < i < n \) and \( 1 < f < F \).
+
+2. **Relation Between Subproblems**:
+   - For each subproblem, you guess the next finger \( f' \) for note \( t_{i+1} \).
+   - The relation is given by: 
+     \[
+     x(i, f) = \min \{ x(i + 1, f') + d(t_i, f, t_{i+1}, f') \mid 1 \leq f' < F \}
+     \]
+   - This involves checking \( F-1 \) possible fingers for each subproblem.
+
+3. **Time Complexity Analysis**:
+   - **Subproblems**: There are \( n \times F \) subproblems.
+   - **Work per Subproblem**: For each subproblem, you perform a minimum operation over \( F-1 \) possibilities, which takes \( O(F) \) time.
+   - Therefore, the total work across all subproblems is:
+     \[
+     O(n \times F \times F) = O(nF^2)
+     \]
+
+4. **Topological Order**:
+   - You process the subproblems in decreasing order of \( i \), which ensures that each subproblem depends only on those with a higher index, allowing for efficient computation.
+
+5. **Base Case**:
+   - The base case is straightforward: \( x(n-1, f) = 0 \) for all \( f \).
+
+### Conclusion
+
+The expected running time of the algorithm in terms of \( n \) and \( F \) (or \( k \)) is \( O(nF^2) \). This accounts for the number of subproblems and the work done per subproblem. The solution does not depend on the number of different notes, as specified.
+
+If you were expecting a running time of \( O(n + k) \), it seems there might be a misunderstanding or misalignment with the problem's constraints and operations. The complexity arises from the need to evaluate multiple finger transitions for each note, leading to the quadratic dependency on \( F \).
+
+QUESTION: State which item(s) in the array could have the key with the smallest integer //// ANSWER: A
+//// ANSWER: To address the problem of assigning fingers to notes to minimize total difficulty, we need to consider a dynamic programming approach that effectively handles subproblems and dependencies between them. Here's how you can structure your solution:
+
+### Problem Breakdown
+
+1. **Subproblems Definition**:
+   - Define `x(i, f)` as the minimum total difficulty for playing notes from `ti` onward, with finger `f` assigned to note `ti`.
+
+2. **Recurrence Relation**:
+   - For each note `ti`, guess the first finger assignment `f`. The goal is to compute:
+     \[
+     x(i, f) = \min_{1 \leq g < F} \{ x(i + 1, g) + d(ti, f, ti+1, g) \}
+     \]
+   - Here, `d(ti, f, ti+1, g)` represents the difficulty of transitioning from note `ti` with finger `f` to note `ti+1` with finger `g`.
+
+3. **Constraints**:
+   - Avoid using fingers in certain ranges (e.g., `f' ∈ {4,5}`).
+   - Handle specific annoying pairs like `{f, f'} = {3,4}`.
+
+4. **Initialization**:
+   - For the last note `tn-1`, initialize `x(n-1, f)` for all fingers `f` with the difficulty of playing that note alone.
+
+5. **Goal**:
+   - Compute `min{x(0, f) | 1 ≤ f < F}` to find the minimum total difficulty starting from the first note.
+
+### Dynamic Programming Table
+
+- Create a table `x[i][f]` where `i` is the index of the note and `f` is the finger used.
+- Populate this table using the recurrence relation, ensuring all constraints are respected.
+
+### Complexity Analysis
+
+- **Time Complexity**: The approach involves iterating over each note and each possible finger assignment, leading to a time complexity of \( \Theta(n \cdot F^2) \).
+- **Space Complexity**: The space required is proportional to the number of notes and fingers, i.e., \( \Theta(n \cdot F) \).
+
+### Key Considerations
+
+- Ensure that transitions between fingers respect the constraints.
+- Use memoization or a table to store intermediate results for efficient computation.
+
+By structuring your solution in this way, you can effectively minimize the total difficulty of finger assignments across all notes.
+
+QUESTION: State which item(s) in the array could have the key with the third smallest integer //// ANSWER: B, C, D, E, F, G
+//// ANSWER: To address your question about determining which items in an array could contain a key with the third smallest integer, let's break down the process:
+
+1. **Understanding the Problem**: You need to identify elements that could potentially hold the third smallest value within a given set of integers.
+
+2. **Approach**:
+   - First, sort or partially sort the array to determine the order of values.
+   - Identify the third smallest integer in this sorted list.
+   - Check which items in the original array could contain this integer.
+
+3. **Given Answer**: The answer provided is B, C, D, E, F, G. This implies that these positions in the array are potential candidates for containing the third smallest integer.
+
+4. **Explanation**:
+   - Without specific values or context from the array, we assume a scenario where multiple items could hold the same value.
+   - The answer suggests that at least six positions (B through G) have the possibility of containing the third smallest integer.
+   - This could occur if there are duplicates of the third smallest integer in these positions.
+
+5. **Conclusion**: 
+   - The solution indicates a scenario where the array has multiple occurrences of the third smallest value, distributed across several indices.
+   - If you were to verify this with actual data, you would sort the array and check which elements match the third smallest value, confirming that B, C, D, E, F, G are indeed correct.
+
+In summary, the answer reflects a situation where multiple items in the array could hold the same integer value, specifically the third smallest one.
+
+QUESTION: State which item(s) in the array could have the key with the largest integer //// ANSWER: F, G, H, I, J
+//// ANSWER: To address your question about identifying which items in the array could have the key with the largest integer, let's analyze the given context and problem structure.
+
+The context provided outlines a dynamic programming approach to solving an optimization problem related to piano fingering. The goal is to minimize the total difficulty of playing a sequence of notes using different fingers. Here’s how the solution is structured:
+
+1. **Subproblems Definition**: 
+   - \( x(i, f) \) represents the minimum total difficulty for playing notes from \( t_i \) to \( t_{n-1} \), starting with finger \( f \) on note \( t_i \).
+   - The range for \( i \) is \( 0 < i < n \) and for \( f \) is \( 1 < f < F \).
+
+2. **Relation Between Subproblems**:
+   - For each subproblem, the next finger \( f' \) for note \( t_{i+1} \) is guessed.
+   - The relation is given by: 
+     \[
+     x(i, f) = \min \{ x(i + 1, f') + d(t_i, f, t_{i+1}, f') \mid 1 \leq f' < F \}
+     \]
+   - Here, \( d(t_i, f, t_{i+1}, f') \) represents the difficulty of transitioning from finger \( f \) on note \( t_i \) to finger \( f' \) on note \( t_{i+1} \).
+
+3. **Topological Order**:
+   - The subproblems are solved in decreasing order of \( i \), with any order for \( f \).
+
+4. **Base Case**:
+   - \( x(n-1, f) = 0 \) because there are no transitions after the last note.
+
+5. **Original Problem**:
+   - The original problem is to find:
+     \[
+     \min \{ x(0, f) \mid 1 \leq f < F \}
+     \]
+
+6. **Time Complexity**:
+   - There are \( \Theta(n \cdot F) \) subproblems.
+   - Each subproblem requires \( \Theta(F) \) work.
+   - Overall complexity is \( \Theta(n \cdot F^2) \).
+
+Given this structure, the question about which items in the array could have the key with the largest integer seems to relate to identifying the optimal finger assignments that minimize difficulty. The items listed (F, G, H, I, J) likely correspond to specific subproblems or states within the dynamic programming table.
+
+Since the problem involves minimizing difficulty and considering all possible transitions between fingers for each note, any of these items could potentially have the key with the largest integer if they represent a state where transitioning results in a high difficulty score. However, without additional context about what F, G, H, I, J specifically represent (e.g., specific subproblems or states), it's not possible to definitively say which one has the largest integer.
+
+In conclusion, based on the dynamic programming approach and the need to minimize difficulty, any of these items could potentially have the key with the largest integer if they correspond to a particularly difficult transition. However, without further context, we cannot definitively identify which specific item it is.
+
+QUESTION: State the array representation of H, first before and then after performing the operation H.delete_max(). //// ANSWER: Before: [93, 85, 38, 23, 63, 11, 13, 17] After: [85, 63, 38, 23, 17, 11, 13]
+//// ANSWER: To address the task of representing the array \( H \) before and after performing the operation `H.delete_max()`, let's break down what this operation entails:
+
+### Before Operation: `delete_max()`
+
+The operation `delete_max()` is typically associated with a data structure that supports efficient retrieval and deletion of the maximum element. In many implementations, such as a max-heap or a priority queue, elements are organized to allow quick access to the largest element.
+
+Given the array representation before performing `H.delete_max()`, we have:
+
+\[ \text{Before: } [93, 85, 38, 23, 63, 11, 13, 17] \]
+
+This array represents a max-heap or similar structure where the maximum element is at the root. In this case, `93` is the largest element.
+
+### After Operation: `delete_max()`
+
+When `delete_max()` is executed on a max-heap:
+
+1. **Remove the Maximum Element**: The root of the heap (the maximum element) is removed.
+2. **Rebalance the Heap**: To maintain the heap property, the last element in the array is moved to the root position, and then the heap is adjusted by "sifting down" this element until the max-heap property is restored.
+
+Applying `delete_max()` to our initial array:
+
+1. Remove `93` (the maximum element).
+2. Replace it with the last element `17`.
+3. Rebalance the heap:
+   - Compare `17` with its children (`23` and `63`). Since `63` is larger, swap `17` with `63`.
+   - Now compare `17` with its new child `13`. No further swaps are needed as `17` is greater than `13`.
+
+The resulting array after rebalancing:
+
+\[ \text{After: } [85, 63, 38, 23, 17, 11, 13] \]
+
+This array maintains the max-heap property where each parent node is greater than or equal to its children.
+
+### Summary
+
+- **Before `delete_max()`**: The array is `[93, 85, 38, 23, 63, 11, 13, 17]`.
+- **After `delete_max()`**: The array becomes `[85, 63, 38, 23, 17, 11, 13]`.
+
+This transformation ensures that the max-heap property is preserved after removing the maximum element.
+
+QUESTION: Perform operation S.delete_at(3) on S including any rotations, and then list the items stored in the leaves of s in traversal order, after the operation has completed. //// ANSWER: (17,85, 11, 13)
+//// ANSWER: The question involves performing a specific operation on a data structure \( S \), which seems to be a tree-like structure given the context of leaves and traversal order. The operation is `S.delete_at(3)`, which implies removing an element at position 3 in some form of ordered sequence or list derived from \( S \).
+
+To address this, let's break down the steps:
+
+1. **Understanding the Structure**: 
+   - \( S \) appears to be a tree structure where elements are stored in leaves.
+   - The operation `delete_at(3)` suggests that we need to remove the element at index 3 from a linear representation of the tree.
+
+2. **Performing the Deletion**:
+   - First, identify the element at position 3 in an in-order traversal of \( S \). In-order traversal for binary trees visits nodes in the left subtree, then the root node, and finally the right subtree.
+   - Remove this element from the structure. This might involve adjusting pointers or references to maintain the tree's properties.
+
+3. **Rotations**:
+   - If \( S \) is a balanced tree (like an AVL or Red-Black Tree), deleting an element might require rotations to maintain balance.
+   - Perform necessary rotations after deletion to ensure the tree remains balanced.
+
+4. **Listing Items in Leaves**:
+   - After performing the deletion and any required rotations, perform an in-order traversal again to list all elements stored in the leaves of \( S \).
+
+5. **Result**:
+   - The final list of items in the leaves, after the operation and adjustments, is given as: (17, 85, 11, 13).
+
+This sequence represents the state of the tree's leaves after the specified deletion and any necessary rotations to maintain structural properties.
+
+In summary, the operation involves deleting an element at a specific position, potentially rebalancing the tree, and then listing the elements in the leaves in traversal order. The final result is (17, 85, 11, 13).
+
+QUESTION: For House Puffle Huff, students must be sorted by friend number, i.e., how many of the other n 1 incoming students they are friends with, which can be determined in O(1) time. //// ANSWER: Friend numbers are non-negative integers less than n, so we can use counting sort to sort the students in worst-case O(n) time. (Radix sort also works with the same running time.) Since we have to compute friend number for each student, any algorithm will take at least Ω(n) time, so this is optimal.
+//// ANSWER: To address the problem of sorting students by their "friend number" in House Puffle Huff, let's break down the solution:
+
+### Problem Context:
+- **Friend Number**: The number of incoming friendships a student has with other \( n - 1 \) students.
+- **Time Complexity for Calculation**: Each friend number can be determined in \( O(1) \) time.
+
+### Sorting Requirement:
+- Students need to be sorted by their friend numbers, which are non-negative integers less than \( n \).
+
+### Optimal Sorting Approach:
+1. **Counting Sort**:
+   - **Why Counting Sort?**: Since the friend numbers range from 0 to \( n-1 \), counting sort is ideal because it sorts in linear time when the range of input values (friend numbers) is not significantly larger than the number of elements.
+   - **Time Complexity**: The worst-case time complexity for counting sort is \( O(n + k) \), where \( k \) is the range of the numbers. Here, \( k = n-1 \), so it simplifies to \( O(n) \).
+
+2. **Radix Sort**:
+   - **Why Radix Sort?**: Although typically used for larger ranges or multi-digit numbers, radix sort can also be applied here with a base equal to \( n \). It will process each digit (or in this case, the entire number since they are single digits) in linear time.
+   - **Time Complexity**: Similar to counting sort, it operates in \( O(n) \) for this specific scenario.
+
+### Lower Bound:
+- **Computational Requirement**: Since calculating the friend number for each student requires examining their friendships with all other students, any algorithm must at least perform these calculations, taking \( \Omega(n) \) time.
+- **Optimality**: Given that both counting sort and radix sort achieve sorting in \( O(n) \) time, this is optimal.
+
+### Conclusion:
+Using either counting sort or radix sort allows us to efficiently sort the students by their friend numbers in \( O(n) \) time, which matches the lower bound of \( \Omega(n) \). Thus, the solution is both efficient and optimal for the given problem constraints.
+
+QUESTION: For House Craven Law, students must be sorted by the weight of their books. Book weights cannot be measured precisely, but the Sorting Sock has a scale that can determine in O(1) time whether one set of books has total weight greater than, less than, or equal to another set of books. //// ANSWER: A scale weighing is a comparison with a constant number of outcomes, so the comparison sort Ω(nlogn) lower bound applies. So we cannot do better than by using an worst-case O(nlogn) sorting algorithm, e.g., merge sort, using the scale to compare one student's books against another's.
+//// ANSWER: To address the problem of sorting students at House Craven Law based on the weight of their books using a special scale, we need to consider the constraints and capabilities provided:
+
+1. **Comparison-Based Sorting**: The Sorting Sock can compare two sets of books in constant time \(O(1)\) and determine if one set is heavier, lighter, or equal in weight compared to another. This setup allows us to use comparison-based sorting algorithms.
+
+2. **Sorting Lower Bound**: In computer science, the lower bound for any comparison-based sorting algorithm is \(\Omega(n \log n)\), where \(n\) is the number of items to be sorted. This means that no comparison-based sorting algorithm can sort in less than \(O(n \log n)\) time in the worst case.
+
+3. **Appropriate Sorting Algorithm**: Given the constraints and capabilities, we should use a comparison-based sorting algorithm that operates within this lower bound. Merge sort is an excellent choice because it consistently performs at \(O(n \log n)\) time complexity in all cases (best, average, and worst).
+
+4. **Implementation with the Scale**: To implement merge sort using the Sorting Sock:
+   - Divide the list of students into two halves.
+   - Recursively sort each half.
+   - Merge the sorted halves by comparing the total weight of books for each student using the scale to determine order.
+
+5. **Efficiency**: Since the comparison operation (using the scale) is \(O(1)\), the overall time complexity remains \(O(n \log n)\). This ensures that we are operating at the optimal efficiency given the constraints.
+
+In summary, to sort students by the weight of their books using the Sorting Sock, employ a merge sort algorithm. This approach leverages the constant-time comparison capability of the scale and adheres to the theoretical lower bound for sorting, ensuring an efficient solution with \(O(n \log n)\) time complexity.
+
+QUESTION: For House Driven Gore, students must be sorted by bravery, which can't be directly measured or quantified, but for any set of students, the Sorting Sock can determine the bravest among them in O(1) time, e.g., by presenting the students with a scary situation. //// ANSWER: We can't quantify bravery, so we can't hope to use any integer-based algorithms. However, the Sorting Sock can find a student of maximum bravery in O(1) time, so we repeatedly find and select a bravest student among all previously unselected students in worst-case O(n) time, which is again optimal. (This is priority queue sort, using the Sorting Sock as the priority queue to find the maximum.)
+//// ANSWER: To address the problem of sorting students by bravery at House Driven Gore, we need to consider the unique capabilities provided by the Sorting Sock. Here's a detailed breakdown:
+
+1. **Understanding Bravery Measurement**:
+   - Bravery cannot be directly measured or quantified using traditional metrics.
+   - The Sorting Sock can determine the bravest student among any given set in constant time, O(1).
+
+2. **Sorting Strategy**:
+   - Since bravery is not quantifiable with integers or other numerical values, conventional sorting algorithms (like quicksort or mergesort) are not applicable.
+   - Instead, we leverage the Sorting Sock's ability to identify the bravest student efficiently.
+
+3. **Optimal Sorting Approach**:
+   - We use a selection-based approach akin to a priority queue sort.
+   - The process involves repeatedly using the Sorting Sock to find and select the bravest student from the unsorted group of students.
+   - This is done in O(1) time for each selection, leading to an overall complexity of O(n) for sorting n students.
+
+4. **Steps**:
+   - Initialize an empty list to hold the sorted students by bravery.
+   - While there are unselected students remaining:
+     - Use the Sorting Sock to find the bravest student among all unselected students.
+     - Add this student to the sorted list.
+     - Mark the student as selected.
+
+5. **Complexity Analysis**:
+   - Each selection operation is O(1), and we perform n such operations for n students.
+   - Therefore, the total time complexity is O(n).
+
+6. **Conclusion**:
+   - This method is optimal given the constraints of the problem.
+   - The Sorting Sock effectively acts as a priority queue that allows us to efficiently determine the bravest student in constant time.
+
+This approach ensures that we can sort students by bravery in an efficient manner, despite the inability to directly measure or quantify bravery.
+
+QUESTION: For House Leather Skin, students must be sorted by their magical lineage: how many of a student's ancestors within the previous 3[log n] + 4 generations were magical. Recall that humans, magical or not, always have two parents in the previous generation, unlike binary tree nodes which have at most one. Assume the Sorting Sock can compute the magical lineage of a student in O(1) time. //// ANSWER: Each student has at most 2k ancestors in the kth generation preceding. Thus the number of wizard ancestors will be a non-negative number bounded above by 3 3 [log n]+4 2k < 23(logn+1)+5 = 2823 logn = 28n3log2 = O(n) for any c > 3 log 2. Thus we can use radix sort to sort the students by their magical lineage in worst-case O(n) time, which is again optimal.
+//// ANSWER: To address the problem of sorting students by their magical lineage using the Sorting Sock, let's break down the solution step-by-step:
+
+1. **Understanding Ancestry and Generations:**
+   - Each student has two parents in each preceding generation.
+   - For a given generation \( k \), a student can have up to \( 2^k \) ancestors.
+
+2. **Calculating Maximum Ancestors:**
+   - We need to consider up to \( 3[\log n] + 4 \) generations back.
+   - The maximum number of ancestors in these generations is:
+     \[
+     \sum_{k=1}^{3[\log n]+4} 2^k = 2^1 + 2^2 + \ldots + 2^{3[\log n]+4}
+     \]
+   - This sum is a geometric series, which can be simplified to:
+     \[
+     2(2^{3[\log n]+4} - 1) = 2^{3[\log n]+5} - 2
+     \]
+
+3. **Bounding the Number of Magical Ancestors:**
+   - The number of magical ancestors is a non-negative integer bounded above by \( 2^{3[\log n]+5} - 2 \).
+   - Simplifying further:
+     \[
+     2^{3[\log n]+5} = 32 \times 2^{3[\log n]} = 32 \times (2^{\log n})^3 = 32n^3
+     \]
+   - Therefore, the bound is \( O(n^3) \).
+
+4. **Sorting Using Radix Sort:**
+   - Since each student's magical lineage can be represented as a non-negative integer bounded by \( O(n^3) \), we can use radix sort.
+   - Radix sort operates in \( O(d(n + k)) \) time, where \( d \) is the number of digits and \( k \) is the range of the numbers.
+   - Here, \( d = O(\log n^3) = O(3\log n) = O(\log n) \), and \( k = O(n^3) \).
+   - Thus, radix sort will run in \( O((\log n)(n + n^3)) = O(n^3 \log n) \).
+
+5. **Optimality:**
+   - The problem requires sorting based on a derived integer value (magical lineage), which is bounded by \( O(n^3) \).
+   - Radix sort, with its linear time complexity relative to the number of elements and the range of values, provides an optimal solution for this scenario.
+
+In conclusion, using radix sort allows us to efficiently sort students by their magical lineage in \( O(n^3 \log n) \) time, which is optimal given the constraints.
+
+QUESTION: Given three arrays A, B, C, each containing n integers, give an O(n²)-time algorithm to find whether some a ∈ A, some b ∈ B, and some c∈ C have zero sum, i.e., a + b + c = 0. State whether your running time is worst-case, expected, and/or amortized. //// ANSWER: For each pair of numbers (a, b) ∈ A × B, store a + b in a hash table H. Then return Yes if -c appears in H for any c ∈ C, and return No otherwise. Correctness: If any -c appears in H for any c∈ C, then –C a' + b' for some (a', b') ∈ A × B so a' + b + c = 0. Otherwise, there is no c∈ C for which -c = a' + b' for any (a', b') ∈ A × B. Running Time: There are O(n²) pairs in A × B, so inserting them into H takes expected O(n²) time. Then checking whether each -c appears in H takes expected O(1) time each, and expected O(n) in total. So this algorithm runs in expected O(n²) time.
+//// ANSWER: To solve the problem of determining if there exist elements \(a \in A\), \(b \in B\), and \(c \in C\) such that their sum is zero (\(a + b + c = 0\)), we can use a hash table to efficiently check for the existence of these combinations. Here's how the algorithm works:
+
+### Algorithm
+
+1. **Initialize a Hash Table**: Create an empty hash table \(H\).
+
+2. **Store Sums of Pairs from A and B**:
+   - Iterate over each element \(a\) in array \(A\).
+   - For each \(a\), iterate over each element \(b\) in array \(B\).
+   - Compute the sum \(s = a + b\).
+   - Store this sum \(s\) as a key in the hash table \(H\). You can store any value (like `True`) since we are only interested in checking existence.
+
+3. **Check for Complements in C**:
+   - Iterate over each element \(c\) in array \(C\).
+   - Compute \(-c\).
+   - Check if \(-c\) exists as a key in the hash table \(H\).
+   - If \(-c\) is found, return "Yes" because it indicates that there exist \(a'\) and \(b'\) such that \(a' + b' = -c\), satisfying \(a' + b' + c = 0\).
+
+4. **Return Result**:
+   - If no such \(-c\) is found after checking all elements in \(C\), return "No".
+
+### Correctness
+
+- The algorithm correctly identifies if there exists a combination of \(a\), \(b\), and \(c\) such that their sum is zero by leveraging the hash table to efficiently check for complements.
+- If \(-c\) is found in \(H\), it means there are elements \(a'\) and \(b'\) from \(A\) and \(B\) respectively, such that \(a' + b' = -c\). Thus, \(a' + b' + c = 0\).
+
+### Running Time
+
+- **Worst-case time complexity**: The algorithm runs in \(O(n^2)\) time. This is because:
+  - Storing all pairs \((a, b)\) from \(A\) and \(B\) takes \(O(n^2)\) time.
+  - Checking each element \(c\) in \(C\) against the hash table takes \(O(1)\) expected time per check, resulting in \(O(n)\) total for all checks.
+
+- **Expected time complexity**: The expected running time is also \(O(n^2)\), assuming that hash table operations (insertion and lookup) are \(O(1)\) on average.
+
+- **Amortized time complexity**: The amortized time complexity remains \(O(n^2)\) due to the same reasons as above, with hash table operations being efficient on average.
+
+This algorithm efficiently finds whether there exists a zero-sum triplet across the three arrays using hashing to reduce the problem of checking all possible combinations to manageable operations.
+
+QUESTION: Given a Sequence AVL Tree T containing n nodes, and a pointer to a node v from T, describe an O(log n)-time algorithm to return the (zero-indexed) index i of node v in the traversal order of T. //// ANSWER: Our algorithm will be to walk up the tree from v to the root r of the Sequence AVL Tree, counting the nodes preceding v in the traversal order along the way, since the number of nodes preceding v in the tree is equivalent to v's (zero-indexed) index. Let #v(u) be the number of vertices preceding v in a vertex u's subtree, where v is in the subtree of u. Then #v(v) = v.left.size if v has a left child and zero otherwise; and can be computed in O(1) time. Then, for every ancestor of u starting from v, we compute #v(u.parent) from #(u). There are two cases: • Case 1, u is the left child of u.parent: then all the nodes preceding v in the subtree of u.parent are in the subtree of u, so set #v(u.parent) = #(u). • Case 2, u is the right child of u.parent: then all nodes in the left subtree of u.parent precede v (as does u), so set #v(u.parent) = 1+u.parent.left.size + #v(u). Then return #v(r), since this is the number of nodes preceding v in r's subtree (i.e., the entire tree). Correctness is argued within the algorithm description. This algorithm spends worst-case O(1) work for each ancestor of v, so since the Sequence AVL Tree is balanced, the number of ancestors is bounded by O(log n), and the algorithm runs in worst-case O(log n) time.
+//// ANSWER: To solve the problem of finding the (zero-indexed) index \( i \) of a node \( v \) in the traversal order of a Sequence AVL Tree \( T \), we can use an efficient algorithm that leverages the properties of AVL trees and their subtree sizes. The goal is to achieve this in \( O(\log n) \)-time, where \( n \) is the number of nodes in the tree.
+
+### Algorithm Description
+
+1. **Initialization**:
+   - Start at node \( v \).
+   - Initialize a counter `index` to 0. This will hold the final index of node \( v \).
+
+2. **Traverse Upwards**:
+   - While \( v \) is not the root of the tree, perform the following steps:
+     - If \( v \) has a left child, add the size of the left subtree (`v.left.size`) to `index`. This accounts for all nodes in the left subtree that precede \( v \).
+     - Determine if \( v \) is a left or right child of its parent:
+       - **Case 1**: If \( v \) is the left child of its parent, then all nodes preceding \( v \) in the current subtree are already accounted for. Thus, no change to `index` is needed beyond what was added from the left subtree.
+       - **Case 2**: If \( v \) is the right child, add 1 (for the parent itself) plus the size of the left subtree of the parent (`v.parent.left.size`) to `index`. This accounts for all nodes in the left subtree and the parent node that precede \( v \).
+     - Move up to the parent of \( v \).
+
+3. **Return Result**:
+   - Once \( v \) reaches the root, return `index` as it now contains the zero-indexed position of \( v \) in the traversal order.
+
+### Correctness
+
+- The algorithm correctly computes the number of nodes preceding \( v \) by considering both the left subtrees and the relative position (left or right child) at each step.
+- By leveraging the `size` attribute of AVL tree nodes, which is maintained during rotations to ensure balance, we can efficiently compute subtree sizes in constant time.
+- The traversal from node \( v \) to the root involves moving up through a balanced path, ensuring that the number of steps (and thus operations) is logarithmic with respect to the total number of nodes.
+
+### Time Complexity
+
+- Each step of moving up the tree and updating `index` takes constant time due to direct access to parent pointers and subtree sizes.
+- Since the height of an AVL tree is \( O(\log n) \), the algorithm runs in \( O(\log n) \)-time, meeting the required efficiency.
+
+This approach efficiently utilizes the properties of AVL trees to determine the traversal index of any node in logarithmic time.
+
+QUESTION: Describe a database supporting the following operations, where k is the number of recorded but unpatched holes in the network at the time of the operation. //// ANSWER: To implement the database, maintain the following data structures: • A Set AVL tree Tp for each pipe p containing all the unpatched holes in p keyed by hole distance • A Hash Table D mapping each pipe p to its tree Tp • A Binary Min Heap Q containing each consecutive pair of holes (p, d1, d2) appearing on the same pipe p with key being the distance |d2 – d₁| between them, and any lonely holes (p, d) (holes that are alone on their pipes) with key ∞ (when multiple stored items have the same key, we store them in a Hash Table keyed by (p, d1, d2) or (p, d)) • A Hash Table C mapping each consecutive hole pair (p, d1, d2) or lonely hole (p, d), to their location in Q.
+//// ANSWER: To design a database that supports operations involving the management of unpatched holes in a network of pipes, we need to efficiently handle queries related to these holes. The goal is to maintain and update information about the distances between consecutive unpatched holes on each pipe and manage operations based on these distances.
+
+Here's how you can implement such a database using the specified data structures:
+
+1. **AVL Tree for Each Pipe (Tp):**
+   - For every pipe \( p \), maintain an AVL tree \( T_p \). This tree stores all unpatched holes in pipe \( p \), with each hole keyed by its distance from the start of the pipe.
+   - The AVL tree allows efficient insertion, deletion, and lookup operations, which are crucial for maintaining sorted order and balancing.
+
+2. **Hash Table Mapping Pipes to Trees (D):**
+   - Use a hash table \( D \) where each key is a pipe identifier \( p \), and its value is the corresponding AVL tree \( T_p \).
+   - This allows quick access to the AVL tree of any given pipe, facilitating efficient updates and queries.
+
+3. **Binary Min Heap for Hole Pairs (Q):**
+   - Maintain a binary min heap \( Q \) that stores pairs of consecutive unpatched holes on the same pipe.
+   - Each entry in the heap is keyed by the distance between two consecutive holes, i.e., \( |d_2 - d_1| \).
+   - For lonely holes (holes without a consecutive pair), use a key value of infinity (\( \infty \)) to ensure they are prioritized last.
+   - When multiple entries have the same key, store them in a hash table keyed by the tuple \( (p, d_1, d_2) \) or \( (p, d) \).
+
+4. **Hash Table for Heap Locations (C):**
+   - Use a hash table \( C \) to map each consecutive hole pair \( (p, d_1, d_2) \) or lonely hole \( (p, d) \) to its location in the heap \( Q \).
+   - This allows quick updates and deletions from the heap when the distances between holes change.
+
+### Operations Supported:
+
+- **Insertion of a New Hole:**
+  - Insert the new hole into the AVL tree \( T_p \) for its pipe.
+  - Update or insert the corresponding entry in the min heap \( Q \).
+  - Adjust the hash table \( C \) to reflect any changes in the heap.
+
+- **Patch an Existing Hole:**
+  - Remove the hole from the AVL tree \( T_p \).
+  - Identify and remove the affected entries from the min heap \( Q \).
+  - Update the hash table \( C \) accordingly.
+  - If necessary, insert new pairs or lonely holes into both \( Q \) and \( C \).
+
+- **Query for Minimum Distance Between Consecutive Holes:**
+  - The minimum distance is directly available as the root of the min heap \( Q \).
+  - Use the hash table \( C \) to quickly locate this pair in the AVL tree if further details are needed.
+
+This design ensures efficient management and querying of unpatched holes, leveraging balanced trees for ordered data, heaps for priority access, and hash tables for quick lookups.
+
+QUESTION: Describe a database supporting the following worst-case operations: //// ANSWER: To implement the database, maintain a single Set AVL Tree T containing each user ID and their status, keyed by ID. In additional, augment each node x in T with four subtree properties: • x.size: the number of IDs in the subtree (as discussed in lecture). • x.suffix = (d, m): the smallest ID d in the subtree for which each of the m IDs d' ≥ d in the subtree is active, or None. Computable in O(1) time as either the suffix (dr, MR) of the right subtree, or if MR is equal to the size of the right subtree and × is active, return the suffix (dL, ML) of the left subtree but add MR + 1 to M₁ (or (x.key, MR + 1) if left suffix is None). • x.prefix = (d, m): the largest ID d in the subtree for which each of the m IDs d' ≤ d in the subtree is active, or None. Computable in O(1) time as either the prefix (d₁, ML) of the right subtree, or if m₁ is equal to the size of the left subtree and × is active, return the prefix (dR, MR) of the right subtree but add ML+1 to MR (or (x.key, m₁+1) if right prefix is None). • x.substring = (a,b,m): a, b are IDs from the subtree where each of the m IDs d in the subtree with a ≤ d ≤ b is active and m is maximized. Computable in O(1) time by tak- ing the max of the substring within either left or right subtree, or the substring spanning the two subtrees if x is active. Specifically, consider the substrings of left and right subtrees, (AL, BL, ML) and (ar, bR, MR) respectively, and then if x is active, consider the suffix of the left subtree (d₁, m'₁) and the prefix of the right subtree (dR, M'R). Then depending on which of (m₁, m'₁ + 1 + M'R, MR) is the largest, return (a₁, bŁ, M₁), (d₁, dR, M'₁ + 1 + m'₨), or (AR, BR, MR) respectively.
+//// ANSWER: To implement a database that supports the specified worst-case operations efficiently, we maintain an AVL tree \( T \). This data structure is chosen because it provides balanced binary search tree properties with logarithmic height, ensuring efficient updates and queries. Each node in this AVL tree represents a user ID along with their status (active or inactive), and additional subtree properties are augmented to support the required operations.
+
+### Structure of Node Augmentation
+
+Each node \( x \) in the AVL tree is augmented with four key properties:
+
+1. **\( x.size \)**: This property indicates the number of IDs present in the subtree rooted at \( x \). It allows us to quickly determine the size of any subtree, which is crucial for maintaining balance and performing efficient queries.
+
+2. **\( x.suffix = (d, m) \)**: This represents the smallest ID \( d \) within the subtree such that there are exactly \( m \) IDs greater than or equal to \( d \) that are active. If no such suffix exists, it is set to `None`. The computation of this property can be done in constant time \( O(1) \). It depends on whether we take the suffix from the right subtree or adjust the left subtree's suffix if the node itself is active.
+
+3. **\( x.prefix = (d, m) \)**: This represents the largest ID \( d \) within the subtree such that there are exactly \( m \) IDs less than or equal to \( d \) that are active. If no such prefix exists, it is set to `None`. Like the suffix, this can be computed in constant time \( O(1) \). It depends on whether we take the prefix from the left subtree or adjust the right subtree's prefix if the node itself is active.
+
+4. **\( x.substring = (a, b, m) \)**: This represents a range of IDs \([a, b]\) within the subtree such that there are exactly \( m \) active IDs in this range and \( m \) is maximized. If no such substring exists, it is set to `None`. The computation can be done in constant time \( O(1) \). It involves comparing substrings from the left and right subtrees or combining them if the node itself is active.
+
+### Operations Supported
+
+- **Insertion**: When a new user ID with status is inserted, the AVL tree properties ensure that the tree remains balanced. The subtree properties are updated accordingly to reflect changes in size, suffix, prefix, and substring information.
+
+- **Deletion**: Removing a user ID involves updating the AVL tree structure while maintaining balance. The subtree properties are recalculated to account for the removal of an active or inactive status.
+
+- **Querying Substrings**: To find the longest contiguous sequence of active IDs within a range, we utilize the \( x.substring \) property. This allows us to quickly determine the maximum number of consecutive active IDs in any given range.
+
+### Efficiency
+
+The AVL tree ensures that each insertion and deletion operation takes \( O(\log n) \) time due to its self-balancing nature. The subtree properties are maintained with constant-time updates during these operations, allowing for efficient querying of suffixes, prefixes, and substrings.
+
+By maintaining these augmented properties at each node, the database can efficiently support the required worst-case operations, ensuring that queries about active user sequences are answered quickly even as the dataset grows.
+
+QUESTION: 2^{2η} ∈ Θ(2η). //// ANSWER: False. This statement is equivalent to saying k² ∈ O(k) for k = 2n. Constants in exponents matter asymptotically!
+//// ANSWER: To determine whether the statement \(2^{2\eta} \in \Theta(2^\eta)\) is true or false, let's analyze it using asymptotic notation.
+
+### Asymptotic Analysis
+
+1. **Understanding \(\Theta\) Notation:**
+   - A function \(f(n)\) is in \(\Theta(g(n))\) if there exist positive constants \(c_1\), \(c_2\), and \(n_0\) such that for all \(n \geq n_0\), \(c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\).
+
+2. **Comparing \(2^{2\eta}\) and \(2^\eta\):**
+   - \(2^{2\eta} = (2^\eta)^2\).
+   - We need to check if there exist constants \(c_1\) and \(c_2\) such that:
+     \[
+     c_1 \cdot 2^\eta \leq 2^{2\eta} \leq c_2 \cdot 2^\eta
+     \]
+   - Simplifying the inequalities:
+     - The left inequality: \(c_1 \cdot 2^\eta \leq (2^\eta)^2\) implies \(c_1 \leq 2^\eta\).
+     - The right inequality: \((2^\eta)^2 \leq c_2 \cdot 2^\eta\) implies \(2^\eta \leq c_2\).
+
+3. **Analyzing the Inequalities:**
+   - For large \(\eta\), \(c_1 \leq 2^\eta\) can be satisfied by choosing a sufficiently small \(c_1\).
+   - However, \(2^\eta \leq c_2\) cannot hold for all \(\eta\) because as \(\eta\) grows, \(2^\eta\) becomes arbitrarily large, and no constant \(c_2\) can bound it.
+
+### Conclusion
+
+Since the right inequality cannot be satisfied for all \(\eta\), \(2^{2\eta}\) is not in \(\Theta(2^\eta)\). Therefore, the statement \(2^{2\eta} \in \Theta(2^\eta)\) is **false**. Constants in exponents do indeed matter asymptotically, as they lead to different growth rates.
+
+Thus, the answer is:
+
+**False.**
+
+QUESTION: If T(n) = 2T (n) + n² and T(1) = Θ(1), then T(n) = O(n²). //// ANSWER: False. This is an example of Case II of Master Theorem, since a = 1, b = 3, f(n) = n² and n² = O(nlog3/29/4 log n). Thus, the recurrence evaluates to T(n) = O(n² log n), which is not O(n²).
+//// ANSWER: The problem you're dealing with involves analyzing a recursive time complexity using the Master Theorem. Let's break down the given recurrence relation and apply the Master Theorem to determine its asymptotic behavior.
+
+### Recurrence Relation:
+\[ T(n) = 2T\left(\frac{n}{3}\right) + n^2 \]
+
+### Base Case:
+\[ T(1) = \Theta(1) \]
+
+### Applying the Master Theorem:
+
+The Master Theorem is used for recurrences of the form:
+\[ T(n) = aT\left(\frac{n}{b}\right) + f(n) \]
+where \( a \geq 1 \), \( b > 1 \), and \( f(n) \) is an asymptotically positive function.
+
+For your recurrence:
+- \( a = 2 \)
+- \( b = 3 \)
+- \( f(n) = n^2 \)
+
+The Master Theorem considers three cases based on the comparison of \( f(n) \) with \( n^{\log_b a} \).
+
+1. **Calculate \( n^{\log_b a} \):**
+   \[
+   n^{\log_b a} = n^{\log_3 2}
+   \]
+
+2. **Compare \( f(n) = n^2 \) with \( n^{\log_3 2} \):**
+
+   - Calculate \( \log_3 2 \):
+     \[
+     \log_3 2 = \frac{\log 2}{\log 3}
+     \]
+     This is approximately 0.631.
+
+   - Therefore, \( n^{\log_3 2} = n^{0.631} \).
+
+3. **Determine which case of the Master Theorem applies:**
+
+   - Compare \( f(n) = n^2 \) with \( n^{0.631} \):
+     - Since \( n^2 \) grows faster than \( n^{0.631} \), we have:
+       \[
+       f(n) = \Theta(n^c) \quad \text{where } c = 2 > \log_b a = 0.631
+       \]
+
+   - This corresponds to **Case III** of the Master Theorem, where \( f(n) = \Omega(n^{\log_b a + \epsilon}) \) for some \( \epsilon > 0 \).
+
+4. **Check regularity condition:**
+   - For Case III, we also need:
+     \[
+     af\left(\frac{n}{b}\right) \leq kf(n) \quad \text{for some } k < 1 \text{ and sufficiently large } n
+     \]
+   - Check:
+     \[
+     2\left(\frac{n}{3}\right)^2 = \frac{2n^2}{9}
+     \]
+   - Since \( \frac{2}{9} < 1 \), the regularity condition holds.
+
+5. **Conclusion:**
+   - By Case III, since all conditions are satisfied:
+     \[
+     T(n) = \Theta(f(n)) = \Theta(n^2)
+     \]
+
+### Final Answer:
+
+The statement "T(n) = O(n²)" is actually true because \( T(n) = \Theta(n^2) \), which implies \( T(n) = O(n^2) \). The initial analysis in the problem statement was incorrect. Therefore, the correct conclusion is that the statement is **True**.
+
+QUESTION: Performing an O(1) amortized operation n times on an initially empty data structure takes worst-case O(n) time. //// ANSWER: True. This is the definition of amortization.
+//// ANSWER: The statement you provided is indeed true, and here's why:
+
+Amortized analysis is a method used in computer science to analyze the average time per operation over a sequence of operations, ensuring that the worst-case time for any single operation does not exceed a certain bound. When we say an operation takes O(1) amortized time, it means that while some individual operations might take longer than constant time, the average time taken per operation across all operations is constant.
+
+In your example, performing an O(1) amortized operation n times on an initially empty data structure taking worst-case O(n) time aligns perfectly with this concept. Here's a breakdown:
+
+1. **Amortized Time Complexity**: If each operation has an amortized cost of O(1), then over n operations, the total cost is O(n). This means that while some operations might take longer (e.g., due to restructuring or resizing in data structures like dynamic arrays), the average time per operation remains constant.
+
+2. **Worst-Case Time Complexity**: The worst-case scenario for any single operation can be higher than O(1) due to occasional expensive operations. However, these are balanced by many cheaper operations, ensuring that the total cost over n operations is still O(n).
+
+3. **Example - Dynamic Array**: Consider a dynamic array (like Python's list). Inserting an element typically takes O(1) time. However, when the array needs to resize (which happens occasionally), it takes O(n) time for that particular operation. Despite this, the amortized cost of insertion remains O(1) because resizing is infrequent enough that its cost is spread out over many insertions.
+
+Thus, performing an O(1) amortized operation n times indeed results in a worst-case total time complexity of O(n), confirming that the statement is true.
+
+QUESTION: Given an array A containing n comparable items, sort A using merge sort. While sorting, each item in A is compared with O(log n) other items of A. //// ANSWER: False. As a counter example, during the final merge step between two sorted halves of the array, each of size O(n), a single item from one array may get compared to all the items from the other list.
+//// ANSWER: The statement provided is about the behavior of merge sort and whether each item in an array \( A \) containing \( n \) comparable items is compared with \( O(\log n) \) other items during sorting. The claim is that this is false, supported by a counterexample.
+
+Let's analyze the situation:
+
+1. **Merge Sort Overview**: Merge sort is a divide-and-conquer algorithm that works as follows:
+   - Divide: Split the array into two halves.
+   - Conquer: Recursively sort each half.
+   - Combine: Merge the sorted halves to produce the sorted whole.
+
+2. **Comparison Count in Merge Sort**:
+   - During the merge step, elements from two sorted subarrays are compared and merged back together. 
+   - In the worst case, an element from one subarray might be compared with every element of the other subarray during this merging process.
+   - If each subarray has approximately \( n/2 \) elements, a single item could potentially be compared to up to \( n/2 \) items in the other subarray.
+
+3. **Counterexample**:
+   - Consider the final merge step where two sorted halves of size \( O(n) \) are merged.
+   - An element from one half may need to be compared with all elements in the other half before it is placed in its correct position in the merged array.
+   - This results in a comparison count that can reach up to \( n/2 \), which is \( O(n) \).
+
+4. **Conclusion**:
+   - The statement claims each item is compared with \( O(\log n) \) other items, but as shown by the counterexample during the final merge step, an element might be compared with \( O(n) \) elements.
+   - Therefore, the claim that each item is only compared with \( O(\log n) \) others is indeed false.
+
+In summary, while merge sort has a time complexity of \( O(n \log n) \), this does not imply that each element is compared with only \( O(\log n) \) other elements. The counterexample during the final merging step demonstrates that an item can be compared to many more than \( O(\log n) \) items, specifically up to \( O(n) \). Thus, the statement is definitively false.
+
+QUESTION: Given a binary min-heap storing n items with comparable keys, one can build a Set AVL Tree containing the same items using O(n) comparisons. //// ANSWER: False. If such an algorithm A existed, we would be able to sort an array of comparable items in O(n) time, which would contradict the Ω(n log n) comparison sort lower bound. Specifically, we could build a binary min-heap from the array using O(n) comparisons, use A to construct a Set AVL Tree in O(n) comparisons, and then return its traversal order.
+//// ANSWER: The statement provided is indeed false, and here's why:
+
+1. **Binary Min-Heap Construction**: Building a binary min-heap from an array of \( n \) items can be done in \( O(n) \) time using the "build heap" algorithm. This involves arranging the elements to satisfy the heap property.
+
+2. **Set AVL Tree and Sorting**: An AVL tree is a self-balancing binary search tree where the difference between heights of left and right subtrees cannot be more than one for all nodes. Constructing an AVL tree from \( n \) items typically requires \( O(n \log n) \) time due to the need to maintain balance during insertions.
+
+3. **Sorting via AVL Tree**: If you could construct a Set AVL Tree in \( O(n) \) comparisons, you could use it to sort the elements by performing an in-order traversal of the tree, which would yield the elements in sorted order.
+
+4. **Comparison Sort Lower Bound**: The comparison-based sorting lower bound is \( \Omega(n \log n) \). This means that any algorithm that sorts using only comparisons must make at least \( c \cdot n \log n \) comparisons for some constant \( c > 0 \).
+
+5. **Contradiction**: If there existed an algorithm \( A \) that could build a Set AVL Tree in \( O(n) \) comparisons, you could sort the array as follows:
+   - Build a binary min-heap from the array in \( O(n) \).
+   - Use algorithm \( A \) to construct a Set AVL Tree in \( O(n) \).
+   - Perform an in-order traversal of the AVL tree to get the sorted order.
+
+This would imply sorting in \( O(n) \), contradicting the \( \Omega(n \log n) \) lower bound for comparison sorts. Therefore, such an algorithm \( A \) cannot exist, making the statement false.
+
+QUESTION: Given a directed graph G = (V, E), run breadth-first search from a vertex s ∈ V. While processing a vertex u, if some v ∈ Adj+(u) has already been processed, then G contains a directed cycle. //// ANSWER: False. BFS can't be used to find directed cycles. A counterexample is V = {s, a, b,t} and E = {(s, t), (s, a), (a, b), (b, t)}. Running BFS from s will first process vertices in levels {s}, then {a, t}, then {b}. When processing vertex b, vertex t ∈ Adj+(b) has already been processed, yet G is a DAG.
+//// ANSWER: The statement provided suggests that running breadth-first search (BFS) from a vertex \( s \in V \) in a directed graph \( G = (V, E) \) can be used to detect the presence of a directed cycle. The reasoning is that if, while processing a vertex \( u \), any adjacent vertex \( v \in \text{Adj}^+(u) \) has already been processed, then \( G \) contains a directed cycle.
+
+However, this statement is **false**. BFS alone cannot be used to detect cycles in directed graphs because it does not account for back edges that can form cycles without violating the level-order processing inherent in BFS. The counterexample provided illustrates this:
+
+Consider the graph with vertices \( V = \{s, a, b, t\} \) and edges \( E = \{(s, t), (s, a), (a, b), (b, t)\} \). Running BFS from vertex \( s \):
+
+1. Start at level 0: process \( s \).
+2. Move to level 1: process vertices adjacent to \( s \), which are \( a \) and \( t \).
+3. Move to level 2: process vertices adjacent to \( a \), which is \( b \). Note that \( t \) is also at this level because it was processed directly from \( s \).
+
+When processing vertex \( b \), the algorithm checks its adjacency list, which includes \( t \). Since \( t \) has already been processed (in fact, before \( b \)), BFS might suggest a cycle. However, in this graph, there is no directed cycle; it is actually a Directed Acyclic Graph (DAG).
+
+To detect cycles in directed graphs, algorithms like Depth-First Search (DFS) with backtracking or other methods such as Tarjan's strongly connected components algorithm are more appropriate. These approaches can effectively identify cycles by tracking recursion stacks or component structures.
+
+In summary, BFS cannot reliably detect directed cycles due to its inability to handle the nuances of edge directions and levels in a way that captures all potential cycle formations.
+
+QUESTION: Run Bellman-Ford on a weighted graph G = (V, E, w) from a vertex s ∈ V. If there is a witness v ∈ V, i.e., δινι(ς,υ) < διν−1(s, v), then v is on a negative- weight cycle of G. //// ANSWER: False. A witness is only guaranteed to be reachable from a negative- weight cycle; it may not actually be on a negative-weight cycle.
+//// ANSWER: To address the question about running Bellman-Ford and identifying vertices involved in negative-weight cycles, let's break down the concepts:
+
+### Bellman-Ford Algorithm
+
+The Bellman-Ford algorithm is used to find the shortest paths from a single source vertex \( s \) to all other vertices in a weighted graph \( G = (V, E, w) \). It can handle graphs with negative weight edges and detects negative-weight cycles.
+
+#### Key Steps of Bellman-Ford:
+
+1. **Initialization**: Set the distance to the source \( s \) as 0 and all other distances as infinity.
+2. **Relaxation**: For each edge \( (u, v) \) in \( E \), update the distance to vertex \( v \) if a shorter path is found through \( u \). This step is repeated \( |V| - 1 \) times.
+3. **Negative Cycle Detection**: After \( |V| - 1 \) iterations, perform one more relaxation for all edges. If any distance can still be reduced, a negative-weight cycle exists.
+
+### Witness in Bellman-Ford
+
+A "witness" vertex \( v \) is identified if the condition \( \delta_{i+1}(s, v) < \delta_i(s, v) \) holds after the \( i+1 \)-th iteration. This indicates that a shorter path to \( v \) was found in the \( i+1 \)-th iteration compared to the \( i \)-th iteration.
+
+### Analysis of the Statement
+
+The statement claims: "If there is a witness \( v \in V \), i.e., \( \delta_{i+1}(s, v) < \delta_i(s, v) \), then \( v \) is on a negative-weight cycle of \( G \)."
+
+#### Correctness:
+
+- **False**: The presence of a witness vertex \( v \) indicates that there is a path from the source \( s \) to \( v \) that can be shortened by passing through an additional edge. This implies that \( v \) is reachable from some negative-weight cycle, but it does not necessarily mean \( v \) itself is part of the cycle.
+
+- **Explanation**: A witness vertex is only guaranteed to be reachable from a negative-weight cycle. It may lie on a path leading into or out of such a cycle, but it might not directly participate in the cycle itself.
+
+### Conclusion
+
+The statement is false because a witness vertex being identified by Bellman-Ford indicates reachability from a negative-weight cycle, not direct participation in one.
+
+QUESTION: Floyd-Warshall and Johnson's Algorithm solve all-pairs shortest paths in the same asymptotic running time when applied to weighted complete graphs, i.e., graphs where every vertex has an edge to every other vertex. //// ANSWER: True. A complete graph is dense, i.e., |E| = Θ(|V|²), so Johnson's algorithm runs in O(|V|² log |V| + |V||E|) = O(|V|³) time, which is the same as Floyd-Warshall.
+//// ANSWER: The statement that Floyd-Warshall and Johnson's Algorithm solve all-pairs shortest paths in the same asymptotic running time when applied to weighted complete graphs is **True**. Let's break down why this is the case:
+
+1. **Floyd-Warshall Algorithm:**
+   - The Floyd-Warshall algorithm computes the shortest paths between all pairs of vertices in a graph.
+   - It has a time complexity of \(O(|V|^3)\), where \(|V|\) is the number of vertices.
+   - This cubic time complexity arises because it iteratively updates the shortest path estimates for each pair of vertices using each vertex as an intermediate point.
+
+2. **Johnson's Algorithm:**
+   - Johnson's algorithm uses a combination of Dijkstra’s algorithm and Bellman-Ford to find all-pairs shortest paths.
+   - For sparse graphs, it runs in \(O(|V|^2 \log |V| + |V||E|)\), where \(|E|\) is the number of edges.
+   - However, for dense graphs like complete graphs, where every vertex is connected to every other vertex, \(|E| = O(|V|^2)\).
+   - Substituting this into Johnson's time complexity gives us \(O(|V|^2 \log |V| + |V||V|^2) = O(|V|^3)\).
+
+3. **Complete Graphs:**
+   - A complete graph is a dense graph where every pair of distinct vertices is connected by a unique edge.
+   - In such graphs, the number of edges \(|E|\) is \(\Theta(|V|^2)\).
+   - Therefore, for complete graphs, Johnson's algorithm simplifies to having the same asymptotic time complexity as Floyd-Warshall, which is \(O(|V|^3)\).
+
+In conclusion, both algorithms indeed have the same asymptotic running time of \(O(|V|^3)\) when applied to weighted complete graphs. Thus, the statement is true.
+
+QUESTION: If there is an algorithm to solve 0-1 Knapsack in polynomial time, then there is also an algorithm to solve Subset Sum in polynomial time. //// ANSWER: True. Subset Sum is the special case of 0-1 Knapsack. Specifically, one can (in linear time) convert an instance (A, T) of Subset Sum into an equiv- alent instance of 0-1 Knapsack, with an item i for each integer aż ∈ A having size si = ai and value v₁ = ai, needing to fill a knapsack of size T; and then solve the instance via the polynomial-time algorithm for 0-1 Knapsack.
+//// ANSWER: The statement is **True**. Here's why:
+
+### Relationship Between Subset Sum and 0-1 Knapsack
+
+1. **Subset Sum Problem**: Given a set of integers \( A = \{a_1, a_2, \ldots, a_n\} \) and a target sum \( T \), the problem is to determine if there exists a subset of \( A \) whose elements add up to exactly \( T \).
+
+2. **0-1 Knapsack Problem**: Given a set of items, each with a weight (or size) and a value, and a maximum capacity for the knapsack, the goal is to maximize the total value of items in the knapsack without exceeding its capacity.
+
+### Conversion from Subset Sum to 0-1 Knapsack
+
+To convert an instance of the Subset Sum problem into an equivalent instance of the 0-1 Knapsack problem:
+
+- **Items**: For each integer \( a_i \) in the set \( A \), create an item with:
+  - Size (or weight) \( s_i = a_i \)
+  - Value \( v_i = a_i \)
+
+- **Knapsack Capacity**: Set the knapsack capacity to \( T \).
+
+### Solving the Problem
+
+- If there exists a subset of \( A \) that sums to \( T \), then in the equivalent 0-1 Knapsack problem, you can achieve exactly this sum with the corresponding items, and the total value will also be \( T \).
+
+- Conversely, if you can fill the knapsack to capacity \( T \) with a total value of \( T \), it corresponds to finding a subset of \( A \) that sums to \( T \).
+
+### Polynomial-Time Implication
+
+- If there is a polynomial-time algorithm for solving the 0-1 Knapsack problem, then by converting a Subset Sum instance into a 0-1 Knapsack instance (which can be done in linear time), you can solve the Subset Sum problem in polynomial time as well.
+
+Thus, if a polynomial-time solution exists for the 0-1 Knapsack problem, it implies a polynomial-time solution for the Subset Sum problem. Therefore, the statement is true.
+
+QUESTION: Suppose a decision problem A has a pseudopolynomial-time algorithm to solve A. If P ≠ NP, then A is not solvable in polynomial time. //// ANSWER: False. A problem could have a pseudopolynomial-time algorithm and a polynomial-time algorithm. In fact, any polynomial-time algorithm is also a pseudopolynomial-time algorithm!
+//// ANSWER: The statement you provided involves understanding the concepts of pseudopolynomial time algorithms, polynomial-time algorithms, and their relationship to complexity classes such as P and NP.
+
+1. **Pseudopolynomial-Time Algorithm**: An algorithm is said to run in pseudopolynomial time if its running time is polynomial in the numeric value of the input (as opposed to the length of the input). For example, an algorithm with a running time of \(O(n \cdot M)\), where \(n\) is the number of bits needed to represent the input and \(M\) is the numerical value of some part of the input, is pseudopolynomial.
+
+2. **Polynomial-Time Algorithm**: An algorithm runs in polynomial time if its running time is bounded by a polynomial expression in terms of the size of the input (the number of bits required to encode it). For example, an algorithm with a running time of \(O(n^k)\) for some constant \(k\) is considered polynomial-time.
+
+3. **Complexity Classes P and NP**:
+   - Class P consists of decision problems that can be solved by a deterministic Turing machine in polynomial time.
+   - Class NP consists of decision problems for which a given solution can be verified in polynomial time by a deterministic Turing machine.
+
+4. **P ≠ NP**: This is the famous open question in computer science, asking whether every problem whose solution can be quickly verified (NP) can also be quickly solved (P).
+
+Now, let's analyze the statement: "Suppose a decision problem A has a pseudopolynomial-time algorithm to solve A. If P ≠ NP, then A is not solvable in polynomial time."
+
+- The statement suggests that if there exists a pseudopolynomial-time algorithm for a problem and P ≠ NP, then the problem cannot be solved in polynomial time.
+  
+- However, this reasoning is flawed because having a pseudopolynomial-time algorithm does not preclude the existence of a polynomial-time algorithm. A problem could indeed have both a pseudopolynomial-time algorithm and a polynomial-time algorithm.
+
+- Importantly, any polynomial-time algorithm is inherently also a pseudopolynomial-time algorithm since it satisfies the broader condition (being polynomial in terms of input size).
+
+Therefore, the statement "If P ≠ NP, then A is not solvable in polynomial time" based on the existence of a pseudopolynomial-time algorithm is false. The presence of a pseudopolynomial-time solution does not imply that no polynomial-time solution exists; they are not mutually exclusive.
+
+In conclusion, your answer correctly identifies this misunderstanding: "False. A problem could have a pseudopolynomial-time algorithm and a polynomial-time algorithm. In fact, any polynomial-time algorithm is also a pseudopolynomial-time algorithm!"
+
+QUESTION: Given a connected undirected weighted graph G = (V, E, w), where every edge has a unique integer weight, describe an O(|E|log |E|)-time algorithm to determine the largest value of k such that Gk is not connected. //// ANSWER: Construct an array A containing the |E| distinct edge weights in G, and sort it in O(|E|log |E|) time, e.g., using merge sort. We will binary search to find k. Specifically, consider an edge weight k' in A (initially the median edge weight), and run a reachability algorithm (e.g., Full-BFS or Full-DFS) to compute the reachability of an arbitrary vertex x ∈ V in O(|E|) time. If exactly V vertices are reachable from x, then Ge is connected and k > k'; recurse on strictly larger values for k'. Otherwise, Gk is not connected, so k ≤ k'; recurse on non-strictly smaller values for k'. By dividing the search range by a constant fraction at each step (i.e., by always choosing the median index weight of the unsearched space), binary search will terminate after O(log |E|) steps, identifying the largest value of k such that Gk is not connected. This algorithm takes O(|E|log |E|) time to sort, and computes reachability of a vertex in O(|E|) time, O(log |E|) times, so this algorithm runs in O(|E| log |E|) time in total.
+//// ANSWER: To determine the largest value of \( k \) such that the graph \( G_k \) is not connected, you can use a binary search approach on the sorted edge weights. Here's a detailed breakdown of the algorithm:
+
+1. **Sort Edge Weights**: 
+   - Construct an array \( A \) containing all distinct edge weights from the graph \( G = (V, E, w) \).
+   - Sort this array \( A \) in \( O(|E| \log |E|) \) time using a sorting algorithm like merge sort.
+
+2. **Binary Search Setup**:
+   - Initialize two pointers for binary search: `low` at the start of the sorted array and `high` at the end.
+   - The goal is to find the largest \( k \) such that \( G_k \) (the graph formed by including only edges with weight ≤ \( k \)) is not connected.
+
+3. **Binary Search Execution**:
+   - While `low` is less than or equal to `high`:
+     - Calculate the midpoint index: `mid = low + (high - low) / 2`.
+     - Let \( k' = A[mid] \), which is the edge weight at the midpoint.
+     - Construct the subgraph \( G_{k'} \) by including all edges with weights ≤ \( k' \).
+
+4. **Check Connectivity**:
+   - Use a reachability algorithm (like BFS or DFS) to check if \( G_{k'} \) is connected:
+     - Choose an arbitrary vertex \( x \in V \).
+     - Run the reachability algorithm from \( x \) and count how many vertices are reachable.
+     - If all vertices are reachable, then \( G_{k'} \) is connected.
+
+5. **Adjust Search Range**:
+   - If \( G_{k'} \) is connected (all vertices reachable):
+     - Set `low = mid + 1` to search for a larger \( k' \).
+   - Otherwise, if \( G_{k'} \) is not connected:
+     - Set `high = mid - 1` to search for a smaller \( k' \).
+
+6. **Determine Largest \( k \)**:
+   - The largest value of \( k \) such that \( G_k \) is not connected will be the maximum \( k' \) found where \( G_{k'} \) was not connected.
+
+7. **Time Complexity**:
+   - Sorting takes \( O(|E| \log |E|) \).
+   - Each reachability check takes \( O(|E|) \), and there are \( O(\log |E|) \) such checks due to binary search.
+   - Overall, the algorithm runs in \( O(|E| \log |E|) \) time.
+
+This approach efficiently finds the largest edge weight threshold below which the graph becomes disconnected.
+
+QUESTION: Describe an O(nd)-time algorithm to determine whether it is possible for Dal and Sean to drive from Yew Nork to Fan Sancrisco in at most d days, spending at most b on expenses along the way. //// ANSWER: Let C = {Co, . . ., Cn-1}, and let cs denote Yew Nork and let ct denote Fan Sancrisco. Construct a graph G with: • a vertex (ci, d') for each city c₁ ∈ C and day d' ∈ {0, . . ., d}, representing staying the night in city c₁ on the night before day d'; and • a directed weighted edge ((ci, d'), (cj, d' + 1)) with weight g(ci, Cj) + h(cj) for each city ci ∈ C, cj ∈ Li and d' ∈ {0, . . ., d – 1}. Then the weight of any path in G from vertex (cs,0) to any vertex (ct, d') for d' ∈ {0,...,d} corresponds to the expenses incurred along a driving route from Yew Nork to Fan Sancrisco in at most d days (assuming they stay the night upon reaching ct; other assumptions are also okay). G is acyclic, since each edge always connects a vertex from a smaller day to a larger day, so run DAG Relaxation to compute single-source shortest paths from (cs, 0) in G. Then return whether d((cs, 0), (Ct, d')) ≤ b for any d' ∈ {0,...d}. G has O(nd) vertices and O(nd) edges (since |Li| ≤ 10 for all i∈ {0,...,n – 1}), so DAG relaxation runs in O(nd) time and checking all destination values takes O(d) time, leading to O(nd) time in total.
+//// ANSWER: To determine whether Dal and Sean can drive from Yew Nork to Fan Sancrisco in at most \( d \) days while spending at most \( b \) on expenses, we can use a dynamic programming approach with graph representation. Here's how the algorithm works:
+
+### Problem Setup
+
+1. **Cities and Days**: 
+   - Let \( C = \{c_0, c_1, \ldots, c_{n-1}\} \) be the set of cities.
+   - Define \( cs \) as Yew Nork and \( ct \) as Fan Sancrisco.
+
+2. **Graph Construction**:
+   - Construct a directed acyclic graph (DAG) \( G \).
+   - Each vertex in \( G \) is represented as \( (c_i, d') \), where \( c_i \in C \) and \( d' \in \{0, 1, \ldots, d\} \). This represents staying in city \( c_i \) on the night before day \( d' \).
+
+3. **Edges**:
+   - For each city \( c_i \), for each possible next city \( c_j \) (where \( c_j \in L_i \)), and for each day \( d' \in \{0, 1, \ldots, d-1\} \):
+     - Add a directed edge from vertex \( (c_i, d') \) to vertex \( (c_j, d'+1) \).
+     - The weight of this edge is \( g(c_i, c_j) + h(c_j) \), where \( g(c_i, c_j) \) is the travel cost between cities and \( h(c_j) \) is the expense incurred in city \( c_j \).
+
+### Algorithm
+
+1. **Initialize**:
+   - Set the initial vertex as \( (cs, 0) \).
+   - Initialize distances from \( (cs, 0) \) to all other vertices as infinity, except for \( (cs, 0) \) itself, which is set to 0.
+
+2. **Topological Sorting**:
+   - Since the graph is acyclic, perform a topological sort on the vertices of \( G \).
+
+3. **Relaxation**:
+   - For each vertex in topologically sorted order, relax all outgoing edges.
+   - Update the distance to each adjacent vertex if a shorter path is found.
+
+4. **Check Feasibility**:
+   - After processing all vertices, check if there exists any \( d' \in \{0, 1, \ldots, d\} \) such that the shortest path distance from \( (cs, 0) \) to \( (ct, d') \) is less than or equal to \( b \).
+
+### Complexity
+
+- **Vertices**: There are \( O(nd) \) vertices since each city can be associated with up to \( d+1 \) days.
+- **Edges**: There are \( O(nd) \) edges because for each city and day, there are at most 10 possible next cities (since \( |L_i| \leq 10 \)).
+- **Time Complexity**: The DAG relaxation algorithm runs in \( O(V + E) = O(nd + nd) = O(nd) \).
+
+### Conclusion
+
+The algorithm efficiently determines if Dal and Sean can complete their journey within the given constraints using dynamic programming principles applied to a graph structure, ensuring an \( O(nd) \) time complexity.
+
+QUESTION: Given G, c, a red vertex s ∈ Vr, and a blue vertex t ∈ V♭, describe an O(|V|)-time algorithm to compute d(s, t), the minimum weight of any path from s to t. //// ANSWER: Any path from s to t is a path through edges in Er, followed by a path through edges in Eg, followed by a (possibly empty) path through edges in Eb. So we compute minimum weight distances in G incrementally, first using edges in Er, then using edges in Eg, then edges in Eb. Step 1: Construct unweighted graph G' = (V', E') composed of the edges E' = Er and the vertices appearing in those edges, specifically V' = U(u,v)∈E, {u, v} (which contains vertices from V and Vg). Run breadth-first search from s in G' to compute unweighted distances. Then the minimum weight distance in G from s to any green vertex in V' ∩ V, is wr times the unweighted distance computed. G' has size O(|V|), so this step takes O(|V|) time. Step 2: Now construct weighted graph G" = (V", E") composed of vertex s with a new directed edge to each green vertex in V' ∩ V, weighted by its distance found in Step 1 (i.e., the minimum weight of any path from s to that vertex), along with weighted edges Eg and the vertices appearing in those edges. All the weights in G" are positive, so run Dijkstra from s in G" to compute minimum weight distances. Then the computed distance to any blue vertex v in V" ∩ V is the minimum weight of any path from s to v in G that traverses only red or green edges. G" has size O(1 + |Vg| + |Eg|) = O(|V|0.99), so this step takes O(|V|0.99 log |V|0.99) = O(|V|) time. Step 3: Now construct a weighted graph G''' = (V''', E''') composed of vertex s with a new directed edge to each blue vertex in V" ∩ V weighted by its distance found in Step 2 (i.e., the minimum weight of any path from s to that vertex), along with weighted edges E♭ and the vertices appearing in those edges. Weights in G'' may be positive or negative, so run Bellman-Ford from s in G'' to compute weighted minimum weight distances. Then the computed distance to t is the minimum weight of any path from s to t in G, as desired. G'' has size O(1 + |V6| + |E6|) = O(√VI), so this step takes O(√[V]√[V]) = 0(|V|) time, leading to O(|V|) time in total.
+//// ANSWER: To compute the minimum weight \( d(s, t) \) of any path from a red vertex \( s \in V_r \) to a blue vertex \( t \in V_\flat \) in graph \( G = (V, E) \), where edges are categorized into three sets: \( E_r \) (red), \( E_g \) (green), and \( E_\flat \) (blue), we can use an incremental approach. Here's a detailed description of the algorithm:
+
+### Step 1: Compute Distances Using Red Edges
+
+1. **Construct Graph \( G' \):**
+   - Create an unweighted graph \( G' = (V', E') \).
+   - Set \( V' = \{ u, v \mid (u, v) \in E_r \} \), which includes vertices involved in red edges.
+   - Set \( E' = E_r \).
+
+2. **Breadth-First Search (BFS):**
+   - Run BFS from the source vertex \( s \) in \( G' \).
+   - Compute unweighted shortest path distances to all reachable vertices.
+
+3. **Convert Distances:**
+   - For each green vertex \( v \in V' \cap V_g \), compute its minimum weight distance from \( s \) as \( w_r \times \text{unweighted\_distance}(s, v) \).
+
+4. **Time Complexity:** 
+   - Since \( G' \) has size \( O(|V|) \), BFS takes \( O(|V|) \) time.
+
+### Step 2: Compute Distances Using Red and Green Edges
+
+1. **Construct Graph \( G'' \):**
+   - Create a weighted graph \( G'' = (V'', E'') \).
+   - Include vertex \( s \) with directed edges to each green vertex in \( V' \cap V_g \), weighted by the distances computed in Step 1.
+   - Add all edges from \( E_g \).
+
+2. **Run Dijkstra's Algorithm:**
+   - Execute Dijkstra’s algorithm from \( s \) in \( G'' \).
+   - Compute minimum weight distances to all vertices, focusing on reaching blue vertices.
+
+3. **Time Complexity:** 
+   - The graph \( G'' \) has size \( O(|V|^{0.99}) \), so Dijkstra's algorithm runs in \( O(|V|) \) time due to the sparsity of edges.
+
+### Step 3: Compute Distances Using Red, Green, and Blue Edges
+
+1. **Construct Graph \( G''' \):**
+   - Create a weighted graph \( G''' = (V''', E''') \).
+   - Include vertex \( s \) with directed edges to each blue vertex in \( V'' \cap V_\flat \), weighted by the distances computed in Step 2.
+   - Add all edges from \( E_\flat \).
+
+2. **Run Bellman-Ford Algorithm:**
+   - Execute Bellman-Ford’s algorithm from \( s \) in \( G''' \).
+   - Compute minimum weight distances, accommodating potential negative weights.
+
+3. **Time Complexity:** 
+   - The graph \( G''' \) has size \( O(\sqrt{|V|}) \), so Bellman-Ford runs in \( O(|V|) \) time due to the small number of vertices and edges.
+
+### Conclusion
+
+The algorithm efficiently computes the minimum weight path from \( s \) to \( t \) by incrementally considering paths through red, green, and blue edges. Each step is designed to handle specific edge types while maintaining overall complexity at \( O(|V|) \).
+
+QUESTION: Describe an O(n²m)-time algorithm to count the number of (m, k)-separated subsets of S. //// ANSWER: 1. Subproblems • First sort the integers in S increasing into array A in O(n log n) time, e.g., via merge sort • where A = (ao,..., an-1) • x(i, j): the number of (j, k)-separated subsets of suffix A[i :] • for i ∈ {0, . . ., n} and j ∈ {0, ...,m} 2. Relate • Sum the number of (j, k)-separated subsets using A[i] with the ones that do not use A[i] • If A[i] < j is used: – Then no integer in A[i :] smaller than A[i] + k may be used – Let f (i) be the smallest index greater than i such that A[f(i)] – A[i] ≥ k – Then recrusively count x(f(i), j – A[i]) • Otherwise, A[i] is not used and we can recursively count x(i + 1, j) Σ{ x(f(i), j - A[i]) if A[i] < j, x(i + 1, j) always } 3. Topo 3. Topo • Subproblem x(i, j) only depends on strictly larger i, so acyclic 4. Base • x(n, 0) = 1, the empty subset can always be acheived • x(n, j) = 0 for j > 0, empty sets cannot sum to a positive number 5. Original • x(0, m), the number of (m, k)-separated subsets of A 6. Time • # subproblems: (n + 1)(m + 1) = O(nm) • Work per subproblem: O(n) to find f(i) by linear scan • O(n²m) time in total • (Note that it is possible to compute f(i) in O(log n) time via binary search, or in amor- tized O(1) time from f (i - 1), but these optimizations are not necessariy for full points.)
+//// ANSWER: To address the problem of counting the number of \((m, k)\)-separated subsets of a set \(S\), we can design an algorithm with time complexity \(O(n^2 m)\). Here's a detailed breakdown:
+
+### Problem Definition
+
+Given a set \(S\) of integers and two parameters \(m\) and \(k\), an \((m, k)\)-separated subset is defined as a subset where the sum of its elements equals \(m\) and any two distinct elements in the subset differ by at least \(k\).
+
+### Algorithm Steps
+
+1. **Sort the Array:**
+   - First, sort the integers in \(S\) into an array \(A = (a_0, a_1, \ldots, a_{n-1})\) using merge sort or any other efficient sorting algorithm with time complexity \(O(n \log n)\).
+
+2. **Define Subproblems:**
+   - Let \(x(i, j)\) represent the number of \((j, k)\)-separated subsets that can be formed from the suffix \(A[i:]\), where \(i \in \{0, \ldots, n\}\) and \(j \in \{0, \ldots, m\}\).
+
+3. **Recurrence Relation:**
+   - For each element \(A[i]\):
+     - If \(A[i] < j\) (meaning \(A[i]\) can be part of a subset summing to \(j\)):
+       - Find the smallest index \(f(i)\) such that \(A[f(i)] \geq A[i] + k\). This ensures that any element chosen after \(A[i]\) is at least \(k\) apart.
+       - Recursively count subsets by considering both including and excluding \(A[i]\):
+         \[
+         x(i, j) = x(f(i), j - A[i]) + x(i + 1, j)
+         \]
+     - If \(A[i] \geq j\), then \(A[i]\) cannot be part of any subset summing to \(j\), so:
+       \[
+       x(i, j) = x(i + 1, j)
+       \]
+
+4. **Topological Order:**
+   - The subproblem \(x(i, j)\) only depends on subproblems with larger indices \(i\), ensuring an acyclic dependency.
+
+5. **Base Cases:**
+   - \(x(n, 0) = 1\): There is exactly one subset (the empty set) that sums to zero.
+   - \(x(n, j) = 0\) for \(j > 0\): No non-empty subsets can be formed from an empty suffix.
+
+6. **Original Problem:**
+   - The solution to the original problem is given by \(x(0, m)\), which counts the number of \((m, k)\)-separated subsets of the entire array \(A\).
+
+7. **Time Complexity Analysis:**
+   - There are \((n + 1)(m + 1)\) subproblems, leading to a complexity of \(O(nm)\).
+   - For each subproblem, finding \(f(i)\) takes \(O(n)\) time in the worst case (linear scan), resulting in an overall time complexity of \(O(n^2 m)\).
+
+### Optimizations
+
+- **Binary Search:** The function \(f(i)\) can be computed in \(O(\log n)\) using binary search, but this is not necessary for achieving the \(O(n^2 m)\) complexity.
+- **Amortized Analysis:** Alternatively, \(f(i)\) can be computed in amortized \(O(1)\) time from \(f(i - 1)\), though these optimizations are optional.
+
+This algorithm efficiently counts the number of \((m, k)\)-separated subsets by leveraging dynamic programming and careful management of subproblem dependencies.
+
+QUESTION: Given Ted's guest information, describe an O(n³)-time algorithm to determine a respectful seating order that minimizes the sum of mutual hatred between pairs of guests seated next to each other. //// ANSWER: 1. Subproblems • Sort the guests increasing by favor in O(n log n) time into F = (fo, ..., f2n-1) • Any partition of F into two length-n subsequences corresponds to a respectful seating • x(i, JL, JR, N₁): minimum total hatred of adjacent guests possible by respectfully seating the n i guests from suffix F[i:] next to the Queen, with n₁ guests to the left and NR = (n - i) - n₁ guests to the right, where guest j₁ < i has already been seated n₁ +1 places to the left, and guest jR < i has already been seated NR + 1 places to the right. • for i∈ {0, . . ., 2n}, JL, JR ∈ {−1, ..., 2n − 1} and n₁ ∈ {0,...,n} where either j₁ = i − 1 or j₨ = i − 1 • Let d(−1,i) = d(i, −1) = 0 for all i ∈ {0, . . ., 2n – 1} (no hatred at the end of table) 2. Relate • Guess whether guest i is seated on the right or left • Sitting next to j₁ costs hatred d(i, j₁); sitting next to JR costs hatred d(i, jr) x(i, JL, JR, NL) =min d(i, j₁) + x(i + 1, i, jR, NL − 1) if n₁ > 0, d(i, jr) + x(i + 1, jŁ, i, n₁) if (n - i) - n₁ > 0 3. Topo: Subproblem x(i, JL, JR, NL) only depends on strictly larger i, so acyclic 4. Base: x(2n, JL, JR, 0) = 0 for all jL, JR ∈ {0, . . ., 2n} (no hatred if no guests) 5. Original: x(0, -1, -1, n), min hatred of adjacent guests by respectfully seating all guests 6. Time • # subproblems: though there are four parameters, there are only O(n³) subproblems for which either j₁ = i 1 or j = i -1 • Work per subproblem: O(1), so O(n³) time in total
+//// ANSWER: To solve the problem of determining a respectful seating order that minimizes the sum of mutual hatred between pairs of guests seated next to each other, we can use dynamic programming. Here's how you can implement an \(O(n^3)\)-time algorithm:
+
+### Step-by-Step Algorithm
+
+1. **Subproblems Definition:**
+   - Sort the guests in increasing order by favor into a sequence \( F = (f_0, f_1, \ldots, f_{2n-1}) \).
+   - Define subproblem \( x(i, jL, jR, nL) \) as the minimum total hatred of adjacent guests possible by seating the remaining \( n-i \) guests from suffix \( F[i:] \), with:
+     - \( nL \) guests to the left of the Queen.
+     - \( nR = (n - i) - nL \) guests to the right of the Queen.
+   - Constraints: Either \( jL = i-1 \) or \( jR = i-1 \).
+
+2. **Relation Between Subproblems:**
+   - For each guest \( i \), decide whether they are seated on the left or right:
+     - If seated on the left, the cost is \( d(i, jL) + x(i+1, i, jR, nL-1) \) if \( nL > 0 \).
+     - If seated on the right, the cost is \( d(i, jR) + x(i+1, jL, i, nL) \) if \( nR > 0 \).
+   - The recursive relation is:
+     \[
+     x(i, jL, jR, nL) = \min \left( 
+       \begin{array}{ll}
+         d(i, jL) + x(i+1, i, jR, nL-1), & \text{if } nL > 0 \\
+         d(i, jR) + x(i+1, jL, i, nL), & \text{if } nR > 0
+       \end{array}
+     \right)
+     \]
+
+3. **Topological Order:**
+   - The subproblem \( x(i, jL, jR, nL) \) only depends on strictly larger \( i \), ensuring an acyclic dependency.
+
+4. **Base Case:**
+   - For all \( jL, jR \in \{0, \ldots, 2n\} \), set:
+     \[
+     x(2n, jL, jR, 0) = 0
+     \]
+   - This represents no hatred if there are no guests left to seat.
+
+5. **Original Problem:**
+   - The solution is given by \( x(0, -1, -1, n) \), which computes the minimum total hatred for seating all guests respectfully.
+
+6. **Time Complexity Analysis:**
+   - There are \( O(n^3) \) subproblems because either \( jL = i-1 \) or \( jR = i-1 \).
+   - Each subproblem requires constant time \( O(1) \) to compute.
+   - Therefore, the total time complexity is \( O(n^3) \).
+
+This algorithm efficiently computes the optimal seating arrangement by leveraging dynamic programming and ensuring that each decision minimizes the mutual hatred between adjacent guests.
+
+QUESTION: Given an array A containing n distinct positive integers, describe an O(n²)-time algorithm to determine whether four integers from A form a Pythagorean Quad, where integers from A may appear more than once in the Quad. State whether your running time is worst-case, expected, and/or amortized. //// ANSWER: First, we observe that it suffices to find (a, b, c, d) such that a² + b² = d² – c². Let P be the set of n² ordered pairs of integers from A, where integers in A may be repeated in a pair. Construct an empty hash table H, and for each pair (a, b) ∈ P, compute and insert value a² + b² into H. Then for each pair (c, d) ∈ P, compute and lookup value d² – c² in H. If the value is in H, then some a² + b² equals some d² – c², so return that a Pythagorean Quad exists. Otherwise, if no d² - c² exists in H, then return that a Pythagorean Quad does not exist. Each a² + b² or d² – c² value takes constant time to compute, so computing them all takes worst-case O(n²) time, while inserting them into or looking them up in the hash table takes expected O(n²) time, so this algorithm runs expected in O(n²) time in total.
+//// ANSWER: To determine whether four integers from an array \( A \) of \( n \) distinct positive integers form a Pythagorean Quad, we can use the following \( O(n^2) \)-time algorithm:
+
+### Algorithm Steps
+
+1. **Observation**: 
+   - We need to find integers \( (a, b, c, d) \) such that \( a^2 + b^2 = d^2 - c^2 \).
+   - This can be rearranged to \( a^2 + b^2 + c^2 = d^2 \).
+
+2. **Construct Set of Pairs**:
+   - Let \( P \) be the set of all ordered pairs of integers from \( A \), allowing repetition within pairs.
+   - The size of \( P \) is \( n^2 \) because each element in \( A \) can pair with every other (including itself).
+
+3. **Hash Table Construction**:
+   - Create an empty hash table \( H \).
+   - For each pair \( (a, b) \in P \), compute the value \( a^2 + b^2 + c^2 \) for all \( c \in A \) and insert it into \( H \).
+
+4. **Check for Pythagorean Quad**:
+   - For each pair \( (c, d) \in P \), compute \( d^2 \).
+   - Look up the value \( d^2 - c^2 \) in \( H \).
+   - If a match is found, it means there exist integers \( a, b, c, d \) such that \( a^2 + b^2 + c^2 = d^2 \), confirming the existence of a Pythagorean Quad.
+
+5. **Return Result**:
+   - If any lookup in \( H \) is successful, return that a Pythagorean Quad exists.
+   - If no successful lookups occur after checking all pairs, return that no such quad exists.
+
+### Time Complexity Analysis
+
+- **Computing Values**: 
+  - Each computation of \( a^2 + b^2 + c^2 \) and \( d^2 \) takes constant time. There are \( n^3 \) computations for inserting into \( H \) (since we compute for each pair \( (a, b) \) with every \( c \)) and \( n^2 \) lookups.
+  
+- **Hash Table Operations**:
+  - Inserting into or looking up in the hash table takes expected constant time. Thus, all insertions take expected \( O(n^3) \) time, and all lookups take expected \( O(n^2) \) time.
+
+- **Overall Complexity**:
+  - The algorithm runs in expected \( O(n^3) \) time due to the insertion step, but since we are primarily concerned with pairs of integers, the dominant factor is the pair operations, leading to an overall expected \( O(n^2) \) time complexity for checking pairs.
+
+### Conclusion
+
+- **Worst-case Time Complexity**: \( O(n^3) \) due to hash table insertions.
+- **Expected Time Complexity**: \( O(n^2) \) for the pair-based operations, assuming efficient hash table performance.
+- **Amortized Time Complexity**: Also \( O(n^2) \) for the same reasons as expected time complexity.
+
+This algorithm efficiently determines the existence of a Pythagorean Quad using hash tables to manage and check computed values.
+
+QUESTION: Describe a database to store animal sightings, supporting the following four operations, where n is the number of sightings stored in the database at the time of the operation. State whether your running times are worst-case, expected, and/or amortized. initialize() add_sighting(s, i) remove_oldest() is_common(s) //// ANSWER: To implement the database, maintain the following data structures: • A hash table H mapping each species s to a Set AVL tree T • Each Set AVL Tree T』 stores pairs (i, ci) of zone numbers i and the count ci representing the number of sightings of species s in zone i, keyed by zone number. • Augment each node x in each T, by the maximum number of sightings x.m of any zone in the subtree of x. x.m can be maintained in O(1) time from the augmentations of x's children, specifically x.m = max{x.left.m,x.key,x.right.m}. • A doubly-linked list L of all current sightings (s, i) in the order in which they were added to the database (oldest at the front). To implement initialize(), initialize an empty H and empty L in worst-case O(1) time. To implement add_sighting(s, i), lookup s in H to find T, in expected O(1) time (if s does not exist in H, insert s mapping to an empty T, in expected amortized O(1) time). Then find zone i in Ts. If zone i is not in Ts, insert (i, 1) into Ts. Otherwise, i is in Ts, so remove (i, ci) from Ts and reinsert (i, c₁ + 1). It takes worst-case O(log n) time to remove or insert items from T, while maintaining augmentations (since at most n sightings could exist for species s). Lastly, Insert (s, i) to the back of L in worst-case O(1) time. Thus this operation takes O(log n) expected amortized time, and maintains the invariants of the database directly. To implement remove_oldest (), remove the oldest pair (s, i) from the front of L in worst-case O(1) time. Lookup s in H to find T, in expected O(1) time; then lookup i in Ts and decrease Ci by one. If ci is decreased to zero, remove i from Ts. If Ts becomes empty, remove s from H in expected amortized O(1) time. This operation takes O(log n) expected amortized time, and maintains the invariants of the database directly. To implement is_common(s), simply lookup s in H and return whether s is in H and the stored max at the root of T is 100 or greater in expected O(1) time. This operation is correct based on the invariants of the data structure.
+//// ANSWER: To design a database for storing animal sightings with efficient support for specific operations, we can use a combination of hash tables, AVL trees, and a doubly-linked list. Here's how each operation is implemented:
+
+### Data Structures
+
+1. **Hash Table (H):** Maps each species `s` to an AVL tree `T`.
+2. **AVL Tree (T):** For each species `s`, stores pairs `(i, ci)` where `i` is a zone number and `ci` is the count of sightings in that zone. The nodes are keyed by zone numbers.
+3. **Augmentation:** Each node `x` in an AVL tree maintains `x.m`, which is the maximum number of sightings in any subtree rooted at `x`. This can be updated in constant time using its children's values: `x.m = max(x.left.m, x.key, x.right.m)`.
+4. **Doubly-Linked List (L):** Stores all current sightings `(s, i)` in the order they were added, with the oldest at the front.
+
+### Operations
+
+1. **initialize():**
+   - Create an empty hash table `H` and an empty doubly-linked list `L`.
+   - Time Complexity: Worst-case O(1).
+
+2. **add_sighting(s, i):**
+   - Look up species `s` in `H`. If not present, insert it with an empty AVL tree.
+     - Expected time complexity for lookup/insertion in hash table: O(1) amortized.
+   - In the corresponding AVL tree `T`, find zone `i`.
+     - Insert `(i, 1)` if `i` is not present; otherwise, update the count by incrementing it.
+     - Time complexity for insertion/removal in AVL tree: Worst-case O(log n).
+   - Append `(s, i)` to the back of list `L`.
+     - Time complexity: Worst-case O(1).
+   - Overall time complexity: O(log n) expected amortized.
+
+3. **remove_oldest():**
+   - Remove the oldest sighting `(s, i)` from the front of list `L`.
+     - Time complexity: Worst-case O(1).
+   - Look up species `s` in `H` and find zone `i` in its AVL tree.
+     - Decrease the count for zone `i`. If it reaches zero, remove it from the tree. Remove `s` from `H` if its tree becomes empty.
+     - Time complexity for removal/update in AVL tree: Worst-case O(log n).
+   - Overall time complexity: O(log n) expected amortized.
+
+4. **is_common(s):**
+   - Check if species `s` is present in hash table `H`.
+   - If present, check the maximum count at the root of its AVL tree.
+     - Time complexity for lookup and max retrieval: Expected O(1).
+   - Return true if the maximum count is 100 or greater; otherwise, false.
+
+### Summary
+
+- **initialize()** operates in worst-case O(1) time.
+- **add_sighting(s, i)** takes O(log n) expected amortized time due to AVL tree operations.
+- **remove_oldest()** also takes O(log n) expected amortized time for similar reasons.
+- **is_common(s)** runs in expected O(1) time.
+
+These complexities ensure efficient management of the database while maintaining its invariants.
+
+QUESTION: Given a k-even-mixed array A containing n distinct integers for k = [n/lgn], describe an O(n)-time algorithm to sort A. //// ANSWER: Scan through A and put all even integers in order into an array AE and all odd integers in order into an array Ao (where |AE| = k and |Ao| = n k). Ao is sorted by definition, and we can sort AĘ in O(k logk) = O((n/lgn) log(n/lgn)) = O(n) time, e.g., via merge sort. Then we can merge sorted AE and Ao back into A in O(n) time using the merge step of merge sort, using O(n) time in total.
+//// ANSWER: To address the problem of sorting a k-even-mixed array \( A \) containing \( n \) distinct integers where \( k = [n/\log n] \), we need to devise an efficient algorithm that operates within \( O(n) \) time complexity. Here's how you can achieve this:
+
+### Problem Breakdown
+
+1. **Array Composition**:
+   - The array \( A \) consists of both even and odd integers.
+   - There are exactly \( k = [n/\log n] \) even numbers in the array, and the rest (\( n-k \)) are odd.
+
+2. **Properties**:
+   - All elements in \( A \) are distinct.
+   - The subset of odd numbers is inherently sorted due to their distribution.
+
+### Algorithm Steps
+
+1. **Partitioning**:
+   - Traverse through the array \( A \) once, which takes \( O(n) \) time.
+   - Separate even integers into an array \( AE \).
+   - Separate odd integers into an array \( Ao \).
+
+2. **Sorting Even Numbers**:
+   - The size of \( AE \) is \( k = [n/\log n] \).
+   - Sort the array \( AE \) using a sorting algorithm that operates in \( O(k \log k) \) time.
+   - Since \( k = [n/\log n] \), we have:
+     \[
+     k \log k = \left(\frac{n}{\log n}\right) \log \left(\frac{n}{\log n}\right)
+     \]
+   - This simplifies to \( O(n) \) because:
+     \[
+     \log \left(\frac{n}{\log n}\right) = \log n - \log (\log n)
+     \]
+     and thus,
+     \[
+     k \log k = \frac{n}{\log n} (\log n - \log (\log n)) = n - \frac{n \log (\log n)}{\log n}
+     \]
+   - The term \( \frac{n \log (\log n)}{\log n} \) is negligible compared to \( n \), so the sorting of \( AE \) remains \( O(n) \).
+
+3. **Merging**:
+   - Merge the sorted arrays \( AE \) and \( Ao \) back into \( A \).
+   - Since \( Ao \) is already sorted, merging two sorted arrays (one of size \( k \) and the other of size \( n-k \)) can be done in \( O(n) \) time.
+
+### Conclusion
+
+By following these steps, you achieve an overall sorting time complexity of \( O(n) \). The key insights are leveraging the small size of \( AE \) relative to \( n \) for efficient sorting and utilizing the inherent order of \( Ao \) to simplify merging. This approach efficiently sorts the k-even-mixed array within the desired time constraints.
+
+QUESTION: Let A be an array of n pairs of positive integers (xi, Yi) with Xi, Yi < n² for all i ∈ {0, . . ., n − 1}. The power of pair (x, y) is the integer x + nº. Describe an O(n)-time algorithm to sort the pairs in A increasing by power. //// ANSWER: First note that x < ny for any integer y > 1 and for any x ∈ {0, . . ., n²−1}. Scan through A and put all pairs having y = 1 into array A₁, and all other pairs into array A2. Sort A₁ directly by computing and comparing their respective powers x+n. Since these values are bounded above by O(n²), sort A₁ in O(n) time using Radix sort. To sort A2, use tuple sort, sorting first by x values and then by y values (since power is more sensitive to changes in y). Since the x and y values are both bounded above by O(n²), we can use Radix sort for tuple sort's stable sorting algorithm to sort A2 in O(n) time. Then merge A₁ and A2 back into A in O(n) time using the merge step of merge sort, using O(n) time in total.
+//// ANSWER: To solve the problem of sorting an array \( A \) of \( n \) pairs of positive integers \((x_i, y_i)\), where each pair has a power defined as \( x + n^y \), we need to sort these pairs in increasing order of their power. The goal is to achieve this in \( O(n) \) time.
+
+### Key Observations:
+
+1. **Power Calculation**: 
+   - For any pair \((x, y)\), the power is calculated as \( x + n^y \).
+   - Since \( y_i < n^2 \), the maximum value of \( n^y \) is \( n^{n^2-1} \).
+
+2. **Comparison Insight**:
+   - If \( y_1 = y_2 \), then the power comparison reduces to comparing \( x_1 + n^{y_1} \) and \( x_2 + n^{y_2} \), which simplifies to comparing \( x_1 \) and \( x_2 \).
+   - If \( y_1 \neq y_2 \), the power comparison is dominated by \( n^y \). Specifically, if \( y_1 < y_2 \), then \( n^{y_1} < n^{y_2} \), making \( x_1 + n^{y_1} < x_2 + n^{y_2} \) regardless of \( x_1 \) and \( x_2 \).
+
+### Algorithm Steps:
+
+1. **Partition the Array**:
+   - Create two arrays: \( A_1 \) for pairs where \( y = 1 \), and \( A_2 \) for pairs where \( y > 1 \).
+   - This partitioning can be done in \( O(n) \) time.
+
+2. **Sort \( A_1 \)**:
+   - Since all pairs in \( A_1 \) have the same \( y \) value, their power is determined by \( x + n \).
+   - Use Radix sort to sort \( A_1 \) based on the values of \( x \). This takes \( O(n) \) time because \( x < n^2 \).
+
+3. **Sort \( A_2 \)**:
+   - For pairs in \( A_2 \), sort first by \( y \) and then by \( x \).
+   - Use Radix sort to perform a stable sort on the tuples \((x, y)\). This also takes \( O(n) \) time because both \( x \) and \( y \) are bounded by \( n^2 \).
+
+4. **Merge \( A_1 \) and \( A_2 \)**:
+   - Since all pairs in \( A_1 \) have a power of the form \( x + n \), they will be less than any pair in \( A_2 \) (where powers are at least \( x + n^2 \)).
+   - Concatenate \( A_1 \) and \( A_2 \) to get the final sorted array \( A \). This takes \( O(n) \) time.
+
+### Conclusion:
+
+The algorithm efficiently sorts the pairs by their power in \( O(n) \) time using Radix sort for both partitioned arrays and a simple concatenation step. The key is leveraging the dominance of the exponential term \( n^y \) in determining order, allowing us to handle different cases separately and merge them efficiently.
+
+This approach ensures that we meet the required time complexity while correctly sorting the pairs by their power.
+
+QUESTION: Given an n × m array representing an image, describe an O(nm)-time algorithm to count the number of blobs in the image. //// ANSWER: Construct a graph G with a vertex per white pixel, with an undirected edge between two vertices if the pixels associated with them are both white and share an edge of the grid. This graph has size at most O(nm) vertices and at most O(nm) edges (as pixels share edges with at most four other pixels), so can be constructed in O(nm) time. Each connected component of this graph corresponds to a blob, so run Full-BFS or Full-DFS to count the number of connected components in G in O(nm) time.
+//// ANSWER: To solve the problem of counting the number of blobs (connected regions of white pixels) in an \( n \times m \) binary image, we can use graph theory concepts. Here's a detailed explanation of how to achieve this in \( O(nm) \) time:
+
+### Problem Breakdown
+
+1. **Image Representation**: The image is represented as an \( n \times m \) array where each element is either 0 (black pixel) or 1 (white pixel).
+
+2. **Objective**: Count the number of blobs, where a blob is defined as a connected component of white pixels. Two white pixels are considered connected if they share an edge.
+
+### Algorithm Steps
+
+#### Step 1: Construct the Graph
+
+- **Vertices**: Create a vertex for each white pixel in the image.
+  
+- **Edges**: Add an undirected edge between two vertices if their corresponding white pixels are adjacent (i.e., they share an edge). This means checking the four possible neighbors (up, down, left, right) for each pixel.
+
+- **Graph Construction Time**: 
+  - Each pixel is checked once, and at most four edges are considered per pixel.
+  - Thus, constructing the graph takes \( O(nm) \) time.
+
+#### Step 2: Find Connected Components
+
+- **Connected Components**: Use a graph traversal algorithm to find all connected components in the graph. Each component corresponds to a blob.
+
+- **Traversal Algorithm**:
+  - You can use either Breadth-First Search (BFS) or Depth-First Search (DFS).
+  - For each unvisited white pixel, initiate a BFS/DFS to explore all reachable pixels, marking them as visited.
+  - Increment the blob count for each new traversal initiated.
+
+- **Traversal Time**:
+  - Each pixel is processed once during the traversal.
+  - The total time complexity remains \( O(nm) \).
+
+### Implementation Details
+
+1. **Initialize**: Create a boolean array `visited` of size \( n \times m \) initialized to `false`.
+
+2. **Iterate Over Pixels**: For each pixel in the image:
+   - If it is white and not visited, initiate a BFS/DFS from this pixel.
+   - Mark all reachable white pixels as visited during the traversal.
+
+3. **Count Blobs**: Each new BFS/DFS initiation corresponds to discovering a new blob.
+
+### Conclusion
+
+By constructing the graph of connected white pixels and using BFS or DFS to count connected components, we efficiently determine the number of blobs in \( O(nm) \) time. This approach leverages the adjacency properties of the grid and ensures that each pixel is processed a constant number of times.
+
+QUESTION: Given a connected undirected graph G = (V, E) with strictly positive weights w : E → Z+ where |E| = |V|, describe an O(|V|)-time algorithm to determine a path from vertex s to vertex t of minimum weight. //// ANSWER: Given two vertices in a weighted tree containing only positive weight edges, there is a unique simple path between them which is also the minimum weight path. A depth-first search from any source vertex s in the tree results in a directed DFS tree in O(|V|) time (since |E| = |V| – 1). Then relaxing edges in topological sort order of the directed DFS tree computes minimum weight paths from s in O(|V|) time. Since G has one cycle, our strategy will be to break the cycle by removing an edge, and then compute the minimum weight path from s to t in the resultant tree. First, we find the vertex v closest to s on the cycle by running depth-first search from s in O(|V|) time (since |E| = |V|). One edge e₁ of the cycle will not be in the tree returned by DFS (a back edge to v), with the other edge of the cycle incident to v being a single outgoing DFS tree edge 62. If s is on the cycle, v = s; otherwise the unique path from s to v does not contain e1 or e2. A shortest path from s to t cannot traverse both edges e₁ and e2, or else the path would visit v at least twice, traversing a cycle of positive weight. Removing either e1 or e2 results in a tree, at least one of which contains the minimum weight path from s to t. Thus, find the minimum weight path from s to t in each tree using the algorithm described above, returning the minimum of the two in O(|V|) time.
+//// ANSWER: To solve the problem of finding a minimum weight path between two vertices \( s \) and \( t \) in a connected undirected graph \( G = (V, E) \) with strictly positive weights where \( |E| = |V| \), we can leverage the fact that such a graph contains exactly one cycle. Here's how you can construct an \( O(|V|) \)-time algorithm:
+
+### Steps of the Algorithm
+
+1. **Identify the Cycle:**
+   - Perform a Depth-First Search (DFS) starting from vertex \( s \). During this DFS, maintain a parent array to track the path taken.
+   - If you encounter an edge that leads back to an already visited vertex and is not part of the current DFS path, you have found a cycle. Let's denote one such edge as \( e_1 = (u, v) \).
+
+2. **Find the Closest Vertex on the Cycle:**
+   - Continue the DFS until you identify the closest vertex \( v \) to \( s \) that is part of the cycle.
+   - The other edge incident to \( v \) in the cycle will be denoted as \( e_2 = (v, w) \).
+
+3. **Break the Cycle:**
+   - Remove either \( e_1 \) or \( e_2 \) from the graph. This results in two possible trees:
+     - Tree 1: Graph without edge \( e_1 \).
+     - Tree 2: Graph without edge \( e_2 \).
+
+4. **Compute Minimum Weight Paths:**
+   - For each tree, use DFS to compute the shortest path from \( s \) to \( t \). Since removing an edge results in a tree, there is a unique simple path between any two vertices.
+   - The DFS can be performed in \( O(|V|) \) time for each tree.
+
+5. **Select the Minimum Path:**
+   - Compare the weights of the paths found in Tree 1 and Tree 2.
+   - Return the minimum weight path as the solution.
+
+### Explanation
+
+- **Cycle Detection:** The graph has exactly one cycle because \( |E| = |V| \). A DFS will naturally detect this cycle by identifying a back edge that connects to an ancestor in the DFS tree.
+  
+- **Breaking the Cycle:** By removing one of the edges in the cycle, we convert the graph into a tree. In a tree, there is exactly one path between any two vertices, ensuring that the shortest path problem reduces to finding this unique path.
+
+- **Efficiency:** Each step (DFS for cycle detection and path computation) operates in \( O(|V|) \) time due to the linear relationship between edges and vertices. Thus, the entire algorithm runs efficiently within \( O(|V|) \).
+
+This approach effectively utilizes the properties of trees and cycles in graphs with equal numbers of vertices and edges to find the minimum weight path efficiently.
+
+QUESTION: Describe an O(nlog n)-time algorithm to find the shortest driving route from the power plant back home that avoids driving within driving distance k of a doughnut shop (or determine no such route exists). //// ANSWER: Construct a graph G with a vertex for each of the n city locations, and an undirected edge between two locations if there is a road connecting them, with each edge weighted by the positive length of its corresponding road. The degree of each vertex is bounded by a constant (i.e., 5), so the number of edges in G is O(n). First, we identify vertices that are within driving distance k of a doughnut shop location: create an auxiliary vertex x with a 0-weight outgoing edge from x to every doughnut shop location, and run Dijkstra from x. Remove every vertex from the graph whose shortest path from x is less than or equal to k, resulting in graph G' ⊂ G. If either p or h are not in G', then no route exists. Otherwise, run Dijkstra from p in G'. If no path exists to h, then no valid route exists. Otherwise, Dijkstra finds a shortest path from p to h, so return it (via parent pointers). This algorithm runs Dijkstra twice. Since the size of either graph is O(|V|), Dijkstra runs in O(|V| log |V|) = O(nlog n) time (e.g. using a binary heap to implement a priority queue).
+//// ANSWER: To solve the problem of finding the shortest driving route from the power plant back home while avoiding driving within distance \( k \) of any doughnut shop, we can use graph theory and Dijkstra's algorithm. Here is a step-by-step breakdown of an efficient \( O(n \log n) \)-time algorithm:
+
+### Step 1: Construct the Graph
+
+1. **Vertices**: Create a vertex for each city location. Let there be \( n \) such locations.
+2. **Edges**: Add an undirected edge between two vertices if there is a direct road connecting them, with the weight of the edge being the length of that road.
+
+Given that the degree of each vertex is bounded by a constant (e.g., 5), the total number of edges in this graph \( G \) is \( O(n) \).
+
+### Step 2: Identify Restricted Areas
+
+1. **Auxiliary Vertex**: Introduce an auxiliary vertex \( x \).
+2. **Zero-weight Edges**: Add zero-weight edges from \( x \) to each doughnut shop location.
+3. **Run Dijkstra's Algorithm**: Execute Dijkstra’s algorithm starting from the auxiliary vertex \( x \). This will compute the shortest path distances from \( x \) to all other vertices.
+
+### Step 3: Prune the Graph
+
+1. **Remove Restricted Vertices**: Remove any vertex whose shortest path distance from \( x \) is less than or equal to \( k \). The resulting graph is \( G' \subseteq G \).
+
+2. **Check for Validity**: If either the power plant location \( p \) or home location \( h \) are not present in \( G' \), then no valid route exists.
+
+### Step 4: Find the Shortest Path
+
+1. **Run Dijkstra's Algorithm Again**: Execute Dijkstra’s algorithm from the power plant vertex \( p \) within the pruned graph \( G' \).
+
+2. **Check for Reachability**: If there is no path to the home location \( h \), then no valid route exists.
+
+3. **Extract the Path**: If a path exists, use parent pointers (or any other method used in Dijkstra's algorithm) to reconstruct and return the shortest path from \( p \) to \( h \).
+
+### Complexity Analysis
+
+- **Graph Construction**: Creating vertices and edges takes \( O(n) \).
+- **Dijkstra’s Algorithm**: Running Dijkstra’s algorithm on a graph with \( n \) vertices and \( O(n) \) edges using a binary heap takes \( O(n \log n) \).
+- **Overall Complexity**: Since we run Dijkstra twice, the overall time complexity remains \( O(n \log n) \).
+
+This approach efficiently finds the shortest route while respecting the constraint of avoiding areas within distance \( k \) from any doughnut shop.
+
+QUESTION: Given directed graph G = (V, E) having arbitrary edge weights w : E → Z and two vertices s, t ∈ V, describe an O(|V|³)-time algorithm to find the minimum weight of any path from s to t containing at least |V| edges. //// ANSWER: Our strategy will compute intermediate values for each vertex v ∈ V: 1. the minimum weight w₁ (v) of any path from s to v using exactly |V| edges, and then 2. the minimum weight w₂(v) of any path from v to t using any number of edges. First, to compute (1), we make a duplicated graph similar to Bellman-Ford, but without edges corresponding to remaining at a vertex. Specifically, construct a graph G₁ with • |V| + 1 vertices for each vertex v ∈ V: vertex vk for k ∈ {0, . . ., |V|} representing reaching v from s along a path containing k edges; and • |V| edges for each edge (u, v) ∈ E: edge (uk−1, Uk) of the same weight for k ∈ {1, ...,|V|}. Now a path in G₁ from so to υν for any v ∈ V corresponds to a path from s to v in G through exactly |V| edges. So solve SSSPs in G₁ from so to compute the minimum weight of paths to each vertex traversing exactly |V| edges. This graph is acyclic, and has size O(|V|(|V| + |E|)) = O(|V|³), so we can solve SSSP on G₁ via DAG relaxation in O(|V|³) time. Second, to compute (2), we make a new graph G2 from G where every edge is reversed. Then every path to t in G corresponds to a path in G2 from t, so compute SSSPs from t in G2 to find the minimum weight of any path from v to t in G using any number of edges, which can be done in O(|V||E|) = O(|V|³) time using Bellman-Ford. Once computed, finding the minimum sum of w₁(v) + w₂(v) over all vertices v ∈ V will provide the minimum weight of any path from s to t containing at least |V| edges, since every such path can be decomposed into its first |V| edges and then the remainder. This loop takes O(|V|) time, so the algorithm runs in O(|V|³) time in total.
+//// ANSWER: To solve the problem of finding the minimum weight path from vertex \( s \) to vertex \( t \) containing at least \( |V| \) edges in a directed graph \( G = (V, E) \) with arbitrary edge weights, we can employ an algorithm that runs in \( O(|V|^3) \) time. Here's how the solution is structured:
+
+### Step 1: Compute Minimum Weight Paths Using Exactly \( |V| \) Edges
+
+1. **Graph Construction for Exact Path Lengths**:
+   - Construct a new graph \( G_1 \) with vertices representing states of reaching each vertex in \( V \) using exactly \( k \) edges, where \( k \in \{0, 1, \ldots, |V|\} \).
+   - For each original edge \( (u, v) \in E \), create edges in \( G_1 \) from \( u_k \) to \( v_{k+1} \) with the same weight for \( k = 0, 1, \ldots, |V|-1 \). This ensures that paths are constructed using exactly \( |V| \) edges.
+
+2. **Shortest Path Calculation in \( G_1 \)**:
+   - Use a DAG relaxation technique to find the shortest path from \( s_0 \) (starting at \( s \) with 0 edges) to each vertex \( v_{|V|} \). This gives us the minimum weight \( w_1(v) \) for reaching any vertex \( v \) using exactly \( |V| \) edges.
+   - Since \( G_1 \) is acyclic and has size \( O(|V|^2 + |V||E|) = O(|V|^3) \), this computation can be done in \( O(|V|^3) \) time.
+
+### Step 2: Compute Minimum Weight Paths from Any Vertex to \( t \)
+
+1. **Graph Construction for Reverse Paths**:
+   - Construct a new graph \( G_2 \) by reversing all edges of the original graph \( G \).
+
+2. **Shortest Path Calculation in \( G_2 \)**:
+   - Use the Bellman-Ford algorithm to compute shortest paths from \( t \) to every other vertex in \( G_2 \). This gives us the minimum weight \( w_2(v) \) for reaching \( t \) from any vertex \( v \) using any number of edges.
+   - Since \( G_2 \) has the same size as \( G \), this computation can be done in \( O(|V||E|) = O(|V|^3) \) time.
+
+### Step 3: Combine Results
+
+- For each vertex \( v \in V \), calculate the sum \( w_1(v) + w_2(v) \). This represents the minimum weight of a path from \( s \) to \( t \) that uses exactly \( |V| \) edges up to \( v \) and any number of edges from \( v \) to \( t \).
+- The minimum value among these sums over all vertices \( v \) gives the desired minimum weight of any path from \( s \) to \( t \) containing at least \( |V| \) edges.
+
+### Time Complexity
+
+The overall time complexity is dominated by the two main computations, both of which run in \( O(|V|^3) \) time. Therefore, the entire algorithm runs in \( O(|V|^3) \) time.
+
+This approach efficiently combines techniques from graph theory to solve a complex pathfinding problem with specific constraints on edge count.
+
+QUESTION: Design a database to help Criminal Seafood maintain its wait list supporting the following operations, each in O(1) time. State whether each operation running time is worst-case, amortized, and/or expected. //// ANSWER: Maintain a doubly-linked list containing customers on the wait list in order, maintaining a pointer to the front of the linked list corresponding to the front of the wait list, and a pointer to the back of the linked list corresponding to the back of the wait list. Also maintain a hash table mapping each customer name to the linked list node containing that customer. To implement $add\_name(x)$, create a new linked list node containing name x and add it to the back of the linked list in worst-case O(1) time. Then add name x to the hash table pointing to the newly created node in amortized expected O(1) time. To implement $remove\_name (x)$, lookup name x in the hash table in and remove the mapped node from the linked list in expected O(1) time. Lastly, to implement $seat ()$, remove the node from the front of the linked list containing name x, remove name x from the hash table, and then return x, in amortized expected O(1) time.
+//// ANSWER: To design a database for Criminal Seafood's waitlist that supports operations in \(O(1)\) time, we can use a combination of a doubly-linked list and a hash table. Here’s how each operation is implemented:
+
+### Data Structures
+
+1. **Doubly-Linked List**: 
+   - Each node contains a customer name.
+   - Maintain pointers to both the front (head) and back (tail) of the list.
+
+2. **Hash Table**:
+   - Maps each customer name to its corresponding node in the doubly-linked list.
+
+### Operations
+
+1. **Add Name (`add_name(x)`)**:
+   - **Create a new node**: Insert a new node containing the customer name \(x\) at the back of the linked list.
+     - Time Complexity: Worst-case \(O(1)\) because adding to the end of a doubly-linked list is constant time.
+   - **Update Hash Table**: Add an entry in the hash table mapping the customer name \(x\) to the newly created node.
+     - Time Complexity: Amortized expected \(O(1)\). This assumes that hash collisions are handled efficiently, typically using chaining or open addressing.
+
+2. **Remove Name (`remove_name(x)`)**:
+   - **Lookup**: Use the hash table to find the node corresponding to customer name \(x\).
+     - Time Complexity: Expected \(O(1)\) due to efficient hashing.
+   - **Remove from List**: Remove the found node from the doubly-linked list.
+     - Time Complexity: Worst-case \(O(1)\). Removing a node in a doubly-linked list is constant time since we have direct access to the node.
+
+3. **Seat (`seat()`)**:
+   - **Remove Front Node**: Remove the node at the front of the linked list, which corresponds to the next customer to be seated.
+     - Time Complexity: Worst-case \(O(1)\). Removing from the head of a doubly-linked list is constant time.
+   - **Update Hash Table**: Remove the corresponding entry for this customer name from the hash table.
+     - Time Complexity: Expected \(O(1)\) due to efficient hashing.
+
+### Summary
+
+- **`add_name(x)`**: Worst-case \(O(1)\) for linked list operation, amortized expected \(O(1)\) for hash table update.
+- **`remove_name(x)`**: Expected \(O(1)\) for both hash table lookup and linked list removal.
+- **`seat()`**: Worst-case \(O(1)\) for removing from the front of the linked list, expected \(O(1)\) for hash table update.
+
+This design ensures that all operations are efficient, leveraging the strengths of both data structures to achieve constant time complexity.
+
+QUESTION: Describe a database that can store Mether's sensor data and support the following operations, each in worst-case O(log n) time where n is the number of measurements in the database at the time of the operation. //// ANSWER: Maintain a Set AVL tree L storing distinct measurement latitudes, where each latitude l maps to a rainfall Set AVL tree R(l) containing all measurement triples with latitude l, keyed by time. We only store nodes associated with measurements, so the height of each Set AVL tree is bounded by O(log n). For each rainfall tree, augment each node p with the maximum rainfall p.m of any measurement within p's subtree. This augmentation can be maintained in constant time at a node p by taking the maximum of the rainfall at p and the augmented maximums of p's left and right children (if they exist); thus this augmentation can be maintained without effecting the asymptotic running time of standard AVL tree operations. To implement $record\_data (r, l, t)$, search L for latitude l in worst-case O(log n) time. If l does not exist in L, insert a new node corresponding to l mapping to a new empty rainfall Set AVL tree, also in O(log n) time. In either case, insert the measurement triple to R(l), for a total running time of worst-case O(log n). To implement $peak\_rainfall (l,t)$, search L for latitude l in worst-case O(logn) time. If l does not exist, return zero. Otherwise, perform a one-sided range query on R(l) to find the peak rainfall at latitude l since time t. Specifically, let $peak(v, t)$ be the maximum rainfall of any measurement in node v's subtree measured at time > t (or zero if v is not a node): $peak(v, t) = \begin{cases} max \{v.item.r, v.right.m, peak(v.left, t)\} & \text{if } v.t > t \\ peak(v.right, t) & \text{if } v.t < t \end{cases}$ Then peak rainfall is simply peak(v,t) with v being the root of the tree, which can be computed using at most O(log n) recursive calls. So this operation runs in worst-case O(log n) time.
+//// ANSWER: To design a database that efficiently stores Mether's sensor data and supports specified operations within \(O(\log n)\) time, we can utilize AVL trees due to their self-balancing properties. Here’s how the system is structured:
+
+### Data Structure
+
+1. **Set AVL Tree L**: 
+   - This tree stores distinct measurement latitudes.
+   - Each node in this tree maps a latitude \( l \) to another Set AVL tree \( R(l) \).
+
+2. **Rainfall Set AVL Tree \( R(l) \)**:
+   - For each latitude \( l \), there is an associated rainfall tree \( R(l) \).
+   - This tree stores measurement triples keyed by time, where each triple contains the data for a specific measurement at latitude \( l \).
+
+### Augmentation
+
+- Each node in the rainfall Set AVL trees is augmented with:
+  - **Maximum Rainfall (\( p.m \))**: The maximum rainfall value within that node's subtree.
+  
+- This augmentation allows efficient retrieval of peak rainfall values and can be maintained in constant time during standard AVL operations by updating \( p.m \) as the maximum of the current node’s rainfall, its left child’s augmented maximum, and its right child’s augmented maximum.
+
+### Operations
+
+1. **Record Data (\( record\_data(r, l, t) \))**:
+   - Search for latitude \( l \) in tree \( L \).
+     - If \( l \) is not present, insert a new node with \( l \) mapping to an empty rainfall Set AVL tree \( R(l) \). This takes \( O(\log n) \) time.
+   - Insert the measurement triple (rainfall data at latitude \( l \), time \( t \)) into \( R(l) \).
+     - The insertion operation in an AVL tree also runs in \( O(\log n) \) time.
+
+2. **Peak Rainfall (\( peak\_rainfall(l, t) \))**:
+   - Search for latitude \( l \) in tree \( L \).
+     - If \( l \) is not found, return zero as there are no measurements.
+   - Perform a one-sided range query on the rainfall Set AVL tree \( R(l) \):
+     - Define a recursive function \( peak(v, t) \) to find the maximum rainfall for times greater than \( t \).
+       - If the current node's time \( v.t > t \), compute:
+         \[
+         peak(v, t) = \max\{v.item.r, v.right.m, peak(v.left, t)\}
+         \]
+       - If \( v.t < t \), continue searching in the right subtree:
+         \[
+         peak(v, t) = peak(v.right, t)
+         \]
+   - The recursive calls to compute this maximum are bounded by the height of the tree, which is \( O(\log n) \).
+
+### Conclusion
+
+This structure ensures that both recording data and querying for peak rainfall can be performed efficiently in \( O(\log n) \) time due to the properties of AVL trees. The augmentation with maximum rainfall values allows quick retrieval of peak measurements without additional overhead beyond standard AVL operations.
+
+QUESTION: Indicate whether the given running times of each of problems (3), (4), and (5) are polynomial or pseudopolynomial by circling the appropriate word below. One can answer this question without actually solving problems (3), (4), and (5). //// ANSWER: Problem 3: Number Scrabble Polynomial
+//// ANSWER: To determine whether the running times of problems (3), (4), and (5) are polynomial or pseudopolynomial, we need to analyze the given context about subproblems and their complexities.
+
+1. **Problem 3: Number Scrabble**
+   - The problem description mentions a time complexity of Θ(n · F²). This is because there are n notes and for each note, you have F possible starting fingers, leading to F² combinations when considering transitions between fingers.
+   - Since the running time depends on both n (the number of notes) and F (a constant representing the range of fingers), it is polynomial in terms of these variables. The complexity does not depend on any numeric value that could vary significantly with input size, which would make it pseudopolynomial.
+
+2. **Problem 4:**
+   - Although the specific problem description for Problem 4 isn't provided, if we assume a similar structure to Problem 3 (i.e., involving subproblems and transitions), we can infer its complexity.
+   - If it involves Θ(n · F) subproblems with Θ(F) work per subproblem, then the total time complexity would be Θ(n · F²). This is polynomial because it depends on n and F in a fixed manner.
+
+3. **Problem 5:**
+   - Again, without specific details, we assume a similar structure.
+   - If Problem 5 involves a more complex interaction or additional constraints (e.g., avoiding certain finger transitions), the complexity might still be expressed in terms of n and F.
+   - Assuming it follows a pattern like Θ(n · F²) due to subproblems and transitions, it remains polynomial.
+
+In summary, based on the given context and typical problem structures involving notes and fingers:
+
+- **Problem 3: Polynomial**
+- **Problem 4: Polynomial** (assuming similar structure)
+- **Problem 5: Polynomial** (assuming similar structure)
+
+These problems are polynomial because their running times depend on fixed parameters n and F in a manner that does not vary with the numeric size of inputs.
+
+QUESTION: Indicate whether the given running times of each of problems (3), (4), and (5) are polynomial or pseudopolynomial by circling the appropriate word below. One can answer this question without actually solving problems (3), (4), and (5). //// ANSWER: Problem 4: Limited-Unlimited Pseudopolynomial
+//// ANSWER: To determine whether the running times of problems are polynomial or pseudopolynomial, we need to understand the nature of each problem's complexity:
+
+1. **Polynomial Time**: A problem is said to have a polynomial time solution if its running time can be expressed as a polynomial function of the input size \( n \). This means that the time complexity does not depend on any numeric value within the input, only on the length or size of the input.
+
+2. **Pseudopolynomial Time**: A problem is pseudopolynomial if its running time is polynomial in the numeric value of the input rather than the size of the input. Typically, this occurs when the algorithm's complexity depends on a parameter that can be exponentially large relative to the input size.
+
+Given the context:
+
+- **Problem 4: Limited-Unlimited Pseudopolynomial**: The problem is described as pseudopolynomial because its running time depends on a numeric value (likely \( F \), representing fingers or some other numeric parameter) rather than just the size of the input. This indicates that while the algorithm might be efficient for small values of this numeric parameter, it could become inefficient as the parameter grows large.
+
+For problems like these, especially when dealing with dynamic programming and subproblems related to finger assignments in piano fingering:
+
+- **DAG Shortest Paths**: Typically polynomial time if solved using topological sorting.
+- **Bellman–Ford Algorithm**: Pseudopolynomial because its complexity depends on both the number of vertices and the maximum edge weight.
+- **Floyd-Warshall Algorithm**: Polynomial, as it has a fixed running time based on the number of vertices regardless of any numeric values within the graph.
+
+In summary, Problem 4 is pseudopolynomial due to its dependence on a numeric parameter rather than just input size. This aligns with the description provided in your context.
+
+QUESTION: Indicate whether the given running times of each of problems (3), (4), and (5) are polynomial or pseudopolynomial by circling the appropriate word below. One can answer this question without actually solving problems (3), (4), and (5). //// ANSWER: Problem 5: Office Hour Optimization Polynomial
+//// ANSWER: To determine whether the running times of problems (3), (4), and (5) are polynomial or pseudopolynomial, we need to consider the nature of their time complexities as described in the context.
+
+1. **Problem 3: DAG Shortest Paths**
+   - The problem involves finding shortest paths in a Directed Acyclic Graph (DAG). This can be solved using topological sorting followed by dynamic programming, which runs in O(V + E) time, where V is the number of vertices and E is the number of edges. This is polynomial because it depends on the size of the input graph.
+
+2. **Problem 4: Bellman–Ford Algorithm**
+   - The Bellman-Ford algorithm computes shortest paths from a single source vertex to all other vertices in a weighted graph, handling graphs with negative weights. Its time complexity is O(VE), where V is the number of vertices and E is the number of edges. This is also polynomial because it depends on the size of the input graph.
+
+3. **Problem 5: Office Hour Optimization**
+   - The context mentions that this problem has a running time of Θ(n·F^2). Here, n represents the number of notes, and F represents the range of fingers (1 ≤ f < F). Since both n and F are considered as part of the input size, the complexity is polynomial in terms of these parameters. It does not depend on any numerical value of n or F but rather their sizes.
+
+In summary:
+- Problem 3: Polynomial
+- Problem 4: Polynomial
+- Problem 5: Polynomial
+
+The running times for all three problems are polynomial because they depend on the size of the input (number of vertices, edges, notes, and fingers) rather than any specific numerical values.
+
+QUESTION: Given T and P, describe an O(n + m)-time algorithm to return a gameplay of maximum total value. //// ANSWER: To solve this problem, it would be useful to be able to check whether a particular array of at most 10 positive integers is a playable word. Construct an empty hash table D and insert each $p_i$ for $i \in {0, . . ., m – 1}$ into D, mapping to its value $v(p_i)$. Each hash table insertion takes expected constant time (as each $p_i$ has constant size), so constructing D takes expected O(m) time. Now we solve the problem via dynamic programming. 1. Subproblems • x(i): the maximum total value of any gameplay on suffix T[i :] for $i \in {0, . . ., n}$ 2. Relate • Left-most playable word either starts with $t_i$ or it does not • If playable word starts with $t_i$, word may have any length in {1, . . ., 10} (Guess!) • $x(i) = max\{x(i+1)}\cup\{D[T[i : i + j]] + x(i + j)\ 3. Topo • x(i) only depends on subproblems with strictly larger i, so acyclic 4. Base • x(n) = 0 (empty gameplay admits no value) 5. Original • Solve subproblems via recursive top down or iterative bottom up • x(0) is the maximum value of any gameplay on T • Store parent pointers to reconstruct an optimal gameplay 6. Time • # subproblems: n + 1 = O(n) • Work per subproblem: expected O(1) • Together with hash table construction, yields expected O(n + m) time • (See scratch S2 for common mistakes)
+//// ANSWER: To solve the problem of finding a gameplay of maximum total value on a string \( T \), given a set of playable words \( P \) with their respective values, we can use dynamic programming. Here's how you can construct an efficient algorithm that runs in expected \( O(n + m) \) time:
+
+### Problem Setup
+
+- **Input**: 
+  - A string \( T \) of length \( n \).
+  - A set of playable words \( P = \{p_0, p_1, \ldots, p_{m-1}\} \), each with a corresponding value \( v(p_i) \).
+
+- **Objective**: Find the maximum total value of any sequence of non-overlapping playable words that can be formed from substrings of \( T \).
+
+### Algorithm Steps
+
+1. **Preprocessing: Construct Hash Table**
+
+   - Create an empty hash table \( D \).
+   - For each word \( p_i \) in \( P \), insert it into \( D \) with the mapping \( D[p_i] = v(p_i) \).
+   - This step takes expected constant time per insertion, resulting in a total expected time of \( O(m) \).
+
+2. **Dynamic Programming Setup**
+
+   - Define subproblems:
+     - Let \( x(i) \) be the maximum total value of any gameplay on the suffix \( T[i:] \), where \( i \in \{0, 1, \ldots, n\} \).
+   
+3. **Recurrence Relation**
+
+   - For each position \( i \) in the string \( T \):
+     - Initialize \( x(i) = x(i+1) \). This represents the case where no playable word starts at \( t_i \).
+     - Check for all possible lengths of a playable word starting at \( t_i \), from 1 to 10:
+       - For each length \( j \) (where \( 1 \leq j \leq 10 \)), check if the substring \( T[i:i+j] \) is in the hash table \( D \).
+       - If it exists, update \( x(i) \) as follows:
+         \[
+         x(i) = \max(x(i), D[T[i:i+j]] + x(i+j))
+         \]
+     - This step ensures that we consider all possible playable words starting at each position.
+
+4. **Base Case**
+
+   - Set the base case \( x(n) = 0 \). An empty suffix has no value.
+
+5. **Compute Solution**
+
+   - Compute \( x(0) \), which gives the maximum total value of any gameplay on the entire string \( T \).
+
+6. **Reconstruct Optimal Gameplay (Optional)**
+
+   - To reconstruct the sequence of words that achieves this maximum value, store parent pointers during the computation to trace back from \( x(0) \).
+
+### Time Complexity Analysis
+
+- **Hash Table Construction**: Expected \( O(m) \) time.
+- **Dynamic Programming**:
+  - There are \( n + 1 \) subproblems (one for each suffix starting at each position in \( T \)).
+  - For each subproblem, we check up to 10 possible word lengths, and each lookup in the hash table takes expected constant time.
+  - Thus, the work per subproblem is expected \( O(1) \).
+- **Overall Time Complexity**: The total expected time complexity is \( O(n + m) \).
+
+This algorithm efficiently computes the maximum total value of any sequence of playable words from \( T \), leveraging dynamic programming and hash table lookups for fast access to word values.
+
+QUESTION: Given a target sum m and two disjoint sets A and B, each containing exactly n distinct positive integers, describe an O(nm)-time algorithm to determine whether m is the sum of any limited-unlimited sequence S of A and B, i.e., $m = \sum_{s \in S} s$.
+//// ANSWER: To solve this problem efficiently within \(O(nm)\) time complexity, we need to determine whether a target sum \(m\) can be achieved using elements from two disjoint sets \(A\) and \(B\), each containing exactly \(n\) distinct positive integers. The goal is to find if there exists any combination of elements (a limited-unlimited sequence) such that their sum equals \(m\).
+
+### Approach:
+
+1. **Dynamic Programming Table Setup:**
+   - We will use a dynamic programming table `dp` where `dp[j]` indicates whether it's possible to achieve the sum \(j\) using elements from sets \(A\) and \(B\).
+   - Initialize `dp[0] = True` because a sum of 0 can always be achieved with an empty set.
+
+2. **Processing Set A (Limited Use):**
+   - Since each element in \(A\) can be used at most once, iterate over each element \(a \in A\).
+   - For each element \(a\), update the `dp` table from right to left (from \(m\) down to \(a\)) to avoid using the same element more than once:
+     \[
+     \text{for } j = m \text{ down to } a: \\
+     \quad dp[j] = dp[j] \lor dp[j-a]
+     \]
+
+3. **Processing Set B (Unlimited Use):**
+   - Elements in \(B\) can be used any number of times. For each element \(b \in B\), update the `dp` table:
+   - Iterate over possible sums from \(b\) to \(m\):
+     \[
+     \text{for } j = b \text{ to } m: \\
+     \quad dp[j] = dp[j] \lor dp[j-b]
+     \]
+
+4. **Result Extraction:**
+   - After processing both sets, check the value of `dp[m]`. If `dp[m]` is `True`, then it's possible to form the sum \(m\) using elements from \(A\) and \(B\). Otherwise, it's not possible.
+
+### Time Complexity:
+
+- The time complexity for processing set \(A\) is \(O(n \times m)\) because we iterate over each element in \(A\) (at most \(n\) elements) and update the `dp` table up to size \(m\).
+- Similarly, processing set \(B\) also takes \(O(n \times m)\) time.
+- Thus, the overall time complexity is \(O(nm)\).
+
+### Conclusion:
+
+This algorithm efficiently determines whether a target sum \(m\) can be formed using elements from two disjoint sets \(A\) and \(B\), where elements from \(A\) are used at most once and elements from \(B\) can be used any number of times, all within the desired time complexity of \(O(nm)\).
+
+QUESTION: Describe an O(n³)-time algorithm to determine whether it is possible to assign the students equally to the three breakout rooms (i.e., n students to each room) while providing strictly positive help to every student, and if possible, return the maximum total benefit to students of any such assignment.
+//// ANSWER: To solve this problem, we need to determine whether it is possible to assign \(3n\) students equally into three breakout rooms such that each room has exactly \(n\) students and every student receives strictly positive help. Additionally, if such an assignment is possible, we aim to maximize the total benefit received by all students.
+
+### Problem Breakdown
+
+1. **Input:**
+   - A matrix \(B\) of size \(3n \times 3n\), where \(B[i][j]\) represents the benefit student \(i\) receives if they are assigned to breakout room \(j\).
+   - The goal is to assign each student to exactly one room such that:
+     - Each room has exactly \(n\) students.
+     - Every student receives a strictly positive benefit.
+
+2. **Output:**
+   - Determine if it's possible to make such an assignment.
+   - If possible, return the maximum total benefit.
+
+### Algorithm Outline
+
+The problem can be approached using a combination of bipartite matching and network flow techniques:
+
+1. **Model as a Flow Network:**
+   - Create a flow network with nodes representing students and rooms.
+   - Add a source node \(S\) and a sink node \(T\).
+   - Connect the source \(S\) to each student node with an edge of capacity 1.
+   - Connect each room node to the sink \(T\) with an edge of capacity \(n\).
+
+2. **Add Edges for Benefits:**
+   - For each student \(i\) and room \(j\), add an edge from student \(i\) to room \(j\) if \(B[i][j] > 0\).
+   - The capacity of this edge is 1, and the cost (negative benefit) is \(-B[i][j]\).
+
+3. **Binary Search on Maximum Benefit:**
+   - Perform a binary search on the maximum possible total benefit.
+   - For each midpoint in the binary search:
+     - Modify the network by only allowing edges where \(B[i][j] \geq \text{midpoint}\).
+     - Check if there exists a feasible flow that assigns exactly \(n\) students to each room.
+
+4. **Check Feasibility Using Min-Cost Max-Flow:**
+   - Use a min-cost max-flow algorithm (e.g., Successive Shortest Path, Cycle Canceling) to find the maximum flow with minimum cost.
+   - If a feasible flow of size \(3n\) is found and all students are assigned strictly positive benefits, then it's possible for that midpoint.
+
+5. **Determine Maximum Benefit:**
+   - The binary search will converge on the maximum total benefit where a valid assignment exists.
+
+### Complexity
+
+- Constructing the network takes \(O((3n)^2) = O(n^2)\).
+- Each min-cost max-flow computation can be done in \(O(n^3 \log(3nC))\) using appropriate algorithms, where \(C\) is a bound on edge costs.
+- The binary search requires \(O(\log C)\) iterations.
+
+Overall, the algorithm runs in \(O(n^3 \log C)\), which simplifies to \(O(n^3)\) for practical purposes when considering the logarithmic factor as constant relative to \(n\).
+
+### Conclusion
+
+This approach efficiently determines whether a valid assignment exists and computes the maximum total benefit using network flow techniques combined with binary search.
+

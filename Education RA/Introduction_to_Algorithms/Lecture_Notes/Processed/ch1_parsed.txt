@@ -1,0 +1,705 @@
+Graphs and Breadth-First Search. Topics include: Graph Applications, Graph Definitions, Graph Representations, Neighbor Sets/Adjacencies, Paths, Graph Path Problems, Shortest Paths Tree, Breadth-First Search (BFS)
+A graph G = (V, E) is a set of vertices V and a set of pairs of vertices E ⊆ V × V.  Directed edges are ordered pairs, e.g., (u, v) for u, v ∈ V. Undirected edges are unordered pairs, e.g., {u, v} for u, v ∈ V i.e., (u, v) and (v, u).  In this class, we assume all graphs are simple: edges are distinct, e.g., (u, v) only occurs once in E (though (v, u) may appear), and edges are pairs of distinct vertices, e.g., u ≠ v for all (u, v) ∈ E Simple implies |E| = O(|V|²), since |E| ≤ $\binom{|V|}{2}$ for undirected, ≤ 2$\binom{|V|}{2}$ for directed
+The outgoing neighbor set of u ∈ V is Adj+(u) = {v ∈ V | (u, v) ∈ E}. The incoming neighbor set of u ∈ V is Adj¯(u) = {v ∈ V | (v, u) ∈ E}. The out-degree of a vertex u ∈ V is deg+(u) = |Adj+(u)|. The in-degree of a vertex u ∈ V is deg¯(u) = |Adj¯(u)|. For undirected graphs, Adj¯(u) = Adj+(u) and deg¯(u) = deg+(u). Dropping superscript defaults to outgoing, i.e., Adj(u) = Adj+(u) and deg(u) = deg+(u)
+To store a graph G = (V, E), we need to store the outgoing edges Adj(u) for all u ∈ V. First, need a Set data structure Adj to map u to Adj(u). Then for each u, need to store Adj(u) in another data structure called an adjacency list. Common to use direct access array or hash table for Adj, since want lookup fast by vertex. Common to use array or linked list for each Adj(u) since usually only iteration is needed.  For the common representations, Adj has size (|V|), while each Adj(u) has size (deg(u)). Since Σᵤ∈ᵥ deg(u) ≤ 2|E| by handshaking lemma, graph storable in Θ(|V| + |E|) space. Thus, for algorithms on graphs, linear time will mean Θ(|V|+|E|) (linear in size of graph)
+A path is a sequence of vertices p = (V1, V2, . . ., Vk) where (Vi, Vi+1) ∈ E for all 1 < i < k. A path is simple if it does not repeat vertices. The length l(p) of a path p is the number of edges in the path.  The distance δ(u, v) from u ∈ V to v ∈ V is the minimum length of any path from u to v, i.e., the length of a shortest path from u to v (by convention, δ(u, v) = ∞ if u is not connected to v)
+SINGLE_PAIR_REACHABILITY(G, s, t): is there a path in G from s ∈ V to t ∈ V? SINGLE_PAIR_SHORTEST_PATH(G, s, t): return distance d(s, t), and a shortest path in G = (V, E) from s ∈ V to t ∈ V. SINGLE_SOURCE_SHORTEST_PATHS(G, s): return d(s, v) for all v ∈ V, and a shortest-path tree containing a shortest path from s to every v ∈ V (defined below)
+How to compute δ(s, v) and P(v) for all v ∈ V? Store δ(s, v) and P(v) in Set data structures mapping vertices v to distance and parent. (If no path from s to v, do not store v in P and set d(s, v) to ∞). Idea! Explore graph nodes in increasing order of distance. Goal: Compute level sets L₁ = {v | v ∈ V and d(s, v) = i} (i.e., all vertices at distance i). Claim: Every vertex v ∈ Li must be adjacent to a vertex u ∈ Li−1 (i.e., v ∈ Adj(u)). Claim: No vertex that is in Lj for some j < i, appears in Li. Invariant: δ(s, v) and P(v) have been computed correctly for all v in any Lj for j < i. Base case (i = 1): Lo = {s}, d(s, s) = 0, P(s) = None. Inductive Step: To compute Li: for every vertex u in Li−1: * for every vertex v ∈ Adj(u) that does not appear in any Lj for j < i: add v to Li, set d(s, v) = i, and set P(v) = u. Repeatedly compute L₁ from Lj for j < i for increasing i until L₁ is the empty set. Set (s, v) = ∞ for any v ∈ V for which δ(s, v) was not set
+Store each L₁ in data structure with Ѳ(|L₁|)-time iteration and O(1)-time insertion (i.e., in a dynamic array or linked list). Checking for a vertex v in any Lj for j < i can be done by checking for v in P. Maintain & and P in Set data structures supporting dictionary ops in O(1) time (i.e., direct access array or hash table). Algorithm adds each vertex u to ≤ 1 level and spends O(1) time for each v ∈ Adj(u). Work upper bounded by O(1) × Στεν deg(u) = O(|E|) by handshake lemma. Spend (|V|) at end to assign d(s, v) for vertices v ∈ V not reachable from s. So breadth-first search runs in linear time! O(|V| + |E|)
+There are three figures representing graphs. G1 consists of vertices 0, 1, 2, and 3 with edges (0,1), (1,2), (2,3), and (3,0). G2 has vertices 0, 1, and 2 with directed edges (0,1), (1,2), and (2,2). G3 contains vertices s, a, b, c, d, e, f, and g. The edges are (s,a), (s,b), (a,b), (a,c), (b,c), (c,d), (c,e), (d,e), (d,f), (e,f) and g is an isolated node.
+Weighted graphs, shortest-path weight, negative-weight cycles; Finding shortest-path tree from shortest-path weights in O(|V| + |E|) time; DAG Relaxation: algorithm to solve SSSP on a weighted DAG in O(|V| + |E|) time; SSSP for graph with negative weights: Compute δ(s, v) for all v ∈ V (-∞ if v reachable via negative-weight cycle); If a negative-weight cycle reachable from s, return one
+Given undirected graph G, return whether G contains a negative-weight cycle Solution: Return Yes if there is an edge with negative weight in G in O(|E|) time
+Given SSSP algorithm A that runs in O(|V|(|V| + |E|) time, show how to use it to solve SSSP in O(|V||E|) time
+Solution: Run BFS or DFS to find the vertices reachable from s in O(|E|) time
+Mark each vertex v not reachable from s with d(s, v) = ∞ in O(|V|) time
+Make graph G' = (V', E') with only vertices reachable from s in O(|V| + |E|) time
+Run A from s in G'.
+G' is connected, so |V'| = O(|E'|) = O(|E|) so A runs in O(|V||E|) time
+BFS graph is General and Weights is Unweighted with a running time O(|V|+|E|) Lecture L09; DAG Relaxation graph is DAG and Weights is Any with a running time O(|V|+|E|) Lecture L11; Bellman-Ford graph is General and Weights is Any with a running time O(|V|· |E|) Lecture L12 (Today!); Dijkstra graph is General and Weights is Non-negative with a running time O(|V| log |V| + |E|) Lecture L13
+If graph contains cycles and negative weights, might contain negative-weight cycles; If graph does not contain negative-weight cycles, shortest paths are simple!; Claim 1: If d(s, v) is finite, there exists a shortest path to v that is simple; Proof: By contradiction: Suppose no simple shortest path; let π be a shortest path with fewest vertices
+π not simple, so exists cycle C in π; C has non-negative weight (or else d(s, v) = -∞)
+Removing C from π forms path π' with fewer vertices and weight w(π') ≤ w(π); Since simple paths cannot repeat vertices, finite shortest paths contain at most |V| 1 edges
+k-Edge Distance δκ(s, v): the minimum weight of any path from s to v using ≤ k edges
+Idea! Compute δ|v|–1(s, v) and d|v|(s, v) for all v ∈ V
+If δ(s, v) ≠ −∞, δ(s, v) = δ
+ν
+−1 (s, v), since a shortest path is simple (or nonexistent)
+If δν (s, υ) < δινι-1(8, υ)
+* there exists a shorter non-simple path to v, so dv (s, v) = −∞
+* call v a (negative cycle) witness
+However, there may be vertices with -∞ shortest-path weight that are not witnesses
+Claim 2: If (s, v) = −∞, then v is reachable from a witness
+Proof: Suffices to prove: every negative-weight cycle reachable from s contains a witness
+Consider a negative-weight cycle C reachable from s
+For v ∈ C, let v' ∈ C denote v's predecessor in C, where Σνες ω(ν', v) < 0
+Then δινι (s, v) ≤ δ
+ν
+−1(s, v')+w(ν', υ) (RHS weight of some path on ≤ |V| vertices)
+So Σδινι(ς, υ) ≤ Σ δ
+ν
+1-1(s, v') + Σω(ν', v) < Σδιν-1(5, υ)
+VEC
+VEC
+VEC
+VEC
+If C contains no witness, διν₁(s, v) ≥ διν¦-1(s, v) for all v ∈ C, a contradiction
+Idea! Use graph duplication: make multiple copies (or levels) of the graph
+|V| + 1 levels: vertex vk in level k represents reaching vertex v from s using ≤ k edges
+If edges only increase in level, resulting graph is a DAG!
+Construct new DAG G' = (V', E') from G = (V, E):
+G' has |V|(|V| + 1) vertices vk for all v ∈ V and k ∈ {0, . . ., |V|}
+G' has |V|(|V| + |E|) edges:
+* |V| edges (Uk−1, Uk) for k ∈ {1, ..., |V|} of weight zero for each v ∈ V
+* |V| edges (Uk−1, Uk) for k ∈ {1, ...,|V|} of weight w(u, v) for each (u, v) ∈ E
+Run DAG Relaxation on G' from so to compute δ(50, vk) for all vk ∈ V'
+For each vertex: set d(s, v) = d(so, U|V|−1)
+For each witness u ∈ V where d(so, u
+
+v
+) < δ(so, U|V|−1):
+For each vertex v reachable from u in G:
+* set d(s, v) = 18
+The graph G consists of vertices a, b, c, and d with edges a to b (-5), b to c (1), c to d (3), a to c (6), a to d (4), and d to b (-1). Graph G' consists of 5 levels of duplicated vertices a, b, c, and d.  δ(ao, uk) are as follows: for k=0, a is 0, b, c, and d are ∞; for k=1, a is 0, b is -5, c is 6, and d is ∞; for k=2, a is 0, b is -5, c is -9, and d is 9; for k=3, a is 0, b is -5, c is -9, and d is -6; for k=4, a is 0, b is -7, c is -9, and d is -6.  The resulting shortest paths are delta(a, v): a is 0, b is ∞, c is ∞, and d is ∞.
+Claim 3: δ(8o, vk) = δκ(s, v) for all v ∈ V and k ∈ {0, . . ., |V|}
+Proof: By induction on k:
+Base case: true for all v ∈ V when k = 0 (only vo reachable from so is v = s)
+Inductive Step: Assume true for all k < k', prove for k = k'
+δ(8ο, υκι) = min{d(so, uk−1) + W(Uk'−1, Uk') | Uk′−1 ∈ Adj¯(vk')}
+min{{δ(80, Uk−1) + w(u, v) | u ∈ Adj¯(v)} ∪ {(50, Uk′−1)}}
+-1
+= min{{δκ-1(s, u) + w(u, v) | u ∈ Adj¯(v)} ∪ {δκι−1(8, v)}} (by induction)
+= δκι(ς, υ)
+Claim 4: At the end of Bellman-Ford d(s, v) = δ(s, v)
+Proof: Correctly computes d|v|−1(s, v) and d|v|(s, v) for all v ∈ V by Claim 3
+If d(s, v) ≠ −∞, correctly sets d(s, v) = d₁v-1(s, v) = δ(s, v)
+Then sets d(s, v) = −∞ for any v reachable from a witness; correct by Claim 2
+G' has size O(|V|(|V| + |E|)) and can be constructed in as much time
+Running DAG Relaxation on G' takes linear time in the size of G'
+Does O(1) work for each vertex reachable from a witness
+Finding reachability of a witness takes O(|E|) time, with at most O(|V|) witnesses: O(|V||E|)
+(Alternatively, connect super node x to witnesses via 0-weight edges, linear search from x)
+Pruning G at start to only subgraph reachable from s yields O(|V||E|)-time algorithm
+Claim 5: Shortest so υν path π for any witness v contains a negative-weight cycle in G
+Proof: Since π contains |V| + 1 vertices, must contain at least one cycle C in G
+C has negative weight (otherwise, remove C to make path π' with fewer vertices and
+w(π') ≤ w(π), contradicting witness v)
+Can use just O(|V|) space by storing only δ(so, Uk−1) and d(so, vk) for each k from 1 to |V|
+Traditionally, Bellman-Ford stores only one value per vertex, attempting to relax every edge
+in |V| rounds; but estimates do not correspond to k-Edge Distances, so analysis trickier
+But these space optimizations don't return a negative weight cycle
+Recursion where subproblem dependencies overlap, forming DAG. 'Recurse but re-use' (Top down: record and lookup subproblem solutions) and 'Careful brute force” (Bottom up: do each subproblem in order)
+1. Subproblem definition subproblem \( x \in X \)
+Describe the meaning of a subproblem in words, in terms of parameters. Often subsets of input: prefixes, suffixes, contiguous substrings of a sequence.
+Often multiply possible subsets across multiple inputs. Often record partial state: add subproblems by incrementing some auxiliary variables.
+2. Relate subproblem solutions recursively \( x(i) = f(x(j), . . .) \) for one or more \( j < i \)
+Identify a question about a subproblem solution that, if you knew the answer to, reduces the subproblem to smaller subproblem(s). Locally brute-force all possible answers to the question.
+3. Topological order to argue relation is acyclic and subproblems form a DAG.
+4. Base cases: State solutions for all (reachable) independent subproblems where relation breaks down
+5. Original problem: Show how to compute solution to original problem from solutions to subproblem(s). Possibly use parent pointers to recover actual solution, not just objective function.
+6. Time analysis: \( \Sigma_{x \in X} work(x) \), or if work(x) = O(W) for all \( x \in X \), then \( |X| \cdot O(W) \). work(x) measures nonrecursive work in relation; treat recursions as taking O(1) time
+Given two strings A and B, find a longest (not necessarily contiguous) subsequence of A that is also a subsequence of B. Example: A = hieroglyphology, B = michaelangelo. Solution: hello or heglo or iello or ieglo, all length 5. Maximization problem on length of subsequence. Subproblems: \( x(i, j) = \) length of longest common subsequence of suffixes A[i:] and B[j :]. For 0 ≤ i ≤ |A| and 0 ≤ j ≤ |B|. Relate: Either first characters match or they don't. If first characters match, some longest common subsequence will use them. (if no LCS uses first matched pair, using it will only improve solution). (if an LCS uses first in A[i] and not first in B[j], matching B[j] is also optimal). If they do not match, they cannot both be in a longest common subsequence. Guess whether A[i] or B[j] is not in LCS. Topological order: Subproblems \( x(i, j) \) depend only on strictly larger i or j or both. Simplest order to state: Decreasing i + j. Nice order for bottom-up code: Decreasing i, then decreasing j. Base: \( x(і, |B|) = x(|A|, j) = 0 \) (one string is empty). Original problem: Length of longest common subsequence of A and B is x(0,0). Store parent pointers to reconstruct subsequence. If the parent pointer increases both indices, add that character to LCS. Time: # subproblems: (|A| + 1) · (|B| + 1). work per subproblem: O(1). O(|A|· |B|) running time
+Given a string A, find a longest (not necessarily contiguous) subsequence of A that strictly increases (lexicographically). Example: A = carbohydrate. Solution: abort, of length 5. Maximization problem on length of subsequence. Attempted solution: Natural subproblems are prefixes or suffixes of A, say suffix A[i:]. Natural question about LIS of A[i :]: is A[i] in the LIS? (2 possible answers). But then how do we recurse on A[i + 1 :] and guarantee increasing subsequence? Fix: add constraint to subproblems to give enough structure to achieve increasing property. Subproblems: \( x(i) = \) length of longest increasing subsequence of suffix A[i :] that includes A[i]. For 0 ≤ i ≤ |A|. Relate: We're told that A[i] is in LIS (first element). Next question: what is the second element of LIS? Could be any A[j] where j > i and A[j] > A[i] (so increasing) Or A[i] might be the last element of LIS. \( x(i) = max\{1 + x(j) | i < j < |A|, A[j] > A[i]\} \cup \{1\} \). Topological order: Decreasing i. Base: No base case necessary, because we consider the possibility that A[i] is last. Original problem: What is the first element of LIS? Guess! Length of LIS of A is max\{x(i) | 0 ≤ i < |A|\}. Store parent pointers to reconstruct subsequence. Time: # subproblems: |A|. work per subproblem: O(|A|). O(|A|²) running time. Exercise: speed up to O(|A|log|A|) by doing only O(log|A|) work per subproblem, via AVL tree augmentation
+Given sequence of n coins of value vo, V1,..., Un 1. Two players (“me” and “you”) take turns. In a turn, take first or last coin among remaining coins. My goal is to maximize total value of my taken coins, where I go first. First solution exploits that this is a zero-sum game: I take all coins you don't. Subproblems: Choose subproblems that correspond to the state of the game. For every contiguous subsequence of coins from i to j, 0 ≤ i ≤ j < n. \( x(i, j) = \) maximum total value I can take starting from coins of values vi, . . ., Vj. Relate: I must choose either coin i or coin j (Guess!). Then it's your turn, so you'll get value x(i + 1, j) or x(i, j 1), respectively. To figure out how much value I get, subtract this from total coin values. Topological order: Increasing j i. Base: x(i,i) = vi. Original problem: x(0,η 1). Store parent pointers to reconstruct strategy. Time: # subproblems: Θ(n²). work per subproblem: Θ(n) to compute sums. Θ(n³) running time. Exercise: speed up to O(n²) time by precomputing all sums \( \Sigma_{k=i+1}^{-i} v_k \) in Θ(n²) time, via dynamic programming (!). Second solution uses subproblem expansion: add subproblems for when you move next. Subproblems: Choose subproblems that correspond to the full state of the game. Contiguous subsequence of coins from i to j, and which player p goes next. \( x(i, j,p) = \) maximum total value I can take when player p \( \in \{\text{me}, \text{you}\}\) starts from coins of values Vi, . . ., Vj. Relate: Player p must choose either coin i or coin j (Guess!). If p = me, then I get the value; otherwise, I get nothing. Then it's the other player's turn. Topological order: Increasing j i. Base: x(i, i, me) = Vi and x(i, i, you) = 0. Original problem: x(0,n 1, me). Store parent pointers to reconstruct strategy. Time: # subproblems: Θ(n²). work per subproblem: Θ(1). Θ(n²) running time
+We've now seen two examples of constraining or expanding subproblems. If you find yourself lacking information to check the desired conditions of the problem, or lack the natural subproblem to recurse on, try subproblem constraint/expansion! More subproblems and constraints give the relation more to work with, so can make DP more feasible. Usually a trade-off between number of subproblems and branching/complexity of relation. More examples next lecture
+Array: n,1,n,n,n; Linked List: n,n,1,n,n; Dynamic Array: n,1,n,1(a),n; Goal: n,logn,logn,logn,logn
+Array: n,n,n,n,n; Sorted Array: nlog n,log n,n,1,log n; Direct Access Array: U,1,1,U,U; Hash Table: n(e), 1(e),1(a)(e),n,n; Goal: nlogn, log n, log n, log n, log n
+Pointer-based data structures (like Linked List) can achieve worst-case performance; Binary tree is pointer-based data structure with three pointers per node; Node representation: node.{item,parent, left, right}
+The root of a tree has no parent (Ex: <A>); A leaf of a tree has no children (Ex: <C>, <E>, and <F>); Define depth(<X>) of node <X> in a tree rooted at <R> to be length of path from <X> to <R>; Define height(<X>) of node <X> to be max depth of any node in the subtree rooted at <X>; Design operations to run in $O(h)$ time for root height h, and maintain $h = O(log n)$; A binary tree has an inherent order: its traversal order
+every node in node <X>'s left subtree is before <X>
+every node in node <X>'s right subtree is after <X>
+List nodes in traversal order via a recursive algorithm starting at root:
+Recursively list left subtree, list self, then recursively list right subtree; Runs in $O(n)$ time, since $O(1)$ work is done to list each node; Example: Traversal order is (<F>, <D>, <B>, <E>, <A>, <C>); Right now, traversal order has no meaning relative to the stored items; Later, assign semantic meaning to traversal order to implement Sequence/Set interfaces
+Find first node in the traversal order of node <X>'s subtree (last is symmetric); If <X> has left child, recursively return the first node in the left subtree; Otherwise, <X> is the first node, so return it; Running time is $O(h)$ where h is the height of the tree; Example: first node in <A>'s subtree is <F>; Find successor of node <X> in the traversal order (predecessor is symmetric); If <X> has right child, return first of right subtree; Otherwise, return lowest ancestor of <X> for which <X> is in its left subtree; Running time is $O(h)$ where h is the height of the tree; Example: Successor of: <B> is <E>, <E> is <A>, and <C> is None
+Change the tree by a single item (only add or remove leaves):
+add a node after another in the traversal order (before is symmetric); remove an item from the tree; Insert node <Y> after node <X> in the traversal order; If <X> has no right child, make <Y> the right child of <X>; Otherwise, make <Y> the left child of <X>'s successor (which cannot have a left child); Running time is O(h) where h is the height of the tree; Delete the item in node <X> from <X>'s subtree; If <X> is a leaf, detach from parent and return; Otherwise, <X> has a child; * If <X> has a left child, swap items with the predecessor of <X> and recurse; * Otherwise <X> has a right child, swap items with the successor of <X> and recurse; Running time is O(h) where h is the height of the tree
+Idea! Set Binary Tree (a.k.a. Binary Search Tree / BST):; Traversal order is sorted order increasing by key; Equivalent to BST Property: for every node, every key in left subtree < node's key < every key in right subtree; Then can find the node with key k in node <X>'s subtree in O(h) time like binary search:
+If k is smaller than the key at <X>, recurse in left subtree (or return None); If k is larger than the key at <X>, recurse in right subtree (or return None); Otherwise, return the item stored at <X>; Other Set operations follow a similar pattern; see recitation
+Idea! Sequence Binary Tree: Traversal order is sequence order; How do we find ith node in traversal order of a subtree? Call this operation subtree_at(i); Could just iterate through entire traversal order, but that's bad, O(n); However, if we could compute a subtree's size in O(1), then can solve in O(h) time; How? Check the size n₁ of the left subtree and compare to i
+If i < nL, recurse on the left subtree; If i > n₁, recurse on the right subtree with i' = i - NL – 1; Otherwise, i = n₁, and you've reached the desired node!; Maintain the size of each node's subtree at the node via augmentation; Add node.size field to each node; When adding new leaf, add +1 to a. size for all ancestors a in O(h) time; When deleting a leaf, add -1 to a. size for all ancestors a in O(h) time; Sequence operations follow directly from a fast subtree_at(i) operation; Naively, build(X) takes O(nh) time, but can be done in O(n) time; see recitation
+For operations build(X), find(k), insert (x), find_min(), find_prev (k), delete (k), find_max(), find_next (k) the complexities are n log n, h, h, h, h, h, h, h
+For operations build (X), get_at(i), set_at(i,x), insert_first (x), delete_first(), insert_last (x), insert_at(i, x), delete_last(), delete_at(i) the complexities are n, h, h, h, h, h, h, h, h
+Keep a binary tree balanced after insertion or deletion; Reduce O(h) running times to O(log n) by keeping h = O(log n)
+It is used to keep track of many items and quickly access/remove the most important. Some examples include router with limited bandwidth, process scheduling in operating system kernels, discrete-event simulation, and graph algorithms.
+Items are ordered by key = priority, representing a Set interface.
+Common operations include: build(X) to build a priority queue from iterable x, insert(x) to add item x to data structure, delete_max() to remove and return stored item with largest key, and find_max() to return stored item with largest key. These are usually optimized for max or min, not both.
+Any priority queue data structure can translate into a sorting algorithm by first building the queue (e.g., inserting items one by one in input order) and then repeatedly deleting the min (or max) to determine the (reverse) sorted order. The running time is \( T_{build} + n \cdot T_{delete\_max} \le n \cdot T_{insert} + n \cdot T_{delete\_max} \).
+Set AVL trees support insert(x), find_min(), find_max(), delete_min(), and delete_max() in \( O(\log n) \) time per operation. This results in a priority queue sort that runs in \( O(n \log n) \) time and essentially is AVL sort from Lecture 7.
+Elements are stored in an unordered dynamic array. insert(x) appends x to the end in amortized \( O(1) \) time, while delete_max() finds the max in \( O(n) \), swaps it to the end, and removes it.  insert is quick, but delete_max is slow.  Priority queue sort is selection sort! (plus some copying)
+Elements are stored in a sorted dynamic array. insert(x) appends x to the end and swaps it down to its sorted position in \( O(n) \) time. delete_max() deletes from the end in \( O(1) \) amortized time.  delete_max is quick, but insert is slow. Priority queue sort is insertion sort! (plus some copying).
+An array can be interpreted as a complete binary tree, with maximum \( 2^i \) nodes at depth i except at the largest depth, where all nodes are left-aligned. The height of the tree is \( [\lg n] \), making it a balanced binary tree.
+Max-Heap Property at node i: \( Q[i] > Q[j] \) for \( j \in \{left(i), right(i)\} \). In a max-heap, every node i satisfies \( Q[i] \ge Q[j] \) for all nodes j in subtree(i).
+Append the new item x to the end of array in \( O(1) \) amortized time, making it the next leaf i in reading order.  Then, call max_heapify_up(i) to swap with parent until Max-Heap Property is satisfied. Correctness: Max-Heap Property guarantees all nodes are greater or equal to descendants, except Q[i] might be greater than some of its ancestors (unless i is the root, so we're done). If swap necessary, same guarantee is true with Q[parent(i)] instead of Q[i]. Running time: height of tree, so \( O(\log n) \)!
+Swap item at root node i = 0 with the last item at node n-1 in heap array. Then, call max_heapify_down(i): swap root with larger child until Max-Heap Property is satisfied. Correctness: Max-Heap Property guarantees all nodes > descendants, except Q[i] might be < some descendants (unless i is a leaf, so we're done). If swap is necessary, same guarantee is true with Q[j] instead of Q[i]. Running time: height of tree, so \( O(\log n) \)!
+Plugging max-heap into priority queue sort gives us a new sorting algorithm. Running time is \( O(n \log n) \) because each insert and delete_max takes \( O(\log n) \). Often include two improvements to this sorting algorithm
+Max-heap Q is a prefix of a larger array A.  Q is initially zero, eventually |A| (after inserts), then zero again (after deletes). insert() absorbs next item in array at index |Q| into heap. delete_max() moves max item to end, then abandons it by decrementing |Q|. In-place priority queue sort with Array is exactly Selection Sort. In-place priority queue sort with Sorted Array is exactly Insertion Sort. In-place priority queue sort with binary Max Heap is Heap Sort.
+Treat full array as a complete binary tree from start, then max_heapify_down(i) for i from n − 1 to 0 (leaves up).  The worst-case swaps = \( \sum_{i=0}^{n-1} height(i) = \sum_{i=0}^{n-1} ( \lg n - \lg i ) = \lg n! - n \cdot \Theta(\lg \frac{n}{\sqrt{n} (n/e)^n}) = O(n) \). So can build heap in \( O(n) \) time. (Doesn't speed up \( O(n \lg n) \) performance of heap sort)
+Where else have we seen linear build time for an otherwise logarithmic data structure? Sequence AVL Tree! Store items of priority queue in Sequence AVL Tree in arbitrary order (insertion order). Maintain max (and/or min) augmentation: node.max = pointer to node in subtree of node with maximum key - This is a subtree property, so constant factor overhead to maintain find_min() and find_max() in \( O(1) \) time. delete_min() and delete_max() in \( O(\log n) \) time. build(A) in \( O(n) \) time. Same bounds as binary heaps (and more)
+While our Set interface assumes no duplicate keys, we can use these Sets to implement Multisets that allow items with duplicate keys: Each item in the Set is a Sequence (e.g., linked list) storing the Multiset items with the same key, which is the key of the Sequence In fact, without this reduction, binary heaps and AVL trees work directly for duplicate-key items (where e.g. delete_max deletes some item of maximum key), taking care to use < constraints (instead of \( \le \) in Set AVL Trees)
+The goal of this class is to teach you to solve computation problems, and to communicate that your solutions are correct and efficient.
+A problem is a binary relation from problem inputs to correct outputs. It provides a verifiable predicate (a property) that correct outputs must satisfy and studies problems on large general input spaces.
+Given any set of $n$ students, is there a pair of students with same birthday? If birthday is just one of 365, for $n > 365$, answer always true by pigeon-hole. Assume resolution of possible birthdays exceeds $n$ (include year, time, etc.)
+An algorithm is a procedure mapping each input to a single output (deterministic). Algorithm solves a problem if it returns a correct output for every problem input
+An algorithm to solve birthday matching:
+Maintain a record of names and birthdays (initially empty)
+Interview each student in some order. If birthday exists in record, return found pair! Else add name and birthday to record
+Return None if last student interviewed without success
+Programs/algorithms have fixed size, so we must prove correct by:
+For small inputs, can use case analysis
+For arbitrarily large inputs, algorithm must be recursive or loop in some way
+Must use induction (why recursion is such a key concept in computer science)
+Proof of correctness of birthday matching algorithm
+Induct on $k$: the number of students in record
+Hypothesis: if first $k$ contain match, returns match before interviewing student $k + 1$
+Base case: $k = 0$, first $k$ contains no match
+Assume for induction hypothesis holds for $k = k'$, and consider $k = k' + 1$
+If first $k'$ contains a match, already returned a match by induction
+Else first $k'$ do not have match, so if first $k′ + 1$ has match, match contains $k' + 1$
+Then algorithm checks directly whether birthday of student $k' + 1$ exists in first $k'$
+It refers to how fast does an algorithm produce a correct output?
+Could measure time, but want performance to be machine independent
+Idea! Count number of fixed-time operations algorithm takes to return
+Expect to depend on size of input: larger input suggests longer time
+Size of input is often called 'n', but not always!
+Efficient if returns in polynomial time with respect to input
+Sometimes no efficient algorithm exists for a problem! (See L20)
+ignore constant factors and low order terms
+Upper bounds ($O$), lower bounds ($\Omega$), tight bounds ($\Theta$)
+$\in$, =, is, order
+Time estimate below based on one operation per cycle on a 1 GHz single-core machine
+Particles in universe estimated < $10^{100}$
+Specification for what operations on the machine can be performed in $O(1)$ time
+Model in this class is called the Word-RAM
+Machine word: block of w bits (w is word size of a w-bit Word-RAM)
+Memory: Addressable sequence of machine words
+Processor supports many constant time operations on a $O(1)$ number of words (integers):
+integer arithmetic: (+, -, *, //, %)
+logical operators: (&&, ||, !, ==, <, >, <=, =>)
+(bitwise arithmetic: (&, |, <<, >>, ...))
+Given word a, can read word at address a, write word to address a
+Memory address must be able to access every place in memory
+Requirement: w > # bits to represent largest memory address, i.e., $\log_2 n$
+32-bit words → max ~ 4 GB memory, 64-bit words → max ~ 16 exabytes of memory
+Python is a more complicated model of computation, implemented on a Word-RAM
+A data structure is a way to store non-constant data, that supports a set of operations
+A collection of operations is called an interface
+Sequence: Extrinsic order to items (first, last, nth)
+Set: Intrinsic order to items (queries based on item keys)
+Data structures may implement the same interface with different performance
+Example: Static Array - fixed width slots, fixed length, static sequence interface
+StaticArray(n): allocate static array of size n initialized to 0 in $O(n)$ time
+StaticArray.get_at(i):return word stored at array index i in $(1)$ time
+StaticArray.set_at(i, x): write word x to array index i in $(1)$ time
+Stored word can hold the address of a larger object
+Like Python tuple plus set_at(i, x),Python list is a dynamic array (see L02)
+Two loops: outer $k \in {0, . . ., n − 1}$, inner is $i \in {0, . . ., k}$
+Running time is $O(n) + \Sigma(O(1) + k \cdot O(1)) = O(n^2)$
+Quadratic in n is polynomial. Efficient? Use different data structure for record!
+1. Reduce to a problem you already know (use data structure or algorithm)
+Search Problem (Data Structures)
+Static Array (L01)
+Linked List (L02)
+Dynamic Array (L02)
+Sorted Array (L03)
+Direct-Access Array (L04)
+Hash Table (L04)
+Balanced Binary Tree (L06-L07)
+Binary Heap (L08)
+Sort Algorithms
+Insertion Sort (L03)
+Selection Sort (L03)
+Merge Sort (L03)
+Counting Sort (L05)
+Radix Sort (L05)
+AVL Sort (L07)
+Heap Sort (L08)
+Shortest Path Algorithms
+Breadth First Search (L09)
+DAG Relaxation (L11)
+Depth First Search (L10)
+Topological Sort (L10)
+Bellman-Ford (L12)
+Dijkstra (L13)
+Johnson (L14)
+Floyd-Warshall (L18)
+2. Design your own (recursive) algorithm
+Brute Force
+Decrease and Conquer
+Divide and Conquer
+Dynamic Programming (L15-L19)
+Greedy / Incremental
+1. Subproblem definition: subproblem x ∈ X. Describe the meaning of a subproblem in words, in terms of parameters.
+Often subsets of input: prefixes, suffixes, contiguous substrings of a sequence.
+Often multiply possible subsets across multiple inputs.
+Often record partial state: add subproblems by incrementing some auxiliary variables.
+2. Relate subproblem solutions recursively x(i) = f(x(j), . . .) for one or more j < i.
+Identify a question about a subproblem solution that, if you knew the answer to, reduces the subproblem to smaller subproblem(s).
+Locally brute-force all possible answers to the question.
+3. Topological order to argue relation is acyclic and subproblems form a DAG
+4. Base cases: State solutions for all (reachable) independent subproblems where relation breaks down.
+5. Original problem: Show how to compute solution to original problem from solutions to subproblem(s). Possibly use parent pointers to recover actual solution, not just objective function.
+6. Time analysis: 
+Exex work(x), or if work(x) = O(W) for all x ∈ X, then |X|· O(W)
+work(x) measures nonrecursive work in relation; treat recursions as taking O(1) time
+Subproblems: δ(s, v) for all v ∈ V. Relation: δ(s, v) = min{d(s, u) + w(u, v) | u ∈ Adj(v)} ∪ {∞}. Topo. order: Topological order of G
+1. Subproblems: Expand subproblems to add information to make acyclic!. δε(ς, v) = weight of shortest path from s to v using at most k edges. For v ∈ V and 0 ≤ k ≤ |V|
+2. Relate: Guess last edge (u, v) on shortest path from s to v. δε(ς, v) = min{dk-1(s, u) + w(u, v) | (u, v) ∈ Ε} ∪ {δκ−1(5, v)}
+3. Topological order: Increasing k: subproblems depend on subproblems only with strictly smaller k
+4. Base: δο(ς, 8) = 0 and δο(s, v) = ∞ for v ≠ s (no edges). (draw subproblem graph)
+5. Original problem: If has finite shortest path, then d(s, v) = διν¦-1(s, v). Otherwise some d|v|(s, v) < δ|ν|−1(s, v), so path contains a negative-weight cycle. Can keep track of parent pointers to subproblem that minimized recurrence
+6. Time: # subproblems: |V| × (|V| + 1). Work for subproblem δκ(s, v): O(degin(v)). This is just Bellman-Ford! (computed in a slightly different order)
+Could define subproblems δκ(u, v) = minimum weight of path from u to v using at most k edges, as in Bellman–Ford. Resulting running time is |V| times Bellman–Ford, i.e., O(|V|² · |E|) = O(|V|4). Can achieve Θ(|V|³) running time (matching Johnson for dense graphs) with a simple dynamic program, called Floyd–Warshall. Number vertices so that V = {1, 2, . . ., |V|}. 1. Subproblems: d(u,v,k) = minimum weight of a path from u to v that only uses vertices from {1,2,..., k} ∪ {u, v}. For u, v ∈ V and 1 ≤ k ≤ |V|. 2. Relate: x(u, v, k) = min{x(u, k, k − 1) + x(k, v, k − 1), x(u, v, k − 1)}. Only constant branching! No longer guessing previous vertex/edge. 3. Topological order: Increasing k: relation depends only on smaller k. 4. Base: x(u, u, 0) = 0, x(u, v, 0) = w(u, v) if (u, v) ∈ E, x(u, v, 0) = ∞ if none of the above. 5. Original problem: x(u, v, |V|) for all u, v ∈ V. 6. Time: O(|V|3) subproblems, Each O(1) work, O(|V|³) in total. Constant number of dependencies per subproblem brings the factor of O(|E|) in the running time down to O(|V|).
+Input: arithmetic expression a0 *1 A1 *2 A2・・・ *n−1 An−1 where each ai is an integer and each *¿ ∈ {+, ×}. Output: Where to place parentheses to maximize the evaluated expression. Example: 7 + 4×3 +5 → ((7) + (4)) × ((3) + (5)) = 88. Allow negative integers!. Example: 7 + (-4) × 3 + (-5) → ((7) + ((-4) × ((3) + (-5)))) = 15. 1. Subproblems: Sufficient to maximize each subarray? No! (-3) × (-3) = 9 > (−2) × (-2) = 4. x(i, j, opt) = opt value obtainable by parenthesizing ai *i+1··· *j−1 Aj−1. For 0 < i < j ≤ n and opt ∈ {min, max}. 2. Relate: Guess location of outermost parentheses / last operation evaluated. x(i, j, opt) = opt {x(i, k, opt') *k x(k, j, opt'')} | i < k < j; opt', opt'' ∈ {min, max}}. 3. Topological order: Increasing j – i: subproblem x(i, j, opt) depends only on strictly smaller j – i. 4. Base: x(i, i + 1, opt) = ai, only one number, no operations left!. 5. Original problem: X(0, n, max). Store parent pointers (two!) to find parenthesization (forms binary tree!). 6. Time: # subproblems: less than n·n · 2 = O(n²). work per subproblem O(n) · 2 · 2 = O(n). O(n³) running time
+Given sequence to, t1, ..., tn−1 of n single notes to play with right hand (will generalize to multiple notes and hands later). Performer has right-hand fingers 1, 2, . . ., F (F = 5 for most humans). Given metric d(t, f,t', f') of difficulty of transitioning from note t with finger f to note t' with finger f'. Typically a sum of penalties for various difficulties, e.g.: 1 < f < f' and t t' is uncomfortable. Legato (smooth) play requires t ≠ t' (else infinite penalty). Weak-finger rule: prefer to avoid f' ∈ {4,5}. {f, f'} = {3,4} is annoying. Goal: Assign fingers to notes to minimize total difficulty. First attempt: 1. Subproblems: x(i) = minimum total difficulty for playing notes ti, ti+1,..., tn-1. 2. Relate: Guess first finger: assignment f for ti. x(i) = min{x(i + 1) + d(ti, f, ti+1, ?) | 1 ≤ f < F}. Not enough information to fill in ?. Need to know which finger at the start of x(i + 1). But different starting fingers could hurt/help both x(i + 1) and d(ti, f, ti+1, ?). Need a table mapping start fingers to optimal solutions for x(i + 1). I.e., need to expand subproblems with start condition. Solution: 1. Subproblems: x(i, f) = minimum total difficulty for playing notes ti, ti+1,..., tn−1 starting with finger f on note ti. For 0 < i < n and 1 < f <F. 2. Relate: Guess next finger: assignment f' for ti+1. x(i, f) = min{x(i + 1, f') + d(ti, f, ti+1, f') | 1 ≤ f' < F}. 3. Topological order: Decreasing i (any f order). 4. Base: x(n − 1, f) = 0 (no transitions). 5. Original problem: min{x(0, f) | 1 ≤ f < F}. 6. Time: Θ(n. F) subproblems. Θ(F) work per subproblem. Θ(η· F2). No dependence on the number of different notes!
+Up to S = number of strings different ways to play the same note. Redefine "finger” to be tuple (finger playing note, string playing note). Throughout algorithm, F gets replaced by F · S. Running time is thus O(n · F2 . S2). Multiple Notes at Once: Now suppose t₁ is a set of notes to play at time i. Given a bigger transition difficulty function d(t, f, t', f'). Goal: fingering fi : ti → {1, 2, . . ., F} specifying how to finger each note (including which string for guitar) to minimize. At most TF choices for each fingering fi, where T = maxi |ti|. T < F = 10 for normal piano (but there are exceptions). T ≤ S for guitar. Θ(n. TF) subproblems. Θ(TF) work per subproblem. Θ(n. T2F) time. Θ(n) time for T, F < 10. Video Game Appliactions: Guitar Hero / Rock Band F = 4 (and 5 different notes). Dance Dance Revolution: F = 2 feet, T = 2 (at most two notes at once). Exercise: handle sustained notes, using "where each foot is” (on an arrow or in the middle) as added state for suffix subproblems
+The set interface includes operations for building a set from an iterable, returning the number of stored items, finding a stored item by key, adding an item (with replacement), removing an item by key, iterating in key order, finding the minimum and maximum keys, and finding the next and previous keys relative to a given key.
+Container: build(X) - O(n), Static: find(k) - O(n), Dynamic: insert(x) - O(n), delete(k) - O(n), Order: find_min() - O(n), find_max() - O(n), find_next(k) - O(n), find_prev(k) - O(n).
+Container: build(X) - O(n log n), Static: find(k) - O(log n), Dynamic: insert(x) - O(n), delete(k) - O(n), Order: find_min() - O(1), find_max() - O(1), find_next(k) - O(log n), find_prev(k) - O(log n).
+Given a sorted array, we can leverage binary search to make an efficient set data structure. Input: (static) array A of n numbers. Output: (static) array B which is a sorted permutation of A.
+Permutation: array with same elements in a different order.
+Sorted: B[i - 1] < B[i] for all i ∈ {1, ..., n}. Example: [8, 2, 4, 9, 3] → [2, 3, 4, 8, 9].
+A sort is destructive if it overwrites A (instead of making a new array B that is a sorted version of A).
+A sort is in place if it uses O(1) extra space (implies destructive: in place ⊆ destructive).
+There are n! permutations of A, at least one of which is sorted. For each permutation, check whether sorted in O(n). Example: [2, 3, 1] → {[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]}.
+The analysis is Correct by case analysis: try all possibilities (Brute Force). Running time: \(\Omega(n! \cdot n)\) which is exponential :(
+Substitution: Guess a solution, replace with representative function, recurrence holds true.
+Recurrence Tree: Draw a tree representing the recursive calls and sum computation at nodes.
+Master Theorem: A formula to solve many recurrences (R03).
+Find a largest number in prefix A[:i + 1] and swap it to A[i]. Recursively sort prefix A[:i]. Example: [8, 2, 4, 9, 3], [8, 2, 4, 3, 9], [3, 2, 4, 8, 9], [3, 2, 4, 8, 9], [2, 3, 4, 8, 9]
+Base case: for i = 0, array has one element, so index of max is i.
+Induction: assume correct for i, maximum is either the maximum of A[:i] or A[i], returns correct index in either case.
+S(1) = Θ(1), S(n) = S(n − 1) + Θ(1).
+Substitution: S(n) = Θ(n), cn = Θ(1) + c(n − 1) ⇒ 1 = Θ(1).
+Recurrence tree: chain of n nodes with Θ(1) work per node, \(\sum_{i=0}^{n-1} 1 = \Theta(n)\)
+Base case: for i = 0, array has one element so is sorted.
+Induction: assume correct for i, last number of a sorted output is a largest number of the array, and the algorithm puts one there; then A[:i] is sorted by induction.
+Т(1) = Θ(1), T(n) = T(n − 1) + Θ(n).
+Substitution: T(n) = Θ(n²), cn² = O(n) + c(n − 1)² ⇒ c(2n − 1) = Θ(n).
+Recurrence tree: chain of n nodes with Θ(i) work per node, \(\sum i = \Theta(n^2)\)
+Recursively sort prefix A[:i]. Sort prefix A[:i + 1] assuming that prefix A[:i] is sorted by repeated swaps. Example: [8, 2, 4, 9, 3], [2, 8, 4, 9, 3], [2, 4, 8, 9, 3], [2, 4, 8, 9, 3], [2, 3, 4, 8, 9]
+Base case: for i = 0, array has one element so is sorted.
+Induction: assume correct for i, if A[i] >= A[i − 1], array is sorted; otherwise, swapping last two elements allows us to sort A[:i] by induction.
+S(1) = Θ(1), S(n) = S(n − 1) + Θ(1) = S(n) = Θ(η)
+Base case: for i = 0, array has one element so is sorted.
+Induction: assume correct for i, algorithm sorts A[:i] by induction, and then insert_last correctly sorts the rest as proved above.
+Τ(1) = Θ(1), T(n) = T(n − 1) + Θ(n) = T(n) = Θ(η²)
+Recursively sort first half and second half (may assume power of two). Merge sorted halves into one sorted list (two finger algorithm). Example: [7, 1, 5, 6, 2, 4, 9, 3], [1, 7, 5, 6, 2, 4, 3, 9], [1, 5, 6, 7, 2, 3, 4, 9], [1, 2, 3, 4, 5, 6, 7, 9]
+Base case: for n = 0, arrays are empty, so vacuously correct.
+Induction: assume correct for n, item in A[r] must be a largest number from remaining prefixes of L and R, and since they are sorted, taking largest of last items suffices; remainder is merged by induction.
+S(0) = Θ(1), S(n) = S(n − 1) + Θ(1) = S(n) = Θ(η)
+Base case: for n = 1, array has one element so is sorted.
+Induction: assume correct for k < n, algorithm sorts smaller halves by induction, and then merge merges into a sorted array as proved above.
+Τ(1) = Θ(1), T(n) = 2T(n/2) + Θ(η).
+Substitution: Guess T(n) = O(n log n)
+cn log n = O(n) + 2c(n/2)log(n/2) ⇒ cn log(2) = Θ(n)
+Recurrence Tree: complete binary tree with depth log2 n and n leaves, level i has 2i nodes with O(n/2i) work each, total: \(\sum_{i=0}^{\log_2 n} (2^i) (n/2^i) = \sum_{i=0}^{\log_2 n} n = O(n \log n)\)
+Comparison search lower bound: any decision tree with n nodes has height > [lg(n+1)]-1. Can do faster using random access indexing: an operation with linear branching factor! Direct access array is fast, but may use a lot of space (Θ(u)). Solve space problem by mapping (hashing) key space u down to m = Θ(n). Hash tables give expected O(1) time operations, amortized if dynamic. Expectation input-independent: choose hash function randomly from universal hash family. Data structure overview! Last time we achieved faster find. Can we also achieve faster sort?
+The image contains a table describing data structures and their operations. Here is the description:
+- Array: build(X) is n, find(k) is n, insert(x) is n, delete(k) is n, and order contains n
+- Sorted Array: build(X) is n log n, find(k) is log n, insert(x) is n, delete(k) is n, and order contains log n
+- Direct Access Array: build(X) is U, find(k) is 1, insert(x) is 1, delete(k) is 1, and order contains U
+- Hash Table: build(X) is n(e), find(k) is 1(e), insert(x) is 1(a)(e), delete(k) is n, and order contains n
+Comparison model implies that algorithm decision tree is binary (constant branching factor). Requires # leaves L > # possible outputs. Tree height lower bounded by Ω(log L), so worst-case running time is O(log L). To sort array of n elements, # outputs is n! permutations. Thus height lower bounded by log(n!) ≥ log((n/2)^{n/2}) = O(n log n). So merge sort is optimal in comparison model. Can we exploit a direct access array to sort faster?
+Example: [5, 2, 7, 0, 4]. Suppose all keys are unique non-negative integers in range {0, . . ., u − 1}, so n ≤ u. Insert each item into a direct access array with size u in O(n). Return items in order they appear in direct access array in Θ(u). Running time is Θ(u), which is Ѳ(n) if u = O(n). Yay!
+Here is the code:
+def direct_access_sort(A):
+    "Sort A assuming items have distinct non-negative keys"
+    u = 1 + max([x.key for x in A])
+    D = [None] * u
+    for x in A:
+        D[x.key] = x
+    i = 0
+    for key in range(u):
+        if D[key] is not None:
+            A[i] = D[key]
+            i += 1
+If keys are in larger range, like u = Ω(n²) < n²: Represent each key k by tuple (a, b) where k = an + b and 0 ≤ b < n. Specifically a = [k/n] < n and b = (k mod n) (just a 2-digit base-n number!). This is a built-in Python operation (a, b) = divmod(k, n). Example: [17, 3, 24, 22, 12] → [(3,2), (0,3), (4,4), (4,2), (2,2)] → [32, 03, 44, 42, 22](n=5). How can we sort tuples?
+Item keys are tuples of equal length, i.e. item x.key = (x.k₁,x.k2, x.k2, . . .). Want to sort on all entries lexicographically, so first key k₁ is most significant. How to sort? Idea! Use other auxiliary sorting algorithms to separately sort each key. (Like sorting rows in a spreadsheet by multiple columns). What order to sort them in? Least significant to most significant! Exercise: [32, 03, 44, 42, 22] -> [42, 22, 32, 03, 44] -> [03, 22, 32, 42, 44](n=5). Idea! Use tuple sort with auxiliary direct access array sort to sort tuples (a, b). Problem! Many integers could have the same a or b value, even if input keys distinct. Need sort allowing repeated keys which preserves input order. Want sort to be stable: repeated keys appear in output in same order as input. Direct access array sort cannot even sort arrays having repeated keys! Can we modify direct access array sort to admit multiple keys in a way that is stable?
+Instead of storing a single item at each array index, store a chain, just like hashing! For stability, chain data structure should remember the order in which items were added. Use a sequence data structure which maintains insertion order. To insert item x, insert_last to end of the chain at index x.key. Then to sort, read through all chains in sequence order, returning items one by one.
+Here is the code:
+def counting_sort(A):
+    "Sort A assuming items have non-negative keys"
+    u = 1 + max([x.key for x in A])
+    D = [[] for i in range(u)]
+    for x in A:
+        D[x.key].append(x)
+    i = 0
+    for chain in D:
+        for x in chain:
+            A[i] = x
+            i += 1
+Idea! If u < n², use tuple sort with auxiliary counting sort to sort tuples (a, b). Sort least significant key b, then most significant key a. Stability ensures previous sorts stay sorted. Running time for this algorithm is O(2n) = O(n). Yay! If every key < nc for some positive c = logn (u), every key has at most e digits base n. A c-digit number can be written as a c-element tuple in O(c) time. We sort each of the c base-n digits in O(n) time. So tuple sort with auxiliary counting sort runs in O(cn) time in total. If c is constant, so each key is < nc, this sort is linear O(n)!
+Here is the code:
+def radix_sort(A):
+    "Sort A assuming items have non-negative keys"
+    n = len (A)
+    u = 1 + max((x.key for x in A])
+    c = 1 + (u.bit_length() // n.bit_length())
+    class Obj: pass
+    D = [Obj() for a in A]
+    for i in range(n):
+        D[i].digits = []
+        D[i].item = A[i]
+        high = A[i].key
+        for j in range(c):
+            high, low = divmod (high, n)
+            D[i].digits.append(low)
+    for i in range(c):
+        for j in range(n):
+            D[j].key = D[j].digits[i]
+        counting_sort (D)
+    for i in range(n):
+        A[i] = D[i].item
+Here is the summary:
+- Insertion Sort: Time is $n^2$, In-place is Y, Stable is Y, Comment is O(nk) for k-proximate
+- Selection Sort: Time is $n^2$, In-place is Y, Stable is N, Comment is O(n) swaps
+- Merge Sort: Time is n log n, In-place is N, Stable is Y, Comment is stable, optimal comparison
+- Counting Sort: Time is n+u, In-place is N, Stable is Y, Comment is O(n) when u = O(n)
+- Radix Sort: Time is n+n logn (u), In-place is N, Stable is Y, Comment is O(n) when u = O(n)
+A data structure is a way to store data, with algorithms that support operations on the data.
+Collection of supported operations is called an interface (also API or ADT). Interface is a specification: what operations are supported (the problem!).
+Data structure is a representation: how operations are supported (the solution!).
+Sequence and Set
+Maintain a sequence of items (order is extrinsic). Ex: $(x_0, x_1, x_2, ..., x_{n-1})$ (zero indexing). Use $n$ to denote the number of items stored in the data structure. Supports sequence operations such as Container build(X), Static len(), iter_seq(), get_at(i), set_at(i, x), Dynamic insert_at(i, x), delete_at(i), insert_first(x), delete_first(), insert_last(x), delete_last(). Special case interfaces: stack insert_last(x) and delete_last(), queue insert_last(x) and delete_first()
+Sequence about extrinsic order, set is about intrinsic order. Maintain a set of items having unique keys (e.g., item × has key x. key). (Set or multi-set? We restrict to unique keys for now.). Often we let key of an item be the item itself, but may want to store more info than just key. Supports set operations such as Container build(X), len(), Static find(k), Dynamic insert (x), delete (k), Order iter_ord(), find_min(), find_max(), find_next(k), find_prev(k). Special case interfaces: dictionary | set without the Order operations. In recitation, you will be asked to implement a Set, given a Sequence data structure.
+Array is great for static operations! get_at(i) and set_at(i, x) in O(1) time! But not so great at dynamic operations.... For consistency, we maintain the invariant that array is full. Then inserting and removing items requires reallocating the array and shifting all items after the modified item. The table shows operation and worst case O(·) for array. For array, build(X) is n, get_at(i) and set_at(i, x) is 1 and insert_first(x), delete_first(), insert_last (x),delete_last (),insert_at(i, x),delete_at(i) is n.
+Pointer data structure (this is not related to a Python "list"). Each item stored in a node which contains a pointer to the next node in sequence. Each node has two fields: node.item and node.next. Can manipulate nodes simply by relinking pointers! Maintain pointers to the first node in sequence (called the head). Can now insert and delete from the front in O(1) time! Yay! (Inserting/deleting efficiently from back is also possible; you will do this in PS1). But now get_at(i) and set_at(i, x) each take O(n) time... :( Can we get the best of both worlds? Yes! (Kind of...). The table shows operation and worst case O(·) for linked list. For linked list, build(X), get_at(i) and set_at(i, x) is n and insert_first(x), delete_first() is 1,insert_last (x),delete_last (),insert_at(i, x),delete_at(i) is n.
+Make an array efficient for last dynamic operations. Python "list" is a dynamic array. Idea! Allocate extra space so reallocation does not occur with every dynamic operation. Fill ratio: 0 ≤ r < 1 the ratio of items to space. Whenever array is full (r = 1), allocate Θ(n) extra space at end to fill ratio $r_1$ (e.g., 1/2). Will have to insert O(n) items before the next reallocation. A single operation can take O(n) time for reallocation. However, any sequence of O(n) operations takes O(n) time. So each operation takes O(1) time “on average”
+Data structure analysis technique to distribute cost over many operations. Operation has amortized cost T(n) if k operations cost at most ≤ kT(n). “T(n) amortized” roughly means T(n) “on average” over many operations. Inserting into a dynamic array takes O(1) amortized time. More amortization analysis techniques in 6.046!
+Delete from back? O(1) time without effort, yay! However, can be very wasteful in space. Want size of data structure to stay Θ(η). Attempt: if very empty, resize to r = 1. Alternating insertion and deletion could be bad.... Idea! When r < ra, resize array to ratio $r_i$ where $r_d$ < $r_i$ (e.g., $r_d$ = 1/4, $r_i$ = 1/2). Then Θ(n) cheap operations must be made before next expensive resize. Can limit extra space usage to (1 + ɛ)n for any ɛ > 0 (set $r_d$ = $\frac{1}{1+\epsilon}$, $r_i$ = $\frac{r_d+1}{2}$). Dynamic arrays only support dynamic last operations in O(1) time. Python List append and pop are amortized O(1) time, other operations can be O(n)! (Inserting/deleting efficiently from front is also possible; you will do this in PS1). The table shows operation and worst case O(·) for dynamic array. For dynamic array, build (X) is n, get_at(i) and set_at(i, x) is 1 and insert_first(x), delete_first(), insert_last (x),delete_last () is 1(a) ,insert_at(i, x),delete_at(i) is n.
+Input: directed graph G = (V, E) with weights w : E → Z. Output: δ(u, v) for all u, v ∈ V, or abort if G contains negative-weight cycle.
+Make all edge weights non-negative while preserving shortest paths! i.e., reweight G to G' with no negative weights, where a shortest path in G is shortest in G'. If non-negative, then just run Dijkstra |V| times to solve APSP.
+Add h to all outgoing edges and subtract h from all incoming edges
+is there an h such that w(u, v) + h(u) – h(v) ≥ 0 for every (u, v) ∈ E? Re-arrange this condition to h(v) ≤ h(u) + w(u, v), looks like triangle inequality! Condition would be satisfied if h(v) = δ(s, v) and d(s, v) is finite for some s. Add a new vertex s with a directed 0-weight edge to every v ∈ V! :)
+Construct G₁ from G by adding vertex x connected to each vertex v ∈ V with 0-weight edge. Compute δα(x, v) for every v ∈ V (using Bellman-Ford). If δx(x, v) = −∞ for any v ∈ V: Abort (since there is a negative-weight cycle in G). Else: Reweight each edge w'(u, v) = w(u, v) + δx(x, u) – δx(x, v) to form graph G'. For each u ∈ V: Compute shortest-path distances δ'(u, v) to all v in G' (using Dijkstra), Compute δ(u, v) = δ'(u, v) – δx(x, u) + δx(x, v) for all v ∈ V
+O(|V| + |E|) time to construct Gr, O(|V||E|) time for Bellman-Ford, O(|V| + |E|) time to construct G', O(|V|· (|V|log |V| + |E|)) time for |V| runs of Dijkstra, O(|V|²) time to compute distances in G from distances in G', O(|V|² log |V| + |V||E|) time in total
+Here is the table:Graph General, Weights Unweighted, Name BFS, Running Time O(|V| + |E|). Graph DAG, Weights Any, Name DAG Relaxation, Running Time O(|V| + |E|). Graph General, Weights Non-negative, Name Dijkstra, Running Time O(|V| log |V| + |E|). Graph General, Weights Any, Name Bellman-Ford, Running Time O(|V|· |E|).
+Reduce to a problem you already know, and Design your own recursive algorithm.
+Search Data Structures: Array, Linked List, Dynamic Array, Sorted Array, Direct-Access Array, Hash Table, AVL Tree, Binary Heap
+Sort Algorithms: Insertion Sort, Selection Sort, Merge Sort, Counting Sort, Radix Sort, AVL Sort, Heap Sort
+Graph Algorithms: Breadth First Search, DAG Relaxation (DFS + Topo), Dijkstra, Bellman-Ford, Johnson
+1. Subproblem definition, 2. Relate subproblem solutions recursively, 3. Topological order on subproblems (⇒ subproblem DAG), 4. Base cases of relation, 5. Original problem solution via subproblem(s), 6. Time analysis
+- Subproblems: S(i, j) = sorted array on elements of A[i : j] for 0 ≤ i ≤ j ≤ n
+- Relation: S(i, j) = merge(S(i, m), S(m, j)) where m = [(i + j)/2]
+- Topo. order: Increasing j – i
+- Base cases: S(i, i + 1) = [A[i]]
+- Original: S(0, n)
+- Time: T(n) = 2T(n/2) + O(n) = O(nlgn)
+- In this case, subproblem DAG is a tree (divide & conquer)
+- Subproblems: \(F(i)\) = the ith Fibonacci number \(F_i\) for \(i \in {0, 1, ..., n}\)
+- Relation: \(F(i) = F(i - 1) + F(i – 2)\) (definition of Fibonacci numbers)
+- Topo. order: Increasing i
+- Base cases: \(F(0) = 0, F(1) = 1\)
+- Original prob.: F(n)
+Dynamic programming is used when subproblem dependencies overlap (DAG, in-degree > 1).
+* "Recurse but re-use” (Top down: record and lookup subproblem solutions)
+* "Careful brute force” (Bottom up: do each subproblem in order)
+Often useful for counting/optimization problems: almost trivially correct recurrences
+1. Subproblem definition: subproblem x ∈ X. Describe the meaning of a subproblem in words, in terms of parameters. Often subsets of input: prefixes, suffixes, contiguous substrings of a sequence. Often record partial state: add subproblems by incrementing some auxiliary variables
+2. Relate subproblem solutions recursively x(i) = f(x(j), . . .) for one or more j < i
+3. Topological order to argue relation is acyclic and subproblems form a DAG
+4. Base cases: State solutions for all (reachable) independent subproblems where relation breaks down
+5. Original problem: Show how to compute solution to original problem from solutions to subproblem(s). Possibly use parent pointers to recover actual solution, not just objective function
+6. Time analysis:
+Σπεχ work(x), or if work(x) = O(W) for all x ∈ X, then |X|· O(W). work(x) measures nonrecursive work in relation; treat recursions as taking O(1) time
+- Subproblems: \(δ(s, v)\) for all \(v \in V\)
+- Relation: \(δ(s, v) = min{d(s, u) + w(u, v) | u \in Adj^-(v)} ∪ {∞}\)
+- Topo. order: Topological order of G
+- Base cases: \(δ(s, s) = 0\)
+- Original: All subproblems
+- Time: \(Συεν 0(1+ | Adj^-(v)|) = O(|V| + |E|)\)
+- Given n pins labeled 0, 1, ..., η 1
+- Pin i has value vi
+- Ball of size similar to pin can hit either
+  * 1 pin i, in which case we get vi points
+  * 2 adjacent pins i and i + 1, in which case we get vi · Vi+1 points
+- Once a pin is hit, it can't be hit again (removed)
+- Problem: Throw zero or more balls to maximize total points
+- Example: [-1, 1, 1, 1, 9,9,3, -3, -5, 2, 2
+AVL trees maintain height-balance, also called the AVL Property, where a node is height-balanced if the heights of its left and right subtrees differ by at most 1. The skew of a node is defined as the height of its right subtree minus that of its left subtree, with a node being height-balanced if its skew is -1, 0, or 1.
+Rotations can reduce the height of the tree without changing its traversal order. A rotation relinks O(1) pointers to modify the tree structure and maintains traversal order. O(n) rotations can transform a binary tree to any other with the same traversal order. After adding or removing leaf from a height-balanced tree resulting in imbalance, fix height-balance of ancestors starting from leaf up to the root, and repeatedly rebalance lowest ancestor that is not height-balanced.
+A binary tree with height-balanced nodes has height h = O(log n) (i.e., n = 2^{Ω(h)}). The fewest nodes F(h) in any height h tree is F(h) = 2^{0(h)}. Then, F(0) = 1, F(1) = 2, F(h) = 1 + F(h-1) + F(h-2) ≥ 2F(h-2) => F(h) ≥ 2^{h/2}
+To determine if a node is height-balanced, compute the heights of its subtrees. Augment each node with the height of its subtree, and the height of a node can be computed in O(1) time from the heights of its children. During dynamic operations, maintain the augmentation by recomputing subtree augmentations at every node whose subtree changes.
+To augment a binary tree with a subtree property P, state the subtree property P(<X>) you want to store at each node <X>. Show how to compute P(<X>) from the augmentations of <X>'s children in O(1) time. The stored property P(<X>) can be maintained without changing dynamic operation costs.
+Set AVL trees achieve O(log n) time for all set operations, except O(n log n) time for build and O(n) time for iter. Sequence AVL trees achieve O(log n) time for all sequence operations, except O(n) time for build and iter
+Any Set data structure defines a sorting algorithm: build (or repeatedly insert) then iter. AVL Sort is a new O(n log n)-time sorting algorithm
+1. Solve hard computational problems (with non-constant-sized inputs)
+2. Argue an algorithm is correct (Induction, Recursion)
+3. Argue an algorithm is “good” (Asymptotics, Model of Computation) - (effectively communicate all three above, to human or computer)
+Most problems are not solvable efficiently, but many we think of are!
+Polynomial means polynomial in size of input
+Pseudopolynomial means polynomial in size of input AND size of numbers in input
+NP: Nondeterministic Polynomial time, polynomially checkable certificates
+NP-hard: set of problems that can be used to solve any problem in NP in poly-time
+NP-complete: intersection of NP-hard and NP
+Reduce to a problem you know how to solve
+Search/Sort (Q1)
+* Search: Extrinsic (Sequence) and Intrinsic (Set) Data Structures
+* Sort: Comparison Model, Stability, In-place
+Graphs (Q2)
+* Reachability, Connected Components, Cycle Detection, Topological Sort
+* Single-Source / All-Pairs Shortest Paths
+Design a new recursive algorithm
+Brute Force
+Divide & Conquer
+Dynamic Programming (Q3)
+Greedy/Incremental
+(U) 6.046: Design & Analysis of Algorithms
+(G) 6.851: Advanced Data Structures
+(G) 6.854: Advanced Algorithms
+Data Structures: Union-Find, Amortization via potential analysis
+Graphs: Minimum Spanning Trees, Network Flows/Cuts
+Algorithm Design (Paradigms): Divide & Conquer, Dynamic Programming, Greedy
+Complexity: Reductions
+6.006 mostly deterministic (hashing)
+Las Vegas: always correct, probably fast (like hashing)
+Monte Carlo: always fast, probably correct
+Can generally get faster randomized algorithms on structured data
+6.006 only deals with integers
+Approximate real numbers! Pay time for precision
+Input optimization problem (min/max over weighted outputs)
+Many optimization problems NP-hard
+How close can we get to an optimal solution in polynomial time?
+Cache Models (memory hierarchy cost model)
+Quantum Computer (exploiting quantum properties)
+Parallel Processors (use multiple CPUs instead of just one)
+* Multicore, large shared memory
+* Distributed cores, message passing
+Model:
+Computation / Complexity (6.045, 6.840, 6.841)
+Randomness (6.842)
+Quantum (6.845)
+Distributed / message passing (6.852)
+Multicore / shared memory (6.816, 6.846)
+Graph and Matrix (6.890)
+Constant Factors / Performance (6.172)
+Application:
+Biology (6.047)
+Game Theory (6.853)
+Cryptography (6.875)
+Vision (6.819)
+Graphics (6.837)
+Geometry (6.850)
+Folding (6.849)
+A weighted graph is a graph G = (V, E) together with a weight function \(w : E \rightarrow Z\) where each edge \(e = (u, v) \in E\) is assigned an integer weight \(w(e) = w(u, v)\).
+The weight \(w(\pi)\) of a path \(\pi\) in a weighted graph is the sum of the weights of the edges in the path.
+The (weighted) shortest path from \(s \in V\) to \(t \in V\) is the path of minimum weight from s to t.  \(\delta(s,t) = inf\{w(\pi) | path \\pi from s to t\}\) is the shortest-path weight from s to t.
+A negative-weight cycle is a path \(\pi\) starting and ending at the same vertex with \(w(\pi) < 0\).
+The algorithms are:
+1. BFS, applies to unweighted graphs, runs in \(O(|V|+|E|)\) time, and discussed in Lecture L09.
+2. DAG Relaxation, applies to DAGs with any weights, runs in \(O(|V| + |E|)\) time, and discussed in Lecture L11.
+3. Bellman-Ford, applies to general graphs with any weights, runs in \(O(|V| \cdot |E|)\) time, and discussed in Lecture L12.
+4. Dijkstra, applies to general graphs with non-negative weights, runs in \(O(|V| log |V| + |E|)\) time, and discussed in Lecture L13.
+If \(\delta(s, v)\) is known for all vertices \(v \in V\), a shortest-path tree can be constructed in \(O(|V| + |E|)\) time by keeping track of parent pointers during the search.
+The shortest-path weight from u to v cannot be greater than the shortest path from u to v through another vertex x, i.e., \(\delta(u, v) \leq \delta(u, x) + \delta(x, v)\) for all u, v, x \(\in\) V
+DAG Relaxation maintains a distance estimate d(s, v) (initially ∞) for each vertex \(v \in V\), that always upper bounds true distance \(\delta(s, v)\), then gradually lowers until d(s, v) = \(\delta(s, v)\). This is done by processing each vertex u in a topological sort order of G and relaxing the edge (u,v) for each outgoing neighbor \(v \in Adj^+(u)\).
+For an array: build is O(n), find is O(n), insert/delete is O(n), and find_min/find_max/find_prev/find_next is O(n).
+For a sorted array: build is O(n log n), find is O(log n), insert/delete is O(n), and find_min/find_max/find_prev/find_next is O(log n).
+Algorithms differentiate items via comparisons. Only comparisons between pairs of Comparable items are supported. Comparisons (<, ≤, >, ≥, =, ≠) output True or False. The goal is to store n comparable items, supporting find(k). Running time is lower bounded by the number of comparisons.
+Algorithms are viewed as a decision tree. An internal node is a binary comparison, branching True/False. For comparison algorithms, the tree is binary. A leaf represents algorithm termination with an output. A root-to-leaf path is an execution of the algorithm. At least one leaf is needed for each algorithm output, so search requires > n + 1 leaves.
+Worst-case running time ≥ # comparisons ≥ max length of any root-to-leaf path ≥ height of tree. Minimum height of a binary tree on > n nodes is addressed. Height ≥ [lg(n + 1)] − 1 = Ω(log n). Sorted arrays achieve this bound. Height of tree with O(n) leaves and max branching factor b is Ω(logb n). To get faster, need an operation that allows super-constant ω(1) branching factor.
+Direct Access Array exploits Word-RAM O(1) time random access indexing. Give item unique integer key k in {0, . . ., u – 1}, store item in array at index k. Associate meaning with each index of array. If keys fit in machine word (u ≤ 2w), worst-case O(1) find/dynamic operations. 6.006 assumes input numbers/strings fit in word, unless length is explicitly parameterized. Anything in computer memory is a binary integer, or use (static) 64-bit address. But space O(u), so really bad if n ≪ u. Example: ten-letter names require 2610 ≈ 17.6 TB space.
+If n < u, map keys to a smaller range m = O(n) and use smaller direct access array. Hash function: h(k) : {0, . . ., u − 1} → {0, . . ., m − 1} (also hash map). Direct access array called hash table, h(k) called hash of key k. If m ≪ u, no hash function is injective by pigeonhole principle.
+Always exists keys a, b such that h(a) = h(b) → Collision!. Can't store both items at the same index, so store elsewhere in the array (open addressing - complicated analysis, but common and practical) or in another data structure supporting dynamic set interface (chaining).
+Store collisions in another data structure (a chain). If keys are evenly distributed, chain size is n/m = n/Ω(n) = O(1)!. If chain has O(1) size, all operations take O(1) time!. Need a good hash function. If not, many items may map to same location, e.g. h(k) = constant, chain size is Θ(n).
+h(k) = (k mod m). It's heuristic, good when keys are uniformly distributed! m should avoid symmetries of the stored keys. Large primes far from powers of 2 and 10 can be reasonable. If u ≫ n, every hash function will have some input set that will a create O(n) size chain. Don't use a fixed hash function! Choose one randomly (but carefully)!
+hab(k) = (((ak + b) mod p) mod m). Hash Family H(p, m) = {hab | a, b ∈ {0, . . ., p − 1} and a ≠ 0}. Parameterized by a fixed prime p > u, with a and b chosen from range {0, . . ., p − 1}. H is a Universal family: Prh∈H {h(ki) = h(kj)} < 1/m ∀ki ≠ kj ∈ {0,..., u – 1}. It implies short chain lengths! (in expectation)
+For a Hash Table: build is O(n(e)), find is O(1(e)), insert/delete is O(1(a)(e)), and find_min/find_max/find_prev/find_next is O(n).
+Algorithms with O(|V| + |E|) time for small positive weights or DAGS were previously discussed. Bellman-Ford, O(|V||E|) time algorithm for general graphs with negative weights was discussed last time. Today: faster for general graphs with non-negative edge weights, i.e., for e ∈ E, w(e) ≥ 0
+It grows a sphere centered at source s, repeatedly exploring closer vertices before further ones.
+If weights are non-negative, monotonic distance increase along shortest paths i.e., if vertex u appears on a shortest path from s to v, then d(s, u) ≤ δ(s, v). Let Vx ⊆ V be the subset of vertices reachable within distance ≤ x from s. If v ∈ Vx, then any shortest path from s to v only contains vertices from Vx. Perhaps grow Vx one vertex at a time! (but growing for every x is slow if weights large)
+SSSP can be solved fast if given order of vertices in increasing distance from s. Remove edges that go against this order (since cannot participate in shortest paths). May still have cycles if zero-weight edges: repeatedly collapse into single vertices. Compute δ(s, v) for each v ∈ V using DAG relaxation in O(|V| + |E|) time.
+Edsger Dijkstra (actually Dÿkstra!)
+Relax edges from each vertex in increasing order of distance from source s, and efficiently find next vertex in the order using a data structure.
+Q.build(X): initialize Q with items in iterator X. Q.delete_min(): remove an item with minimum key. Q.decrease_key(id, k): find stored item with ID id and change key to k.
+Implement by cross-linking a Priority Queue Q' and a Dictionary D mapping IDs into Q'. Assume vertex IDs are integers from 0 to |V| - 1 so can use a direct access array for D. For brevity, say item x is the tuple (x.id, x.key).
+Set d(s, v) = ∞ for all v ∈ V, then set d(s, s) = 0. Build changeable priority queue Q with an item (v, d(s, v)) for each vertex v ∈ V. While Q not empty, delete an item (u, d(s, u)) from Q that has minimum d(s, u). For vertex v in outgoing adjacencies Adj+(u):
+    * If d(s, v) > d(s, u) + w(u, v):
+        - Relax edge (u, v), i.e., set d(s, v) = d(s, u) + w(u, v)
+        - Decrease the key of v in Q to new estimate d(s, v)
+The graph contains the following nodes: s, a, b, c, d. The edge weights are labeled as follows:
+- s to a: 2
+- s to c: 3
+- c to d: 2
+- d to b: 5
+- a to d: 5
+- s to d: 7
+- c to a: 8
+- a to c: 1
+- s to a: 1
+At end of Dijkstra's algorithm, d(s, v) = δ(s, v) for all v ∈ V
+If relaxation sets d(s, y) to δ(s, y), then d(s, v) = δ(s, v) at the end of the algorithm. Suffices to show d(s, v) = δ(s, v) when vertex v is removed from Q. Proof by induction on first k vertices removed from Q.
+Base Case (k = 1): s is first vertex removed from Q, and d(s, s) = 0 = δ(s, s). Inductive Step: Assume true for k < k', consider k'th vertex v' removed from Q. Consider some shortest path π from s to v', with w(π) = δ(s, v'). Let (x, y) be the first edge in π where y is not among first k' - 1 (perhaps y = v'). When x was removed from Q, d(s, x) = δ(s, x) by induction, so:
+d(s, y) ≤ d(s, x) + w(x, y) = δ(s, x) ≤ δ(s, v') ≤ d(s, v') ≤ d(s, y). So d(s, v') = δ(s, v'), as desired
+Count operations on changeable priority queue Q, assuming it contains n items: Q.build(X) (n = |X|): Bn (1), Q.delete_min(): Mn (|V|), Q.decrease_key(id, k): Dn (|E|). Total running time is O(B|V| + |V| · M|V| + |E| · D|V|). Assume pruned graph to search only vertices reachable from the source, so |V| = O(|E|)
+Using an Array: O(|V|^2); Binary Heap: O(|E| log |V|); Fibonacci Heap: O(|E| + |V| log |V|)
+If graph is dense, i.e., |E| = Θ(|V|^2), using an Array for Q' yields O(|V|^2) time. If graph is sparse, i.e., |E| = Θ(|V|), using a Binary Heap for Q' yields O(|V| log |V|) time.
+For General Unweighted graphs, BFS takes O(|V| + |E|) time. For DAGs, DAG Relaxation takes O(|V| + |E|) time. For General Non-negative graphs, Dijkstra takes O(|V|log |V| + |E|) time. For General graphs, Bellman-Ford takes O(|V|· |E|) time.
+Doing a SSSP algorithm |V| times is actually pretty good, since output has size O(|V|^2). It is possible to do better than |V| · O(|V|· |E|) for general graphs with negative weights (next time!).
+Graph definitions (directed/undirected, simple, neighbors, degree); Graph representations (Set mapping vertices to adjacency lists); Paths and simple paths, path length, distance, shortest path; Graph Path Problems (Single_Pair_Reachability(G,s,t), Single_Source_Reachability(G,s), Single_Pair_Shortest_Path(G,s,t), Single_Source_Shortest_Paths(G,s) (SSSP)); Breadth-First Search (BFS) - algorithm that solves Single Source Shortest Paths with appropriate data structures, runs in O(|V| + |E|) time (linear in input size).
+Searches a graph from a vertex s, similar to BFS; Solves Single Source Reachability, not SSSP. Useful for solving other problems (later!); Return (not necessarily shortest) parent tree of parent pointers back to s; Idea! Visit outgoing adjacencies recursively, but never revisit a vertex; i.e., follow any path until you get stuck, backtrack until finding an unexplored path to explore; P(s) = None, then run visit(s), where visit(u) : for every v ∈ Adj(u) that does not appear in P: set P(v) = u and recursively call visit(v) (DFS finishes visiting vertex u, for use later!)
+Claim: DFS visits v and correctly sets P(v) for every vertex v reachable from s; Proof: induct on k, for claim on only vertices within distance k from s; Base case (k = 0): P(s) is set correctly for s and s is visited; Inductive step: Consider vertex v with δ(s, v) = k' + 1; Consider vertex u, the second to last vertex on some shortest path from s to v; By induction, since d(s, u) = k', DFS visits u and sets P(u) correctly; While visiting u, DFS considers v ∈ Adj(u); Either v is in P, so has already been visited, or v will be visited while visiting u; In either case, v will be visited by DFS and will be added correctly to P.
+Algorithm visits each vertex u at most once and spends O(1) time for each v ∈ Adj(u); Work upper bounded by O(1) × Σv∈V deg(u) = O(|E|); Unlike BFS, not returning a distance for each vertex, so DFS runs in O(|E|) time.
+Suppose want to explore entire graph, not just vertices reachable from one vertex; Idea! Repeat a graph search algorithm A on any unvisited vertex; Repeat the following until all vertices have been visited: Choose an arbitrary unvisited vertex s, use A to explore all vertices reachable from s; We call this algorithm Full-A, specifically Full-BFS or Full-DFS if A is BFS or DFS; Visits every vertex once, so both Full-BFS and Full-DFS run in O(|V| + |E|) time.
+An undirected graph is connected if there is a path connecting every pair of vertices; In a directed graph, vertex u may be reachable from v, but v may not be reachable from u; Connectivity is more complicated for directed graphs (we won't discuss in this class); Connectivity(G): is undirected graph G connected?; Connected_Components(G): given undirected graph G = (V, E), return partition of V into subsets Vi ⊆ V (connected components) where each V¿ is connected in G and there are no edges between vertices from different connected components; Consider a graph algorithm A that solves Single Source Reachability; Claim: A can be used to solve Connected Components; Proof: Run Full-A. For each run of A, put visited vertices in a connected component.
+A Directed Acyclic Graph (DAG) is a directed graph that contains no directed cycle; A Topological Order of a graph G = (V, E) is an ordering f on the vertices such that: every edge (u, v) ∈ E satisfies f(u) < f(v); Exercise: Prove that a directed graph admits a topological ordering if and only if it is a DAG; How to find a topological order?; A Finishing Order is the order in which a Full-DFS finishes visiting each vertex in G; Claim: If G = (V, E) is a DAG, the reverse of a finishing order is a topological order; Proof: Need to prove, for every edge (u, v) ∈ E that u is ordered before v, i.e., the visit to v finishes before visiting u. Two cases: If u visited before v: Before visit to u finishes, will visit v (via (u, v) or otherwise); Thus the visit to v finishes before visiting u; If v visited before u: u can't be reached from v since graph is acyclic; Thus the visit to v finishes before visiting u.
+Full-DFS will find a topological order if a graph G = (V, E) is acyclic; If reverse finishing order for Full-DFS is not a topological order, then G must contain a cycle; Check if G is acyclic: for each edge (u, v), check if v is before u in reverse finishing order; Can be done in O(|E|) time via a hash table or direct access array; To return such a cycle, maintain the set of ancestors along the path back to s in Full-DFS; Claim: If G contains a cycle, Full-DFS will traverse an edge from v to an ancestor of v.; Proof: Consider a cycle (vo, U1, . . ., Uk, Vo) in G; Without loss of generality, let vo be the first vertex visited by Full-DFS on the cycle; For each vi, before visit to vi finishes, will visit vi+1 and finish; Will consider edge (vi, Vi+1), and if vi+1 has not been visited, it will be visited now; Thus, before visit to vo finishes, will visit vk (for the first time, by vo assumption); So, before visit to vk finishes, will consider (vk, vo), where vo is an ancestor of Uk.
+A decision problem is an assignment of inputs to YES (1) or NO (0). Inputs are either NO inputs or YES inputs.
+s-t Shortest Path: Does a given G contain a path from s to t with weight at most d?
+Negative Cycle: Does a given G contain a negative weight cycle?
+Longest Simple Path: Does a given G contain a simple path with weight at least d?
+Subset Sum: Does a given set of integers A contain a subset with sum S?
+Tetris: Can you survive a given sequence of pieces in given board?
+Chess: Can a player force a win from a given board?
+Halting problem: Does a given computer program terminate for a given input?
+Algorithm/Program: constant-length code (working on a word-RAM with (log n)-bit words) to solve a problem, i.e., it produces correct output for every input and the length of the code is independent of the instance size.
+Problem is decidable if there exists a program to solve the problem in finite time
+Program is a finite (constant) string of bits, i.e., a nonnegative integer ∈ N. Problem is function p : N → {0, 1}, i.e., infinite string of bits.
+(# of programs |N|, countably infinite) ≪ (# of problems |R|, uncountably infinite)
+Proves that most decision problems not solvable by any program (undecidable)
+E.g., the Halting problem is undecidable (many awesome proofs in 6.045)
+Fortunately most problems we think of are algorithmic in structure and are decidable
+R problems decidable in finite time ('R' comes from recursive languages)
+EXP problems decidable in exponential time 2^{n^{O(1)}} (most problems we think of are here)
+P problems decidable in polynomial time n^{O(1)} (efficient algorithms, the focus of this class)
+These sets are distinct, i.e., P⊆ EXP ⊆ R (via time hierarchy theorems, see 6.045)
+E.g., Chess is in EXP \ P
+P is the set of decision problems for which there is an algorithm A such that, for every input I of size n, A on I runs in poly(n) time and solves I correctly
+NP is the set of decision problems for which there is a verification algorithm V that takes as input an input I of the problem and a certificate bit string of length polynomial in the size of I, so that:
+V always runs in time polynomial in the size of I;
+if I is a YES input, then there is some certificate c so that V outputs YES on input (I, c);
+and
+if I is a NO input, then no matter what certificate c we choose, V always output NO on input (I, c).
+You can think of the certificate as a proof that I is a YES input.
+If I is actually a NO input, then no proof should work.
+s-t Shortest Path: Certificate: A path P from s to t, Verifier: Adds the weights on P and checks whether ≤ d
+Negative Cycle: Certificate: A cycle C, Verifier: Adds the weights on C and checks whether < 0
+Longest Simple Path: Certificate: A path P, Verifier: Checks whether P is a simple path with weight ≥ d
+Subset Sum: Certificate: A set of items A', Verifier: Checks whether A' ∈ A has sum S
+Tetris: Certificate: Sequence of moves, Verifier: Checks that the moves allow survival
+P ⊆ NP: The verifier V just solves the instance ignoring any certificate
+NP ⊆ EXP: Try all possible certificates! At most 2^{n^{O(1)}} of them, run verifier V on all
+Open: Does P = NP? NP = EXP?
+Most people think P ≠ NP (⊆ EXP), i.e., generating solutions harder than checking
+If you prove either way, people will give you lots of money ($1M Millennium Prize)
+Why do we care? If can show a problem is hardest problem in NP, then problem cannot be solved in polynomial time if P ≠ NP
+Reductions!
+Suppose you want to solve problem A
+One way to solve is to convert A into a problem B you know how to solve
+Solve using an algorithm for B and use it to compute solution to A
+This is called a reduction from problem A to problem B (А → В)
+Because B can be used to solve A, B is at least as hard as A (A < B)
+General algorithmic strategy: reduce to a problem you know how to solve
+Unweighted Shortest Path: Give equal weights-> Weighted Shortest Path
+Integer-weighted Shortest Path: Subdivide edges-> Shortest Path
+Longest Path: Negate weights-> Unweighted Shortest Path
+Problem A is NP-hard if every problem in NP is polynomially reducible to A
+i.e., A is at least as hard as (can be used to solve) every problem in NP (X < A for X ∈ NP)
+NP-complete = NP ∩ NP-hard
+Every decision problem reducible to satisfying a logical circuit, a problem called “Circuit SAT”.
+Longest Simple Path and Tetris are NP-complete, so if any problem is in NP \ P, these are
+Chess is EXP-complete: in EXP and reducible from every problem in EXP (so ∉ P)
+Subset Sum from L18 (“weakly NP-complete” which is what allows a pseudopolynomial-time algorithm, but no polynomial algorithm unless P = NP)
+3-Partition: given n integers, can you divide them into triples of equal sum? (“strongly NP-complete": no pseudopolynomial-time algorithm unless P = NP)
+Rectangle Packing: given n rectangles and a target rectangle whose area is the sum of the n rectangle areas, pack without overlap
+Reduction from 3-Partition to Rectangle Packing: transform integer a_i into 1 × a_i rectangle; set target rectangle to n/3 × (Σa_i)/3
+Jigsaw puzzles: given n pieces with possibly ambiguous tabs/pockets, fit the pieces together
+Reduction from Rectangle Packing: use uniquely matching tabs/pockets to force building rectangles and rectangular boundary; use one ambiguous tab/pocket for all other boundaries
+Longest common subsequence of n strings
+Longest simple path in a graph
+Traveling Salesman Problem: shortest path that visits all vertices of a given graph (or decision version: is minimum weight ≤ d)
+Shortest path amidst obstacles in 3D
+3-coloring given graph (but 2-coloring ∈ P)
+Largest clique in a given graph
+SAT: given a Boolean formula (made with AND, OR, NOT), is it every true? E.g., x AND NOT x is a NO input
+Minesweeper, Sudoku, and most puzzles
+Super Mario Bros., Legend of Zelda, Pokémon, and most video games are NP-hard (many are harder)
+The dynamic programming steps are:
+1. Subproblem definition
+2. Relate subproblem solutions recursively
+3. Topological order
+4. Base cases
+5. Original problem
+6. Time analysis
+The subproblem definition step involves:
+- Describing the meaning of a subproblem in words, in terms of parameters
+- Often subsets of input: prefixes, suffixes, contiguous substrings of a sequence
+- Often multiply possible subsets across multiple inputs
+- Often record partial state: add subproblems by incrementing some auxiliary variables
+- Often smaller integers than a given integer (today's focus)
+The relate subproblem solutions recursively step is x(i) = f(x(j), . . .) for one or more j < i
+- Identify a question about a subproblem solution that, if you knew the answer to, reduces the subproblem to smaller subproblem(s)
+- Locally brute-force all possible answers to the question
+The topological order is to argue relation is acyclic and subproblems form a DAG.
+The base cases are the state solutions for all (reachable) independent subproblems where relation breaks down.
+The original problem is described as:
+- Show how to compute solution to original problem from solutions to subproblem(s)
+- Possibly use parent pointers to recover actual solution, not just objective function
+The time analysis is: Σxex work(x), or if work(x) = O(W) for all x ∈ X, then |X|· O(W). work(x) measures nonrecursive work in relation; treat recursions as taking O(1) time
+Given a rod of length L and value v(l) of rod of length l for all l ∈ {1, 2, . . ., L}, the goal is to cut the rod to maximize the value of cut rod pieces.
+Example: L = 7, υ = [0, 1, 10, 13, 18, 20, 31, 32]
+The subproblems are:
+- x(l): maximum value obtainable by cutting rod of length l
+- For l ∈ {0, 1, . . ., L}
+The relate step is:
+- First piece has some length p (Guess!)
+- x(l) = max{v(p) + x(l - p) | p ∈ {1, ..., l}}
+The topological order is: Increasing l: Subproblems x(l) depend only on strictly smaller l, so acyclic
+The base case is: x(0) = 0 (length-zero rod has no value!)
+The original problem is:
+- Maximum value obtainable by cutting rod of length L is x(L)
+- Store choices to reconstruct cuts
+- If current rod length l and optimal choice is l', remainder is piece p = l – l'
+- (maximum-weight path in subproblem DAG!)
+The time analysis:
+- # subproblems: L + 1
+- work per subproblem: O(l) = O(L)
+- O(L2) running time
+(Strongly) polynomial time means that the running time is bounded above by a constant-degree polynomial in the input size measured in words.
+In Rod Cutting, input size is L + 1 words (one integer L and L integers in v)
+O(L2) is a constant-degree polynomial in L + 1, so YES: (strongly) polynomial time
+Given a sequence of n positive integers A = {ao, a1,..., An−1}, is there a subset of A that sums exactly to T? (i.e., ∃A′ ⊆ A s.t. Σα∈a' a = T?)
+Example: A = (1, 3, 4, 12, 19, 21, 22), T = 47 allows A' = {3, 4, 19, 21}
+The subproblems are:
+- x(i,t) = does any subset of A[i:] sum to t?
+- For i ∈ {0, 1, . . ., n}, t ∈ {0, 1, . . ., T}
+The relate step is:
+- Idea: Is first item aż in a valid subset A'? (Guess!)
+- If yes, then try to sum to t ai ≥ 0 using remaining items
+- If no, then try to sum to t using remaining items
+- x(i,t) = OR {x(i + 1 + 1, t - A[i]) ift > A[i]
+x(i + 1, t) always
+The topological order:
+- Subproblems x(i, t) only depend on strictly larger i, so acyclic
+- Solve in order of decreasing i
+The base cases are:
+- x(i, 0) = YES for i ∈ {0, . . ., n} (space packed exactly!)
+- x(n,t) = NO for j ∈ {1, . . ., T} (no more items available to pack)
+The original problem is given by x(0,T)
+- Example: A = (3, 4, 3, 1), T = 6 solution: A' = (3, 3)
+- Bottom up: Solve all subproblems (Example has 35)
+NO, not necessarily
+Algorithm has pseudopolynomial time: running time is bounded above by a constant-degree polynomial in input size and input integers.
+Counting sort O(n + u), radix sort O(nlognu), direct-access array build O(n + u), and Fibonacci O(n) are all pseudopolynomial algorithms we've seen already
+Radix sort is actually weakly polynomial (a notion in between strongly polynomial and pseudopolynomial): bounded above by a constant-degree polynomial in the input size mea-sured in bits, i.e., in the logarithm of the input integers
+No if P ≠ NP.
+- Review of examples from lecture
+- Subproblems:
+ *Prefix/suffixes: Bowling, LCS, LIS, Floyd–Warshall, Rod Cutting (coincidentally, really Integer subproblems), Subset Sum
+*Substrings: Alternating Coin Game, Arithmetic Parenthesization
+*Multiple sequences: LCS
+*Integers: Fibonacci, Rod Cutting, Subset Sum
+*Pseudopolynomial: Fibonacci, Subset Sum
+*Vertices: DAG shortest paths, Bellman–Ford, Floyd-Warshall
+- Subproblem constraints/expansion:
+*Nonexpansive constraint: LIS (include first item)
+*2 × expansion: Alternating Coin Game (who goes first?), Arithmetic Parenthesization (min/max)
+*(1)× expansion: Piano Fingering (first finger assignment)
+*(n) × expansion: Bellman–Ford (# edges)
+- Relation:
+*Branching = # dependant subproblems in each subproblem
+*(1) branching: Fibonacci, Bowling, LCS, Alternating Coin Game, Floyd-Warshall, Subset Sum
+* (degree) branching (source of |E| in running time): DAG shortest paths, Bellman-Ford
+*(n) branching: LIS, Arithmetic Parenthesization, Rod Cutting
+*Combine multiple solutions (not path in subproblem DAG): Fibonacci, Floyd-Warshall, Arithmetic Parenthesization
+- Original problem:
+*Combine multiple subproblems: DAG shortest paths, Bellman–Ford, Floyd-Warshall, LIS, Piano Fingering
