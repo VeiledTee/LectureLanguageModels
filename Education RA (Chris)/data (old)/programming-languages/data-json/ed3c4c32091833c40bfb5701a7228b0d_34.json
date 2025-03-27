@@ -1,0 +1,137 @@
+[
+    {
+      "problem_number": "1",
+      "question": "Evaluate the following expressions in the given models.\n\n```scheme\n(let (a 1)\n  (g (lambda (x) 25)))\n(let ((f (lambda (y) (if (< a y)\n                          (g (/ 2 0))\n                          ((lambda (x) 15) (g g))))))\n  (let ((a 4)\n        (y 5)\n        (g (lambda (x) (x x))))\n    (f 2)))))\n```",
+      "subquestions": [
+        {
+          "problem_number": "1a",
+          "question": "static scoping, call by value",
+          "answer": "error (divide by 0)"
+        },
+        {
+          "problem_number": "1b",
+          "question": "dynamic scoping, call by value",
+          "answer": "\\(\\bot\\) (infinite loop)"
+        },
+        {
+          "problem_number": "1c",
+          "question": "static scoping, call by name",
+          "answer": "25"
+        },
+        {
+          "problem_number": "1d",
+          "question": "dynamic scoping, call by name",
+          "answer": "15"
+        }
+      ]
+    },
+    {
+        "problem_number": "2",
+        "question": "ANSWERS FOR THE FOLLOWING QUESTIONS SHOULD BE BASED ON EXTENDING THE POSTFIX GRAMMAR IN APPENDIX A AND THE POSTFIX OPERATIONAL SEMANTICS GIVEN IN APPENDIX B.\n\nIntel has released the new 747 chip, a chip so big it can handle mind boggling amounts of number crunching. The good programmers over at Microsquish are excited because this means there is now a computer fast enough to run their dream programming language, TwoStack PostFix. In TwoStack PostFix, a program is a tuple of two command sequences, one per stack. For instance, to have one stack add the numbers 1 and 3 and have the other stack multiply \\(4*5\\), use the program\n\n<[1 3 add],[4 5 mul]>\n\nThe meaning of a TwoStack program is also a tuple, reporting the top of each stack at the end of the program. In the previous case, <4,20>.\n\nKeep in mind that the stacks are represented as completely separate entities at different locations in memory. Note that we will model errors as stuck states. For example, the program\n\n<[5 1 mul],[4 0 div]>\n\nshould get stuck. It is also a stuck state if one stack runs out of commands before the other. For instance,\n\n<[5 1 mul 3 add],[4 1 div]>\n\nshould get stuck right after the transition which performs the div command. Note that matching commands are executed simultaneously- that is, the 5 and 4 are pushed at the same time and the mul and the div are executed at the same time.\n\nFinally, Executives at Microsquish would like to implement a talk command allowing the two stacks to communicate. For now, do not worry about the transition rule for the talk command, but know that it requires the following domain updates:\n\n\\\\begin{tabular}{c c} \\(C\\) & \\(\\in\\) CommandPostFix+Talk \\\\\\\\ \\(C\\) & ::= ... existing PostFix commands ... \\\\\\\\  & | talk \\\\\\\\ \\(Q\\) & \\(\\in\\) CommandSpostFix+Talk = CommandPostFix+Talk* \\\\\\\\ \\(V\\) & \\(\\in\\) Value = IntLit + CommandSpostFix+Talk \\\\\\\\ \\\\end{tabular}\n\nIn addition, the transition relation for PostFix+Talk is the same as the relation for PostFix except it is updated to work with the new domains. It currently results in a stuck state for the talk command.\n\nThe important domains for TwoStack are as follows:\n\n\\\\begin{tabular}{c c} \\(P\\) & \\(\\in\\) ProgramTwoStack = CommandsTwoStack \\\\\\\\  & CommandsTwoStack = CommandsPostFix+Talk \\(\\times\\) CommandsPostFix+Talk \\\\\\\\ \\(A\\) & \\(\\in\\) AnswerTwoStack = Answer \\(\\times\\) Answer \\\\\\\\ \\\\end{tabular}",
+        "subquestions": [
+          {
+            "problem_number": "2a",
+            "question": "Louis Reasoner is given the job of defining the Operational Semantics of PostFix+Talk. He decides on the following configuration:\n\n\\[C_{\\text{TwoStack}} = \\text{Commands}_{\\text{TwoStack}}\\times\\text{Stack}\\times\\text{ Stack}\\]\n\nHowever, he needs your help to define the rest of the 5-tuple. Define the Input, Output and Transition functions in terms of the PostFix+Talk functions. Use subscripting to express which domains the functions are over. For instance, \\(\\Rightarrow_{PostFix+Talk}\\) is the transition function for PostFix+Talk and \\(\\Rightarrow_{TwoStack}\\) is the transition function for TwoStack PostFix.\n\nBe sure to also define the set of final configurations of TwoStack Postfix, but do not worry about reporting errors for stuck states.",
+            "answer": "\\\\[\\\\begin{array}{lll}\\\\mathcal{I}_{\\\\text{TwoStack}}&:&\\\\text{Program}_{\\\\text{TwoStack}}\\\\rightarrow\\\\mathcal{C}_{\\\\text{TwoStack}}\\\\\\\\ \\\\mathcal{I}_{\\\\text{TwoStack}}&=&\\\\lambda\\\\langle Q_{1},\\\\,Q_{2}\\\\rangle\\\\cdot\\\\langle\\\\langle Q_{1},\\\\,Q_{2}\\\\rangle,\\\\,\\\\|\\\\text{Value}:\\\\,\\\\|\\\\text{Value}\\\\rangle\\\\\\\\ \\\\mathcal{F}_{\\\\text{TwoStack}}&=&\\\\{\\\\|_{\\\\text{Command}_{\\\\text{PostFix}+\\\\text{Talk}}}\\\\}\\\\times\\\\{\\\\|_{\\\\text{Command}_{\\\\text{PostFix}+\\\\text{Talk}}}\\\\}\\\\times\\\\text{Stack}\\\\times\\\\text{Stack}\\\\\\\\ \\\\mathcal{O}_{\\\\text{TwoStack}}&:&\\\\mathcal{F}\\\\rightarrow\\\\text{Answer}_{\\\\text{TwoStack}}\\\\\\\\ \\\\mathcal{O}_{\\\\text{TwoStack}}&=&\\\\lambda\\\\langle\\\\{\\\\|_{\\\\text{Command}_{\\\\text{PostFix}+\\\\text{Talk}}},\\\\,\\\\|_{\\\\text{Command}_{\\\\text{PostFix}+\\\\text{Talk}}}\\\\},\\\\,\\\\,S_{1},\\\\,\\\\,S_{2}\\\\rangle\\\\,.\\\\\\\\ &&\\\\langle\\\\mathcal{O}_{\\\\text{PostFix}}(\\\\|_{\\\\text{Command}_{\\\\text{PostFix}+\\\\text{Talk}}},\\\\,S_{1}),\\\\,\\\\,\\\\mathcal{O}_{\\\\text{PostFix}}(\\\\|_{\\\\text{Command}_{\\\\text{PostFix}+\\\\text{Talk}}},\\\\,S_{2})\\\\rangle\\\\\\\\ \\\\Rightarrow_{\\\\text{TwoStack}}&:&&\\\\\\\\ &&\\\\langle Q_{1},\\\\,S_{1}\\\\rangle\\\\Rightarrow_{\\\\text{PostFix}+\\\\text{Talk}}\\\\langle Q_{1}^{\\\\prime},\\\\,S_{1}^{\\\\prime}\\\\rangle\\\\wedge\\\\langle Q_{2},\\\\,S_{2}\\\\rangle\\\\Rightarrow_{\\\\text{PostFix}+\\\\text{Talk}}\\\\langle Q_{2}^{\\\\prime},\\\\,S_{2}^{\\\\prime}\\\\rangle\\\\\\\\ &&\\\\langle\\\\langle Q_{1},\\\\,Q_{2}\\\\rangle,\\\\,\\\\,S_{1},\\\\,\\\\,S_{2}\\\\rangle\\\\Rightarrow_{\\\\text{TwoStack}}\\\\langle\\\\langle Q_{1}^{\\\\prime},\\\\,Q_{2}^{\\\\prime}\\\\rangle,\\\\,\\\\,S_{1}^{\\\\prime},\\\\,\\\\,S_{2}^{\\\\prime}\\\\rangle\\\\end{array}\\\\]"
+          },
+          {
+            "problem_number": "2b",
+            "question": "Extend the transition function for TwoStack to include the talk command.",
+            "answer": "\\\\[\\\\langle(\\\\text{talk}\\\\,Q_{1},\\\\,\\\\text{talk}\\\\,Q_{2}),\\\\,V_{1}.S_{1},\\\\,V_{2}.S_{2}\\\\rangle\\\\quad\\\\Rightarrow_{\\\\text{TwoStack}}\\\\quad\\\\langle\\\\langle Q_{1},\\\\,Q_{2}\\\\rangle,\\\\,V_{2}.V_{1}.S_{1},\\\\,V_{1}.V_{2}.S_{2}\\\\rangle\\\\]"
+          },
+          {
+            "problem_number": "2c",
+            "question": "Mark An-treason (who is also working at Microsquish since his company was bought out) is worried that programs with talk may not terminate. If programs in TwoStack PostFix always terminate, set Mark's fears at rest by explaining how you would modify the energy proof to show this. If not, give an example program which does not terminate.",
+            "answer": "The following program does not terminate:\n\n<<(talk exec) talk exec), ((talk exec) talk exec))"
+          }
+        ]
+      },
+      {
+        "problem_number": "3",
+        "question": "ANSWERS FOR THE FOLLOWING QUESTIONS SHOULD BE BASED ON MODIFYING THE FLKI STANDARD SEMANTICS GIVEN IN APPENDIX C.\n\nBen Bitdiddle has been called in to assist in the development of a new feature for FLI. This feature will allow procedures to call themselves recursively without having to use rec or letrec. Ben proposes adding a new form (self \\(E\\)) to FLKI. The form (self \\(E\\)) calls the containing procedure with an actual parameter that is the result of evaluating \\(E\\).\n\nThe FLKI expression grammar is changed by the addition of the form (self \\(E\\)):\n\n\\(E\\quad::=\\quad\\ldots\\:\\:\\:\\texttt{existing}\\:\\:\\:\\texttt{FLKI}\\:\\:\\:\\texttt{forms} \\:\\:\\:\\cdot.\\\\)\n\n\\(\\mid\\quad\\quad(\\texttt{self}\\:\\:E)\\\\)\n\nHere is an example of the use of (self \\(E\\)) written in FLI (which would be desugared into FLKI before execution):\n\n```scheme\n(let ((fact (lambda (n) (if (= n 0) 1 (* n (self (- n 1))))))) (fact 4))\n```\n\n\\(\\Rightarrow\\)24\n\nBen further specifies that when (self \\(E\\)) is used outside of a procedure it causes the program to terminate immediately with a value that is the result of evaluating \\(E\\).\n\nBen begins describing the denotational semantics of the self form by modifying the signature of the meaning function, \\(\\mathcal{E}\\). His new signature is:\n\n\\(\\mathcal{E}\\quad:\\quad\\texttt{Exp}\\rightarrow\\texttt{Environment}\\to\\texttt{SelfProc }\\rightarrow\\texttt{ExpCont}\\rightarrow\\texttt{CmdCont}\\)\n\n\\(\\texttt{SelfProc}\\quad=\\quad\\texttt{Procedure}\\)\n\nBen asks you to complete the denotational description of the self form because he is going to a conference to give a speech on why FLI is the language of the future.",
+        "subquestions": [
+          {
+            "problem_number": "3a",
+            "question": "Give the revised meaning function \\(\\mathcal{TL}[E]\\).",
+            "answer": "\\\\[\\\\mathcal{TL}[E]=(\\\\mathcal{E}[E]\\\\ \\\\textit{empty-env}\\\\ (\\\\lambda dk\\\\cdot((\\\\textit{top-level-cont }d))\\\\ \\\\textit{top-level-cont empty-store})\\\\]"
+          },
+          {
+            "problem_number": "3b",
+            "question": "What is the revised \\(\\mathcal{E}[\\{\\texttt{call}\\:\\:\\:E_{1}\\:\\:\\:E_{2}\\}]\\)?",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{call }E_{1}\\ E_{2})]=\\\\lambda ep_{1}k\\\\cdot(\\\\mathcal{E}[E_{1}]\\\\ e\\\\ p_{1}\\\\ (\\\\textit{test-procedure }(\\\\lambda p_{2}\\\\cdot(\\\\mathcal{E}[E_{2}]\\\\ e\\\\ p_{1}\\\\ (\\\\lambda v\\\\cdot(p_{2}\\\\ v\\\\ k)))))))\\\\]"
+          },
+          {
+            "problem_number": "3c",
+            "question": "What is \\(\\mathcal{E}[\\{\\texttt{self}\\:\\:E\\}]\\)?",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{self }E)]=\\\\lambda epk\\\\cdot(\\\\mathcal{E}[E]\\\\ e\\\\ p\\\\ \\\\lambda v\\\\cdot(p\\\\ v\\\\ k))\\\\]"
+          },
+          {
+            "problem_number": "3d",
+            "question": "What is the revised \\(\\mathcal{E}[\\{\\texttt{proc}\\:\\:I\\:\\:E\\}]\\)?",
+            "answer": "\\\\[\\\\mathcal{E}[(\\\\texttt{proc }I\\ E)]=\\\\lambda ep_{1}k_{1}\\\\cdot(k_{1}\\\\ (\\\\textit{Procedure}\\\\mapsto\\\\text{Value }(\\\\textbf{fix}_{Procedure}(\\\\lambda p_{2}\\\\cdot(\\\\lambda dk_{2}\\\\cdot(\\\\mathcal{E}[E]\\\\ [I:\\\\textit{d}]e\\\\ p_{2}\\\\ k_{2}))))))\\\\]"
+          },
+          {
+            "problem_number": "3e",
+            "question": "Prove that \\(\\mathcal{TL}[\\{\\texttt{self}\\:\\:\\:(\\texttt{self}\\:\\:1)\\}]\\) in your semantics means (Value\\(\\rightarrow\\)Expressible (Int\\(\\rightarrow\\)Value 1)).",
+            "answer": "\\\\[\\\\begin{array}{l}\\\\mathcal{TL}[(\\\\texttt{self }(\\\\texttt{self }1))]=\\\\\\\\ =\\\\ (\\\\mathcal{E}[(\\\\texttt{self }(\\\\texttt{self }1))]\\\\ \\\\textit{empty-env}\\\\ (\\\\lambda dk\\\\cdot((\\\\textit{top-level-cont }d))\\\\ \\\\textit{top-level-cont empty-store})\\\\\\\\ =\\\\ (\\\\mathcal{E}[(\\\\texttt{self }1)]\\\\ \\\\textit{empty-env}\\\\ (\\\\lambda dk\\\\cdot((\\\\textit{top-level-cont }d))\\\\ \\\\textit{top-level-cont empty-store})\\\\\\\\ \\\\quad\\\\text{because }\\\\lambda v\\\\cdot(\\\\lambda dk\\\\cdot((\\\\textit{top-level-cont }d)\\\\ v\\\\ k)=\\\\textit{top-level-cont}\\\\\\\\ =\\\\ (\\\\mathcal{E}[1]\\\\ \\\\textit{empty-env}\\\\ (\\\\lambda dk\\\\cdot((\\\\textit{top-level-cont }d))\\\\ \\\\textit{top-level-cont empty-store})\\\\\\\\ =\\\\ (\\\\textit{top-level-cont }\\\\mathcal{L}[1])\\\\\\\\ =\\\\quad(\\\\text{Value}\\\\mapsto\\\\text{Expressible }(\\\\text{Int}\\\\mapsto\\\\text{Value }1))\\\\end{array}\\\\]"
+          },
+          {
+            "problem_number": "3f",
+            "question": "Use your semantics to show (\\(\\texttt{proc}\\:\\texttt{x}\\) (\\(\\texttt{self}\\:\\texttt{1}\\))) evaluates to a procedure that, no matter what input it is called with, loops forever.",
+            "answer": "\\\\[\\\\begin{array}{l}\\\\mathcal{E}[(\\\\texttt{proc }\\\\textbf{x }(\\\\texttt{self }1))]\\\\\\\\ =\\\\ \\\\lambda ep_{1}k_{1}\\\\cdot(k_{1}\\\\ (\\\\textit{Procedure}\\\\mapsto\\\\text{Value }(\\\\textbf{fix}_{Procedure}\\\\ \\\\lambda p_{2}\\\\cdot(\\\\lambda dk_{2}\\\\cdot(\\\\mathcal{E}[(\\\\texttt{self }1)]\\\\ [\\\\textbf{x}:\\\\textit{d}]e\\\\ p_{2}\\\\ k_{2})))))\\\\\\\\ =\\\\ \\\\lambda ep_{1}k_{1}\\\\cdot(k_{1}\\\\ (\\\\textit{Procedure}\\\\mapsto\\\\text{Value }(\\\\textbf{fix}_{Procedure}\\\\ \\\\lambda p_{2}\\\\cdot(\\\\lambda dk_{2}\\\\cdot(\\\\mathcal{E}[1]\\\\ [\\\\textbf{x}:\\\\textit{d}]e\\\\ p_{2}\\\\ \\\\lambda v\\\\cdot(p_{2}\\\\ v\\\\ k_{2})))))))\\\\\\\\ =\\\\ \\\\lambda ep_{1}k_{1}\\\\cdot(k_{1}\\\\ (\\\\textit{Procedure}\\\\mapsto\\\\text{Value }(\\\\textbf{fix}_{Procedure}\\\\ \\\\lambda p_{2}\\\\cdot(\\\\lambda dk_{2}\\\\cdot(\\\\lambda v\\\\cdot(p_{2}\\\\ v\\\\ k_{2})\\\\ \\\\mathcal{L}[1]))))))\\\\\\\\ =\\\\ \\\\lambda ep_{1}k_{1}\\\\cdot(k_{1}\\\\ (\\\\textit{Procedure}\\\\mapsto\\\\text{Value }(\\\\textbf{fix}_{Procedure}\\\\ \\\\lambda p_{2}\\\\cdot(\\\\lambda dk_{2}\\\\cdot(p_{2}\\\\ \\\\mathcal{L}[1]\\\\ k_{2}))))))\\\\\\\\ \\\\quad\\\\text{but }\\\\bot_{\\\\textit{Procedure}}\\\\text{ is a fixed point of }\\\\lambda p_{2}\\\\cdot(\\\\lambda dk_{2}\\\\cdot(p_{2}\\\\ \\\\mathcal{L}[1]\\\\ k_{2}))\\\\end{array}\\\\]\n\nIt should be clear that \\(\\\\bot_{\\\\textit{Procedure}}\\) must be the procedure-generating function's least fixed point. This means that the procedural value that the expression (**proc x (self l)**) computes is \\(\\\\bot_{\\\\textit{Procedure}}\\), a procedure that given any denotable and expression continuation returns \\(\\\\bot_{\\\\textit{CmdCont}}\\) i.e. a procedure that loops forever regardless of its input. Since this procedural value is the value computed by (**proc x (self l)**), we have completed the demonstration."
+          }
+        ]
+      },
+      {
+        "problem_number": "4",
+        "question": "ANSWERS FOR THE FOLLOWING QUESTIONS SHOULD BE BASED ON EXTENDING THE TYPING RULES GIVEN IN APPENDIX D AND THE TYPE RECONSTRUCTION ALGORITHM GIVEN IN APPENDIX E.\n\nAlyssa P. Hacker has been asked to extend the type system for Scheme/R to handle **(label \\(IE\\))** and **(jump \\(E_{1}\\)\\(E_{2}\\))**. As introduced in class and in the book, **(label \\(IE\\))** establishes a control point called \\(I\\) in \\(E\\), and **(jump \\(E_{1}\\)\\(E_{2}\\))** jumps to the control point that is the value of \\(E_{1}\\) and gives it the value obtained by evaluating \\(E_{2}\\).\n\nFor example:\n\n```scheme\n(label out\n  (if (= x 0)\n      (jump out 0)\n      (/ y x)))\n```\n\nAlyssa has added a control point type to the type grammar for Scheme/R as follows:\n\n```\nT := ...existing SCHEME/R types...\n    | (control-point T)\n```\n\nIn the example above, the control point **out** would have type (control-point int). It is possible to have control point type errors in Scheme/R. For example, a label expression must have the same type regardless of whether a jump is encountered, making the following expression not well-typed:\n\n```scheme\n(label out\n  (if (= x 0)\n      (jump out #f)\n      (/ y x)))\n```\n\nYour job is to complete the implementation of typed control points.",
+        "subquestions": [
+          {
+            "problem_number": "4a",
+            "question": "Give the new typing rules in Scheme/R for **(label \\(IE\\))** and **(jump \\(E_{1}\\)\\(E_{2}\\))**.",
+            "answer": "\\\\[\\\\frac{A[I:(\\\\texttt{control-point } T)]\\\\vdash E:T}{A\\\\vdash(\\\\texttt{label }I\\\\ E):T}\\\\quad[\\\\text{label}]\\\\]\n\n\\\\[\\\\frac{A\\\\vdash E_{1}:(\\\\texttt{control-point } T)\\\\quad A\\\\vdash E_{2}:T}{A\\\\vdash(\\\\texttt{jump }E_{1}\\\\ E_{2}):T_{\\\\text{any}}}\\\\quad[\\\\text{jump}]\\\\]"
+          },
+          {
+            "problem_number": "4b",
+            "question": "Give the type reconstruction algorithm clause for **(label \\(IE\\))**.",
+            "answer": "\\\\[R[(\\\\texttt{label }I\\\\ E)]\\\\ A\\\\ S=\\\\begin{array}{l}\\\\textbf{let }\\\\langle T_{1},S_{1}\\\\rangle=R[E]A[I:(\\\\texttt{control-point } ?v_{1})]\\\\ S\\\\\\\\ \\\\textbf{in }\\\\langle T_{1},U(T_{1},?v_{1},S_{1})\\\\rangle\\\\end{array}\\\\]\n\nwhere \\(?v_{1}\\) is a fresh type variable"
+          },
+          {
+            "problem_number": "4c",
+            "question": "Give the type reconstruction algorithm clause for **(jump \\(E_{1}\\)\\(E_{2}\\))**.",
+            "answer": "\\\\[R[(\\\\texttt{jump }E_{1}\\\\ E_{2})]\\\\ A\\\\ S=\\\\begin{array}{l}\\\\textbf{let }\\\\langle T_{1},S_{1}\\\\rangle=R[E_{1}]\\\\ A\\\\ S\\\\\\\\ \\\\textbf{in }\\\\langle\\\\textbf{let }\\\\langle T_{2},S_{2}\\\\rangle=R[E_{2}]\\\\ A\\\\ S_{1}\\\\rangle\\\\\\\\ \\\\textbf{in }\\\\langle ?v_{1},U(T_{1},(\\\\texttt{control-point } T_{2}),S_{2})\\\\rangle\\\\end{array}\\\\]\n\nwhere \\(?v_{1}\\) is a fresh type variable"
+          },
+          {
+            "problem_number": "4d",
+            "question": "Give the reconstructed type of the following expression, or give the input parameters to the procedure that fails during the reconstruction:\n\n```scheme\n(let ((x (label y y)))\n  (jump x (label z z)))\n```",
+            "answer": "Unification fails while reconstructing the type of (label y y). The unification call that fails is \\\\[U((\\\\texttt{control-point } ?v_{1}),?v_{1},S_{1})\\\\]."
+          }
+        ]
+      },
+      {
+        "problem_number": "5",
+        "question": "ANSWERS FOR THE FOLLOWING QUESTIONS SHOULD BE BASED ON META CPS CONVERSION ALGORITHM GIVEN IN APPENDIX F.\n\nBen Bitdiddle is a consummate compiler hacker, and has been asked by JavaHard to analyze their new Scheme compiler. JavaHard has recently realized that Java will not win in the marketplace against Scheme, and has adopted the 6.821 Scheme compiler as the cornerstone of their crash development effort. The following code was produced by the compiler after the desugar, globals/wrap, cps-convert, closures/flat-all, and lift-convert phases of compilation.\n\n```scheme\n(program\n  (define .lambda24.\n    (lambda (.closure11. .t5.)\n      (call-closure .t5. 1 (primop closure-ref .closure11. 1))))\n\n  (define .lambda21.\n    (lambda (.closure14. f g .k1.)\n      (call-closure .k1. (primop closure .lambda22. g f))))\n\n  (define .lambda22.\n    (lambda (.closure13. x .k2.)\n      (call-closure (primop closure-ref .closure13. 1) x\n                    (primop closure .lambda23. (primop closure-ref .closure13. 2) .k2.))))\n\n  (define .lambda23.\n    (lambda (.closure12. .t3.)\n      (call-closure (primop closure-ref .closure12. 1) .t3.\n                    (primop closure-ref .closure12. 2))))\n\n  (define .lambda20.\n    (lambda (.closure17. x) x))\n\n  (define .lambda19.\n    (lambda (.closure16. a .k9.)\n      (let ((.t10. (primop not a)))\n        (call-closure .k9. .t10.))))\n\n  (define .lambda18.\n    (lambda (.closure15. a .k7.)\n      (let ((.t8. (primop integer? a)))\n        (call-closure .k7. .t8.))))\n\n  (define *top* (primop closure .lambda20.))\n  (define not (primop closure .lambda19.))\n  (define integer? (primop closure .lambda18.)))\n\n(let (((compose (primop closure .lambda21.))))\n  (call-closure compose not integer? (primop closure .lambda24. *top*)))\n```",
+        "subquestions": [
+          {
+            "problem_number": "5a",
+            "question": "What source code resulted in the incompletely compiled code above?",
+            "answer": "```scheme\n(let ((compose (lambda (f g) (lambda (x) (f (g x))))))\n  ((compose not integer?) 1))\n```"
+          },
+          {
+            "problem_number": "5b",
+            "question": "Ben looked in the 6.821 book and could not find the meta-cps rule for begin. What is \\(\\\\mathcal{MCPS}[(\\\\texttt{begin }E1\\\\ E2)]\\)?",
+            "answer": "\\\\[\\\\mathcal{MCPS}[(\\\\texttt{begin }E1\\\\ E2)]\\\\ m =\\\\begin{array}{l}(\\\\texttt{begin }\\\\\\\\ (\\\\mathcal{MCPS}[E1]\\\\ (\\\\lambda V . V))\\\\\\\\ (\\\\mathcal{MCPS}[E2]\\\\ m))\\\\end{array}\\\\]"
+          },
+          {
+            "problem_number": "5c",
+            "question": "JavaHard has decided to not let programmers access control features such as cvcc, label, and jump to simplify the analysis of programs. Ben suggests to JavaHard that they include a region identifier in every procedure type:\n\n\\\\[T\\\\quad::=\\\\quad...|(\\\\rightarrow\\\\ \\\\ (T^{*})\\\\ T\\\\ R)\\\\]\n\nJust as regions are assigned to cells, every procedure will be assigned a new region identifier except when two procedures are aliased together.\n\nA procedure in E can be explicitly freed if all of the following conditions are met: (1) the procedure is in region R, (2) region R is not in the type of any free variables of E, and (3) region R is not in the type of E.\n\nExcited about explicit freedom, Ben invents a new primitive called (%procedure-free x) that frees the procedure represented by value x. In the following example, the lambda expression (lambda (y) y) is bound to x and freed:\n\n```scheme\n(let ((x (lambda (y) y)))\n  (%procedure-free x))\n```\n\nLet E be an expression that contains a non-nested lambda expression P. From effect analysis, we know that P's value is no longer needed after E completes. Thus, Ben would like to use (%procedure-free x) to free the procedure value corresponding to P. Help Ben by writing a translation function for E that will free the value of P and return the value of E. Use [v/P]E to substitute the variable v for lambda expression P in E. Assume that your translation occurs before MCPS conversion and that the variable v does not appear in E.\n\n\\\\[T[E]\\\\!=\\\\!(\\\\texttt{let }((v\\\\ P))\\\\\\\\ \\\\qquad\\\\ldots\\\\texttt{fill in text here}\\\\ldots\\\\ )\\\\]",
+            "answer": "\\\\[T[E]\\\\!=\\\\!(\\\\texttt{let }((v\\\\ P))\\\\\\\\ \\\\qquad(\\\\texttt{let }((r\\\\ [v/P]E))\\\\\\\\ \\\\qquad(\\\\texttt{begin }\\\\\\\\ \\\\qquad\\\\qquad(\\\\%\\\\texttt{procedure-free }v)\\\\\\\\ \\\\qquad\\\\qquad r)))\\\\]"
+          },
+          {
+            "problem_number": "5d",
+            "question": "Ben revises his compiler to call this primitive to free all closures using your translation rule (assuming it works), and notes that certain programs slow down as a consequence. Ben had thought that reducing the work that the garbage collector had to do would make programs run faster. What is a possible explanation for this behavior?",
+            "answer": "One possible explanation is that the programs do not exhaust memory, and thus the garbage collector is never called. In that case, explicitly freeing unused closures is extra work that has no benefit. Another possibility is that in some programs, explicitly freeing closures releases enough memory so the garbage collector is no longer invoked, leading to storage fragmentation that slows the program down."
+          }
+        ]
+      }                
+  ]

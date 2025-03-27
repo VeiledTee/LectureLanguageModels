@@ -1,0 +1,124 @@
+{
+    "questions": [
+        {
+            "question": "Using similar techniques used in Strassen's matrix multiplication algorithm, the Floyd-Warshall algorithm's running time can be improved to O(Vlog2 7).",
+            "answer": "False. There is no way to define negation.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why.\n(a)"
+        },
+        {
+            "question": "For graphs G = (V, E) where E = O(V1.5), Johnson's algorithm is asymptotically faster than Floyd-Warshall.",
+            "answer": "True. O(VE + V2 log V) = 0(V\u00b3) when E = o(V2).",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why.\n(b)"
+        },
+        {
+            "question": "Consider the directed graph where each vertex represents a subproblem in a dynamic program, and there is an edge from p to q if and only if subproblem p depends on (recursively calls) subproblem q. Then this graph is a directed rooted tree.",
+            "answer": "False. It is a Directed Acyclic Graphic (DAG).",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why.\n(c)"
+        },
+        {
+            "question": "In a connected, weighted graph, every lowest weight edge is always in some minimum spanning tree.",
+            "answer": "True. It can be the first edge added by Kruskal's algorithm.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why.\n(d)"
+        },
+        {
+            "question": "For a connected, weighted graph with n vertices and exactly n edges, it is possible to find a minimum spanning tree in O(n) time.",
+            "answer": "True. This graph only contains one cycle, which can be found by a DFS. Just remove the heaviest edge in that cycle.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why.\n(e)"
+        },
+        {
+            "question": "For a flow network with an integer capacity on every edge, the Ford\u2013Fulkerson algorithm runs in time O((V + E) |f|) where |f| is the maximum flow.",
+            "answer": "True. There can be O(|f|) iterations because each iteration increases the flow by at least 1.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\n(f)"
+        },
+        {
+            "question": "Let C = (S, V \\ S) be a minimum cut in a flow network. If we strictly increase the capacity of every edge across C, then the maximum flow of the network must increase.",
+            "answer": "False. There could be another min cut whose capacity does not change. Then the max flow remains the same.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\n(g)"
+        },
+        {
+            "question": "Every linear program has a unique optimal solution.",
+            "answer": "False. There can be many optimal solutions if the objective function is parallel to one of the constrains.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\n(h)"
+        },
+        {
+            "question": "3SAT cannot be solved in polynomial time, even if P = NP.",
+            "answer": "False. If P = NP, then all problems in P are also NP-hard, and these problems have polynomial-time algorithms.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\n(i)"
+        },
+        {
+            "question": "Repeatedly selecting a vertex of maximum degree, and deleting the incident edges, is a 2-approximation algorithm for Vertex Cover.",
+            "answer": "False: it can be as bad as a log-log approximation, see L17 notes.",
+            "problem_number": "1",
+            "context": "Problem 1. True or False. [40 points] (10 parts)\n(j)"
+        },
+        {
+            "question": "Draw the shortest path from Boston to New York in the following graph if m = \u221e. Charging stations are marked as circles.",
+            "answer": "See image on page 4 of the pdf.",
+            "problem_number": "2",
+            "context": "Problem 2. Who Charged the Electric Car? [20 points] (3 parts)\nProf. Musk is driving his Nikola electric car from Boston to New York. He wants to take the shortest path, but his car can only drive m miles before needing to charge. Fortunately, there are Furiouscharger charging stations on the way from Boston to New York, which instantaneously charge the battery to full.\nThe road network is given to you as a weighted undirected graph G = (V, E, w) along with the subset CC V of vertices that have charging stations. Each weight w(e) denotes the (positive) length of road e. The goal is to find a shortest path from node s \u2208 V to node t \u2208 V that does not travel more than m miles between charging stations. Assume that s, t \u2208 C.\n(a)"
+        },
+        {
+            "question": "Draw the shortest path from Boston to New York in the following (identical) graph if m = 100.",
+            "answer": "See image on page 4 of the pdf.",
+            "problem_number": "2",
+            "context": "Problem 2. Who Charged the Electric Car? [20 points] (3 parts)\nProf. Musk is driving his Nikola electric car from Boston to New York. He wants to take the shortest path, but his car can only drive m miles before needing to charge. Fortunately, there are Furiouscharger charging stations on the way from Boston to New York, which instantaneously charge the battery to full.\nThe road network is given to you as a weighted undirected graph G = (V, E, w) along with the subset CC V of vertices that have charging stations. Each weight w(e) denotes the (positive) length of road e. The goal is to find a shortest path from node s \u2208 V to node t \u2208 V that does not travel more than m miles between charging stations. Assume that s, t \u2208 C.\n(b)"
+        },
+        {
+            "question": "Give an algorithm to solve the problem. For full credit, your algorithm should run in O(VE + V2 log V) time.",
+            "answer": "Our algorithm consists of two steps \u2013 the first step involves running Johnson's algorithm on the original graph G to obtain shortest path lengths for every pair of vertices. Let d(u, v) represent the length of the shortest path between vertices u and v in G.\nFor the second step, we build a graph G' with vertex set C. For every pair of vertices u and v in the new graph G', draw an edge between u and v with weight \u03b4(u, v) if \u03b4(u, v) \u2264 m and \u221e otherwise.\nNow, run Dijkstra's algorithm on G' between Boston and New York to get the shortest path. (Note that New York and Boston have charging stations and so are vertices in the graph G').\nRunning Johnson's algorithm on the original graph G takes O(VE + V\u00b2 log V). Creating the graph G' takes O(E) time, and running Dijkstra's algorithm on G' takes O(V2 + V log V) time; this gives a total runtime complexity of O(VE + V\u00b2 log V).",
+            "problem_number": "2",
+            "context": "Problem 2. Who Charged the Electric Car? [20 points] (3 parts)\nProf. Musk is driving his Nikola electric car from Boston to New York. He wants to take the shortest path, but his car can only drive m miles before needing to charge. Fortunately, there are Furiouscharger charging stations on the way from Boston to New York, which instantaneously charge the battery to full.\nThe road network is given to you as a weighted undirected graph G = (V, E, w) along with the subset CC V of vertices that have charging stations. Each weight w(e) denotes the (positive) length of road e. The goal is to find a shortest path from node s \u2208 V to node t \u2208 V that does not travel more than m miles between charging stations. Assume that s, t \u2208 C.\n(c)"
+        },
+        {
+            "question": "Give a greedy algorithm that outputs an ordering of the psets that minimizes the total penalty for all the psets. Analyze the running time and prove correctness.",
+            "answer": "Sort by increasing di/ci and do the problem sets in that order. This takes O(N log N) time.\nProof \u2013 If unsorted, we can improve by swapping.\ndi/ci > dj/cjcjdi + (cidi + cjdj) > cidj + (cidi + cjdj)\n=\ncj(di+dj) + cidi > ci(di + dj) + cjdj",
+            "problem_number": "3",
+            "context": "Problem 3. Planning Ahead [10 points] (1 part)\nYou have N psets due right now, but you haven't started any of them, so they are all going to be late. Each pset requires di days to complete, and has a cost penalty of ci per day. So if pset i ends up being finished t days late, then it incurs a penalty of t \u00b7 ci. Assume that once you start working on a pset, you must work on it until you finish it, and that you cannot work on multiple psets at the same time."
+        },
+        {
+            "question": "First look at the special case where the maze is just a single path of length |E| from s to t, and all the edges have capacity 1 (see below). Exactly how many nights are required for the teens to escape?",
+            "answer": "|E| + m - 1 or |V| + m \u2013 2. Em or Vm will get partial credits.",
+            "problem_number": "4",
+            "context": "Problem 4. Maze Marathoner [20 points] (3 parts)\nA group of m teens need to escape a maze, represented by a directed graph G = (V, E). The teens all start at a common vertex s \u2208 V, and all need to get to the single exit at t \u2208 V. Every night, each teen can choose to remain where they are, or traverse an edge to a neighboring vertex (which takes exactly one night to traverse). However, each edge e \u2208 E has an associated capacity c(e), meaning that at most c(e) teens can traverse the edge during the same night. The goal is to minimize the number of nights required for all teens to escape by reaching the goal t.\n(a)"
+        },
+        {
+            "question": "Give an algorithm to calculate the minimum number of nights to escape, by making calls to the magic algorithm. Analyze your time complexity in terms of V, E, m, a, and T(V, E, m).",
+            "answer": "Do a binary search. A sequential scan will get partial credits.\nThe maximum number of nights can be bounded by O(E+m) (or O(V+m), O(Em))\naccording to part(a). Therefore, we need to run the \u201cmagic\u201d algorithm O(log(E+m))\ntimes. Each run takes no more than O((E + m)\u00baT(V, E, m)) time. So in total, the\nruntime is O((E + m)\u00ba log(E + m)T(V, E, m)).",
+            "problem_number": "4",
+            "context": "Problem 4. Maze Marathoner [20 points] (3 parts)\nA group of m teens need to escape a maze, represented by a directed graph G = (V, E). The teens all start at a common vertex s \u2208 V, and all need to get to the single exit at t \u2208 V. Every night, each teen can choose to remain where they are, or traverse an edge to a neighboring vertex (which takes exactly one night to traverse). However, each edge e \u2208 E has an associated capacity c(e), meaning that at most c(e) teens can traverse the edge during the same night. The goal is to minimize the number of nights required for all teens to escape by reaching the goal t.\n(b)"
+        },
+        {
+            "question": "Now give the \u201cmagic\u201d algorithm, and analyze its time complexity.",
+            "answer": "Model this as a max flow problem. Construct a graph G' = (V', E') where\nV' = {(v, i) | v \u2208 V, 0 \u2264 i \u2264 k}. For all 0 \u2264 i \u2264 k\u22121, connect (v, i) to (v, i+1) with\ncapacity (or m); this represents teens can stay at a vertex for the night. For every\nedge (u, v) in the original graph, connect (u, i) to (v, i + 1) with capacity c((u, v));\nthis represents c((u, v)) teens can travel from u to v in a night.\nThe new source s' is the vertex (s, 0) and the new sink t' is the vertex (t, k \u2212 1). If the\nmax flow from s' to t' is no less than m, then people can escape within k nights.\nRuntime: Both of the following are accepted.\nThere are V = O(kV') vertices and E' = O(k(V + E)) edges in G'. Applying\nEdmonds-Karp algorithm, the total time complexity is O(VE2) = O(k3V(V + E)\u00b2).\nIf using Ford-Fulkerson runtime, notice that we can actually stop if the max flow\nreaches m. So at most m iterations are needed. Runtime can be O(m(V' + E')) =\nO(mk(V + E)).",
+            "problem_number": "4",
+            "context": "Problem 4. Maze Marathoner [20 points] (3 parts)\nA group of m teens need to escape a maze, represented by a directed graph G = (V, E). The teens all start at a common vertex s \u2208 V, and all need to get to the single exit at t \u2208 V. Every night, each teen can choose to remain where they are, or traverse an edge to a neighboring vertex (which takes exactly one night to traverse). However, each edge e \u2208 E has an associated capacity c(e), meaning that at most c(e) teens can traverse the edge during the same night. The goal is to minimize the number of nights required for all teens to escape by reaching the goal t.\n(c)"
+        },
+        {
+            "question": "Give an algorithm to find a driver assignment di \u2208 Si for each day i such that no person j has to drive more than their limit lj. (The algorithm should output \u201cno\u201d if there is no such assignment.)",
+            "answer": "First, we create a graph with following vertices:\n1.a super source s and a super sink t\n2.vertex pi for each person who wants to carpool\n3.vertex dj for each day of the class.\nThen create the following edges:\n1.s to pi with capacity of lj\n2.pi to dj with capacity of 1 if person i needs to carpool on day j\n3.d; to t with weight 1 for all j.\nFinally, run max flow from s to t, and find f. If |f| = m, return that person i will drive on day j if\nthe edge (pi, dj) has non-zero flow. If |f| < m, then return no valid assignment.",
+            "problem_number": "5",
+            "context": "Problem 5. 6.046 Carpool [10 points] (1 part)\nThe n people in your dorm want to carpool to 34-101 during the m days of 6.046. On day i, some subset S of people actually want to carpool (i.e., attend lecture), and the driver di must be selected from St. Each person j has a limited number of days l; they are willing to drive."
+        },
+        {
+            "question": "Give a polynomial-time algorithm to determine whether a directed graph G contains either a cycle or a Hamiltonian path (or both).",
+            "answer": "To solve the problem, we simply run DFS on G. If a cycle exists, DFS will traverse a vertex twice and can report the cycle. If no cycle exists, then the graph is a DAG.\nIf the graph is a DAG, then we can run a topological sort on the graph. If there is a complete, or unique, ordering of every vertex in the graph, the graph has a Hamiltonian Path, and we accept the graph.",
+            "problem_number": "6",
+            "context": "Problem 6. Paths and/or Cycles [20 points] (2 parts)\nA Hamiltonian path on a directed graph G = (V, E) is a path that visits each vertex in V exactly once. Consider the following variants on Hamiltonian path:\n(a)"
+        },
+        {
+            "question": "Show that it is NP-hard to decide whether a directed graph G' contains both a cycle and a Hamiltonian Path, by giving a reduction from the HAMILTONIAN PATH problem: given a graph G, decide whether it has a Hamiltonian path. (Recall from recitation that the HAMILTONIAN PATH problem is NP-complete.)",
+            "answer": "We construct a graph G' = (V', E') from G, where\nV' = {U1, U2, U3} UV\nU\nE' = {(41, 42), (\u0418\u2082, \u0418\u0437), (\u0438\u0437, \u0418\u2081) } \u222a {(u\u2081, V) : v \u2208 V} U E\nG' always has a cycle of length 3 - (U1, U2, U3). For any Hamiltonian Path P in G,\n(u2, 43, 41, P) is a Hamiltonian Path in G'. For any Hamiltonian Path P' in G', P'\nmust be of the form (u2, 43, 41, P), where P is a Hamiltonian path for G. Thus in all\ncases, solving B(G') is equivalent to solving Hamiltonian Path for G.",
+            "problem_number": "6",
+            "context": "Problem 6. Paths and/or Cycles [20 points] (2 parts)\nA Hamiltonian path on a directed graph G = (V, E) is a path that visits each vertex in V exactly once. Consider the following variants on Hamiltonian path:\n(b)"
+        }
+    ]
+}

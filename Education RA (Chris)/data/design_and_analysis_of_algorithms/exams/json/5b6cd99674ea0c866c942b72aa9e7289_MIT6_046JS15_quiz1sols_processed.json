@@ -1,0 +1,136 @@
+{
+    "questions": [
+        {
+            "question": "With all equal-sized intervals, a greedy algorithm based on earliest start time will always select the maximum number of compatible intervals.",
+            "answer": "True. The algorithm is equivalent to the earliest finish time algorithm.",
+            "problem_number": "1(a)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "The problem of weighted interval scheduling can be solved in O(n log n) time using dynamic programming.",
+            "answer": "True. The algorithm was covered in recitation.",
+            "problem_number": "1(b)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "If we divide an array into groups of 3, find the median of each group, recursively find the median of those medians, partition, and recurse, then we can obtain a linear-time median-finding algorithm.",
+            "answer": "False. T(n) = T(n/3) + T(2n/3) + O(n) does not solve to T(n) = O(n). The array has to be broken up into groups of at least 5 to obtain a linear-time algorithm.",
+            "problem_number": "1(c)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "If we used the obvious \u0398(n\u00b2) merge algorithm in the divide-and-conquer convex-hull algorithm, the overall time complexity would be O(n\u00b2 log n).",
+            "answer": "False. The time complexity would satisfy the recurrence T(n) = 2T(n/2) + \u0398(n\u00b2), which solves to (n\u00b2) by the Master Theorem.",
+            "problem_number": "1(d)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "Van Emde Boas sort (where we insert all numbers, find the min, and then repeatedly call SUCCESSOR) can be used to sort n = lg u numbers in O(lg u\u00b7\nlg lg lg u) time.",
+            "answer": "False. Inserting into the tree and then finding all the successors will take n lg lg(u) time, which in terms of u is lg(u) \u00b7 lg lg(u).",
+            "problem_number": "1(e)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "Van Emde Boas on n integers between 0 and u 1 supports successor queries in O(lg lg u) worst-case time using O(n) space.",
+            "answer": "False. We use (u) space or do randomization.",
+            "problem_number": "1(f)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "In the potential method for amortized analysis, the potential energy should never go negative.",
+            "answer": "True.",
+            "problem_number": "1(g)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "The quicksort algorithm that uses linear-time median finding to run in worst-case O(n log n) time requires O(n) auxiliary space.",
+            "answer": "False. It can be implemented with O(log n) auxiliary space.",
+            "problem_number": "1(h)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "Searching in a skip list takes O(log n) time with high probability, but could take \u03a9(2n) time with nonzero probability.",
+            "answer": "True. A skip list could be of any height with nonzero probability, depending on its random choices.",
+            "problem_number": "1(i)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "The following collection H = {h1,h2, h3} of hash functions is uni-versal, where each hash function maps the universe U = {A, B, C, D} of keys into the range {0, 1, 2} according to the following table:\nX\nABCD\nh\u2081(x) 1011\nh2(x) 0101\nh3(x) 2 2 10",
+            "answer": "False. A and C collide with probability 2/3.",
+            "problem_number": "1(j)",
+            "context": "Problem 1. True or False.\nCircle T or F for each of the following statements to indicate whether the statement is true or false and briefly explain why."
+        },
+        {
+            "question": "Point out Ben's mistake in one sentence; no calculation needed. (Ben swears he has calculated FFT F and inverse FFT F-\u00b9 correctly.)",
+            "answer": "The resulting polynomial is of degree 2, so Ben need to pad a and b with zeroes. (Or Ben need at least 3 samples to do FFT).",
+            "problem_number": "2",
+            "context": "Problem 2. Fast Fourier Transform (FFT).\nBen Bitdiddle is trying to multiply two polynomials using the FFT. In his trivial example, Ben sets\na = (0, 1) and b = (0, 1), both representing 0 + x, and calculates:\nA = F(a) = B = F(b) = (1, \u22121),\nC = A * B = (1, 1),\nc = F\u00af\u00b9(C) = (1, 0).\nSo c represents 1 + 0\u00b7x, which is clearly wrong."
+        },
+        {
+            "question": "Give the fastest data structure you can for this problem, measured according to worst-case time.",
+            "answer": "Initialization takes O(nlg(1g(n))) time to insert all the yellow elements into a VEB tree, V.\nMore importantly, each operation takes O(lg lg(n)) time. When a user asks to MARK-YELLOW(i), then call V.insert(i) which takes O(lglg(n)) time. When a user asks to MARK-GREY(i), then call V.delete(i) which takes O(lglg(n)) time. When a user asks to NEXT-YELLOW(i), then call V.successor(i) which takes O(lg lg(n)) time.",
+            "problem_number": "3",
+            "context": "Problem 3. Yellow Brick Road.\nProf. Gale is developing a new Facebook app called \u201cYellow Brick Road\u201d for maintaining a user's timeline, here represented as a time-ordered list eo, e1, ..., en\u22121 of n (unchanging) events. (In Facebook, events can never be deleted, and for the purposes of this problem, don't worry about insertions either.) The app allows the user to mark an event ei as yellow (important) or grey (unimportant); initially all events are grey. The app also allows the user to jump to the next yellow event that comes after the event ei currently on the screen (which may be yellow or grey). More formally, you must support the following operations:\n1. MARK-YELLOW(i): Mark ei yellow.\n2. MARK-GREY(i): Mark ei grey.\n3. NEXT-YELLOW(i): Find the smallest j > i such that ej is yellow."
+        },
+        {
+            "question": "Design a data structure to maintain a set S of n distinct integers that supports the following two operations:\n1. INSERT(x, S): insert integer x into S.\n2. REMOVE-BOTTOM-HALF(S): remove the smallest [$\\frac{n}{2}$] integers from S.\nDescribe your algorithm and give the worse-case time complexity of the two operations. Then carry out an amortized analysis to make INSERT(x, S) run in amortized O(1) time, and REMOVE-BOTTOM-HALF(S) run in amortized 0 time.",
+            "answer": "Use a singly linked list to store those integers. To implement INSERT(x, S), we append the new integer to the end of the linked list. This takes (1) time. To implement REMOVE-BOTTOM-HALF(S), we use the median finding algorithm taught in class to find the median number, and then go through the list again to delete all the numbers smaller or equal than the median. This takes \u0398(n) time.\nSuppose the runtime of REMOVE-BOTTOM-HALF(S) is bounded by cn for some constant c. For amortized analysis, use \u03a6 = 2cn as our potential function. Therefore, the amortized cost of an insertion is 1 + \u0394\u03a6 = 1 + 2c = \u0398(1). The amortized cost of REMOVE-BOTTOM-HALF(S) is\ncn + \u2206\u03a6 = cn + (\u22122c \u00d7 $\\frac{n}{2}$) = 0.",
+            "problem_number": "4",
+            "context": "Problem 4. Amortized Analysis."
+        },
+        {
+            "question": "Describe an O(n)-time randomized algorithm for testing whether p(x) \u00b7 q(x) = r(x) that satisfies the following properties:\n1. If the two sides are equal, the algorithm outputs YES.\n2. If the two sides are unequal, the algorithm outputs NO with probability at least $\\frac{1}{2}$.",
+            "answer": "Pick a value a \u2208 [1, 4n], and check whether p(a)q(a) = r(a). The algorithm outputs YES if the two sides are equal, and NO otherwise. It takes O(n) time to evaluate the three polynomials of degree O(n). Thus the overall running time of the algorithm is O(n).",
+            "problem_number": "5(a)",
+            "context": "Problem 5. Verifying Polynomial Multiplication.\nThis problem will explore how to check the product of two polynomials. Specifically, we are given three polynomials:\np(x) = anx\u00b2 + an\u22121xn\u22121 + \u00b7\u00b7\u00b7 + ao,\nq(x) = bnxn + bn-1xn-1 + ... + bo,\nr(x) = C2nx2n + C2n\u22121x2n\u22121 + \u00b7\u00b7\u00b7 + Co.\nWe want to check whether p(x) \u00b7 q(x) = r(x) (for all values x). Via FFT, we could simply compute p(x)\u00b7 q(x) and check in O(n log n) time. Instead, we aim to achieve O(n) time via randomization."
+        },
+        {
+            "question": "Prove that your algorithm satisfies Property 1.",
+            "answer": "If p(x) \u00b7 q(x) = r(x), then both sides will evaluate to the same thing for any input.",
+            "problem_number": "5(b)",
+            "context": "Problem 5. Verifying Polynomial Multiplication.\nThis problem will explore how to check the product of two polynomials. Specifically, we are given three polynomials:\np(x) = anx\u00b2 + an\u22121xn\u22121 + \u00b7\u00b7\u00b7 + ao,\nq(x) = bnxn + bn-1xn-1 + ... + bo,\nr(x) = C2nx2n + C2n\u22121x2n\u22121 + \u00b7\u00b7\u00b7 + Co.\nWe want to check whether p(x) \u00b7 q(x) = r(x) (for all values x). Via FFT, we could simply compute p(x)\u00b7 q(x) and check in O(n log n) time. Instead, we aim to achieve O(n) time via randomization."
+        },
+        {
+            "question": "Prove that your algorithm satisfies Property 2.",
+            "answer": "s(x) = r(x) - p(x) \u00b7 q(x) is a degree-2n polynomial, and thus has at most 2n roots. Then\nPr{s(a) = 0} \u2264 $\\frac{2n}{4\u03b7}$ = $\\frac{1}{2}$",
+            "problem_number": "5(c)",
+            "context": "Problem 5. Verifying Polynomial Multiplication.\nThis problem will explore how to check the product of two polynomials. Specifically, we are given three polynomials:\np(x) = anx\u00b2 + an\u22121xn\u22121 + \u00b7\u00b7\u00b7 + ao,\nq(x) = bnxn + bn-1xn-1 + ... + bo,\nr(x) = C2nx2n + C2n\u22121x2n\u22121 + \u00b7\u00b7\u00b7 + Co.\nWe want to check whether p(x) \u00b7 q(x) = r(x) (for all values x). Via FFT, we could simply compute p(x)\u00b7 q(x) and check in O(n log n) time. Instead, we aim to achieve O(n) time via randomization."
+        },
+        {
+            "question": "Design a randomized algorithm to check whether p(x) \u00b7 q(x) = r(x) that is correct with probability at least 1 \u03b5. Analyze your algorithm in terms of n and 1/\u03b5.",
+            "answer": "We run part a m times, and output YES if and only if all answers output YES. In other words, we amplify the probability of success via repetition.\nOur test works with probability > 1 - ($\\frac{1}{2}$)m. Thus we need\n1 - $\\frac{1}{2}$$\\leq$ \u03b5\n\u21d2 m \u2265 log$\\frac{1}{\u03b5}$.",
+            "problem_number": "5(d)",
+            "context": "Problem 5. Verifying Polynomial Multiplication.\nThis problem will explore how to check the product of two polynomials. Specifically, we are given three polynomials:\np(x) = anx\u00b2 + an\u22121xn\u22121 + \u00b7\u00b7\u00b7 + ao,\nq(x) = bnxn + bn-1xn-1 + ... + bo,\nr(x) = C2nx2n + C2n\u22121x2n\u22121 + \u00b7\u00b7\u00b7 + Co.\nWe want to check whether p(x) \u00b7 q(x) = r(x) (for all values x). Via FFT, we could simply compute p(x)\u00b7 q(x) and check in O(n log n) time. Instead, we aim to achieve O(n) time via randomization."
+        },
+        {
+            "question": "Define TLij to be maximum tastiness value in the top-left quadrant of cell (i, j): TLi,j = max{Ta,b | 1 \u2264 a \u2264 i, 1 \u2264 b \u2264 j}. Find a dynamic programming algorithm to compute TLi,j, for all 1 < i < n and 1 < j < m, in O(nm) time.",
+            "answer": "When trying to calculate TLi,j, we see that the maximum can be at cell (i, j). If not, it must lie either in the rectangle from (1, 1) to (i, j \u2013 1), or the rectangle from (1, 1) to (i \u2013 1,j), or both. These three overlapping cases cover our required\nrectangle. We have then,\nTLi,j = max{Ti,j, TLi\u22121,j, TLi,j\u22121}\nFor the base cases, we can just set TL0,j = TL\u00bf,0 = 0 for all valid values of i and j.\nWe can compute the DP value for each state in O(1) time. There are nm states, so our algorithm is O(nm).",
+            "problem_number": "6(a)",
+            "context": "Problem 6. Dynamic Programming.\nProf. Child is cooking from her garden, which is arranged in grid with n rows and m columns.\nEach cell (i, j) (1 \u2264 i \u2264 n, 1 \u2264 j \u2264 m) has an ingredient growing in it, with tastiness given by a positive value Tij. Prof. Child doesn't like cooking \u201cby the book\u201d. To prepare dinner, she will stand at a cell (i, j) and pick one ingredient from each quadrant relative to that cell. The tastiness of her dish is the product of the tastiness of the four ingredients she chooses. Help Prof. Child find an O(nm) dynamic programming algorithm to maximize the tastiness of her dish.\nHere the four quadrants relative to a cell (i, j) are defined as follows:\ntop-left = {all cells (a, b) | a < i, b < j},\nbottom-left = {all cells (a, b) | a > i, b < j},\ntop-right = {all cells (a, b) | a < i, b > j},\nbottom-right = {all cells (a, b) | a > i, b > j}.\nBecause Prof. Child needs all four quadrants to be non-empty, she can only stand on cells (i, j)\nwhere 1 < i < n and 1 < j < m."
+        },
+        {
+            "question": "Use the idea in part (a) to obtain an O(nm) algorithm to find the tastiest dish.",
+            "answer": "In part (a) we calculated range maximum for the top-left quadrant. We can similarly define range maximums for the other quadrants. Let BLi,j = max{Ta,b |\ni \u2264 a \u2264 n,1 \u2264 b \u2264 j}, TRi,j = max{Ta,\u044c | 1 \u2264 a \u2264 i,j \u2264 b \u2264 m}, and\nBRi,j = max{Ta,b | i \u2264 a \u2264 n,j \u2264 b \u2264 m}. Each of these can be computed in\nO(nm) time similar to TL.\nTo calculate the tastiest dish Prof. Child can cook when she stands at cell (i, j) (1 <\ni < n and 1 < j < m), we now just need to compute the product TLi\u22121,j\u22121BLi+1,j\u22121 TRi\u22121,j+1BRi+1,j+1\nand pick the maximum product. This can be done in O(nm) time.",
+            "problem_number": "6(b)",
+            "context": "Problem 6. Dynamic Programming.\nProf. Child is cooking from her garden, which is arranged in grid with n rows and m columns.\nEach cell (i, j) (1 \u2264 i \u2264 n, 1 \u2264 j \u2264 m) has an ingredient growing in it, with tastiness given by a positive value Tij. Prof. Child doesn't like cooking \u201cby the book\u201d. To prepare dinner, she will stand at a cell (i, j) and pick one ingredient from each quadrant relative to that cell. The tastiness of her dish is the product of the tastiness of the four ingredients she chooses. Help Prof. Child find an O(nm) dynamic programming algorithm to maximize the tastiness of her dish.\nHere the four quadrants relative to a cell (i, j) are defined as follows:\ntop-left = {all cells (a, b) | a < i, b < j},\nbottom-left = {all cells (a, b) | a > i, b < j},\ntop-right = {all cells (a, b) | a < i, b > j},\nbottom-right = {all cells (a, b) | a > i, b > j}.\nBecause Prof. Child needs all four quadrants to be non-empty, she can only stand on cells (i, j)\nwhere 1 < i < n and 1 < j < m."
+        },
+        {
+            "question": "Give a na\u00efve algorithm running in O(m + n) time.",
+            "answer": "Merge the two sorted arrays (which takes O(m + n) time) and find the median using linear-time selection.",
+            "problem_number": "7(a)",
+            "context": "Problem 7. Median of two sorted arrays.\nFinding the median of a sorted array is easy: return the middle element. But what if you are given two sorted arrays A and B, of size m and n respectively, and you want to find the median of all the numbers in A and B? You may assume that A and B are disjoint."
+        },
+        {
+            "question": "If m = n, give an algorithm that runs in O(lgn) time.",
+            "answer": "Pick the median m\u2081 for A and median m2 for B. If m\u2081 = m2, return\nm1. If m\u2081 > m2, remove the second half of A and the first half of B. Then we get\ntwo subarrays with size n/2. Repeat until both arrays are smaller than a constant.\nm1 < m2 is symmetric.",
+            "problem_number": "7(b)",
+            "context": "Problem 7. Median of two sorted arrays.\nFinding the median of a sorted array is easy: return the middle element. But what if you are given two sorted arrays A and B, of size m and n respectively, and you want to find the median of all the numbers in A and B? You may assume that A and B are disjoint."
+        },
+        {
+            "question": "Give an algorithm that runs in O(lg(min{m, n})) time, for any m and n.",
+            "answer": "Without loss of generality, assume |A| = m > n = |B|. We can safely remove elements A[0 : m-n/2] and A[m+n/2 : m 1] because none of these elements can\nbe the median of A + B. After this process, we get two arrays of size approximately\nn. Then we can run part (b). The complexity is O(lg(min(m, n)))",
+            "problem_number": "7(c)",
+            "context": "Problem 7. Median of two sorted arrays.\nFinding the median of a sorted array is easy: return the middle element. But what if you are given two sorted arrays A and B, of size m and n respectively, and you want to find the median of all the numbers in A and B? You may assume that A and B are disjoint."
+        }
+    ]
+}
