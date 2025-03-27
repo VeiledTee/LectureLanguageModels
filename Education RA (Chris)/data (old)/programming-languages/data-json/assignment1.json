@@ -1,0 +1,174 @@
+[
+  {
+    "problem_number": "1",
+    "question": "Short Answer [29 points]",
+    "subquestions": [
+      {
+        "problem_number": "1a",
+        "question": "Give a desugaring from a FLAVARI program \\(P\\) to a FLAVARI program \\(P^{\\prime}\\) that has the following property: \\(P\\) evaluated with call-by-value semantics has the same behavior as \\(P^{\\prime}\\) when evaluated with call-by-name semantics.",
+        "answer": "\\(\\mathcal{D}[\\texttt{(proc }I\\ E)]=\\texttt{(proc }I\\ \\mathcal{D}[\\texttt{begin (primop cell-set! (cell }I)\\ I)\\ E)}])\\). For all other \\(E\\), \\(\\mathcal{D}[E]\\) operates by structural induction."
+      },
+      {
+        "problem_number": "1b",
+        "question": "Give two domains \\(D\\) and \\(E\\) such that the number of set-theoretic functions from \\(D\\) to \\(E\\) is infinite, but the number of continuous functions is finite.",
+        "answer": "\\(D=\\text{integers}\\), with \\(\\leq\\) as the ordering; \\(E = \\text{bool}\\) (unordered)."
+      },
+      {
+        "problem_number": "1c",
+        "question": "Consider a new construct smart-compose to FL/R. (smart-compose f g) evaluates to whichever of (compose f g) or (compose g f) type checks. Why could type reconstruction using Appendix D fail even when a type for smart-compose is reconstructible?",
+        "answer": "Type reconstruction could fail if both (compose f g) and (compose g f) type check (e.g., if \\(f: \\alpha\\rightarrow\\beta\\) and \\(g: \\beta\\rightarrow\\alpha\\)). The algorithm might choose an incompatible type, requiring backtracking to resolve."
+      },
+      {
+        "problem_number": "1d",
+        "question": "What is a broken heart, and what is it used for?",
+        "answer": "A broken heart is a forwarding pointer used in copying garbage collection. It replaces moved objects to update references to their new location."
+      },
+      {
+        "problem_number": "1e",
+        "question": "Give the reconstructed type of the expression: (lambda (f g) (f (f g 2) (g 2))).",
+        "answer": "g: \\(\\text{int} \\rightarrow \\text{int}\\); f: \\((\\text{int} \\rightarrow \\text{int}) \\times \\text{int} \\rightarrow (\\text{int} \\rightarrow \\text{int})\\). Overall: \\(((\\text{int} \\rightarrow \\text{int}) \\times \\text{int} \\rightarrow (\\text{int} \\rightarrow \\text{int})) \\times (\\text{int} \\rightarrow \\text{int}) \\rightarrow (\\text{int} \\rightarrow \\text{int})\\)."
+      },
+      {
+        "problem_number": "1f",
+        "question": "What is the purpose of closure conversion?",
+        "answer": "Closure conversion eliminates free variables, making procedures self-contained so they can appear anywhere in the program."
+      },
+      {
+        "problem_number": "1g",
+        "question": "Consider the FLAVARI expression: (let ((x 3) (foo (lambda (q) (+ x y))) (letrec ((y x) (z (let ((x 15)) (lambda (q) (z q))))) (let ((x 16) (y x)) (foo z)))).",
+        "subquestions": [
+          {
+            "problem_number": "1g1",
+            "question": "Under call-by-value static scoping, what is the value or error?",
+            "answer": "Error: \\(y\\) is not bound."
+          },
+          {
+            "problem_number": "1g2",
+            "question": "Under call-by-value dynamic scoping, what is the value or error?",
+            "answer": "19"
+          }
+        ]
+      },
+      {
+        "problem_number": "1h",
+        "question": "Evaluate the expression: (let ((x (lambda (x) (+ x 1)))) (let ((y (lambda (y) (y x)))) (let ((y (let ((y y)) y))) (let ((x (y (lambda (x) x)))) (x 5)))).",
+        "subquestions": [
+          {
+            "problem_number": "1h1",
+            "question": "Under call-by-value static scoping.",
+            "answer": "6"
+          },
+          {
+            "problem_number": "1h2",
+            "question": "Under call-by-value dynamic scoping.",
+            "answer": "6"
+          }
+        ]
+      },
+      {
+        "problem_number": "1i",
+        "question": "Why does Louis Reasoner's proposal to modify the garbage collector to work in place fail?",
+        "answer": "Relocating objects may be impossible if they are larger than contiguous free memory chunks, negating copying collector advantages."
+      }
+    ]
+  },
+  {
+    "problem_number": "2",
+    "question": "Probabilistic Types [12 points]\n\nSensing he won’t time to finish his SCHEME/R killer app before Christmas, Ben Bitdiddle buys a subroutine from Subroutines 'R' Us. While Ben's program was completely deterministic, the subroutine he bought is randomized. The fine print states that the subroutine returns the correct answer \\\\(99\\\\frac{44}{100}\\\\%\\\\) of the time. Ben worries about the correctness of his program, since he uses this subroutine many times. But before he gets to answer his own question, his mind wanders off to another subroutine he purchased.\n\nTo deal with this problem, you will create a type/effect system. The new type system has judgments like the following:\n\n\\\\[A \\\\vdash E: T\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,P\\\\]\n\nwhich is pronounced, \"in the type environment \\\\(A\\\\), expression \\\\(E\\\\) has type \\\\(T\\\\) and probability of correctness at least \\\\(P\\\\).\" The types in this new type system are inherited from Scheme/R, with one difference: a function type now contains a probability of correctness. We write this as \\\\((\\\\rightarrow\\\\,p\\\\,(T_1\\\\ldots T_n)\\\\,T_b)\\\\), which means that when this procedure is applied to arguments \\\\(a_1\\\\ldots a_m\\\\), it evaluates to the correct value with probability \\\\(p\\\\).\n\nThe following type/effect judgments:\n\n\\\\[\\\\vdash N: \\\\text{int}\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,1\\\\] \\\\[\\\\vdash B: \\\\text{bool}\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,1\\\\]\n\nindicate that numeric and boolean literals are guaranteed to be correct. You should assume that if any subexpression evaluates incorrectly, then the whole program evaluates incorrectly: subsequent wrong answers never cancel out previous ones.",
+    "subquestions": [
+      {
+        "problem_number": "2a",
+        "question": "Give a type/effect rule for **if**.",
+        "answer": "\\[\\\\frac{A\\\\vdash E: \\\\text{bool}\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p;\\\\ A\\\\vdash E_1: T\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p_1;\\\\ A\\\\vdash E_2: T\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p_2}{A\\\\vdash(\\\\text{if }E\\\\ E_1\\\\ E_2):T\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p\\\\cdot\\\\min(p_1,p_2)}\\]"
+      },
+      {
+        "problem_number": "2b",
+        "question": "Give a type/effect rule for **lambda**.",
+        "answer": "\\[\\\\frac{A[I_1:T_1, \\\\ldots, I_n:T_n]\\\\vdash E_B: T_B\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p_B}{A\\\\vdash(\\\\texttt{lambda }(I_1 \\\\ldots I_n)\\\\ E_B):(\\\\rightarrow\\\\,p_B\\\\,(T_1\\\\ldots T_n)\\\\,T_B)\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,1}\\]"
+      },
+      {
+        "problem_number": "2c",
+        "question": "Give a type/effect rule for **application**.",
+        "answer": "\\[\\\\frac{A\\\\vdash E_{\\\\text{rator}}: (\\\\rightarrow\\\\,p_l\\\\,(T_1\\\\ldots T_n)\\\\,T_{\\\\text{body}})\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p_r;\\\\ \\\\forall i.\\\\ (A\\\\vdash E_i:T_i\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p_i)}{A\\\\vdash(E_{\\\\text{rator}}\\\\ E_1\\\\ldots E_n):T_{\\\\text{body}}\\\\,\\\\hbox{\\\\msbm\\\\char 22\\\\mskip-9.0mu \\\\raise 1.29pt\\\\hbox{$\\\\char 62$}}\\\\,p_r\\\\cdot p_l\\\\cdot p_1\\\\cdots p_n}\\]"
+      },
+      {
+        "problem_number": "2d",
+        "question": "Give a subtyping rule for procedures by revising the ->\\(\\sqsubseteq\\) rule.",
+        "answer": "\\[\\\\frac{\\\\forall i\\\\,(T_i\\\\sqsubseteq S_i);\\\\ S_{\\\\text{body}}\\\\sqsubseteq T_{\\\\text{body}};\\\\ p_s\\\\geq p_t}{(\\\\rightarrow\\\\,p_s\\\\,(S_1\\\\ldots S_n)\\\\,S_{\\\\text{body}})\\\\sqsubseteq(\\\\rightarrow\\\\,p_t\\\\,(T_1\\\\ldots T_n)\\\\,T_{\\\\text{body}})}\\]"
+      }
+    ]
+  },
+  {
+    "problem_number": "3",
+    "question": "**Problem 3: Strictness Effects [17 points]**\n\nAs presented in class, effect systems indicate what side effects may result from evaluation of an expression. In a lazy language, a natural extension to this notion is whether a particular argument to a procedure is ever evaluated. In this problem, you will write type reconstruction rules that determine whether a particular expression evaluates a given argument. There are three possibilities for each argument: the procedure may always evaluate the argument, the procedure may never evaluate the argument, or the procedure may sometimes evaluate the argument; we represent these three values as A (for always), N (for never), and M (for maybe). Typing judgments have the form\n\n\\[A \\vdash E : T \\& S,\\] \n\nwhere \\(S\\) maps variables to strictness values. (You may assume that \\(S\\) always contains an entry for every variable that is ever used in the program, and furthermore that all variables are uniquely named. In other words, you don’t have to worry about scoping and variable capture.)\n\nFor example, a reasonable judgment in a program with 4 variables \\(a\\), \\(b\\), \\(c\\), and \\(d\\) might be\n\n\\[A \\vdash E : T \\& \\{a : M, b : A, c : N, d : M \\}.\\]\n\nand a reasonable typing rule might be\n\n\\[\\frac{A \\vdash E_1 : T \\& S_1 \\ ; \\ A \\vdash E_2 : T \\& S_2}{A \\vdash (\\text{strange } E_1 \\ E_2) : T \\& S_1 \\ \\text{AtoN}(S_2)} \\quad [\\text{strange}]\\]\n\nwhere \\(\\text{AtoN}\\) is defined below.\n\nProcedure types have the following form: \\((\\-> \\text{Ids } S \\ (T_1 \\ldots T_n) \\ T)\\). “Ids” is a list of the procedure’s parameter names. \\(S\\) is the strictness of the procedure (over all program variables, as usual).\n\nYour task is to extend the typing rules of Appendix C to also compute a strictness environment.\n\nYou may find one or more of the following auxiliary procedures to be helpful. However, you are not permitted to cascade them (nor do you need to!); don’t write, for example, “AtoM(NtoA(S))”.\n\n- \\(\\text{allA}\\) returns a new mapping in which every variable is bound to A.\n- \\(\\text{allN}\\) returns a new mapping in which every variable is bound to N.\n- \\(\\text{allM}\\) returns a new mapping in which every variable is bound to M.\n- \\(\\text{AtoN}\\) returns a new mapping in which bindings to A have been replaced by N.\n- \\(\\text{AtoM}\\) returns a new mapping in which bindings to A have been replaced by M.\n- \\(\\text{NtoA}\\) returns a new mapping in which bindings to N have been replaced by A.\n- \\(\\text{NtoM}\\) returns a new mapping in which bindings to N have been replaced by M.\n- \\(\\text{MtoA}\\) returns a new mapping in which bindings to M have been replaced by A.\n- \\(\\text{MtoN}\\) returns a new mapping in which bindings to M have been replaced by N.\n\nFor example,\n\n\\[\\text{MtoN}(\\{a : M, b : A, c : N, d : M \\}) = \\{a : N, b : A, c : N, d : N \\}.\\]",
+    "subquestions": [
+      {
+        "problem_number": "3a",
+        "question": "Draw the domain whose elements are \\(\\{A, N, M\\}\\): draw the elements, and draw a line for each non-transitive \\(\\leq\\) relationship, with the greater element higher on the page. (Hint: No element is greater than A.)",
+        "answer": "A \\(\\leq\\) M \\(\\leq\\) N"
+      },
+      {
+        "problem_number": "3b",
+        "question": "Give the typing rule for **if**.",
+        "answer": "\\[\\frac{A \\vdash E_1 : \\text{bool} \\& S_1 \\ ; \\ A \\vdash E_2 : T \\& S_2 \\ ; \\ A \\vdash E_3 : T \\& S_3}{A \\vdash (\\text{if } E_1 \\ E_2 \\ E_3) : T \\& S_1 \\ \\text{AtoM}(S_2) \\ \\text{AtoM}(S_3)} \\quad [\\text{if}]\\]"
+      },
+      {
+        "problem_number": "3c",
+        "question": "Give the typing rule for **lambda**.",
+        "answer": "\\[\\frac{A[I_1:T_1, \\ldots, I_n:T_n] \\vdash E_B : T_B \\& S_B}{A \\vdash (\\text{lambda } (I_1 \\ldots I_n) \\ E_B) : (\\-> (I_1 \\ldots I_n) \\ S_B \\ (T_1 \\ldots T_n) \\ T_B) \\& \\text{allN}(S_B)} \\quad [\\lambda]\\]"
+      },
+      {
+        "problem_number": "3d",
+        "question": "Give the typing rule for **application**.",
+        "answer": "\\[\\frac{A \\vdash E_{\\text{rator}} : (\\-> (I_1 \\ldots I_n) \\ S_{\\text{body}} \\ (T_1 \\ldots T_n) \\ T_{\\text{body}}) \\& S_{\\text{rator}} \\ ; \\ \\forall i \\ . \\ (A \\vdash E_i : T_i \\& S_i) \\ ; \\ \\forall i \\ . \\ (T_i \\leq T_i')}{A \\vdash (E_{\\text{rator}} \\ E_1 \\ldots E_n) : T_{\\text{body}} \\& S_{\\text{rator}} \\ \\bigcup_{i=1}^n \\begin{cases} S_i & \\text{if } S_{\\text{body}}(i) = A \\\\ \\text{allN}(S_i) & \\text{if } S_{\\text{body}}(i) = N \\\\ \\text{AtoM}(S_i) & \\text{if } S_{\\text{body}}(i) = M \\end{cases}} \\quad [\\text{apply}]\\]"
+      },
+      {
+        "problem_number": "3e",
+        "question": "Give the typing rule for (application of) **+**.",
+        "answer": "\\[\\frac{\\forall i \\ . \\ (A \\vdash E_i : \\text{int} \\& S_i)}{A \\vdash (+ \\ E_1 \\ldots E_n) : \\text{int} \\& \\bigcup_{i=1}^n S_i} \\quad [+]\\]"
+      }
+    ]
+  },
+  {
+    "problem_number": "4",
+    "question": "**Problem 4: Nosy FLK! [25 points]**\n\nThe Department of Homeland Security has adopted FLK! as its official programming language, for two reasons. First, FLK! has no foreign function interface, and the DHS disapproves of anything foreign. Second, and more importantly, FLK! has no \"private\" declaration. The DHS reasons that programmers who have done nothing wrong should have nothing to hide, and the DHS insists on access to any data at any time for any purpose. Imagine the DHS's disappointment when they realize that shadowing can make a variable binding inaccessible! For example, consider the following code that you might wish to execute:\n\n;; Send a love letter\n(let ((letter \"Dear sweetheart, ... With love, Snookums\"))\n  (let ((mail-agent (mail-sending-program letter)))\n    (let ((Letter \"s\")) ; The \"s\" key sends a message\n      ;; DHS INSERTS CODE HERE\n      (apply-keystroke letter mail-agent))))\n\nIt is a serious problem that, at the specified point in the program, spy agencies cannot read the text of your letter. Accordingly, DHS hires Ben Bitdiddle to add a new construct, up-env, to FLK!; the new language is called \"Nosy FLK!\". up-env permits access to shadowed variables. It takes a number \\(n\\) and an identifier, and it looks up the identifier in the \\(n\\)th parent environment of the current one. For example, consider the following DHS-inserted code:\n\n(up-env 0 letter) equivalent to letter; returns \"s\"\n(up-env 1 letter) returns \"Dear sweetheart ...\", which is the value of letter in the parent environment (in which mail-agent is also bound)\n(up-env 2 letter) also returns \"Dear sweetheart ...\", which is the value of letter in the outermost environment\n(up-env 3 letter) issues an \"unbound identifier\" error\n\nWith the work only half-finished, DHS's hidden microphones overhear Ben Bitdiddle talking about \"sexps,\" and he is taken away as a suspected pornographer. In order to demonstrate your patriotism, you agree to complete work on this language extension.",
+    "subquestions": [
+      {
+        "problem_number": "4a",
+        "question": "Consider the following code. (We use syntactic sugar such as let for convenience and clarity.)\n\n(let ((n 11))\n  (letrec ((fact (let ((n 9))\n                  (lambda (n)\n                    (print (up-env 1 n))\n                    (print (up-env 2 n))\n                    (if (= n 0)\n                        1\n                        (* n (fact (- n 1))))))))\n    (let ((n 7))\n      (fact 5))))\n\nThe first two executions of fact print a total of 4 values.\n\n1. [2 points] Assuming static scoping, what are the first four values printed?\n2. [2 points] Assuming dynamic scoping, what are the first four values printed?",
+        "answer": "1. 9, 11, 9, 11\n2. 7, 11, 5, 7"
+      },
+      {
+        "problem_number": "4b",
+        "question": "We modify the denotational semantics of Appendix A to support the new up-env form by adding the following new domain:\n\nnEnvironment = Environment x nEnvironment_1\n\nWe also have the following constructor and destructor helper functions:\n\n_make-new_ : Environment x nEnvironment_1 → nEnvironment\n_new-env_ : nEnvironment → Environment\n_new-parent_ : nEnvironment → nEnvironment_1\n\nWith these domains in hand, one can extend the denotational semantics to handle up-env. Note that your new definitions for \\(\\mathcal{E}\\) will take an nEnvironment instead of an Environment.\n\n(i) [3 points] Define _nlookup_, which looks up an identifier:\n\n_nlookup_ : (nEnvironment → Identifier → Integer) → Binding\n\nYou may use _lookup_ as a subroutine.\n\n(ii) [3 points] What is \\(\\mathcal{E}[I]\\)?\n\n(iii) [3 points] What is \\(\\mathcal{E}[\\texttt{(up-env } E \\ I\\texttt{)}]\\)?\n\n(iv) [3 points] What is \\(\\mathcal{E}[\\texttt{(proc } I \\ E\\texttt{)}]\\)?\n\n(v) [3 points] What is \\(\\mathcal{E}[\\texttt{(call } E_1 \\ E_2\\texttt{)}]\\)?\n\nModify the denotational semantics of Appendix A to support the new up-env form. Show any changes that you must make to the denotational semantics; do not mention any domains or rules that remain unchanged.",
+        "answer": "(i) There are two possible solutions that permit answering the remainder of the problem. The more efficient solution, which does not copy environments, is:\n\n_nlookup_ : nEnvironment → Identifier → Binding\n\n\\(=\\lambda\\alpha In\\) . **if \\(n>0\\)**\n  **then** (_lookup (new-parent \\(\\alpha\\)) I (\\(n-1\\)))_\n  **else let l =** (_lookup (new-env \\(\\alpha\\)) I_) **in if \\(l\neq\\) unbound**\n  **then \\(l\\)**\n  **else let \\(p=(\\)new-parent \\(\\alpha)\\)**\n  **in if \\(p=\\)l**\n  **then unbound**\n  **else** (_lookup p I_ 0)\n\nThe solution that does copy environments is:\n\n_nlookup_ : nEnvironment → Identifier → Binding\n\n\\(=\\lambda\\alpha In\\) . **if \\(n>0\\)**\n  **then** (_lookup (new-parent \\(\\alpha\\)) I (\\(n-1\\)))_\n  **else** (_lookup (new-env \\(\\alpha\\)) I_)\n\n(ii) \\(\\mathcal{E}[I]=\\lambda ek\\) . (_ensure-bound (nlookup e I 0) k_)\n\n(iii) \\(\\mathcal{E}[\\texttt{(up-env } E \\ I\\texttt{)}]=\\lambda ek\\) . \\(\\mathcal{E}[E] e (\\lambda v\\) . (_with-integer_ (\\(\\lambda n\\) . (_ensure-bound (nlookup e I \\(n\\)) k))))\n\n(iv) This solution works with the non-environment-copying definition of _nlookup_:\n\n\\(\\mathcal{E}[\\texttt{(proc } I \\ E\\texttt{)}]=\\lambda ek\\) . (_k_ (Procedure \\(\\mapsto\\)Value \\(\\ (\\lambda dk^{\\prime}\\) . \\(\\mathcal{E}[E]\\ (\\)_make-new_\\(\\ [I:d]\\ e)\\ k^{\\prime})\\)_)\n\nThis solution works with the environment-copying definition of _nlookup_:\n\n\\(\\mathcal{E}[\\texttt{(proc } I \\ E\\texttt{)}]=\\lambda ek\\) . (_k_ (Procedure \\(\\mapsto\\)Value \\(\\ (\\lambda dk^{\\prime}\\) . \\(\\mathcal{E}[E]\\ (\\)_make-new_\\(\\ (\\)_new-env_\\(\\ e)[I:d]\\ e)\\ k^{\\prime})\\)_)\n\n(v) \\(\\mathcal{E}[\\texttt{(call } E_1 \\ E_2\\texttt{)}]=\\lambda ek\\) . \\(\\mathcal{E}[E_1] e (test-proc (\\lambda p\\) . \\(\\mathcal{E}[E_2] e (\\lambda v\\) . (_p v k_))))"
+      },
+      {
+        "problem_number": "4c",
+        "question": "Before being dragged away, Ben began to work on a desugaring from Nosy FLK! to FLK!. Unfortunately, most of Ben's notes were confiscated; all that remains is one auxiliary function _fresh-I-n_, the rule for \\(\\mathcal{D}\\) (in terms of a helper desugaring \\(\\mathcal{D}'\\)), and one rule from the helper desugaring \\(\\mathcal{D}'\\):\n\n_fresh-I-n_ : Identifier × Integer → Identifier\n_fresh-I-n_ returns the same unique fresh identifier for each invocation with the same arguments.\n\n\\[\\mathcal{D}[E] = \\mathcal{D}'[E] \\ 0 \\quad \\text{for all } E\\]\n\n\\[\\mathcal{D}'[I] \\ n = I\\]\n\nFurthermore, you find a comment that his preliminary solution is quite constrained: the numeric argument to up-env must be a literal number; the number must indicate an environment that explicitly binds the identifier; the desugaring assumes static scoping; and the desugaring fails in the presence of side effects. (You may provide a solution better than Ben's, but you are not required to. You must reuse the two existing rules, however.)\n\nWrite the rules for the auxiliary desugaring \\(\\mathcal{D}'[E] \\ n\\) that helps to convert Nosy FLK! to FLK!. (Don't introduce any additional helper functions.) Omit any rules that merely implement the structural induction by applying the desugaring to each subexpression, with the same arguments as were used for the full expression. Assume that both Nosy FLK! and FLK! use call-by-value semantics.",
+        "answer": "\\[\\mathcal{D}'[\\texttt{(up-env } n_1 \\ I\\texttt{)}] \\ n = \\textit{fresh-I-n}(I, n - n_1)\\]\n\n\\[\\mathcal{D}'[\\texttt{(proc } I \\ E\\texttt{)}] \\ n = \\texttt{(proc } I \\ \\texttt{(call } \\texttt{(proc } \\textit{fresh-I-n}(I, n) \\ \\mathcal{D}'[E] \\ (n + 1)) \\ I\\texttt{)})\\]"
+      }
+    ]
+  },
+  {
+    "problem_number": "5",
+    "question": "**Problem 5: Pragmatics [17 points]**\n\nSpace-Savers, Inc., is working on reducing the run-time space requirements of compiled programs written in a **functional** subset of Scheme. The company is particularly interested in an expression with the following form:\n\n```scheme\n(let ((f (lambda (b) E)))\n  (primop + (call f 1) (call f 2)))\n```\n\nwhere \\(a\\) is the only free variable of (lambda (b) E). (You should assume that \\(a\\) is bound somewhere in the surrounding context of this example and all subsequent examples.)\n\nThe company uses a compiler that is composed of a series of source-to-source transforms. The closure conversion phase of their compiler generates flat closures for all lambda expressions. Recall that a flat closure is a tuple containing a code component and the values of all free variables referenced by the code component. Closure conversion produces an expression in which closures are explicitly allocated with the closure primop and the values of free variables are explicitly extracted from closures by the closure-ref primop:\n\n```scheme\n(let ((f (%Closure (lambda (.closure.73 b) E_closed) a)))\n  (primop + (call-closure f 1) (call-closure f 2)))\n```\n\nHere, \\(E_{closed}\\) is a version of \\(E\\) in which every reference to \\(a\\) has been replaced by (%closure-ref .closure.73.1). (Of course, closure conversion also affects calls, lambdas, and other variable references within \\(E_{closed}\\).) The call-closure construct applies the code component of a closure to the specified arguments, supplying the closure itself as an implicit first argument.\n\nNew employee Bud Lojack, recalling a recent 6.821 problem set on partial evaluation, suggests inlining and reducing the calls to \\(f\\) in the original example to yield:\n\n```scheme\n(primop + [1/b]E [2/b]E)\n```\n\nBud says, \"Before my nifty transformation, the program had to allocate a closure for \\(f\\). But the transformed program doesn't even have a definition for \\(f\\), so no closure for \\(f\\) is ever allocated! So my transformation reduces the space used by the program.\"",
+    "subquestions": [
+      {
+        "problem_number": "5a",
+        "question": "Name one way in which Bud's transformation can _increase_ the space used by the program.",
+        "answer": "If the expression \\(E\\) is large, then in the example above, the transformed expression is about twice as large as the original expression. Thus the space consumed by the code of the program may increase."
+      },
+      {
+        "problem_number": "5b",
+        "question": "Give an expression \\(E_{let}\\) such that Bud's transformation does not preserve the semantics of the following program. (Recall that the language is functional.)\n\n```scheme\n(let ((f (lambda (b) (primop + a b))))\n  E_{let})\n```",
+        "answer": "Bud's transformation does not preserve semantics when \\(I_{fun}\\) appears in a non-operator position. For example:\n\n```scheme\n(let ((f (lambda (b) (primop + a b))))\n  (call (if #t f f) 17))\n```\n\nAfter Bud's transformation this becomes:\n\n```scheme\n(let ((f' (lambda (a b) (primop + a b))))\n  (call (if #t f f) 17))\n```\n\nBecause the definition of \\(f\\) has been removed by the transformation, \\(f\\) has become a free variable. An even simpler example is:\n\n```scheme\n(let ((f (lambda (b) (primop + a b))))\n  f)\n```"
+      },
+      {
+        "problem_number": "5c",
+        "question": "Give an expression \\(E_{let}\\) such that:\n\n- The semantics of the following expression is preserved by Bud's transformation:\n  ```scheme\n  (let ((f (lambda (b) (primop + a b))))\n    E_{let})\n  ```\n- AND the transformed expression allocates more _space for closures_ than the original expression.\n\n(Recall that the language is functional.)",
+        "answer": "The problem is that while we may reduce the size of the closure for \\(f\\), we can increase the size of closures for functions that call \\(f\\). For example:\n\n```scheme\n(let ((f (lambda (b) (primop + a b))))\n  (list (lambda () (call f 1)) (lambda () (call f 2))))\n```\n\nHere \\(a\\) will only appear in the closure for \\(f\\).\n\nAfter Bud's transformation, we have the following expression:\n\n```scheme\n(let ((f' (lambda (a b) (primop + a b))))\n  (list (lambda () (call f' a 1)) (lambda () (call f' a 2))))\n```\n\nNow \\(a\\) no longer need appear in the closure for \\(f\\), but it must appear in the closures of _both_ anonymous functions."
+      }
+    ]
+  }
+]

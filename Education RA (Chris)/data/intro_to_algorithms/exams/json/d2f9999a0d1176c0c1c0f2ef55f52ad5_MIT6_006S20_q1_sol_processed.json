@@ -1,0 +1,106 @@
+{
+    "questions": [
+        {
+            "question": "For each function, state its worst-case running times in terms of n and k.",
+            "answer": "O(n\u00b2)",
+            "problem_number": "2(a) i.",
+            "context": "Problem 2. [8 points] Frequentest (2 parts)\nThe following two Python functions correctly solve the problem: given an array X of n positive integers, where the maximum integer in x is k, return the integer that appears the most times in x. Assume: a Python list is implemented using a dynamic array; a Python dict is implemented using a hash table which randomly chooses hash functions from a universal hash family; and max (X) returns the maximum integer in array X in worst-case O(|x|) time. For each function, state its worst-case and expected running times in terms of n and k."
+        },
+        {
+            "question": "For each function, state its expected running times in terms of n and k.",
+            "answer": "O(n)",
+            "problem_number": "2(a) ii.",
+            "context": "Problem 2. [8 points] Frequentest (2 parts)\nThe following two Python functions correctly solve the problem: given an array X of n positive integers, where the maximum integer in x is k, return the integer that appears the most times in x. Assume: a Python list is implemented using a dynamic array; a Python dict is implemented using a hash table which randomly chooses hash functions from a universal hash family; and max (X) returns the maximum integer in array X in worst-case O(|x|) time. For each function, state its worst-case and expected running times in terms of n and k."
+        },
+        {
+            "question": "For each function, state its worst-case running times in terms of n and k.",
+            "answer": "O(n + k)",
+            "problem_number": "2(b) i.",
+            "context": "Problem 2. [8 points] Frequentest (2 parts)\nThe following two Python functions correctly solve the problem: given an array X of n positive integers, where the maximum integer in x is k, return the integer that appears the most times in x. Assume: a Python list is implemented using a dynamic array; a Python dict is implemented using a hash table which randomly chooses hash functions from a universal hash family; and max (X) returns the maximum integer in array X in worst-case O(|x|) time. For each function, state its worst-case and expected running times in terms of n and k."
+        },
+        {
+            "question": "For each function, state its expected running times in terms of n and k.",
+            "answer": "O(n + k)",
+            "problem_number": "2(b) ii.",
+            "context": "Problem 2. [8 points] Frequentest (2 parts)\nThe following two Python functions correctly solve the problem: given an array X of n positive integers, where the maximum integer in x is k, return the integer that appears the most times in x. Assume: a Python list is implemented using a dynamic array; a Python dict is implemented using a hash table which randomly chooses hash functions from a universal hash family; and max (X) returns the maximum integer in array X in worst-case O(|x|) time. For each function, state its worst-case and expected running times in terms of n and k."
+        },
+        {
+            "question": "State which item(s) in the array could have the key with the smallest integer",
+            "answer": "A",
+            "problem_number": "3(a)",
+            "context": "Problem 3. [10 points] Haphazard Heap (3 parts)\nArray [A,B,C,D,E,F,G,H,I,J] represents a binary min-heap containing 10 items, where the key of each item is a distinct integer. State which item(s) in the array could have the key with:"
+        },
+        {
+            "question": "State which item(s) in the array could have the key with the third smallest integer",
+            "answer": "B, C, D, E, F, G",
+            "problem_number": "3(b)",
+            "context": "Problem 3. [10 points] Haphazard Heap (3 parts)\nArray [A,B,C,D,E,F,G,H,I,J] represents a binary min-heap containing 10 items, where the key of each item is a distinct integer. State which item(s) in the array could have the key with:"
+        },
+        {
+            "question": "State which item(s) in the array could have the key with the largest integer",
+            "answer": "F, G, H, I, J",
+            "problem_number": "3(c)",
+            "context": "Problem 3. [10 points] Haphazard Heap (3 parts)\nArray [A,B,C,D,E,F,G,H,I,J] represents a binary min-heap containing 10 items, where the key of each item is a distinct integer. State which item(s) in the array could have the key with:"
+        },
+        {
+            "question": "State the array representation of H, first before and then after performing the operation H.delete_max().",
+            "answer": "Before: [93, 85, 38, 23, 63, 11, 13, 17]\nAfter: [85, 63, 38, 23, 17, 11, 13]",
+            "problem_number": "4(a)",
+            "context": "Problem 4. [10 points] Transforming Trees (2 parts)\nThe tree below contains 8 items, where each stored item is an integer which is its own key.\nSuppose the tree drawn above is the implicit tree of a binary max-heap H."
+        },
+        {
+            "question": "Perform operation S.delete_at(3) on S including any rotations, and then list the items stored in the leaves of s in traversal order, after the operation has completed.",
+            "answer": "(17,85, 11, 13)",
+            "problem_number": "4(b)",
+            "context": "Problem 4. [10 points] Transforming Trees (2 parts)\nThe tree below contains 8 items, where each stored item is an integer which is its own key.\nSuppose instead that the original tree drawn above is a Sequence AVL Trees (note Sequence data structures are zero-indexed). The items in the leaves of s in traversal order are (17,63, 11, 13)."
+        },
+        {
+            "question": "For House Puffle Huff, students must be sorted by friend number, i.e., how many of the other n 1 incoming students they are friends with, which can be determined in O(1) time.",
+            "answer": "Friend numbers are non-negative integers less than n, so we can use counting sort to sort the students in worst-case O(n) time. (Radix sort also works with the same running time.) Since we have to compute friend number for each student, any algorithm will take at least \u03a9(n) time, so this is optimal.",
+            "problem_number": "5(a)",
+            "context": "Problem 5. [20 points] Sorting Sock (4 parts)\nAt Wog Hearts School of Wizcraft and Witcherdry, n incoming students are sorted into four houses by an ancient magical artifact called the Sorting Sock. The Sorting Sock first sorts the n students by each of the four houses' attributes and then uses the results to make its determinations. For each of the following parts, state and justify what type of sort would be most efficient."
+        },
+        {
+            "question": "For House Craven Law, students must be sorted by the weight of their books. Book weights cannot be measured precisely, but the Sorting Sock has a scale that can determine in O(1) time whether one set of books has total weight greater than, less than, or equal to another set of books.",
+            "answer": "A scale weighing is a comparison with a constant number of outcomes, so the comparison sort \u03a9(nlogn) lower bound applies. So we cannot do better than by using an worst-case O(nlogn) sorting algorithm, e.g., merge sort, using the scale to compare one student's books against another's.",
+            "problem_number": "5(b)",
+            "context": "Problem 5. [20 points] Sorting Sock (4 parts)\nAt Wog Hearts School of Wizcraft and Witcherdry, n incoming students are sorted into four houses by an ancient magical artifact called the Sorting Sock. The Sorting Sock first sorts the n students by each of the four houses' attributes and then uses the results to make its determinations. For each of the following parts, state and justify what type of sort would be most efficient."
+        },
+        {
+            "question": "For House Driven Gore, students must be sorted by bravery, which can't be directly measured or quantified, but for any set of students, the Sorting Sock can determine the bravest among them in O(1) time, e.g., by presenting the students with a scary situation.",
+            "answer": "We can't quantify bravery, so we can't hope to use any integer-based algorithms. However, the Sorting Sock can find a student of maximum bravery in O(1) time, so we repeatedly find and select a bravest student among all previously unselected students in worst-case O(n) time, which is again optimal. (This is priority queue sort, using the Sorting Sock as the priority queue to find the maximum.)",
+            "problem_number": "5(c)",
+            "context": "Problem 5. [20 points] Sorting Sock (4 parts)\nAt Wog Hearts School of Wizcraft and Witcherdry, n incoming students are sorted into four houses by an ancient magical artifact called the Sorting Sock. The Sorting Sock first sorts the n students by each of the four houses' attributes and then uses the results to make its determinations. For each of the following parts, state and justify what type of sort would be most efficient."
+        },
+        {
+            "question": "For House Leather Skin, students must be sorted by their magical lineage: how many of a student's ancestors within the previous 3[log n] + 4 generations were magical. Recall that humans, magical or not, always have two parents in the previous generation, unlike binary tree nodes which have at most one. Assume the Sorting Sock can compute the magical lineage of a student in O(1) time.",
+            "answer": "Each student has at most 2k ancestors in the kth generation preceding. Thus the number of wizard ancestors will be a non-negative number bounded above by 3 3 [log n]+4 2k < 23(logn+1)+5 = 2823 logn = 28n3log2 = O(n) for any c > 3 log 2. Thus we can use radix sort to sort the students by their magical lineage in worst-case O(n) time, which is again optimal.",
+            "problem_number": "5(d)",
+            "context": "Problem 5. [20 points] Sorting Sock (4 parts)\nAt Wog Hearts School of Wizcraft and Witcherdry, n incoming students are sorted into four houses by an ancient magical artifact called the Sorting Sock. The Sorting Sock first sorts the n students by each of the four houses' attributes and then uses the results to make its determinations. For each of the following parts, state and justify what type of sort would be most efficient."
+        },
+        {
+            "question": "Given three arrays A, B, C, each containing n integers, give an O(n\u00b2)-time algorithm to find whether some a \u2208 A, some b \u2208 B, and some c\u2208 C have zero sum, i.e., a + b + c = 0. State whether your running time is worst-case, expected, and/or amortized.",
+            "answer": "For each pair of numbers (a, b) \u2208 A \u00d7 B, store a + b in a hash table H. Then return Yes if -c appears in H for any c \u2208 C, and return No otherwise.\nCorrectness: If any -c appears in H for any c\u2208 C, then \u2013C a' + b' for some (a', b') \u2208 A \u00d7 B so a' + b + c = 0. Otherwise, there is no c\u2208 C for which -c = a' + b' for any (a', b') \u2208 A \u00d7 B.\nRunning Time: There are O(n\u00b2) pairs in A \u00d7 B, so inserting them into H takes expected O(n\u00b2) time. Then checking whether each -c appears in H takes expected O(1) time each, and expected O(n) in total. So this algorithm runs in expected O(n\u00b2) time.",
+            "problem_number": "6",
+            "context": "Problem 6. [15 points] Triple Sum\nGiven three arrays A, B, C, each containing n integers, give an O(n\u00b2)-time algorithm to find whether some a \u2208 A, some b \u2208 B, and some c\u2208 C have zero sum, i.e., a + b + c = 0. State whether your running time is worst-case, expected, and/or amortized."
+        },
+        {
+            "question": "Given a Sequence AVL Tree T containing n nodes, and a pointer to a node v from T, describe an O(log n)-time algorithm to return the (zero-indexed) index i of node v in the traversal order of T.",
+            "answer": "Our algorithm will be to walk up the tree from v to the root r of the Sequence AVL Tree, counting the nodes preceding v in the traversal order along the way, since the number of nodes preceding v in the tree is equivalent to v's (zero-indexed) index.\nLet #v(u) be the number of vertices preceding v in a vertex u's subtree, where v is in the subtree of u. Then #v(v) = v.left.size if v has a left child and zero otherwise; and can be computed in O(1) time. Then, for every ancestor of u starting from v, we compute #v(u.parent) from #(u). There are two cases:\n\u2022 Case 1, u is the left child of u.parent: then all the nodes preceding v in the subtree of u.parent are in the subtree of u, so set #v(u.parent) = #(u).\n\u2022 Case 2, u is the right child of u.parent: then all nodes in the left subtree of u.parent precede v (as does u), so set #v(u.parent) = 1+u.parent.left.size + #v(u).\nThen return #v(r), since this is the number of nodes preceding v in r's subtree (i.e., the entire tree). Correctness is argued within the algorithm description. This algorithm spends worst-case O(1) work for each ancestor of v, so since the Sequence AVL Tree is balanced, the number of ancestors is bounded by O(log n), and the algorithm runs in worst-case O(log n) time.",
+            "problem_number": "7",
+            "context": "Problem 7. [15 points] Where Am i?\nGiven a Sequence AVL Tree T containing n nodes, and a pointer to a node v from T, describe an O(log n)-time algorithm to return the (zero-indexed) index i of node v in the traversal order of T."
+        },
+        {
+            "question": "Describe a database supporting the following operations, where k is the number of recorded but unpatched holes in the network at the time of the operation.",
+            "answer": "To implement the database, maintain the following data structures:\n\u2022 A Set AVL tree Tp for each pipe p containing all the unpatched holes in p keyed by hole distance\n\u2022 A Hash Table D mapping each pipe p to its tree Tp\n\u2022 A Binary Min Heap Q containing each consecutive pair of holes (p, d1, d2) appearing on the same pipe p with key being the distance |d2 \u2013 d\u2081| between them, and any lonely holes (p, d)\n(holes that are alone on their pipes) with key \u221e (when multiple stored items have the same key, we store them in a Hash Table keyed by (p, d1, d2) or (p, d))\n\u2022 A Hash Table C mapping each consecutive hole pair (p, d1, d2) or lonely hole (p, d), to their location in Q.",
+            "problem_number": "8",
+            "context": "Problem 8. [20 points] Methane Menace\nFearBird is a supervillian who has been making small holes in the methane gas pipe network of mahtoG City. The network consists of n pipes, each labeled with a distinct positive integer. A hole i is designated by a pair of positive integers (pi, di), where p\u2081 denotes the label of the pipe containing the hole, and d\u2081 is a positive integer representing the distance of the hole from the front of pipe pr. Assume any two holes in the same pipe p\u2081 will be at different distances from the front of pr. When a new hole (pi, di) is spotted, the city receives a report of the hole to keep track of.\nThe city will periodically patch holes using the following priority scheme:\n\u2022 if each pipe contains at most one hole, patch any hole (if one exists);\n\u2022 otherwise, among pairs of holes (pi, di) and (pj, dj) appearing on the same pipe, i.e., pi = pj, identify any pair with smallest distance |di \u2013 dj| between them, and patch one of them."
+        },
+        {
+            "question": "Describe a database supporting the following worst-case operations:",
+            "answer": "To implement the database, maintain a single Set AVL Tree T containing each user ID and their status, keyed by ID. In additional, augment each node x in T with four subtree properties:\n\u2022 x.size: the number of IDs in the subtree (as discussed in lecture).\n\u2022 x.suffix = (d, m): the smallest ID d in the subtree for which each of the m IDs d' \u2265 d in the subtree is active, or None. Computable in O(1) time as either the suffix (dr, MR) of the right subtree, or if MR is equal to the size of the right subtree and \u00d7 is active, return the suffix (dL, ML) of the left subtree but add MR + 1 to M\u2081 (or (x.key, MR + 1) if left suffix is None).\n\u2022 x.prefix = (d, m): the largest ID d in the subtree for which each of the m IDs d' \u2264 d in the subtree is active, or None. Computable in O(1) time as either the prefix (d\u2081, ML) of the right subtree, or if m\u2081 is equal to the size of the left subtree and \u00d7 is active, return the prefix (dR, MR) of the right subtree but add ML+1 to MR (or (x.key, m\u2081+1) if right prefix is None).\n\u2022 x.substring = (a,b,m): a, b are IDs from the subtree where each of the m IDs d in the subtree with a \u2264 d \u2264 b is active and m is maximized. Computable in O(1) time by tak- ing the max of the substring within either left or right subtree, or the substring spanning the two subtrees if x is active. Specifically, consider the substrings of left and right subtrees, (AL, BL, ML) and (ar, bR, MR) respectively, and then if x is active, consider the suffix of the left subtree (d\u2081, m'\u2081) and the prefix of the right subtree (dR, M'R). Then depending on which of (m\u2081, m'\u2081 + 1 + M'R, MR) is the largest, return (a\u2081, b\u0141, M\u2081), (d\u2081, dR, M'\u2081 + 1 + m'\u20a8), or\n(AR, BR, MR) respectively.",
+            "problem_number": "9",
+            "context": "Problem 9. [20 points] Vapor Invite\nVapor is an online gaming platform with n users. Each user has a unique positive integer ID di and an updatable status, which can be either active or inactive. Every day, Vapor will post online an active range: a pair of positive integers (a, b) with the property that every user having an ID di contained in the range (i.e., with a \u2264 d \u2264 b) must be active. Vapor wants to post an active range containing as many active users as possible, and invite them to play in a special tournament."
+        }
+    ]
+}
