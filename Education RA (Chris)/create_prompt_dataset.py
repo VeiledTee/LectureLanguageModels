@@ -1,6 +1,6 @@
 import json
 
-def create_chatgpt_input_dataset(input_file, output_file, shots=0):
+def create_chatgpt_input_dataset(input_file, output_file, shots=0, model = "gpt-4o"):
     """
     Creates a ChatGPT batch dataset with few-shot examples using reverse indexing.
 
@@ -67,7 +67,7 @@ def create_chatgpt_input_dataset(input_file, output_file, shots=0):
                     "method": "POST",
                     "url": "/v1/chat/completions",
                     "body": {
-                        "model": "gpt-4o",
+                        "model": model,
                         "messages": messages,
                     }
                 }
