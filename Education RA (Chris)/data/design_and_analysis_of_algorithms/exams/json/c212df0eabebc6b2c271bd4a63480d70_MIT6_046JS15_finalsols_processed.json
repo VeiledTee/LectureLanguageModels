@@ -1,0 +1,202 @@
+{
+    "questions": [
+        {
+            "question": "Suppose algorithm A has two steps, and A succeeds if both the steps succeed. If the two steps succeed with probability $p_1$ and $p_2$ respectively, then A succeeds with probability $p_1p_2$.",
+            "answer": "False. Unless the two steps are independent.",
+            "problem_number": "1a",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "If the divide-and-conquer convex hull algorithm (from Lecture 2) used a $\\Theta(n^2)$ strategy to discover the maximum and minimum tangents, the overall algorithm would run in $O(n^2 \\log n)$ time.",
+            "answer": "False. The recurrence would be $T(n) = 2T(\\frac{n}{2}) + \\Theta(n^2)$ whose solution is $T(n) = \\Theta(n^2)$.",
+            "problem_number": "1b",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "In order to get an expected O(n log n) runtime for \u201cparanoid\" quicksort (from Lecture 3), we require the recursive divide step to split the array into two subarrays each of at least $\\frac{1}{4}$ the size of the original array.",
+            "answer": "False. As long as it is a constant fraction of the original array, we can get the bound.",
+            "problem_number": "1c",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "A binary min-heap with n elements supports INSERT in O(log n) amortized time and DELETE-MIN in 0 amortized time.",
+            "answer": "True. Same amortization as in class for insert/delete in 2-3 trees.",
+            "problem_number": "1d",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "The hash family H = {$h_1, h_2$} is universal, where $h_1, h_2 : $ {1, 2, 3} $\\rightarrow$ {0, 1} are defined by the following table:\n\n(For example, $h_1(3) = 0.$)",
+            "answer": "False. Consider elements 1 and 3: $h_1$ and $h_2$ both cause a collision between them, so in particular a uniformly random hash function chosen from H causes a collision between 1 and 3 with probability 1, greater than the 1/2 allowed for universal hashing (since there are 2 hash buckets).",
+            "problem_number": "1e",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "Recall the $O(n^3 lg n)$ matrix-multiplication algorithm to compute shortest paths, where we replaced the matrix-multiplication operator pair (*, +) with (+, min). If we instead replace the operator pair with (+, *), then we compute the product of the weights of all paths between each pair of vertices.",
+            "answer": "False. If the graph has a cycle, there are infinitely many paths between some pairs of vertices, so the product ought to be $\\pm \\infty$, yet the matrix-multiplication algorithm will compute finite values if the original matrix has all finite values (e.g., a clique).",
+            "problem_number": "1f",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "Negating all the edge weights in a weighted undirected graph G and then finding the minimum spanning tree gives us the maximum-weight spanning tree of the original graph G.",
+            "answer": "True.",
+            "problem_number": "1g",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "In a graph with unique edge weights, the spanning tree of second-lowest weight is unique.",
+            "answer": "False, can construct counter-example.",
+            "problem_number": "1h",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "In the recursion of the Floyd-Warshall algorithm:\n\n$d_{uv}^{(k)} = min \\{ d_{uv}^{(k-1)}, d_{uk}^{(k-1)} + d_{kv}^{(k-1)} \\}$,\n\n$d_{uv}^{(k)}$ represents the length of the shortest path from vertex u to vertex v that contains at most k edges.",
+            "answer": "False. $d_{uv}^{(k)}$ is the length of the shortest path from vertex u to vertex v that only uses vertex {1, 2, ... k} as intermediate nodes.",
+            "problem_number": "1i",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "Consider a network of processes based on an arbitrary undirected graph G = (V, E) with a distinguished vertex $v_0 \\in V$. The process at each vertex $v \\in V$ starts with a positive integer $x_v$. The goal is for the process at $v_0$ to compute the maximum $max_{v \\in V} x_v$. There is an asynchronous distributed algorithm that solves this problem using $O(diam^2d)$ time and $O(|E| + diam \\cdot n)$ messages.",
+            "answer": "True.\nUsing the algorithm from Problem 10-2, we can construct a BFS tree rooted at $v_0$ within the given time and message bounds. The root process can broadcast a signal telling all the processes that the tree is completed. Then the processes can use the tree for convergecasting their values, computing the max as the messages move up the tree. The broadcast and convergecast phases do not exceed the bounds for the BFS construction.",
+            "problem_number": "1j",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "Suppose a file server stores a hash of every file in addition to the file contents. When you download a file from the server, you also download the hash and confirm that it matches the file. This system securely verifies that the downloaded file has not been modified by an adversary, provided the hash function has collision resistance.",
+            "answer": "False. This scheme is not secure because the adversary can simply replace the file with any file and the hash of that file, and you cannot tell the difference.",
+            "problem_number": "1k",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "Suppose Alice, Bob, and Charlie secretly generate a, b and c, respectively, and publish $g^a \\mod p, g^b \\mod p$, and $g^c \\mod p$, where p is a prime. Then, Alice, Bob, and Charles can each compute $g^{abc} \\mod p$ as a shared secret known only to the three of them.",
+            "answer": "False. For example, Alice only knows a, $g^b$ and $g^c$, so she can compute $g^{ab}$ and $g^{ac}$ but not $g^{abc}$.",
+            "problem_number": "1l",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "The number of memory transfers used by the best cache-oblivious algorithm is always at least the number of memory transfers used by the best external-memory algorithm for the same problem.",
+            "answer": "True. Make implicit memory transfers explicit, using LRU.",
+            "problem_number": "1m",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "If there is a time-optimal divide-and-conquer algorithm for a problem, then that algorithm is also optimal with respect to memory transfers in the cache-oblivious model.",
+            "answer": "False. Example: binary search.",
+            "problem_number": "1n",
+            "context": "True or False. [4 points]"
+        },
+        {
+            "question": "What extra information needs to be stored at each node? Describe how to answer an AVERAGE(x) query in $O(lg n)$ time using this extra information.",
+            "answer": "Each node x should store x. size \u2014 the size of the subtree rooted at x \u2014 and x.sum \u2014 the sum of all the key values in the subtree rooted at x. For a value\nx > 0, let $S_x$ be the set of all keys less than or equal to x. Let $A_x$ and $B_x$ be the sum\nand the size of $S_x$.\nWe can compute $A_x$ as follows. Let u be the leaf with smallest key larger than x.\nFinding u from the root only takes O(lgn) time by using SEARCH in a 2-3 tree. Now\nconsider the path from the root of the tree to u. Clearly, $A_x$ is the sum of all leaves\nthat are on the left of this path. Therefore, $A_x$ can be computed by summing up all\ny. sum's for every node y that is a left sibling of a node in the path. Since there are\nonly lg n such nodes y's, computing $A_x$ only takes O(lg n) time.\nComputing $B_x$ is similar: instead of summing up y. sum, we sum up y.size. There-\nfore, it also takes O(lg n) time to compute $B_x$.\nTherefore, AVERAGE(x) which is $\\frac{A_x}{B_x}$ can be answered in O(lg n)) time.",
+            "problem_number": "3a",
+            "context": "You are in charge of the salary database for Meancorp, which stores all employee salaries in a 2-3 tree ordered by salary. Meancorp compiles regular reports to the Department of Fairness about the salary for low-income employees in the firm. You are asked to implement a new database operation AVERAGE(x) which returns the average salary of all employees whose salary is at most x."
+        },
+        {
+            "question": "Describe how to modify INSERT to maintain this information. Briefly justify that the worst-case running time for INSERT remains O(lgn).",
+            "answer": "Maintaining x. size is similar to what was covered in recitation and home-\nwork. Maintaining x. sum is exactly the same: when a node x gets inserted, we simply\nincrease y.sum for every ancestor y of x by the amount x.key. When a node splits,\nwe recompute the x.sum attribute for the split nodes and its parent. Hence, INSERT\nstill runs in worst-case time O(lgn).",
+            "problem_number": "3b",
+            "context": "You are in charge of the salary database for Meancorp, which stores all employee salaries in a 2-3 tree ordered by salary. Meancorp compiles regular reports to the Department of Fairness about the salary for low-income employees in the firm. You are asked to implement a new database operation AVERAGE(x) which returns the average salary of all employees whose salary is at most x."
+        },
+        {
+            "question": "Suppose we send Forrest k reminders for each of n events. What is the expected number of appointments Forrest will remember? Give your answer in terms of k and n.",
+            "answer": "These are all independent events. So linearity of expectation applies.\nEach given event has been remembered with probability $1 - 2^{-k}$. So in expectation\nn(1 - $2^{-k}$) appointments are remembered.",
+            "problem_number": "4a",
+            "context": "Prof. Forrest Gump is very forgetful, so he uses automatic calendar reminders for his appointments. For each reminder he receives for an event, he has a 50% chance of actually remembering the event (decided by an independent coin flip)."
+        },
+        {
+            "question": "Suppose we send Forrest k reminders for a single event. How should we set k with respect to n so that Forrest will remember the event with high probability, i.e., 1 \u2013 1/n\u00ba?",
+            "answer": "This problem is equivalent to how many times we must flip a coin to get a\nhead with high probability. The probability of k tails in a row is $1/2^k$. Thus exactly\n$\\alpha lg n$ coin flips suffice.",
+            "problem_number": "4b",
+            "context": "Prof. Forrest Gump is very forgetful, so he uses automatic calendar reminders for his appointments. For each reminder he receives for an event, he has a 50% chance of actually remembering the event (decided by an independent coin flip)."
+        },
+        {
+            "question": "Suppose we send Forrest k reminders for each of n events. How should we set k with respect to n so that Forrest will remember all the events with high probability, i.e., 1 \u2013 1/n\u00ba?",
+            "answer": "We must send at least k = $\\Omega(lg n)$ reminders, because we needed this\nmany reminders to remember one event with high probability.\nIf we send k = (a + 1) lg n reminders, then each event is remembered with proba-\nbility 1 - $1/n^{\\alpha + 1}$. By a union bound, we know that all events are remembered with\nprobability 1 - $1/n^{\\alpha}$. So, the number of reminders needed is k = $O(lg n)$.",
+            "problem_number": "4c",
+            "context": "Prof. Forrest Gump is very forgetful, so he uses automatic calendar reminders for his appointments. For each reminder he receives for an event, he has a 50% chance of actually remembering the event (decided by an independent coin flip)."
+        },
+        {
+            "question": "Assume that Prof. Chopin decides to learn exactly k pieces. Prove that he needs to consider only the k lowest $p_i$s and the k highest $t_j$s.",
+            "answer": "Assume there exists a selection of teachers and pieces for learning k pieces.\nLet the set of lowest k pieces be $P_k$. If there is a piece in our selection that is $\\notin P_k$,\nthen we must have a piece in $P_k$ not in the final selection. If we swap the one with\nthe higher cost ($\\notin P_k$) with the one with lower cost ($\\in P_k$), the new selection thus\nmade will still be valid, because if the higher time cost was fulfilled in the previous\nselection, the lower time cost in the new selection will still be fulfilled. In this way,\nwe can swap pieces until all of them are $\\in P_k$.\nSimilarly, we can swap the teachers for those of higher value until they are the ones\nwith the k highest times.",
+            "problem_number": "5a",
+            "context": "Prof. Chopin has a piano recital coming up, and in preparation, he wants to learn as many pieces as possible. There are m possible pieces he could learn. Each piece i takes p\u2081 hours to learn.\nProf. Chopin has a total of T hours that he can study by himself (before getting bored). In addition, he has n piano teachers. Each teacher j will spend up to t; hours teaching. The teachers are very strict, so they will teach Prof. Chopin only a single piece, and only if no other teacher is teaching him that piece.\nThus, to learn piece i, Prof. Chopin can either (1) learn it by himself by spending p\u2081 of his T self-learning budget; or (2) he can choose a unique teacher j (not chosen for any other piece), learn together for min{$p_i, t_j$} hours, and if any hours remain ($p_i > t_j$), learn the rest using $p_i - t_j$ hours of his T self-learning budget. (Learning part of a piece is useless.)"
+        },
+        {
+            "question": "Assuming part (a), give an efficient greedy algorithm to determine whether Prof. Chopin can learn exactly k pieces. Argue its correctness.",
+            "answer": "Let us sort all the teachers and pieces in increasing order beforehand. Call the sorted lists P and T. We see that if a solution exists, there is also one in which P\u2081\nis paired with $T_{n\u2212k+1}$, $P_2$ is paired with $T_{n\u2212k+2}$ and so on.\nSo for each 1 \u2264 i \u2264 k, the greedy algorithm checks if $P_i < T_{n-k+i}$. If it is, then we\ndon't need to use the shared time for this piece. If it is not, we need to use $T_{n-k+i} - P_i$\nof the shared time. We can add up these values. In the end, if the total shared time we\nneed is > T, we return false. Otherwise, we return true.\nThis takes O(k) time, apart from the initial sorting.",
+            "problem_number": "5b",
+            "context": "Prof. Chopin has a piano recital coming up, and in preparation, he wants to learn as many pieces as possible. There are m possible pieces he could learn. Each piece i takes p\u2081 hours to learn.\nProf. Chopin has a total of T hours that he can study by himself (before getting bored). In addition, he has n piano teachers. Each teacher j will spend up to t; hours teaching. The teachers are very strict, so they will teach Prof. Chopin only a single piece, and only if no other teacher is teaching him that piece.\nThus, to learn piece i, Prof. Chopin can either (1) learn it by himself by spending p\u2081 of his T self-learning budget; or (2) he can choose a unique teacher j (not chosen for any other piece), learn together for min{$p_i, t_j$} hours, and if any hours remain ($p_i > t_j$), learn the rest using $p_i - t_j$ hours of his T self-learning budget. (Learning part of a piece is useless.)"
+        },
+        {
+            "question": "Using part (b) as a black box, give an efficient algorithm that finds the maximum number of pieces Prof. Chopin can learn. Analyze its running time.",
+            "answer": "Notice that if $k_{max}$ is the maximum value of pieces we can learn, we can\nalso learn k pieces for any k \u2264 $k_{max}$. This suggests that we binary search over the\nvalue of k.\nWe try O(log n) values during the binary search, and checking each value takes O(n)\ntime. This takes O(n log n) time. The sorting also took O(n log n) time, so the algo-\nrithm takes O(n log n) time overall.",
+            "problem_number": "5c",
+            "context": "Prof. Chopin has a piano recital coming up, and in preparation, he wants to learn as many pieces as possible. There are m possible pieces he could learn. Each piece i takes p\u2081 hours to learn.\nProf. Chopin has a total of T hours that he can study by himself (before getting bored). In addition, he has n piano teachers. Each teacher j will spend up to t; hours teaching. The teachers are very strict, so they will teach Prof. Chopin only a single piece, and only if no other teacher is teaching him that piece.\nThus, to learn piece i, Prof. Chopin can either (1) learn it by himself by spending p\u2081 of his T self-learning budget; or (2) he can choose a unique teacher j (not chosen for any other piece), learn together for min{$p_i, t_j$} hours, and if any hours remain ($p_i > t_j$), learn the rest using $p_i - t_j$ hours of his T self-learning budget. (Learning part of a piece is useless.)"
+        },
+        {
+            "question": "Draw the residual graph $G_f$ of G with respect to f.",
+            "answer": "",
+            "problem_number": "6a",
+            "context": "Consider the following flow network and initial flow f. We will perform one iteration of the\nEdmonds-Karp algorithm."
+        },
+        {
+            "question": "List the vertices in the shortest augmenting path, that is, the augmenting path with the fewest possible edges.",
+            "answer": "s\u21923\u21922\u21925\u2192t\nor\ns\u21923\u21922\u21926\u2192t",
+            "problem_number": "6b",
+            "context": "Consider the following flow network and initial flow f. We will perform one iteration of the\nEdmonds-Karp algorithm."
+        },
+        {
+            "question": "Perform the augmentation. What is the value of the resulting flow?",
+            "answer": "26. The augmenting flow has value 1.",
+            "problem_number": "6c",
+            "context": "Consider the following flow network and initial flow f. We will perform one iteration of the\nEdmonds-Karp algorithm."
+        },
+        {
+            "question": "Give a straightforward algorithm that checks whether any subset of k projects can be completed to solve the decisional problem. Analyze its time complexity in terms of m, n, and k.",
+            "answer": "For each (2) subsets of k projects, check whether any employee is required\nby more than one project. This can be done simply by going each of the k projects p,\nmarking the employees in $E_p$ as needed, and if any employee is marked twice, then\nthis subset fails. Output \"yes\" if any subset of k project can be completed, and \u201cno\u201d\notherwise.\nThe time complexity is (1) m because there are (2) subsets of size k and we pay O(m)\ntime per subset (because all but one employee will be marked only once). Asymptoti-\ncally, this is $(n/k)^k m$.",
+            "problem_number": "7a",
+            "context": "For your new startup company, Uber for Algorithms, you are trying to assign projects to employees.\nYou have a set P of n projects and a set E of m employees. Each employee e can only work on one project, and each project p \u2208 P has a subset Ep \u2286 E of employees that must be assigned to p\nto complete p. The decision problem we want to solve is whether we can assign the employees to\nprojects such that we can complete (at least) k projects."
+        },
+        {
+            "question": "Is your algorithm in part (a) fixed-parameter tractable? Briefly explain.",
+            "answer": "No. An FPT algorithms requires a time complexity of $n^{o(1)} f(k)$. By con-\ntrast, in our running time, the exponent on n increases with k.",
+            "problem_number": "7b",
+            "context": "For your new startup company, Uber for Algorithms, you are trying to assign projects to employees.\nYou have a set P of n projects and a set E of m employees. Each employee e can only work on one project, and each project p \u2208 P has a subset Ep \u2286 E of employees that must be assigned to p\nto complete p. The decision problem we want to solve is whether we can assign the employees to\nprojects such that we can complete (at least) k projects."
+        },
+        {
+            "question": "Show that the problem is NP-hard via a reduction from 3D matching.\nRecall the 3D matching problem: You are given three sets X, Y, Z, each of size m;\na set T \u2286 X \u00d7 Y \u00d7 Z of triples; and an integer k. The goal is to determine whether\nthere is a subset S \u2286 T of (at least) k disjoint triples.",
+            "answer": "Each (x, y, z) \u2208 T becomes a project that requires employees $E_{(x,y,z)} =$\n{$e_x, e_y, e_z$}. Thus n = |T|, E = X U Y U Z, and m = |X| + |Y|+|Z|. We set k to be\nthe same in both problems. The size of the matching is equal to the number of projects\nthat can be completed because both problems model disjointness: if k projects can be\ncompleted, a subset S of size k can be found, and vice versa. The reduction takes\npolynomial time.",
+            "problem_number": "7c",
+            "context": "For your new startup company, Uber for Algorithms, you are trying to assign projects to employees.\nYou have a set P of n projects and a set E of m employees. Each employee e can only work on one project, and each project p \u2208 P has a subset Ep \u2286 E of employees that must be assigned to p\nto complete p. The decision problem we want to solve is whether we can assign the employees to\nprojects such that we can complete (at least) k projects."
+        },
+        {
+            "question": "Describe a greedy approximation algorithm for this problem.",
+            "answer": "Let Jj to be the set of jobs that Mj will run, and Tj to be the total time it\nmachine Mj is busy (i.e., $T_j = \\sum_{i\\in J_j} t_i$). Initially, $J_j = \\emptyset$, and $T_j = 0$ for all j.\nFor i = 1, . . ., n, assign job i to machine Mj such that $T_j = min_{1<k<m}(T_k)$. That is,\n$J_j = J_j U i$ and $T_j = T_j + t_i$. Output $J_j$'s.\nThis runs in O(nlgm) time by keeping a min-heap of the machines based on the\ncurrent total runtime of each machine.",
+            "problem_number": "8a",
+            "context": "Suppose you need to complete n jobs, and the time it takes to complete job i is $t_i$. You are\ngiven m identical machines M1, M2, ..., Mm to run the jobs on. Each machine can run only one\njob at a time, and each job must be completely run on a single machine. If you assign a set\n$J_j \\subseteq \\{1, 2, ..., n\\}$ of jobs to machine M\u00a1, then it will need $T\u2081 = \\sum_{i\\in J_j} t_i$ time. Your goal is to\npartition the n jobs among the m machines to minimize $max_i T_i$."
+        },
+        {
+            "question": "Show that your algorithm from part (a) is a 2-approximation algorithm.",
+            "answer": "A lower bound to the optimal is L = max(= $\\frac{1}{m}\\sum_{1<i<n} t_i$, $max_i(t_i)$) since the\nbest you can do is to evenly divide the fractional jobs, and it has to run for at least as\nlong as the longest job.\nNow let $M_e$ be the machine that runs for the longest, and let $i^*$ be the last job that was\nassigned to $M_e$ using the greedy algorithm. Let $T_l^*$ be the total run time of all jobs of\n$M_j$ immediately before assigning $i^*$; $T_l^* = min_j T_j^*$. Then we have\n$m\\cdot T_l \\leq \\sum T_l^* = \\sum t_i \\leq \\sum t_i m \\cdot L$\nwhich implies that $T_l^* < L$. Putting it together, we have $T_l = T_l^* + t_{i^*} \\leq L + t_{i^*} \\leq 2L \\leq 2OPT$. Therefore, this is a 2-approximation algorithm.",
+            "problem_number": "8b",
+            "context": "Suppose you need to complete n jobs, and the time it takes to complete job i is $t_i$. You are\ngiven m identical machines M1, M2, ..., Mm to run the jobs on. Each machine can run only one\njob at a time, and each job must be completely run on a single machine. If you assign a set\n$J_j \\subseteq \\{1, 2, ..., n\\}$ of jobs to machine M\u00a1, then it will need $T\u2081 = \\sum_{i\\in J_j} t_i$ time. Your goal is to\npartition the n jobs among the m machines to minimize $max_i T_i$."
+        },
+        {
+            "question": "Let S be any maximal independent set of G' (i.e., adding any other vertex to\nS would violate independence). Prove that, for each vertex v \u2208 V, S contains exactly\none of the \u2206 + 1 vertices in V' of the form (v, i). Hint: Use the Pigeonhole Principle.",
+            "answer": "It cannot contain more than one, since all of these are connected in G' and\nthat would violate independence.\nNow suppose for contradiction that, for some particular u, S contains no vertices of\nthe form (u, i). Then by maximality, every vertex of the form (u, i) must have some\nG'-neighbor in S. Since that neighbor is not of the form (u, *), it must be of the form\n(v, i), for some v with (u, v) \u2208 E.\nThus, each of the \u25b3+1 vertices of the form (u, i) has some neighbor of the form (v, i)\nin S, where (u,v) \u2208 E. Since u has at most A neighbors in G, by the Pigeonhole\nPrinciple, there must be two different values of i, say i\u2081 and 12, for which there is a\nsingle v such that (u, i\u2081) is a G'-neighbor of (v, i\u2081), (u, i\u2082) is a G'-neighbor of (v, i\u2082),\nand both (v, i\u2081) and (v, i2) are in S. That is a contradiction because S can contain at\nmost one vertex of the form (v, *).",
+            "problem_number": "9a",
+            "context": "Consider an undirected graph G = (V, E) in which every vertex has degree at most \u2206. Define a\nnew graph G' = (V', E'), the Cartesian product of G with a clique of size \u25b3 + 1. Specifically, V'\nis the set of pairs (v, i) for all vertices v \u2208 V and integers i with 0 \u2264 i \u2264 \u2206, and E' consists of\ntwo types of edges:"
+        },
+        {
+            "question": "Now consider a synchronous network of processes based on the graph G, where every vertex knows an upper bound \u2206 on the degree. Give a distributed algorithm to find a vertex (\u2206 + 1)-coloring of G, i.e., a mapping from vertices in V to colors in {0, 1, . . . , \u2206} such that adjacent vertices have distinct colors. The process associated with each vertex should output its color. Argue correctness.",
+            "answer": "The \u201ccolors\u201d will be chosen from {0, 1, . . . , \u2206}.\nThe nodes of G simulate an MIS algorithm for G'. Specifically, the node associated\nwith vertex u of G simulates the \u2206 + 1 nodes associated with vertices of the form\n(u, i) of G'. The algorithm produces an MIS S for G', where each node of G learns\nwhich of its simulated nodes correspond to vertices in S. By Part (a), for each vertex u\nof G, there is a unique color i such that (u, i) \u2208 S; the node associated with u chooses\nthis color i.\nObviously, this strategy uses at most \u2206 + 1 colors. To see that no two neighbors in G\nare colored with the same color, suppose for contradiction that neighbors u and v are\ncolored with the same color, say i. That means that both (u, i) and (v, i) are in S. But\n(u, i) and (v, i) are neighbors in G', contradicting the independence property for S.",
+            "problem_number": "9b",
+            "context": "Consider an undirected graph G = (V, E) in which every vertex has degree at most \u2206. Define a\nnew graph G' = (V', E'), the Cartesian product of G with a clique of size \u25b3 + 1. Specifically, V'\nis the set of pairs (v, i) for all vertices v \u2208 V and integers i with 0 \u2264 i \u2264 \u2206, and E' consists of\ntwo types of edges:"
+        },
+        {
+            "question": "Analyze the expected time and communication costs for solving the coloring problem in this way, including the cost of Luby's algorithm.",
+            "answer": "The costs are just those of solving MIS on G'; the final decisions are local\nand don't require any extra rounds.\nTime (number of rounds): The expected time to solve MIS on G' is O(lg (n\u00b7 \u2206)),\nbecause the number of nodes in G' is n\u00b7 (\u2206 + 1). The O(lg (n\u00b7 \u2206)) bound can be\nsimplified to O(lgn).\nCommunication (number of messages): The expected number of messages is O(Elg n),\ncorresponding to O(lg n) rounds and messages on all edges (in both directions) at each\nround.",
+            "problem_number": "9c",
+            "context": "Consider an undirected graph G = (V, E) in which every vertex has degree at most \u2206. Define a\nnew graph G' = (V', E'), the Cartesian product of G with a clique of size \u25b3 + 1. Specifically, V'\nis the set of pairs (v, i) for all vertices v \u2208 V and integers i with 0 \u2264 i \u2264 \u2206, and E' consists of\ntwo types of edges:"
+        }
+    ]
+}

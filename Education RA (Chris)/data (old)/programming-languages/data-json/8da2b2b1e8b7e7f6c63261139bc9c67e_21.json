@@ -1,0 +1,136 @@
+[
+  {
+    "problem_number": "1",
+    "question": "**Problem 1: Short Answer [18 points]",
+    "subquestions": [
+      {
+        "problem_number": "1a",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x 1))\n    (let ((f (lambda (y) (+ x y))))\n    (let ((x 2))\n    (f 1))))\n```\n\nstatic scoping, call by value",
+        "answer": "2"
+      },
+      {
+        "problem_number": "1b",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x 1))\n    (let ((f (lambda (y) (+ x y))))\n    (let ((x 2))\n    (f 1))))\n```\n\ndynamic scoping, call by value",
+        "answer": "3"
+      },
+      {
+        "problem_number": "1c",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((f (lambda () 1))\n    (g (lambda () (f)))) \n    (let ((f (lambda () 2)))\n    (g)))\n```\n\nstatic scoping, call by value",
+        "answer": "error, f is not bound"
+      },
+      {
+        "problem_number": "1d",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((f (lambda () 1))\n    (g (lambda () (f)))) \n    (let ((f (lambda () 2)))\n    (g)))\n```\n\ndynamic scoping, call by name",
+        "answer": "2"
+      },
+      {
+        "problem_number": "1e",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x 0))\n    (let ((f (lambda (y) (/ y x)))) \n    (let ((x 1))\n    (set! f (lambda (y) (/ y x)))\n    (let ((x 2))\n    (f x)))))\n```\n\nstatic scoping, call by value",
+        "answer": "2"
+      },
+      {
+        "problem_number": "1f",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x 0))\n    (let ((f (lambda (y) (/ y x)))) \n    (let ((x 1))\n    (set! f (lambda (y) (/ y x)))\n    (let ((x 2))\n    (f x)))))\n```\n\ndynamic scoping, call by value",
+        "answer": "1"
+      },
+      {
+        "problem_number": "1g",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x (/ 1 0)) (y 0))\n    (let ((z (begin (set! y (+ y 1)) 5)))\n    ((lambda (x) (x x x))\n    (lambda (x) (+ z y z y)))))\n```\n\nstatic scoping, call by name",
+        "answer": "13"
+      },
+      {
+        "problem_number": "1h",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x (/ 1 0)) (y 0))\n    (let ((z (begin (set! y (+ y 1)) 5)))\n    ((lambda (x) (x x x))\n    (lambda (x) (+ z y z y)))))\n```\n\nstatic scoping, call by value",
+        "answer": "error, divide by 0"
+      },
+      {
+        "problem_number": "1i",
+        "question": "Evaluate the following expression in the given model:\n\n```scheme\n(let ((x (/ 1 0)) (y 0))\n    (let ((z (begin (set! y (+ y 1)) 5)))\n    ((lambda (x) (x x x))\n    (lambda (x) (+ z y z y)))))\n```\n\nstatic scoping, call by need",
+        "answer": "12"
+      }
+    ]
+  },
+  {
+    "problem_number": "2",
+    "question": "**Problem 2: Operational Semantics: [18 points]**\n\nBen Bitdiddle's company, which sells commercial PostFix implementations, has been hard-hit by the Internet stock bust and has sent him off to MIT to bring back new commercializable technology. Ben Bitdiddle has been learning about functional programming, and while he still prefers PostFix, he is intrigued by the notion of currying. He proposes two new PostFix constructs that permit creating and taking apart PostFix procedures. The constructs are called pack and unpack.\n\n- **pack** expects the first value on the stack to be a number \\(n\\), and it expects there to be at least \\(n\\) more values on the stack. It packages together the next \\(n\\) values on the stack, \\(c_{n},\\ldots,c_{1}\\), as a command sequence \\(C=(c_{1}\\ \\ldots\\ c_{n})\\) and pushes \\(C\\) on the stack.\n\n- **unpack** expects the first value on the stack to be a command sequence \\(C=(c_{1}\\ldots c_{n})\\). It pushes \\(c_{1},\\ldots,c_{n},n\\) on the stack in that order.\n\nIf the preconditions are not met, the operational semantics gets stuck.\n\nunpack permits the PostFix stack to contain commands, which was previously impossible. For example, consider the following PostFix program:\n\n\\[(N_{3}\\ \\ N_{2}\\ \\ N_{1}\\ \\ (\\text{add}\\ \\ \\text{add})\\ \\ \\text{exec})\\Rightarrow N _{1}+N_{2}+N_{3}\\]\n\nWe can think of (add add) as a procedure of three arguments that adds \\(N_{1}\\), \\(N_{2}\\), and \\(N_{3}\\). Using unpack and pack, we can write a currying procedure that takes a three-argument procedure, \\(N_{1}\\), and \\(N_{2}\\), and outputs a procedure that takes one argument \\(N_{3}\\) and outputs \\(N_{1}+N_{2}+N_{3}\\). The currying procedure is (unpack 2 add pack) and it works as follows:\n\n\\[(N_{2}\\ \\ N_{1}\\ \\ (\\text{add}\\ \\ \\text{add})\\ \\ (\\text{unpack}\\ \\ 2\\ \\ \\text{ add }\\ \\text{pack})\\ \\ \\text{exec})\\Rightarrow(N_{2}\\ N_{1}\\ \\text{add add})\\]\n\nBen's company has built proprietary optimization technology that can convert this command sequence to \\((N_{4}\\ \\ \\text{add})\\), where \\(N_{4}=N_{1}+N_{2}\\). Together, these two innovations promise a remarkable improvement in PostFix efficiency.\n\n",
+    "subquestions": [
+      {
+        "problem_number": "2a",
+        "question": "Give a rewrite rule for unpack.",
+        "answer": "\\[\\langle\\text{unpack}\\cdot Q,\\ \\ (V_{1}\\ \\ V_{2}\\ \\ \\ldots\\ \\ V_{n})\\cdot S\\rangle \\Rightarrow\\langle Q,\\ \\ n\\cdot V_{n}\\ldots V_{1}\\cdot S\\rangle\\]\n\\[[\\textit{unpack}]\\]"
+      },
+      {
+        "problem_number": "2b",
+        "question": "Give a rewrite rule for pack.",
+        "answer": "\\[\\langle\\text{pack}\\cdot Q,\\ \\ n\\cdot V_{n}\\ldots V_{1}\\cdot S\\rangle \\Rightarrow\\langle Q,\\ \\ (V_{1}\\ \\ V_{2}\\ \\ \\ldots\\ \\ V_{n})\\cdot S\\rangle\\]\n\\[[\\textit{pack}]\\]"
+      },
+      {
+        "problem_number": "2c",
+        "question": "In addition to performing partial evaluation, Ben would like to be able to reuse its results; after all, procedures that can only be called once are of limited use. Ben proposes to add a restricted form of dup to PostFix+\\(\\{\\text{unpack},\\text{pack}\\}\\); the restricted dup may only be used immediately after pack. Do all such programs terminate? Argue briefly: give either an energy function or a counterexample.",
+        "answer": "PostFix+\\(\\{\\text{unpack},\\text{pack},\\text{dup}_{\\text{restricted}}\\}\\) programs may not terminate. Recall that the canonical non-terminating PostFix+dup program is \\(\\langle\\text{dup}\\ \\ \\text{exec}\\rangle\\ \\ \\text{dup}\\ \\ \\text{exec}\\). Notice that unpack and pack are duals. The following program does not terminate.\n\n\\[\\langle\\text{unpack}\\ \\ \\text{pack}\\ \\ \\text{dup}\\ \\ \\text{exec}\\rangle\\ \\ \\text{unpack}\\ \\ \\text{pack}\\ \\ \\text{dup}\\ \\ \\text{exec}\\]\n\nOne can also write unrestricted dup in terms of restricted dup:\n\n\\[\\text{dup}=1\\ \\ \\text{pack}\\ \\ \\text{dup}\\ \\ \\text{unpack}\\ \\ \\text{pop}\\ \\ \\text{swap}\\ \\ \\text{unpack}\\ \\ \\text{pop}\\]"
+      }
+    ]
+  },
+  {
+    "problem_number": "3",
+    "question": "**Problem 3: Denotational Semantics: [34 points]**\n\nBen Bitdiddle enjoys the convenience of short-circuiting operators and has a proposal for making them even more powerful.\n\nA standard short-circuiting logical operator evaluates only as many of its operands as necessary; it evaluates its arguments in left-to-right order, stopping as soon as it evaluates an argument that determines the value of the entire expression. For instance, if and is a short-circuiting operator, then the following program evaluates to #f without raising an error:\n\n```scheme\n(and #f (= 0 (/ 1 0)))\n```\n\nHowever, reversing the order of the expressions leads to an error:\n\n```scheme\n(and (= 0 (/ 1 0)) #f)\n```\n\nBen Bitdiddle reasons that the second expression, too, should evaluate to #f. After all, one of the operands evaluates to #f, and that determines the value of the entire expression. He proposes a very-short-circuiting operator nd-and (_non-deterministic and_) such that if either operand evaluates to false, then only that operand is evaluated; otherwise, both operands are evaluated. His goals are:\n\n- The expression errs or infinite-loops only if at least one of the operands does, and the other expression does not evaluate to #f. (Hint: infinite loops, errors, and concurrency are not the main point of this problem.)\n- The value of the entire expression is the and of all the visibly evaluated operands, where a visibly executed operand is one whose side effects have been performed on the resulting store.\n- The entire expression evaluates to #t if and only if both operands are visibly evaluated (because both operands must be evaluated to achieve that result).\n- The entire expression evaluates to #f if and only if exactly one expression is visibly evaluated.\n\nAlyssa P. Hacker does not believe Ben's goals are achievable. She says she can satisfy the first two goals plus either of the last two goals, but not all four goals simultaneously.",
+    "subquestions": [
+      {
+        "problem_number": "3a",
+        "question": "Informally describe the operational semantics for one of the possibilities for nd-and that satisfies Alyssa's claim.",
+        "answer": "There are multiple solutions to this problem. Here is one of them.\n\nLet \\(s_{0}\\) be the initial store.\n\nEvaluate \\(E_{1}\\) in \\(s_{0}\\), giving \\(\\langle v,s_{1}\\rangle\\). If \\(v\\) is false, return \\(\\langle v,s_{1}\\rangle\\).\n\nOtherwise, evaluate \\(E_{2}\\) in \\(s_{0}\\), giving \\(\\langle v,s_{2}\\rangle\\). If \\(v\\) is false, return \\(\\langle v,s_{2}\\rangle\\).\n\nOtherwise, evaluate \\(E_{2}\\) in \\(s_{1}\\), giving \\(\\langle v,s_{3}\\rangle\\). Return \\(\\langle v,s_{3}\\rangle\\).\n\n(This might be false, even though both operands have been evaluated.)"
+      },
+      {
+        "problem_number": "3b",
+        "question": "What is \\(\\mathcal{E}[\\text{(nd-and }E_{1}\\ E_{2}\\text{)}]\\) for the version of nd-and that you described above?",
+        "answer": "\\[\\begin{array}[]{lll}\\mathcal{E}[\\text{(nd-and }\\ E_{1}\\ E_{2})]\\\\ =\\lambda e\\,k s_{0}\\ .\\ \\mathcal{E}[E_{1}]\\,e\\,\\left(\\lambda v_{1}\\ .\\ \\text{if} \neg v_{1}\\\\ &\\hskip 56.905512pt\\text{\\bf{then}}\\ (k\\ \\text{false})\\\\ &\\hskip 56.905512pt\\text{\\bf{else}}\\ \\mathcal{E}[E_{2}]\\,e\\,\\left(\\lambda v_{2}\\ .\\ \\text{if} \neg v_{2}\\\\ &\\hskip 56.905512pt\\text{\\bf{then}}\\ (k\\ \\text{false})\\\\ &\\hskip 56.905512pt\\text{\\bf{else}}\\ \\mathcal{E}[E_{1}]\\,e\\,k)\\end{array}\\]\n\nAlternately, with explicit stores:\n\n\\[\\mathcal{E}[\\left(\\text{nd- and }E_{1}\\ E_{2}\\right)]\\] \\[=\\lambda ek{s_{0}}\\cdot\\mathcal{E}[E_{1}]\\ e\\left(\\lambda v_{1}{s _{1}}\\cdot\\textbf{if }\neg v_{1}\\right.\\] \\[\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad \\qquad\\textbf{then}\\ (k\\ \\text{false}\\ s_{1})\\] \\[\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad \\qquad\\textbf{else}\\ \\mathcal{E}[E_{2}]\\ e\\left(\\lambda v_{2}{s_{2}}\\cdot\\textbf{ if }\neg v_{2}\\] \\[\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad \\qquad\\qquad\\textbf{then}\\ (k\\ \\text{false}\\ s_{2})\\] \\[\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad\\qquad \\qquad\\qquad\\textbf{else}\\ \\mathcal{E}[E_{1}]\\ e\\left.k\\ s_{2}\\right)\\] \\[s_{0}\\]"
+      },
+      {
+        "problem_number": "3c",
+        "question": "Can nd-or (nondeterministic or) be defined in terms of nd-and? Explain briefly.",
+        "answer": "Yes.\n\n\\[\\mathcal{D}_{\\text{exp}}[\\left(\\text{nd-or}\\ E_{1}\\ E_{2}\\right)] = (\\text{not}\\ \\left(\\text{nd-and}\\ \\left(\\text{not}\\ E_{1}\\right)\\ \\left(\\text{not}\\ E_{2}\\right)\\right))\\]\n\nBecause not preserves nontermination and errors, the semantics are as desired: if either \\(E_{1}\\) or \\(E_{2}\\) evaluates to true, the other is not evaluated."
+      },
+      {
+        "problem_number": "3d",
+        "question": "What does the following FLAVARI program evaluate to?\n\n```scheme\n(let ((a 2))\n  (let ((and-result (nd-and (= a 3)\n                            (begin (set! a 3) #t))))\n    (list and-result a)))\n```",
+        "answer": "\\(E_{1}\\) evaluates to false, and \\(E_{2}\\) evaluates to true. The entire expression evaluates to (#f 2)."
+      },
+      {
+        "problem_number": "3e",
+        "question": "What does the following FLAVARI program evaluate to?\n\n```scheme\n(let ((a 2))\n  (let ((and-result (nd-and (= a 2)\n                            (begin (set! a 3) #t))))\n    (list and-result a)))\n```",
+        "answer": "\\(E_{1}\\) in isolation evaluates to true, and \\(E_{2}\\) evaluates to true. The entire expression evaluates to either (#t 3) or (#f 3), depending on the order of evaluation."
+      },
+      {
+        "problem_number": "3f",
+        "question": "Demonstrate that Alyssa's assertion is correct. Given your semantics for nd-and, write an nd-and expression that fails one of the last two constraints. The expression should either definitely evaluate to #t, but with the side effects of just one of its arguments; or it should definitely evaluate to #f, but with the side effects of both arguments.",
+        "answer": "This expression evaluates to false, but evaluates both arguments:\n\n```scheme\n(let ((a #t) (b #t))\n  (nd-and (begin (set! b #f) a)\n          (begin (set! a #f) b)))\n```"
+      },
+      {
+        "problem_number": "3g",
+        "question": "Suggest a restriction (to FLAVARI, FLK!, or nd-and) that achieves all of Ben's goals.",
+        "answer": "Disallow uses of set!."
+      }
+    ]
+  },
+  {
+    "problem_number": "4",
+    "question": "**Problem 4: Control [30 points]**\n\nAfter hearing that Ben Bitdiddle's MIT experience led him to experiment with currying (Problem 2), the president of Ben's company exclaimed, \"I won't be caught selling buggy whips, curry combs, or other horse products in the modern economy!\" and sent Ben off to New Jersey to learn some more practical programming constructs.\n\nBen noted that FLK! is missing the while loop, which is standard in other languages, and reasons that adding it will reduce programmers' resistance to FLK!.\n\nBen proposes three new constructs --while, continue, and break -- to ensure that C programmers feel at home programming in FLAVARI. The command (while \\(E_{\\text{cond}}\\) \\(E_{\\text{body}}\\) \\(E_{\\text{final}}\\)) behaves as follows. If \\(E_{\\text{cond}}\\) is true, then evaluate \\(E_{\\text{body}}\\) and loop back to re-evaluate the entire while form (starting with \\(E_{\\text{cond}}\\) again). If \\(E_{\\text{cond}}\\) is false, then the value of the entire while expression is the result of evaluating \\(E_{\\text{final}}\\).\n\nWithin \\(E_{\\text{body}}\\), (continue) preempts execution of the smallest enclosing \\(E_{\\text{body}}\\) and returns to the top of that loop.\n\nFinally, (break \\(E_{3}\\)) forces the entire while expression to terminate with the value \\(E_{3}\\) (without evaluating \\(E_{\\text{final}}\\)).\n\nConsider the following procedure:\n\n```scheme\n(define f\n  (lambda (xval)\n    (let ((x (cell xval)))\n      (while (begin (cell-set! x (+ (cell-ref x) 1))\n                    (< (cell-ref x) 0))\n             (begin (cell-set! x (+ (cell-ref x) 1))\n                    (if (< (cell-ref x) 0)\n                        (continue)\n                        (break 42)))\n             (- (cell-ref x) 1)))))\n```\n\nEvaluation proceeds as follows:\n\n```scheme\n(f -10) ⇒ 42\n(f -11) ⇒ -1\n```\n\nIn order to provide a meaning for the new commands, we must change the meaning function \\(\\mathcal{E}\\) and add a new domain:\n\n\\[\\mathcal{E}: \\text{Exp} \\rightarrow \\text{Environment} \\rightarrow \\text{Expcont} \\rightarrow \\text{ContCont} \\rightarrow \\text{BreakCont} \\rightarrow \\text{Cmdcont}\\]\n\n\\[c \\in \\text{ContCont} = \\text{Expcont}\\]\n\n\\[b \\in \\text{BreakCont} = \\text{Expcont}\\]",
+    "subquestions": [
+      {
+        "problem_number": "4a",
+        "question": "What is \\(\\mathcal{E}[\\text{(while } E_{\\text{cond}} \\ E_{\\text{body}} \\ E_{\\text{final}}\\text{)}]\\)?",
+        "answer": "Here is a version that re-evaluates the condition after (continue), and where (break) or (continue) in \\(E_{\\text{cond}}\\) break out of the while form to which \\(E_{\\text{cond}}\\) belongs:\n\n\\[\\mathcal{E}[\\text{(while } E_{\\text{cond}} \\ E_{\\text{body}} \\ E_{\\text{final}})]\\]\n\\[= \\lambda ekcb \\ . \\ \\text{fixCmdcont} \\ \\lambda l \\ . \\ \\mathcal{E}[E_{\\text{cond}}] \\ e \\ (\\lambda v \\ . \\ \\text{if } v\\]\n\\[\\qquad \\text{then } \\mathcal{E}[E_{\\text{body}}] \\ e \\ (\\lambda v \\ . \\ l) \\ (\\lambda v \\ . \\ l) \\ k\\]\n\\[\\qquad \\text{else } \\mathcal{E}[E_{\\text{final}}] \\ e \\ k \\ c \\ b)\\] \\ (\\lambda v \\ . \\ l) \\ k\\]\n\nHere is a version that does not re-evaluate the condition after (continue), and where (break) or (continue) in \\(E_{\\text{cond}}\\) break out of a while form that encloses the one to which \\(E_{\\text{cond}}\\) belongs:\n\n\\[\\mathcal{E}[\\text{(while } E_{\\text{cond}} \\ E_{\\text{body}} \\ E_{\\text{final}})]\\]\n\\[= \\lambda ekcb \\ . \\ \\text{fixCmdcont} \\ \\lambda l \\ . \\ \\mathcal{E}[E_{\\text{cond}}] \\ e \\ (\\lambda v \\ . \\ \\text{if } v\\]\n\\[\\qquad \\text{then } \\text{fixCmdcont} \\ (\\lambda j \\ . \\ \\mathcal{E}[E_{\\text{body}}] \\ e \\ (\\lambda v \\ . \\ l) \\ (\\lambda v \\ . \\ j) \\ k)\\]\n\\[\\qquad \\text{else } \\mathcal{E}[E_{\\text{final}}] \\ e \\ k \\ c \\ b)\\] \\ c \\ b\\]"
+      },
+      {
+        "problem_number": "4b",
+        "question": "What is \\(\\mathcal{E}[\\text{(continue)}]\\)?",
+        "answer": "\\[\\mathcal{E}[\\text{(continue)}] = \\lambda ekcb \\ . \\ (c \\ \\text{unit})\\]"
+      },
+      {
+        "problem_number": "4c",
+        "question": "What is \\(\\mathcal{E}[\\text{(break } E\\text{)}]\\)?",
+        "answer": "\\[\\mathcal{E}[\\text{(break } E\\text{)}] = \\lambda ekcb \\ . \\ \\mathcal{E}[E] \\ e \\ b \\ c \\ b\\]"
+      }
+    ]
+  }
+]
