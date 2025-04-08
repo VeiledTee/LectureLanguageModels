@@ -1,8 +1,11 @@
+from pathlib import Path
+import json
 import os
 import base64
 import time
 import openai
 from dotenv import load_dotenv
+from preprocessing import convert_json_exam_to_markdown, convert_json_notes_to_markdown
 
 # Load environment variables
 load_dotenv()
@@ -100,20 +103,44 @@ def save_aggregated_results(directory: str, results: list[tuple[str, str]]):
 
 
 if __name__ == "__main__":
-    print("running...")
-    if not os.path.isdir(INPUT_ROOT_DIR):
-        raise ValueError(f"Input directory does not exist: {INPUT_ROOT_DIR}")
+    # print("running...")
+    # if not os.path.isdir(INPUT_ROOT_DIR):
+    #     raise ValueError(f"Input directory does not exist: {INPUT_ROOT_DIR}")
+    #
+    # for root, dirs, files in os.walk(INPUT_ROOT_DIR):
+    #     print(f"\tProcessing directory: {root}")
+    #     image_files = [
+    #         os.path.join(root, f)
+    #         for f in files
+    #         if f.lower().endswith(f".{IMAGE_FORMAT}")
+    #     ]
+    #
+    #     if not image_files:
+    #         continue
+    #
+    #     results = process_directory(image_files)
+    #     save_aggregated_results(root, results)
+    input_dir = Path(
+        r"C:\Users\Ethan\Documents\PhD\LectureLanguageModels\Education RA (Chris)\Datasets\Introduction to Algorithms\Course Notes")
+    output_dir = Path(
+        r'C:\Users\Ethan\Documents\PhD\LectureLanguageModels\Education RA\Introduction_to_Algorithms\Lecture_Notes\Processed')
 
-    for root, dirs, files in os.walk(INPUT_ROOT_DIR):
-        print(f"\tProcessing directory: {root}")
-        image_files = [
-            os.path.join(root, f)
-            for f in files
-            if f.lower().endswith(f".{IMAGE_FORMAT}")
-        ]
+    # Create output directory if it doesn't exist
+    output_dir.mkdir(parents=True, exist_ok=True)
 
-        if not image_files:
-            continue
+    json_files = list(input_dir.glob("**/*.json"))  # Recursive search
 
-        results = process_directory(image_files)
-        save_aggregated_results(root, results)
+    for index, filename in enumerate(json_files):
+        # Correct file opening using Path object
+        with filename.open(encoding='utf-8') as f:
+            data = json.load(f)
+
+        # Create output path
+        if "Exams" in str(input_dir):
+            output_path = output_dir / f'q{index + 1}_parsed.txt'  # Exams
+            convert_json_exam_to_markdown(data, output_path)
+        else:
+            output_path = output_dir / f'ch{index + 1}_parsed.txt'  # Notes
+            convert_json_notes_to_markdown(data, output_path)
+
+    print(f"Processed {len(json_files)} files successfully")
