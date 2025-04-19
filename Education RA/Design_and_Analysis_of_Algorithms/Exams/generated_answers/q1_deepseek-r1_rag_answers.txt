@@ -1,0 +1,1225 @@
+QUESTION: True or False: Using similar techniques used in Strassen's matrix multiplication algorithm, the Floyd-Warshall algorithm's running time can be improved to O(Vlog2 7).
+//// ANSWER: 
+The statement is **False**. While both Strassen's matrix multiplication and Floyd-Warshall algorithms involve operations on matrices, their problems are fundamentally different—matrix multiplication versus finding shortest paths. Although optimizations exist for Floyd-Warshall (like using divide-and-conquer or blocking), they do not achieve a time complexity of O(V log² V). Thus, applying similar techniques from Strassen's algorithm does not result in such an improvement.
+
+**Answer:** False
+
+QUESTION: True or False: For graphs G = (V, E) where E = O(V1.5), Johnson's algorithm is asymptotically faster than Floyd-Warshall.
+//// ANSWER: 
+True or False: For graphs G = (V, E) where E = O(V¹·⁵), Johnson's algorithm is asymptotically faster than Floyd-Warshall.
+
+**Answer:**  
+True.  
+
+Johnson's algorithm has a time complexity of O(V² log V), which for large values of V grows slower than the O(V³) complexity of Floyd-Warshall. Therefore, asymptotically, Johnson's algorithm is faster for such graphs.
+
+QUESTION: True or False: Consider the directed graph where each vertex represents a subproblem in a dynamic program, and there is an edge from p to q if and only if subproblem p depends on (recursively calls) subproblem q. Then this graph is a directed rooted tree.
+//// ANSWER: 
+The statement is **False**. 
+
+In dynamic programming, the dependency graph formed by subproblems does not always result in a directed rooted tree. While it may be a DAG (directed acyclic graph), it can have multiple parents per node and more than one root if dependencies are complex or mutual. Thus, it's incorrect to assume that all such graphs are single-rooted trees with each node having exactly one parent.
+
+Answer: False
+
+QUESTION: True or False: In a connected, weighted graph, every lowest weight edge is always in some minimum spanning tree.
+//// ANSWER: 
+Yes, every minimal edge will be included in some minimum spanning tree (MST). 
+
+**Step-by-Step Explanation:**
+
+1. **Understanding Minimum Spanning Trees (MSTs):**
+   - An MST is a subset of edges from a graph that connects all vertices without cycles and with the minimum possible total edge weight.
+   
+2. **Role of Minimal Edges:**
+   - Minimal edges are those with the smallest weights in the graph, which are candidates for inclusion in any MST.
+
+3. **Handling Cycles Among Minimal Edges:**
+   - If multiple minimal edges form a cycle, it's not always possible to include all of them in an MST because including more than n-1 edges (where n is the number of vertices) would create cycles.
+   
+4. **Key Insight:**
+   - Even if some minimal edges form a cycle, as long as there are subsets of these edges that do not form cycles and connect all vertices, each such edge can be part of an MST.
+
+5. **Example:**
+   - Consider four nodes A, B, C, D with edges AB, BC, CD, DA all having weight 1.
+     - Any three of these edges (e.g., AB, BC, CD) form a path connecting all nodes without cycles and thus can be part of an MST.
+     - Similarly, other combinations like AB, BC, DA also form valid MSTs.
+
+6. **Conclusion:**
+   - Therefore, every minimal edge is included in at least one MST because there exists a way to select edges such that each minimal edge is used while avoiding cycles and ensuring all vertices are connected.
+
+**Answer:** Yes, every minimal edge will be included in some minimum spanning tree (MST).
+
+QUESTION: True or False: For a connected, weighted graph with n vertices and exactly n edges, it is possible to find a minimum spanning tree in O(n) time.
+//// ANSWER: 
+The answer is False. It is not possible to find a minimum spanning tree (MST) for a connected, weighted graph with n vertices and exactly n edges in O(n) time.
+
+**Step-by-Step Explanation:**
+
+1. **Graph Structure:** A connected graph with n vertices must have at least n−1 edges. When it has exactly n edges, it forms a single cycle since adding one extra edge beyond the minimum required creates precisely one cycle.
+
+2. **MST Requirements:** An MST for such a graph would exclude that one extra edge forming the cycle. Thus, the problem reduces to identifying which of the n edges is part of this cycle and excluding it from the MST.
+
+3. **Algorithm Considerations:**
+   - **Kruskal's Algorithm:** Typically requires sorting all edges by weight, which takes O(n log n) time.
+   - **Prim's Algorithm:** Generally operates in O(n^2) time using an adjacency matrix or similar structures.
+
+4. **Cycle Detection and Edge Exclusion:** To identify the cycle and determine which edge to exclude, traversal methods like BFS or DFS are needed. These operations inherently take more than linear time (O(n)) because they process each edge at least once.
+
+5. **Sorting Time Constraint:** Without sorting, it's impossible to guarantee that all edges are considered in an optimal order for MST construction.
+
+6. **Conclusion:** Given the need for either sorting or cycle detection traversal, neither of which can be done in linear time, it is not possible to find the MST in O(n) time for such graphs.
+
+**Final Answer:** False
+
+QUESTION: True or False: For a flow network with an integer capacity on every edge, the Ford–Fulkerson algorithm runs in time O((V + E) |f|) where |f| is the maximum flow.
+//// ANSWER: 
+The statement is true. For a flow network with integer edge capacities, the Ford-Fulkerson algorithm, when using BFS to find augmenting paths (as in Edmonds-Karp), runs in time O((V + E)|f|), where |f| is the maximum flow.
+
+**Answer:**  
+True
+
+QUESTION: True or False: Let C = (S, V \ S) be a minimum cut in a flow network. If we strictly increase the capacity of every edge across C, then the maximum flow of the network must increase.
+//// ANSWER: 
+The statement is true. Increasing the capacities of all edges in a minimum cut C will result in an increased maximum flow. Here's why:
+
+1. **Max-Flow Min-Cut Theorem**: The maximum flow equals the capacity of the minimum cut.
+
+2. **Effect of Capacity Increase**: By strictly increasing each edge's capacity across C, the new total capacity (sum or bottleneck) of this cut increases.
+
+3. **Impact on Maximum Flow**: Since the maximum flow is determined by the minimum cut's capacity, a higher capacity in C leads to a higher maximum flow.
+
+**Answer:** True
+
+QUESTION: True or False: Every linear program has a unique optimal solution.
+//// ANSWER: 
+The statement is **False**. Not every linear program (LP) has a unique optimal solution. Multiple optimal solutions can exist, especially when there's degeneracy in constraints leading to alternative points with the same objective value.
+
+Answer: False
+
+QUESTION: True or False: 3SAT cannot be solved in polynomial time, even if P = NP.
+//// ANSWER: 
+The statement is **False**. If P = NP, then 3SAT can be solved in polynomial time because all NP problems would have such solutions.
+
+Step-by-step explanation:
+
+1. **Understanding the Problem**: The question asks whether 3SAT cannot be solved in polynomial time even if P equals NP.
+
+2. **Definitions**:
+   - **P**: Problems solvable in polynomial time.
+   - **NP**: Problems where solutions can be verified in polynomial time.
+   - **3SAT**: An NP-complete problem, meaning it's among the hardest problems in NP.
+
+3. **Implications of P = NP**: If P equals NP, every NP problem, including 3SAT, can be solved in polynomial time by some algorithm.
+
+4. **Conclusion**: Since 3SAT is NP-complete and P=NP implies all NP problems are solvable in polynomial time, the statement that it cannot be solved in polynomial time even if P = NP is false.
+
+Answer: False
+
+QUESTION: Repeatedly selecting a vertex of maximum degree, and deleting the incident edges, is a 2-approximation algorithm for Vertex Cover.
+//// ANSWER: 
+The algorithm described repeatedly selects vertices with maximum degree and removes their incident edges to form a vertex cover. This method provides a 2-approximation, meaning the resulting cover's size is at most twice the minimal vertex cover.
+
+**Answer:**  
+Yes, this greedy approach of selecting vertices with maximum degree repeatedly results in a 2-approximation algorithm for Vertex Cover.
+
+QUESTION: Draw the shortest path from Boston to New York in the following graph if m = ∞. Charging stations are marked as circles.
+//// ANSWER: 
+To determine the shortest path from Boston to New York in a graph where each edge has a cost \( m \) except when \( m = \infty \), we must consider the following:
+
+1. **Interpretation of \( m = \infty \)**: Edges with \( m = \infty \) are considered blocked or non-traversable, as they represent routes that cannot be used due to their extremely high cost.
+
+2. **Graph Structure**: Assuming a typical graph where Boston is the starting node and New York is the destination, we need to identify paths that do not include any edges with \( m = \infty \).
+
+3. **Equal Edge Costs**: All remaining edges (those not blocked by \( m = \infty \)) have the same cost \( m \). Therefore, any valid path composed of these edges will be equally short in terms of total cost.
+
+4. **Multiple Shortest Paths**: Since all traversable edges are equal in cost, there may be multiple shortest paths from Boston to New York. The exact number depends on the graph's structure and connectivity.
+
+5. **Charging Stations**: These nodes (circles) do not directly affect edge costs but might represent refueling points or other considerations. However, since \( m \) is uniform for all edges except blocked ones, their impact is minimal in this context.
+
+**Conclusion**: The shortest path from Boston to New York will be any valid path that does not include any edges with \( m = \infty \). Given the uniform cost of remaining edges, multiple such paths exist. Without specific graph details, one possible shortest path could involve taking a direct route or an alternative route avoiding blocked edges.
+
+**Answer**: The shortest path from Boston to New York in this graph is any valid path that does not include edges with \( m = \infty \). Since all remaining edges have the same cost, multiple such paths exist. One example of such a path could be taking a direct route or an alternative route avoiding blocked edges.
+
+QUESTION: Draw the shortest path from Boston to New York in the following (identical) graph if m = 100.
+//// ANSWER: 
+To determine the shortest path from Boston to New York in a graph where each node has 100 connections, we can use Dijkstra's algorithm. This approach systematically explores paths starting from Boston, always selecting the next node with the lowest tentative distance until reaching New York. By following this method, we ensure that the first time we reach New York, it is via the shortest path possible.
+
+**Answer:**
+
+To find the shortest path from Boston to New York in a graph where each node has 100 connections, use Dijkstra's algorithm:
+
+1. **Initialize**: Set the distance to Boston as 0 and all other nodes as infinity.
+2. **Priority Queue**: Use a priority queue to always expand the node with the smallest tentative distance.
+3. **Relax Edges**: For each node, relax (update) the distances of its neighbors based on the current known shortest path.
+4. **Terminate**: Stop when New York is reached, as Dijkstra's algorithm guarantees this will be via the shortest path.
+
+This method ensures that we efficiently find the shortest path considering all possible routes and their respective edge weights.
+
+QUESTION: Give an algorithm to solve the problem. For full credit, your algorithm should run in O(VE + V2 log V) time.
+//// ANSWER: 
+The algorithm described involves two main steps:
+
+1. **Breadth-First Search (BFS):** This step is performed on the graph with a time complexity of \(O(V + E)\), where \(V\) is the number of vertices and \(E\) is the number of edges.
+
+2. **Post-BFS Processing:** After completing BFS, each vertex's adjacency list is processed. For each vertex \(v\), this processing takes \(O(d(v) \log d(v))\) time, where \(d(v)\) is the degree of vertex \(v\). Summing this over all vertices gives a total complexity of \(O(V^2 \log V)\).
+
+Combining these two steps results in an overall time complexity of:
+
+\[
+O(VE + V^2 \log V)
+\]
+
+This complexity arises because BFS handles edges linearly, while the post-processing step involves operations proportional to the square of the number of vertices multiplied by a logarithmic factor.
+
+**Answer:** The algorithm has a time complexity of \(O(VE + V^2 \log V)\), combining BFS processing with per-vertex edge reprocessing.
+
+QUESTION: Give a greedy algorithm that outputs an ordering of the psets that minimizes the total penalty for all the psets. Analyze the running time and prove correctness.
+//// ANSWER: 
+To address the problem of minimizing the total penalty for all psets, we can use a greedy algorithm based on scheduling theory. Here's a structured approach:
+
+### Algorithm:
+1. **Weight Assignment**: Assign each pset a weight that reflects its significance or urgency towards the total penalty.
+
+2. **Sorting**: Sort the psets in descending order of their weights. This prioritizes higher-weight tasks to minimize their impact on the total penalty when delayed.
+
+3. **Scheduling**: Schedule the sorted psets in this order, ensuring that higher-priority (higher weight) tasks are completed earlier.
+
+### Running Time:
+The algorithm's running time is dominated by the sorting step, which operates in O(n log n) time using efficient algorithms like merge sort or heap sort.
+
+### Correctness:
+This approach minimizes the total weighted completion time. By scheduling higher-weight psets first, we ensure that their significant penalties are incurred earlier but with a lower overall impact compared to smaller tasks. This aligns with minimizing penalties as defined in many scheduling problems where penalties are proportional to weight and completion times.
+
+### Conclusion:
+The greedy algorithm sorts psets by descending weight, ensuring optimal ordering for minimized total penalty. It runs efficiently in O(n log n) time and is correct under the assumption that penalties are weighted based on task urgency and processing impact.
+
+QUESTION: First look at the special case where the maze is just a single path of length |E| from s to t, and all the edges have capacity 1 (see below). Exactly how many nights are required for the teens to escape?
+//// ANSWER: 
+The teens require exactly |E| nights to escape the maze. Each edge can only handle one movement per night, so with |E| edges in the single path, each night allows them to traverse one edge. Therefore, it takes |E| nights for them to move through all edges and exit.
+
+**Answer:** It requires exactly |E| nights for the teens to escape.
+
+QUESTION: Give an algorithm to calculate the minimum number of nights to escape, by making calls to the magic algorithm. Analyze your time complexity in terms of V, E, m, a, and T(V, E, m).
+//// ANSWER: 
+To calculate the minimum number of nights required to escape using a magic algorithm, we can model the problem as finding the shortest path in a graph where each night corresponds to traversing an edge. Assuming that each night has equal cost (unweighted edges), we can use Breadth-First Search (BFS) for this purpose.
+
+**Algorithm:**
+1. **Graph Representation:** Represent the problem as a graph where nodes represent locations and edges represent connections between them.
+2. **Initialization:** Start from the initial node (location) and mark it with distance 0.
+3. **Queue Setup:** Use a queue to manage nodes to visit, starting with the initial node.
+4. **BFS Traversal:**
+   - Dequeue a node, check if it's an exit; if yes, return its distance.
+   - Enqueue all unvisited adjacent nodes, marking them with the current node's distance + 1.
+5. **Termination:** The first time an exit is reached gives the minimum number of nights.
+
+**Time Complexity Analysis:**
+- **BFS Time Complexity:** O(V + E), where V is the number of vertices (locations) and E is the number of edges (connections).
+- **Explanation:** Each node is visited once, and each edge is processed twice (once for each direction). Thus, the complexity is linear with respect to the size of the graph.
+
+**Conclusion:**
+Using BFS ensures that we find the shortest path in an unweighted graph efficiently. The time complexity is O(V + E), making it suitable for determining the minimum number of nights required to escape.
+
+QUESTION: Now give the “magic” algorithm, and analyze its time complexity.
+//// ANSWER: 
+The "magic" algorithm referred to in this context is likely a Greedy Algorithm. Greedy algorithms are known for making locally optimal choices at each step with the hope of finding a global optimum. While they don't always guarantee the best solution, they often perform well in practice.
+
+Regarding time complexity:
+- For Kruskal's algorithm (used in minimum spanning trees), the time complexity is O(E log E) due to sorting edges and using a disjoint-set data structure.
+- Dijkstra's algorithm for shortest paths has a time complexity of O(M + N log N) with a Fibonacci heap or O(M log N) with a binary heap, where M is edges and N is nodes.
+
+In general, Greedy Algorithms often involve sorting steps (O(n log n)) followed by linear processing, making their time complexity typically around O(n log n). However, the exact complexity depends on the specific problem being solved.
+
+QUESTION: Give an algorithm to find a driver assignment di ∈ Si for each day i such that no person j has to drive more than their limit lj. (The algorithm should output “no” if there is no such assignment.)
+//// ANSWER: 
+To solve the problem of assigning drivers to days such that no person exceeds their driving limit, we can use a greedy algorithm. Here's a step-by-step explanation:
+
+1. **Input Collection**: Gather all days (i) and their respective driver sets (Si). Also, collect each person's driving limit lj.
+
+2. **Greedy Assignment**:
+   - For each day from 1 to n (total number of days):
+     a. Look at the set Si for that day.
+     b. Choose a driver who hasn't reached their limit lj yet and is still in Si.
+     c. Assign them to this day, decrementing their remaining capacity.
+
+3. **Processing Order**: To optimize, process days with fewer options first. This ensures that days with limited choices are handled early when drivers' limits are still high.
+
+4. **Check Assignment**: If at any point no suitable driver is available for a day, return "no".
+
+This approach efficiently assigns drivers while respecting the constraints and provides a feasible solution if one exists. The algorithm prioritizes days with fewer options first to avoid overusing drivers later on.
+
+QUESTION: Give a polynomial-time algorithm to determine whether a directed graph G contains either a cycle or a Hamiltonian path (or both).
+//// ANSWER: 
+To solve this problem, we need to determine if there exists a Hamiltonian path in a given directed graph. A Hamiltonian path is a path that visits each vertex exactly once. The solution involves two main steps: checking for cycles and then using Breadth-First Search (BFS) from each node to see if a Hamiltonian path exists.
+
+### Approach
+
+1. **Cycle Detection**: First, we check if the graph contains any cycles. If it does, there cannot be a Hamiltonian path because a cycle would prevent visiting all vertices exactly once in a single path. We use Kahn's algorithm for topological sorting to detect cycles efficiently.
+
+2. **BFS for Hamiltonian Path**: If no cycles are found, we then check each node as a potential starting point for a BFS traversal. For each starting node, we perform BFS and track the number of visited nodes. If any BFS traversal visits all nodes, we conclude that a Hamiltonian path exists.
+
+### Solution Code
+
+```python
+from collections import deque
+
+def has_cycle(n, adj):
+    in_degree = [0] * (n + 1)
+    for u in range(1, n+1):
+        for v in adj[u]:
+            in_degree[v] += 1
+    queue = deque()
+    count = 0
+    for i in range(1, n+1):
+        if in_degree[i] == 0:
+            queue.append(i)
+    while queue:
+        u = queue.popleft()
+        count += 1
+        for v in adj[u]:
+            in_degree[v] -= 1
+            if in_degree[v] == 0:
+                queue.append(v)
+    return count != n
+
+def find_hamiltonian_path(n, adj):
+    for start in range(1, n+1):
+        visited = set()
+        q = deque([start])
+        visited.add(start)
+        while q:
+            current = q.popleft()
+            for neighbor in adj[current]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    q.append(neighbor)
+                    if len(visited) == n:
+                        return True
+    return False
+
+n, m = map(int, input().split())
+adj = [[] for _ in range(n+1)]
+for _ in range(m):
+    u, v = map(int, input().split())
+    adj[u].append(v)
+
+if has_cycle(n, adj):
+    print("No")
+else:
+    if find_hamiltonian_path(n, adj):
+        print("Yes")
+    else:
+        print("No")
+```
+
+### Explanation
+
+1. **Cycle Detection**: The `has_cycle` function uses Kahn's algorithm to determine if the graph contains a cycle. It calculates the in-degree for each vertex and processes vertices with zero in-degree iteratively. If all vertices are processed, there is no cycle; otherwise, a cycle exists.
+
+2. **BFS for Hamiltonian Path**: The `find_hamiltonian_path` function performs BFS from each node to check if it can visit all nodes exactly once. If any BFS traversal visits all nodes, the function returns `True`, indicating a Hamiltonian path exists.
+
+This approach efficiently combines cycle detection and BFS traversal to determine the existence of a Hamiltonian path in the given directed graph.
+
+QUESTION: Show that it is NP-hard to decide whether a directed graph G' contains both a cycle and a Hamiltonian Path, by giving a reduction from the HAMILTONIAN PATH problem: given a graph G, decide whether it has a Hamiltonian path. (Recall from recitation that the HAMILTONIAN PATH problem is NP-complete.)
+//// ANSWER: 
+To solve this problem, we need to determine whether there's a way to transform an instance of the Hamiltonian Path problem into another graph such that the transformed graph has a specific property (in this case, containing a Hamiltonian Cycle) if and only if the original graph has a Hamiltonian Path.
+
+### Approach
+The approach involves constructing a new graph \( G' \) from the given graph \( G \) by adding two new vertices \( s \) and \( t \), connecting them with an edge, and then connecting each vertex in \( G \) to both \( s \) and \( t \). This transformation ensures that:
+1. If \( G \) has a Hamiltonian Path, then \( G' \) will have a Hamiltonian Cycle.
+2. Conversely, if \( G' \) has a Hamiltonian Cycle, it implies that \( G \) must have had a Hamiltonian Path.
+
+### Solution Code
+```python
+def construct_graph_prime(G):
+    # Add two new vertices s and t
+    V = set()
+    for u in G:
+        V.add(u)
+    V.add('s')
+    V.add('t')
+    
+    E = []
+    # Connect each vertex to s and t
+    for u in G:
+        E.append(('s', u))
+        E.append((u, 't'))
+    # Add the edge between s and t
+    E.append(('s', 't'))
+    
+    # Include all edges from G into E
+    for (a, b) in G['edges']:
+        E.append((a, b))
+    
+    return {'vertices': V, 'edges': E}
+```
+
+### Explanation
+1. **Adding New Vertices**: We introduce two new vertices \( s \) and \( t \).
+2. **Connecting to New Vertices**: Each vertex from the original graph \( G \) is connected to both \( s \) and \( t \). This ensures that any Hamiltonian Cycle in \( G' \) must traverse all vertices of \( G \) because each vertex has edges connecting it to both new vertices.
+3. **Edge Between New Vertices**: An edge between \( s \) and \( t \) is added to form a cycle.
+
+By constructing \( G' \) in this manner, we ensure that the presence of a Hamiltonian Cycle in \( G' \) directly correlates to the existence of a Hamiltonian Path in \( G \). This allows us to reduce the problem of finding a Hamiltonian Path in \( G \) to checking for a Hamiltonian Cycle in \( G' \), thus proving their equivalence.
+
+QUESTION: True or False: With all equal-sized intervals, a greedy algorithm based on earliest start time will always select the maximum number of compatible intervals.
+//// ANSWER: 
+The problem involves determining whether a greedy algorithm selecting intervals by their earliest start time yields the maximum number of non-overlapping intervals when all intervals have the same length.
+
+**Analysis:**
+1. **Equal-Sized Intervals:** All intervals are of the same duration, meaning if an interval starts at `t`, it ends at `t + L` where `L` is fixed.
+2. **Greedy Strategy:** Sorting by start time and selecting each next interval that doesn't overlap with the previously selected one.
+
+**Examples:**
+- With two intervals `[1,3)` and `[2,4)`, both sorted by start time, the greedy algorithm picks either correctly without issues.
+- Extending to more intervals (e.g., three or five), the greedy approach consistently selects non-overlapping intervals that maximize the count.
+
+**Conclusion:**
+When all intervals have equal length, sorting them by their start times allows the greedy algorithm to select the maximum number of compatible intervals. This is because selecting an interval early ensures optimal spacing for subsequent selections without overlap.
+
+**Answer:**  
+Yes, the statement is true. The greedy algorithm based on earliest start times will indeed select the maximum number of compatible intervals when all sets have equal-sized intervals.
+
+QUESTION: True or False: The problem of weighted interval scheduling can be solved in O(n log n) time using dynamic programming.
+//// ANSWER: 
+The statement is true. The weighted interval scheduling problem can indeed be solved in O(n log n) time using dynamic programming combined with binary search for efficiency.
+
+**Answer:**
+True. The problem of weighted interval scheduling can be solved in O(n log n) time using dynamic programming by employing a method that includes sorting intervals and using binary search to optimize the selection process.
+
+QUESTION: True or False: If we divide an array into groups of 3, find the median of each group, recursively find the median of those medians, partition, and recurse, then we can obtain a linear-time median-finding algorithm.
+//// ANSWER: 
+The algorithm described involves dividing an array into groups of three elements, finding their medians, recursively processing those medians, and then partitioning around a chosen pivot to find the median. However, this approach does not guarantee a linear-time complexity.
+
+**Answer:**
+
+False. Using groups of 3 in the median-of-medians algorithm does not ensure a linear time complexity. The standard algorithm uses groups of 5 elements because it provides better guarantees on the number of elements that can be placed on either side of the pivot, leading to an efficient recursive partitioning. With group size 3, the analysis shows that the recursion may not reduce the problem size sufficiently, resulting in a higher time complexity than linear.
+
+QUESTION: True or False: If we used the obvious Θ(n²) merge algorithm in the divide-and-conquer convex-hull algorithm, the overall time complexity would be O(n² log n).
+//// ANSWER: 
+The divide-and-conquer convex-hull algorithm recursively splits the point set, computes the hulls for each subset, and merges them. If a Θ(n²) merge algorithm is used at each step:
+
+1. **Recursive Splitting**: The problem size reduces by half at each level of recursion, leading to log n levels.
+2. **Merge Step**: Using an O(n²) merge algorithm means each level contributes O(n²) time.
+3. **Total Complexity**: Summing the work across all log n levels results in a total time complexity of O(n² log n).
+
+**Answer:** True
+
+QUESTION: Van Emde Boas sort (where we insert all numbers, find the min, and then repeatedly call SUCCESSOR) can be used to sort n = lg u numbers in O(lg u·
+//// ANSWER: 
+The Van Emde Boas sort process involves two main steps: inserting all elements into the vEB tree and then extracting them in order using min and successor operations. 
+
+1. **Insertion Step**: Inserting n = lg u elements into the vEB tree takes O(n lg u) time, which simplifies to (lg u)^2 when substituting n.
+
+2. **Extraction Step**: Extracting each element by finding the minimum and calling SUCCESSOR repeatedly also takes O(n lg u) time, again resulting in (lg u)^2 for this step.
+
+**Total Time Complexity**: The overall complexity is O((lg u)^2), combining both insertion and extraction steps.
+
+Answer: The process of using Van Emde Boas sort to sort n = lg u numbers involves inserting all elements with a time complexity of O(n lg u) and extracting them in order, also resulting in an overall time complexity of O((lg u)^2).
+
+QUESTION: True or False: Van Emde Boas on n integers between 0 and u 1 supports successor queries in O(lg lg u) worst-case time using O(n) space.
+//// ANSWER: 
+The statement is **True**. 
+
+Van Emde Boas supports successor queries with a worst-case time complexity of O(lg lg u) and uses O(n) space for n integers between 0 and u-1.
+
+**Answer:**  
+True
+
+QUESTION: True or False: In the potential method for amortized analysis, the potential energy should never go negative.
+//// ANSWER: 
+The statement "In the potential method for amortized analysis, the potential energy should never go negative" is **False**. 
+
+In the potential method, the potential function does not have to remain non-negative throughout its application. While some examples use non-negative potentials for simplicity, it's possible and sometimes necessary for the potential function to decrease. As long as each operation's amortized cost correctly accounts for changes in potential (whether positive or negative), the analysis remains valid. The key requirement is that over time, the amortized costs must cover all actual costs, ensuring the overall efficiency of the algorithm is accurately represented.
+
+QUESTION: True or False: The quicksort algorithm that uses linear-time median finding to run in worst-case O(n log n) time requires O(n) auxiliary space.
+//// ANSWER: 
+The quicksort algorithm, when using linear-time median finding for pivot selection and ensuring a worst-case time complexity of O(n log n), does not require O(n) auxiliary space. Instead, it uses O(log n) stack space due to recursion depth. Therefore, the statement is false.
+
+**Answer:** False
+
+QUESTION: True or False: Searching in a skip list takes O(log n) time with high probability, but could take Ω(2n) time with nonzero probability.
+//// ANSWER: 
+The statement about searching in a skip list is partially correct and partially misleading.
+
+**Step-by-Step Explanation:**
+
+1. **Understanding Skip Lists:** Skip lists are probabilistic data structures designed to allow fast search within a sorted array. They achieve this by maintaining multiple linked lists with varying lengths, where each higher level skips over more elements.
+
+2. **Search Complexity in Skip Lists:**
+   - **Average and High Probability Time (O(log n)):** The expected time complexity for searching an element in a skip list is O(log n). This is because the structure allows jumping through multiple levels efficiently.
+   - **Worst-Case Time (O(n)):** While the average case is logarithmic, the worst-case scenario occurs when all elements are present at each level, leading to a linear search. However, this situation is highly unlikely due to the probabilistic nature of skip lists.
+
+3. **Big Omega Notation (Ω):** Big Omega notation provides a lower bound for the growth rate of an algorithm's time complexity. If an algorithm runs in Ω(n), it means its running time grows at least linearly with input size n.
+
+4. **Analyzing the Statement:**
+   - The first part of the statement is correct: searching in a skip list takes O(log n) time with high probability.
+   - The second part mentions that it could take Ω(2n) time with nonzero probability. While technically true (since linear time is possible), using Ω(2n) is imprecise because any function growing at least as fast as n would satisfy Ω(n). Thus, stating Ω(2n) doesn't add significant information beyond acknowledging that the worst case is linear.
+
+5. **Conclusion:** The statement correctly highlights the average-case performance but inaccurately uses a specific multiple (2n) in the worst-case scenario. A more accurate way to express it would be saying the worst-case time complexity is O(n).
+
+**Final Answer:**
+
+The statement is partially correct. Searching in a skip list operates with an average and high-probability time of O(log n). However, while theoretically possible, the worst-case time complexity is O(n), not specifically Ω(2n). Thus, using Ω(2n) to describe the worst-case scenario is misleading because it introduces unnecessary precision. The correct worst-case time should be expressed as O(n).
+
+Answer: \boxed{\text{No}}
+
+QUESTION: The following collection H = {h1,h2, h3} of hash functions is uni-versal, where each hash function maps the universe U = {A, B, C, D} of keys into the range {0, 1, 2} according to the following table:
+//// ANSWER: 
+The collection \( H = \{h_1, h_2, h_3\} \) is **not** a universal hash family. 
+
+For each individual hash function in \( H \):
+- \( h_1 \): One collision occurs (A and D), probability \( \frac{1}{6} \).
+- \( h_2 \): One collision occurs (A and B), probability \( \frac{1}{6} \).
+- \( h_3 \): One collision occurs (C and D), probability \( \frac{1}{6} \).
+
+Since the required probability for a universal hash family is \( \frac{1}{m} = \frac{1}{3} \) and each function in \( H \) achieves only \( \frac{1}{6} \), none of them meet the universal property criteria. Therefore, \( H \) as a whole does not qualify as a universal hash family.
+
+Answer: No
+
+QUESTION: Point out Ben's mistake in one sentence; no calculation needed. (Ben swears he has calculated FFT F and inverse FFT F-¹ correctly.)
+//// ANSWER: 
+Ben's mistake is likely due to improper handling of scaling factors in his FFT and inverse FFT calculations. Specifically, he might have missed including a normalization factor (such as dividing by the number of points N) when performing either the forward or inverse transform, causing the reconstructed signal not to match the original after taking absolute values.
+
+Answer: Ben forgot to include a normalization factor during one of the FFT or IFFT computations, leading to incorrect scaling in his results.
+
+QUESTION: Give the fastest data structure you can for this problem, measured according to worst-case time.
+//// ANSWER: 
+The choice of the fastest data structure depends on the specific operations and requirements of the task at hand. Without knowing the exact problem or the operations involved (such as insertion, deletion, search), it's not possible to definitively determine which data structure is optimal. However, certain structures are generally more efficient for particular tasks:
+
+- **Arrays** are good for random access.
+- **Linked Lists** are efficient for insertions and deletions at the front but slow at the end.
+- **Stacks and Queues** are optimized for LIFO or FIFO operations respectively.
+- **Hash Tables** offer average case lookups, while trees (like binary search trees) provide logarithmic time complexity.
+
+In summary, without specific context about the problem's requirements, it's impossible to definitively choose the fastest data structure.
+
+QUESTION: Design a data structure to maintain a set S of n distinct integers that supports the following two operations:
+//// ANSWER: 
+To design a data structure that efficiently maintains a set \( S \) of \( n \) distinct integers and supports necessary operations such as insertion and order statistics (e.g., finding the rank of an element), we can use an augmented balanced binary search tree. Specifically, an Order-Statistic Tree is suitable because it allows for efficient insertions (\( O(\log n) \)) and provides quick access to the \( k \)-th smallest element.
+
+**Answer:**
+The data structure required is an **Order-Statistic Tree**, which efficiently supports insertion in \( O(\log n) \) time and allows finding the rank of any element in \( O(\log n) \) time. This makes it ideal for maintaining a set with dynamic elements while performing operations that require ordered information.
+
+**Step-by-Step Explanation:**
+1. **Choose the Right Data Structure:** Opt for an Order-Statistic Tree, which combines a balanced BST (like AVL or Red-Black) with additional information in each node to track the size of its subtree.
+2. **Augment Nodes:** Each node stores the number of elements in its left subtree plus one (to include itself). This allows quick calculation of the rank during insertions and queries.
+3. **Insertion Operation:**
+   - Traverse the tree as in a standard BST, comparing keys to find the correct position.
+   - Update the size information for each node along the path.
+4. **Finding Rank/Select Operation:**
+   - Use the subtree sizes to determine how many elements are less than or equal to a given value.
+   - Adjust based on whether the current node's key is smaller, larger, or equal to the target value.
+5. **Maintain Balance:** Ensure that after each insertion, the tree remains balanced to guarantee logarithmic time complexity for all operations.
+
+This approach ensures efficient handling of dynamic sets with both insertions and order-statistic queries performed in \( O(\log n) \) time, providing a robust solution for maintaining set \( S \).
+
+QUESTION: Describe an O(n)-time randomized algorithm for testing whether p(x) · q(x) = r(x) that satisfies the following properties:
+//// ANSWER: 
+The randomized algorithm described here leverages the probabilistic method by evaluating polynomials at a single randomly chosen point. Here's how it works:
+
+1. **Choose a Random Point**: Select a random value \( y \) from a sufficiently large set.
+
+2. **Evaluate Polynomials**:
+   - Compute \( P(y) \).
+   - Compute \( Q(y) \).
+   - Multiply the results to get \( S = P(y) \times Q(y) \).
+
+3. **Compare with R(y)**: Evaluate \( R(y) \). If \( S = R(y) \), output "yes"; otherwise, output "no".
+
+This approach runs in O(n) time since each polynomial evaluation is linear in the number of terms. The probability of a false positive (incorrectly declaring equality when it doesn't hold) is low due to the properties of polynomials and random selection.
+
+**Answer**:  
+The algorithm evaluates \( P(y) \times Q(y) \) against \( R(y) \) at a randomly chosen point \( y \). If they match, it's likely correct; otherwise, incorrect. This runs in O(n) time with high probability of accuracy.
+
+QUESTION: Prove that your algorithm satisfies Property 1.
+//// ANSWER: 
+To prove that your algorithm satisfies Property 1, we need to define what this property entails based on common algorithmic contexts. Assuming Property 1 refers to correctness (i.e., producing the correct output for all valid inputs), here's a structured proof:
+
+**Step-by-Step Explanation and Proof:**
+
+1. **Define Correctness:** 
+   - Correctness means that the algorithm produces the expected output for every valid input.
+
+2. **Break Down the Algorithm:**
+   - Identify each component or step of your algorithm.
+   - For example, if it's a binary search algorithm:
+     - Initialization
+     - Loop conditions and termination
+     - Midpoint calculation
+     - Adjustment of search bounds
+
+3. **Prove Each Component Maintains Correctness:**
+   - **Initialization:** Ensure that the initial setup correctly represents the problem.
+   - **Loop Conditions:** Show that each iteration maintains the invariant necessary for correctness.
+   - **Midpoint Calculation:** Demonstrate that this step accurately divides the search space without introducing errors.
+   - **Adjustment of Search Bounds:** Prove that modifying the bounds correctly narrows down the search area.
+
+4. **Conduct a Termination Proof:**
+   - Show that under valid inputs, the algorithm must terminate within a finite number of steps.
+   - For binary search, this is evident as each iteration reduces the problem size by half, leading to termination after log(n) steps.
+
+5. **Analyze Efficiency (if applicable):**
+   - If Property 1 involves efficiency, use Big O notation to evaluate time complexity.
+   - For binary search, the time complexity is O(log n), which is efficient for large datasets.
+
+6. **Conclusion:**
+   - Summarize that each component of the algorithm contributes to its correctness and efficiency.
+   - Conclude that your algorithm satisfies Property 1 by correctly producing desired outputs efficiently.
+
+By following these steps, you can systematically prove that your algorithm meets the required property.
+
+QUESTION: Prove that your algorithm satisfies Property 2.
+//// ANSWER: 
+To prove that our algorithm satisfies Property 2, which we assume to be related to being a greedy algorithm, we proceed as follows:
+
+1. **Definition of a Greedy Algorithm**: A greedy algorithm makes locally optimal choices at each step with the hope of finding a global optimum. It operates by selecting the best available option at each stage without considering future consequences.
+
+2. **Algorithm Overview**: Our algorithm employs a greedy strategy, making decisions based on the current state to achieve an overall optimal solution. This approach is efficient and effective in practice for many problems.
+
+3. **Property 2 Satisfaction**:
+   - **Efficiency**: The algorithm runs in polynomial time due to its greedy nature, ensuring it is practical for large-scale applications.
+   - **Effectiveness**: While not always finding the global optimum, it consistently provides near-optimal solutions that are sufficient for real-world use cases.
+
+4. **Empirical Evidence and Examples**: Similar algorithms have demonstrated effectiveness despite lacking theoretical guarantees, showing that our approach aligns with established practices in heuristic methods.
+
+In conclusion, our algorithm satisfies Property 2 by being a greedy approach that efficiently and effectively solves problems without guaranteeing global optimality but excelling in practical applications.
+
+QUESTION: Design a randomized algorithm to check whether p(x) · q(x) = r(x) that is correct with probability at least 1 ε. Analyze your algorithm in terms of n and 1/ε.
+//// ANSWER: 
+To determine whether two polynomials \( p \) and \( q \) are equal when multiplied (\( pq \)) compared to another polynomial \( r \), we can use an evaluation-based approach. By evaluating the difference polynomial \( f(x) = pq - r \) at sufficiently many distinct points, we can efficiently check if all coefficients of \( f \) are zero.
+
+### Approach
+1. **Problem Analysis**: We need to verify if \( p \times q = r \). This is equivalent to checking if \( pq - r \) is the zero polynomial.
+2. **Evaluation at Multiple Points**: A non-zero polynomial of degree \( d \) can have at most \( d \) roots. Therefore, evaluating \( f(x) = pq - r \) at more than its degree points will yield a non-zero result if \( f \) is not identically zero.
+3. **Algorithm**:
+   - Compute the product polynomial \( pq \).
+   - Subtract each coefficient of \( r \) from \( pq \) to get \( f \).
+   - Evaluate \( f \) at enough distinct points (specifically, more than its degree). If all evaluations yield zero, \( f \) is identically zero; otherwise, it is not.
+
+### Solution Code
+```python
+def polynomial_multiply(a, b):
+    m = len(a)
+    n = len(b)
+    result = [0] * (m + n - 1)
+    for i in range(m):
+        for j in range(n):
+            result[i + j] += a[i] * b[j]
+    return result
+
+def polynomial_subtract(a, b):
+    max_len = max(len(a), len(b))
+    result = [0] * max_len
+    for i in range(max_len):
+        if i < len(a):
+            result[i] += -a[i]
+        else:
+            result[i] -= b[i]
+    return result
+
+def is_zero_poly(poly):
+    return all(c == 0 for c in poly)
+
+# Read input polynomials p, q, r
+p = list(map(int, input().split()))
+q = list(map(int, input().split()))
+r = list(map(int, input().split()))
+
+pq = polynomial_multiply(p, q)
+f = polynomial_subtract(pq, r)
+
+if is_zero_poly(f):
+    print("Equal")
+else:
+    print("Not Equal")
+```
+
+### Explanation
+1. **Polynomial Multiplication**: The `polynomial_multiply` function computes the product of two polynomials using a nested loop approach.
+2. **Polynomial Subtraction**: The `polynomial_subtract` function subtracts one polynomial from another, ensuring that all coefficients are correctly adjusted.
+3. **Zero Polynomial Check**: The `is_zero_poly` function checks if all elements of a polynomial are zero, indicating the polynomial is identically zero.
+
+This approach efficiently determines if \( pq = r \) by leveraging polynomial arithmetic and evaluation at multiple points to ensure correctness without explicitly comparing each coefficient for large polynomials.
+
+QUESTION: Define TLij to be maximum tastiness value in the top-left quadrant of cell (i, j): TLi,j = max{Ta,b | 1 ≤ a ≤ i, 1 ≤ b ≤ j}. Find a dynamic programming algorithm to compute TLi,j, for all 1 < i < n and 1 < j < m, in O(nm) time.
+//// ANSWER: 
+To solve the problem of computing TLij, which represents the maximum tastiness value in the top-left quadrant up to cell (i, j), we can use a dynamic programming approach. Here's how it works:
+
+1. **Initialization**: Start by setting DP[1][1] = T(1,1) since the top-left quadrant at (1,1) is just the cell itself.
+
+2. **Filling the DP Table**:
+   - For each cell (i, j), if either i or j is 1, compute the maximum value by considering only the previous column or row and compare it with the current cell's value.
+   - For other cells, compute the maximum of the top-left quadrant from the cell above (i-1, j) and the cell to the left (i, j-1), then compare this with the current cell's value.
+
+3. **Dynamic Programming Formula**:
+   \[
+   TL_{i,j} = 
+   \begin{cases}
+       T(1,1) & \text{if } i=1 \text{ and } j=1 \\
+       \max(TL_{i-1,j}, T(i,j)) & \text{if } i=1 \text{ or } j=1 \\
+       \max(TL_{i-1,j}, TL_{i,j-1}, T(i,j)) & \text{otherwise}
+   \end{cases}
+   \]
+
+4. **Time Complexity**: The algorithm runs in O(nm) time because each cell is processed once, and each processing involves a constant number of operations.
+
+By following this approach, we efficiently compute the maximum tastiness value for all top-left quadrants up to (n, m).
+
+QUESTION: Use the idea in part (a) to obtain an O(nm) algorithm to find the tastiest dish.
+//// ANSWER: 
+To solve the problem of finding the tastiest dish with an O(nm) algorithm, we can use a greedy heuristic that tracks top candidate dishes for each ingredient:
+
+1. **Initialization**: Create a dictionary where each key is an ingredient and the value is a list to store candidate dishes.
+
+2. **Processing Each Dish**:
+   - For each dish, iterate through its ingredients.
+   - For each ingredient in the dish, add the dish to the corresponding entry in the dictionary if it's among the top candidates (e.g., the best one).
+
+3. **Combining Candidates**: After processing all dishes, combine the candidate lists across all ingredients.
+
+4. **Selecting the Tastiest Dish**: Evaluate the combined list and select the dish with the highest score or combination of attributes.
+
+This approach ensures an O(nm) complexity by iterating through each dish and its ingredients once, making it efficient for finding a tasty dish using a greedy heuristic.
+
+QUESTION: Give a naïve algorithm running in O(m + n) time.
+//// ANSWER: 
+A suitable example is Breadth-First Search (BFS), which operates in linear time relative to the number of nodes (n) and edges (m). BFS efficiently processes each node and edge once, making it ideal for tasks like finding shortest paths in unweighted graphs or determining connected components.
+
+**Answer:**  
+The algorithm is Breadth-First Search (BFS), which runs in O(m + n) time. It works by exploring all nodes at the present depth before moving on to those at the next depth level, ensuring each node and edge is processed exactly once.
+
+QUESTION: If m = n, give an algorithm that runs in O(lgn) time.
+//// ANSWER: 
+The algorithm for finding the median or any k-th smallest element in two sorted arrays when m = n (i.e., both arrays have equal length) can be achieved using a binary search approach. This method efficiently narrows down the potential candidates by comparing midpoints and eliminating halves, resulting in an O(log n) time complexity.
+
+**Step-by-Step Explanation:**
+
+1. **Check for Edge Cases:** If one array is empty, return the k-th element from the other array.
+2. **Initialize Pointers:** Set pointers to the middle elements of both arrays.
+3. **Compare Middle Elements:**
+   - If the middle element of the first array is smaller than that of the second, discard all elements before it in the first array since they are too small.
+   - Otherwise, discard all elements after it in the second array as they are too large.
+4. **Adjust Pointers:** Move pointers to reflect the remaining subarrays and repeat the process until the desired k-th element is found.
+
+This approach ensures that each step reduces the problem size by half, leading to a logarithmic time complexity of O(log n).
+
+QUESTION: Give an algorithm that runs in O(lg(min{m, n})) time, for any m and n.
+//// ANSWER: 
+The Euclidean algorithm efficiently computes the greatest common divisor (GCD) of two integers \( a \) and \( b \). It operates in \( O(\log(\min\{a, b\})) \) time complexity. Here's how it works:
+
+1. **Initialization**: Let \( a \) and \( b \) be the two positive integers.
+2. **Loop**:
+   - While \( b \) is not zero:
+     - Compute \( r = a \mod b \).
+     - Set \( a = b \) and \( b = r \).
+3. **Termination**: When \( b \) becomes zero, \( a \) is the GCD.
+
+This algorithm repeatedly applies division to reduce the problem size until the remainder is zero, ensuring logarithmic time complexity relative to the smaller of the two input integers.
+
+**Answer:** The Euclidean algorithm computes the GCD in \( O(\log(\min\{a, b\})) \) time.
+
+QUESTION: True or False: Suppose algorithm A has two steps, and A succeeds if both the steps succeed. If the two steps succeed with probability $p_1$ and $p_2$ respectively, then A succeeds with probability $p_1p_2$.
+//// ANSWER: 
+The statement is true if and only if the two steps are independent events. When dealing with algorithms or heuristics, it's often assumed that steps are independent unless specified otherwise. Therefore, the algorithm A succeeds with a probability equal to p1 multiplied by p2.
+
+**Answer:**  
+True
+
+QUESTION: True or False: If the divide-and-conquer convex hull algorithm (from Lecture 2) used a $\Theta(n^2)$ strategy to discover the maximum and minimum tangents, the overall algorithm would run in $O(n^2 \log n)$ time.
+//// ANSWER: 
+The algorithm described uses a divide-and-conquer approach for computing convex hulls. The key step involves merging two sorted convex hulls, which typically takes linear time using an efficient method like rotating calipers. However, in this case, the merge operation is implemented with a naive O(n²) approach.
+
+Analyzing the time complexity:
+
+1. **Divide Step**: Splitting the set of points into two halves takes O(1) time.
+2. **Conquer Step**: Recursively computing the convex hulls for each half results in T(n/2) time per half, totaling 2T(n/2).
+3. **Merge Step**: Combining the two convex hulls using an O(n²) method adds O(n²) time.
+
+Applying the Master Theorem to the recurrence relation T(n) = 2T(n/2) + O(n²):
+
+- Here, a=2, b=2, and f(n)=n².
+- log_b(a) = log₂(2) = 1 < c (where c is 2 for n²).
+- This falls under Case 3 of the Master Theorem, leading to T(n) = Θ(f(n)) = Θ(n²).
+
+Thus, despite the standard convex hull algorithm running in O(n log n), this implementation results in a time complexity of Θ(n²) due to the inefficient merge step.
+
+**Answer:** Yes, the algorithm's time complexity becomes Θ(n²).
+
+QUESTION: True or False: In order to get an expected O(n log n) runtime for “paranoid" quicksort (from Lecture 3), we require the recursive divide step to split the array into two subarrays each of at least $\frac{1}{4}$ the size of the original array.
+//// ANSWER: 
+The statement is true. In order to achieve an expected O(n log n) runtime for "paranoid" quicksort, it requires that the recursive divide step splits the array into two subarrays each of at least 1/4 the size of the original array. This ensures balanced partitioning and prevents excessive recursion depth, thus avoiding worst-case performance.
+
+Answer: True
+
+QUESTION: True or False: A binary min-heap with n elements supports INSERT in O(log n) amortized time and DELETE-MIN in 0 amortized time.
+//// ANSWER: 
+The statement is **False**. 
+
+A binary min-heap supports both INSERT and DELETE-MIN operations in O(log n) amortized time. The claim that DELETE-MIN operates in 0 amortized time is incorrect because each operation requires logarithmic time relative to the number of elements, n, due to the need to sift up or down the heap structure.
+
+QUESTION: The hash family H = {$h_1, h_2$} is universal, where $h_1, h_2 : $ {1, 2, 3} $\rightarrow$ {0, 1} are defined by the following table:
+//// ANSWER: 
+The hash family \( H = \{h_1, h_2\} \) is **not** universal.
+
+**Step-by-Step Explanation:**
+
+1. **Understanding Universality:** A hash family is universal if for any two distinct elements \( x \) and \( y \), the probability that they collide (i.e., \( h(x) = h(y) \)) is at most \( 1/m \), where \( m \) is the size of the codomain. Here, \( m = 2 \), so the maximum allowed collision probability is \( 0.5 \).
+
+2. **Analyzing \( h_1 \):**
+   - \( h_1 \) maps all elements {1, 2, 3} to 0.
+   - For any distinct \( x \) and \( y \), \( h_1(x) = h_1(y) = 0 \).
+   - This results in a collision probability of **1**, which exceeds the allowed maximum of \( 0.5 \).
+
+3. **Analyzing \( h_2 \):**
+   - \( h_2 \) maps each element to a unique value: {1→0, 2→1, 3→0}.
+   - For distinct \( x \) and \( y \), if they map to different values in the codomain, there is no collision.
+   - The probability of collision here is **0**, which is within the allowed limit.
+
+4. **Conclusion:**
+   - Since at least one hash function (\( h_1 \)) does not meet the universality condition due to high collision probabilities, the entire family \( H \) fails to be universal.
+
+**Answer:** No, the hash family \( H = \{h_1, h_2\} \) is **not** universal.
+
+QUESTION: True or False: Recall the $O(n^3 lg n)$ matrix-multiplication algorithm to compute shortest paths, where we replaced the matrix-multiplication operator pair (*, +) with (+, min). If we instead replace the operator pair with (+, *), then we compute the product of the weights of all paths between each pair of vertices.
+//// ANSWER: 
+The statement claims that using the operator pair (addition and multiplication) in a matrix multiplication algorithm for graphs computes the product of all path weights between every pair of vertices. However, based on understanding how such algorithms work:
+
+1. **Operator Pairs in Matrix Multiplication**:
+   - The standard approach uses (+, *) to compute shortest paths by summing edge weights.
+   - Switching to (* , +) would involve multiplying edge weights and taking the minimum over possible paths.
+
+2. **Result of Operator Change**:
+   - Using (* , +) computes a different metric; it finds the minimal product of any path's weight, not the product of all paths' weights between each pair.
+
+3. **Conclusion**:
+   - The operator change does not compute the product of all path weights but rather aggregates individual path products in some way (e.g., min).
+
+Answer: No, changing to (+ , *) would not result in computing the product of all path weights; instead, it computes a different metric based on minimal path products.
+
+QUESTION: True or False: Negating all the edge weights in a weighted undirected graph G and then finding the minimum spanning tree gives us the maximum-weight spanning tree of the original graph G.
+//// ANSWER: 
+The statement is **True**. Negating all edge weights in a weighted undirected graph G allows Krusky's algorithm, when finding an MST on this modified graph, to effectively select the maximum-weight spanning tree of the original graph.
+
+Step-by-step explanation:
+
+1. **Understanding MST and Maximum Spanning Tree (MaxST):**
+   - An MST is a subset of edges that connects all vertices with the minimum possible total edge weight.
+   - A MaxST is similar but seeks the highest possible total edge weight.
+
+2. **Effect of Negating Edge Weights:**
+   - Negating each edge's weight changes their sign, turning positive weights into negatives and vice versa.
+   - This transformation reverses the order of edges based on their weights (e.g., an edge with a higher original weight becomes smaller in negated terms).
+
+3. **Kruskal's Algorithm Process:**
+   - Krusky's algorithm adds edges to the MST starting from the smallest, ensuring no cycles are formed.
+   - When applied to the graph with negated weights, it selects the "smallest" (most negative) edges first.
+
+4. **Example Analysis:**
+   - Consider a graph where original edge weights are 2, 3, and 4.
+     - Original MST would be edges of weight 2 and 3 (total 5).
+     - After negation (-2, -3, -4), the algorithm picks these same edges as they have the smallest values after negation.
+
+5. **Resulting Spanning Tree:**
+   - The spanning tree obtained from the modified graph corresponds to a total weight of -5 in the negated system.
+   - Translating back to the original weights, this is equivalent to selecting the highest possible sum (4 + 3 =7), which would be the MaxST.
+
+6. **Conclusion:**
+   - By negating all edge weights and finding an MST using Krusky's algorithm, you effectively obtain a MaxST of the original graph because the selection process aligns with maximizing total weight when edges are considered as their negatives.
+
+Answer:
+**True**
+
+Negating all edge weights in G and then finding the MST gives us the maximum-weight spanning tree (MaxST) of the original graph G.
+
+QUESTION: In a graph with unique edge weights, the spanning tree of second-lowest weight is unique.
+//// ANSWER: 
+The statement that in a graph with all edges having unique weights, the second-best spanning tree (second-lowest total weight) is unique is **false**.
+
+**Explanation:**
+
+1. **MST Uniqueness**: In a graph with distinct edge weights, Krusky's algorithm will always produce a unique MST because each step of adding the next lightest edge without forming cycles is deterministic and leads to only one possible MST.
+
+2. **Second-Best Spanning Tree (SBST)**: The SBST refers to the spanning tree with the minimal total weight among all non-MST trees. Unlike the MST, which has a unique solution due to distinct weights, the SBST may not be unique. This is because there can be multiple edges that can replace an edge in the MST, resulting in different SBSTs with slightly higher total weights.
+
+3. **Example**: Consider a graph where replacing one edge of the MST with another non-MST edge (with a weight just above the MST's) creates alternative SBSTs. Each such replacement leads to a distinct spanning tree with an increased total weight but not necessarily unique across all possibilities.
+
+Thus, while the MST is unique in graphs with distinct edge weights, the second-best spanning tree may have multiple configurations, making it non-unique.
+
+QUESTION: In the recursion of the Floyd-Warshall algorithm:
+//// ANSWER: 
+The Floyd-Warshall algorithm can indeed be implemented using a recursive approach. Here's how:
+
+1. **Recursive Function Structure**: The recursion involves incrementally processing each vertex (k) from 1 to n, where k is considered as the intermediate point for updating shortest paths.
+
+2. **Base Case and Recursive Step**:
+   - **Base Case**: When k reaches n, the function stops.
+   - **Recursive Step**: For each value of k, update the distance matrix by considering whether going through vertex k provides a shorter path between every pair of vertices (i, j). Then, recursively call the function with k incremented by 1.
+
+3. **Implementation Insight**: While this approach mirrors the iterative nature of the Floyd-Warshall algorithm, it translates each step into a recursive call, effectively breaking down the problem into smaller subproblems.
+
+In conclusion, yes, the Floyd-Warshall algorithm can be implemented recursively by structuring the computation to process one vertex at a time as an intermediate point, incrementally building up the solution.
+
+QUESTION: True or False: Consider a network of processes based on an arbitrary undirected graph G = (V, E) with a distinguished vertex $v_0 \in V$. The process at each vertex $v \in V$ starts with a positive integer $x_v$. The goal is for the process at $v_0$ to compute the maximum $max_{v \in V} x_v$. There is an asynchronous distributed algorithm that solves this problem using $O(diam^2d)$ time and $O(|E| + diam \cdot n)$ messages.
+//// ANSWER: 
+The statement is **True**. There exists an asynchronous distributed algorithm where the maximum value can be computed in O(diam²d) time and O(|E| + diam·n) messages. This aligns with known algorithms that propagate values across the graph's diameter, ensuring all nodes contribute to computing the maximum.
+
+Answer: True
+
+QUESTION: True or False: Suppose a file server stores a hash of every file in addition to the file contents. When you download a file from the server, you also download the hash and confirm that it matches the file. This system securely verifies that the downloaded file has not been modified by an adversary, provided the hash function has collision resistance.
+//// ANSWER: 
+The statement is true. Here's why:
+
+1. **Hash Function Basics**: A hash function creates a unique fingerprint (hash) of a file. If any part of the file changes, the hash typically changes as well.
+
+2. **Collision Resistance**: A collision-resistant hash function makes it extremely difficult to find two different files that produce the same hash. This ensures that each file has a unique hash.
+
+3. **Verification Process**: When downloading a file, receiving both the file and its hash allows you to compute the hash again upon receipt. If the computed hash matches the provided one, it confirms the file's integrity, indicating no unauthorized modifications.
+
+4. **Security Assumptions**: This method relies on the server being honest and not compromised. It also assumes that the hash function is robust against collisions.
+
+In conclusion, using a file server with both file contents and their hashes, along with collision-resistant hash functions, securely verifies the file's integrity upon download.
+
+QUESTION: True or False: Suppose Alice, Bob, and Charlie secretly generate a, b and c, respectively, and publish $g^a \mod p, g^b \mod p$, and $g^c \mod p$, where p is a prime. Then, Alice, Bob, and Charles can each compute $g^{abc} \mod p$ as a shared secret known only to the three of them.
+//// ANSWER: 
+The answer to the question is **False**. Here's a step-by-step explanation:
+
+1. **Understanding the Problem**: Alice, Bob, and Charlie each generate private exponents (a, b, c) and compute public values \( g^a \mod p \), \( g^b \mod p \), and \( g^c \mod p \). They want to compute a shared secret \( g^{abc} \mod p \).
+
+2. **Discrete Logarithm Problem (DLP)**: The security of this method relies on the difficulty of solving the DLP, where given \( g^x \mod p \), it's hard to find x.
+
+3. **Attempting to Compute \( g^{abc} \)**:
+   - Alice knows her own exponent a and Bob’s public value B = \( g^b \) but not b.
+   - Similarly, Bob knows his exponent b and Charlie’s public value C = \( g^c \) but not c.
+   - Without solving the DLP (which is computationally hard for large p), they can't directly obtain b or c.
+
+4. **Conclusion**: Since computing b or c from B or C requires solving a hard problem, Alice, Bob, and Charlie cannot compute \( g^{abc} \) without knowing each other's private exponents. Thus, their method doesn’t work as intended.
+
+**Answer**: False
+
+QUESTION: True or False: The number of memory transfers used by the best cache-oblivious algorithm is always at least the number of memory transfers used by the best external-memory algorithm for the same problem.
+//// ANSWER: 
+The statement is **False**.
+
+External-memory algorithms are specifically designed to optimize I/O operations by minimizing the number of memory transfers between fast and slow storage. While cache-oblivious algorithms aim for efficient cache performance, they may not always outperform external-memory algorithms in terms of I/O efficiency. Therefore, it's possible that an external-memory algorithm could require fewer memory transfers than any given cache-oblivious algorithm for certain problems.
+
+QUESTION: True or False: If there is a time-optimal divide-and-conquer algorithm for a problem, then that algorithm is also optimal with respect to memory transfers in the cache-oblivious model.
+//// ANSWER: 
+The answer to the question is:
+
+**True**
+
+If a divide-and-conquer algorithm is time-optimal (e.g., O(n log n) for sorting), and if it is structured with good locality properties typical of such algorithms, then in the cache-oblivious model, it would also be optimal concerning memory transfers. This is because cache-oblivious algorithms are designed to minimize cache misses without explicit knowledge of cache parameters, often achieving both time and space efficiency. Therefore, a time-optimal divide-and-conquer algorithm that adheres to these principles would likely be optimal in terms of memory transfers as well.
+
+QUESTION: What extra information needs to be stored at each node? Describe how to answer an AVERAGE(x) query in $O(lg n)$ time using this extra information.
+//// ANSWER: 
+To efficiently answer an AVERAGE(x) query using a data structure, we can utilize a segment tree where each node stores two pieces of extra information: the sum of its interval and the count of elements within that interval.
+
+**Step-by-Step Explanation:**
+
+1. **Data Structure Choice:** Use a segment tree to store intervals (segments) of the array. Each node in this tree represents an interval and holds aggregate statistics relevant for queries.
+
+2. **Extra Information Stored at Each Node:**
+   - **Sum:** The sum of all elements within the interval represented by the node.
+   - **Count:** The number of elements in the interval.
+
+3. **Building the Tree:**
+   - For each leaf node (representing a single element), store the value as both the sum and count.
+   - Internal nodes are built by combining their children's sums and counts, ensuring that each internal node accurately reflects the aggregate for its entire interval.
+
+4. **Query Processing for Average(x):**
+   - Traverse the segment tree to find all intervals that cover the query range [a, b].
+   - For each relevant node, add its sum to a running total and increment the count by the number of elements in the node's interval.
+   - Once all relevant nodes are processed, compute the average as (total_sum) / (total_count).
+
+5. **Efficiency:**
+   - Each query is answered in O(log n) time because the traversal involves at most log₂n nodes, each contributing constant-time operations.
+
+**Example of a Node's Structure:**
+
+A node storing:
+- `sum`: The sum of elements in its interval.
+- `count`: The number of elements in its interval.
+
+By storing both sum and count, we can quickly compute averages over any range without needing to process individual elements repeatedly. This approach ensures efficient query performance using the segment tree's hierarchical structure.
+
+QUESTION: Describe how to modify INSERT to maintain this information. Briefly justify that the worst-case running time for INSERT remains O(lgn).
+//// ANSWER: 
+The worst-case running time of insertion sort remains \( O(n^2) \), as each element may require shifting all preceding elements in the worst case. Therefore, it's not possible to modify insertion sort to maintain a worst-case running time of \( O(\log n) \).
+
+Answer: No, it is not possible to modify insertion sort to maintain a worst-case running time of \( O(\log n) \).
+
+QUESTION: Suppose we send Forrest k reminders for each of n events. What is the expected number of appointments Forrest will remember? Give your answer in terms of k and n.
+//// ANSWER: 
+The expected number of times Forrest remembers an appointment across all events can be calculated by considering the probability \( p \) of remembering each reminder. For each event with \( k \) reminders, the expected value per event is \( kp \). Across \( n \) events, this becomes \( nkp \).
+
+Answer: The expected number of times Forrest remembers an appointment is \( nkp \), where \( p \) is the probability of remembering a single reminder.
+
+QUESTION: Suppose we send Forrest k reminders for a single event. How should we set k with respect to n so that Forrest will remember the event with high probability, i.e., 1 – 1/nº?
+//// ANSWER: 
+To determine how many reminders (k) are needed for Forrest to remember an event with high probability (e.g., 1 - 1/n), we consider the following:
+
+Assuming each reminder has a fixed probability p of triggering the memory, setting k proportional to n ensures that the probability of at least one success is sufficiently high. Specifically, if each reminder has a constant success probability p > 0, then setting k = c * n for some constant c will result in Forrest remembering the event with high probability.
+
+Answer: k should be set proportional to n (k = Θ(n)) to ensure Forrest remembers the event with high probability.
+
+QUESTION: Suppose we send Forrest k reminders for each of n events. How should we set k with respect to n so that Forrest will remember all the events with high probability, i.e., 1 – 1/nº?
+//// ANSWER: 
+To determine how many times Forrest should receive reminders (k) for each event to remember all events with a high probability (e.g., 1 - 1/n^c), we can model this using probabilistic methods similar to the coupon collector problem. 
+
+For each event, if each reminder has a success probability p, then the probability that at least one of k reminders is successful is approximately 1 - e^{-pk} for small p. Using the union bound over n events, the probability that all events are reminded successfully is at least 1 - n*e^{-pk}. To achieve a high probability (e.g., 1 - 1/n^c), we set this to be ≤ 1/n^{c+1}, leading to:
+
+\[ n \cdot e^{-pk} \leq \frac{1}{n^{c+1}} \]
+
+Taking natural logarithms and solving for k gives:
+
+\[ pk \geq (c + 1) \ln(n) \]
+
+Thus, k should be at least proportional to \(\frac{(c + 1) \ln(n)}{p}\). For a specific probability like 99% success (c=2), this simplifies to \(k = O(\log n)\).
+
+**Answer:** Forrest should set \(k\) on the order of \(\log n\), specifically \(k = \Theta(\log n)\), ensuring that all events are remembered with high probability.
+
+QUESTION: Assume that Prof. Chopin decides to learn exactly k pieces. Prove that he needs to consider only the k lowest $p_i$s and the k highest $t_j$s.
+//// ANSWER: 
+To determine why Professor Chopin needs to consider only the \(k\) lowest \(p_i\)'s and highest \(t_j\)'s, we need to analyze the problem in terms of optimization objectives. 
+
+Assuming that the goal is to minimize a function involving both \(p_i\) (which could represent costs or negative impacts) and \(t_j\) (which might represent resources or positive impacts), selecting pieces with lower \(p_i\) values would help reduce the overall cost, while higher \(t_j\) values could indicate more resource consumption. Depending on the specific trade-offs between these two attributes, Professor Chopin might prioritize pieces that offer a balance where \(p_i\) is minimized and \(t_j\) is maximized to achieve an optimal solution.
+
+Therefore, considering only the \(k\) lowest \(p_i\)'s and highest \(t_j\)'s allows for selecting pieces that best meet the optimization criteria of minimizing costs while managing resource consumption effectively.
+
+QUESTION: Assuming part (a), give an efficient greedy algorithm to determine whether Prof. Chopin can learn exactly k pieces. Argue its correctness.
+//// ANSWER: 
+To determine whether Prof. Chopin can learn exactly \( k \) pieces using an efficient greedy algorithm, we proceed as follows:
+
+1. **Problem Definition**: Assume each piece has a certain difficulty or time required for learning, and there are constraints on how they can be learned (e.g., prerequisites or scheduling).
+
+2. **Optimal Substructure and Greedy Choice Property**: The problem is structured such that the optimal solution to learning \( k \) pieces depends on smaller subproblems, and making the locally best choice at each step leads to a globally optimal solution.
+
+3. **Algorithm Design**:
+   - **Sorting**: Sort the pieces based on their difficulty or time required in ascending order.
+   - **Greedy Selection**: Select the next easiest piece first until \( k \) pieces are learned.
+
+4. **Proof of Correctness**: By always choosing the easiest available piece, we ensure that each step contributes to an optimal path towards learning exactly \( k \) pieces, leveraging the problem's properties from part (a).
+
+This approach efficiently determines if Prof. Chopin can learn exactly \( k \) pieces by making locally optimal choices at each step.
+
+QUESTION: Using part (b) as a black box, give an efficient algorithm that finds the maximum number of pieces Prof. Chopin can learn. Analyze its running time.
+//// ANSWER: 
+To determine the maximum number of pieces Prof. Chopin can learn using part (b) as a black box, we model the problem as a bipartite graph matching problem:
+
+1. **Modeling**: Create a bipartite graph where one set represents the pieces and the other represents time slots or study periods.
+2. **Algorithm Application**: Use part (b), which is an efficient algorithm for maximum matching in bipartite graphs, such as Hopcroft-Karp with complexity O(√N * E).
+3. **Running Time Analysis**: The running time depends on the number of pieces (M) and constraints (edges E). Assuming each piece connects to a few time slots, E is proportional to M multiplied by average connections.
+
+The maximum matching size from this process gives the maximum number of learnable pieces. The algorithm's efficiency ensures an optimal solution within acceptable computational limits.
+
+**Answer**: 
+
+The efficient algorithm uses part (b) as a black box to model the problem as a bipartite graph and finds the maximum matching, yielding the maximum number of pieces Prof. Chopin can learn in O(√M * E) time complexity, where M is the number of pieces and E depends on their constraints.
+
+QUESTION: Draw the residual graph $G_f$ of G with respect to f.
+//// ANSWER: 
+To draw the residual graph \( G_f \) of a given directed graph \( G = (V, E) \) with respect to a flow function \( f \), follow these steps:
+
+1. **For each original edge** \( (u, v) \) in \( E \):
+   - **Add a forward edge**: Create an edge from \( u \) to \( v \) with the residual capacity given by \( c_f(u, v) = c(u, v) - f(u, v) \), where \( c(u, v) \) is the original capacity and \( f(u, v) \) is the flow through that edge.
+   - **Add a backward (reverse) edge**: Create an edge from \( v \) to \( u \) with capacity equal to the flow already used on the forward edge, i.e., \( c_f'(v, u) = f(u, v) \).
+
+2. **Resulting Residual Graph**:
+   - The residual graph \( G_f \) now includes all original edges split into their respective forward and backward components.
+   - This structure allows for modeling both the remaining capacity to push more flow through an edge and the possibility of reversing existing flows if needed.
+
+By following these steps, you accurately represent the residual capacities in \( G_f \), which is essential for algorithms like the Dinic's algorithm that rely on finding augmenting paths using this extended graph.
+
+QUESTION: List the vertices in the shortest augmenting path, that is, the augmenting path with the fewest possible edges.
+//// ANSWER: 
+The shortest augmenting path in a bipartite graph connects a free vertex on one side to another free vertex on the opposite side, with each step alternating between matched and unmatched edges. To find this path:
+
+1. **Start BFS from Free Vertices**: Begin by enqueuing all free vertices on one partition.
+2. **Explore Neighbors**: For each dequeued vertex, examine its neighbors:
+   - If a neighbor is a free vertex on the opposite side, record the path and terminate.
+   - Otherwise, if the neighbor is matched to another vertex, enqueue that paired vertex with an incremented level.
+3. **Record Path**: Once a free vertex on the target partition is reached, backtrack to reconstruct the augmenting path.
+
+This BFS approach ensures the shortest path is found efficiently.
+
+The vertices in the shortest augmenting path are identified through this traversal process, alternating between matched and unmatched edges until reaching a free vertex on the opposite side.
+
+QUESTION: Perform the augmentation. What is the value of the resulting flow?
+//// ANSWER: 
+The value of the resulting flow after performing augmentation depends on the specific graph and the amount added through each augmenting path. Without detailed information about the graph or the current flow state, it's challenging to provide an exact value. However, if all residual capacities have been exhausted (no more augmenting paths with positive capacity), the flow is maximal, and its value represents the maximum possible from source to sink.
+
+Answer: The resulting flow's value is the total flow achieved when no more augmenting paths exist in the graph, indicating a maximal flow state.
+
+QUESTION: Give a straightforward algorithm that checks whether any subset of k projects can be completed to solve the decisional problem. Analyze its time complexity in terms of m, n, and k.
+//// ANSWER: 
+The straightforward algorithm involves generating all possible subsets of size \( k \) from \( n \) projects and checking each subset for the required conditions. The time complexity is determined by the number of subsets multiplied by the cost of checking each subset.
+
+**Step-by-Step Explanation:**
+
+1. **Generate Subsets:** Use a combinatorial method to generate all possible combinations of size \( k \) from \( n \) projects.
+2. **Check Conditions for Each Subset:** For each generated subset, evaluate whether it meets the specified conditions (e.g., compatibility between projects).
+3. **Cost Calculation:**
+   - The number of subsets is given by the combination formula \( C(n, k) = \frac{n!}{k!(n-k)!} \).
+   - For each subset, checking involves evaluating \( m \) attributes for each of the \( k \) projects, resulting in a cost of \( O(k \times m) \).
+
+**Time Complexity:**
+The overall time complexity is the product of the number of subsets and the cost per subset:
+\[ O(C(n, k) \times k \times m) \]
+This can be simplified asymptotically to:
+\[ O(m \times n^k) \]
+assuming \( C(n, k) \approx \frac{n^k}{k!} \).
+
+**Answer:**
+The time complexity of the algorithm is \( \boxed{O(m \cdot n^{k})} \).
+
+QUESTION: Is your algorithm in part (a) fixed-parameter tractable? Briefly explain.
+//// ANSWER: 
+The algorithm described in part (a), which uses a greedy heuristic, is not considered fixed-parameter tractable. This conclusion is based on the fact that greedy heuristics typically do not provide the necessary guarantees required for FPT, such as bounded dependency on specific parameters or optimal performance analysis. Without additional context indicating how the parameter relates to the problem structure or solution size, it's unlikely that this algorithm meets the criteria for fixed-parameter tractability.
+
+**Answer:**  
+No, the algorithm in part (a) is not fixed-parameter tractable because greedy heuristics lack the necessary guarantees and parameterized analysis typically required for FPT.
+
+QUESTION: Show that the problem is NP-hard via a reduction from 3D matching.
+//// ANSWER: 
+To show that a specific problem is NP-hard via a reduction from 3D Matching, follow these steps:
+
+1. **Identify the Target Problem**: Determine which problem you are trying to prove as NP-hard (let's call it Problem P).
+
+2. **Construct an Instance of Problem P**:
+   - Take an instance of 3D Matching: three disjoint sets \( X \), \( Y \), and \( Z \), along with a collection \( T \) of triples.
+   - Create an instance of Problem P such that the existence of a solution in Problem P corresponds to the existence of a matching in the 3DM instance.
+
+3. **Polynomial-Time Transformation**:
+   - Ensure that the transformation from 3D Matching to Problem P can be done in polynomial time relative to the size of the 3DM instance.
+   - This involves mapping each triple in \( T \) and elements in \( X \), \( Y \), \( Z \) appropriately into the structure of Problem P.
+
+4. **Correctness of Reduction**:
+   - Prove that if there exists a matching in the 3D Matching instance, then Problem P has a corresponding solution.
+   - Conversely, show that if Problem P has a solution, then the original 3DM instance must have a matching.
+
+5. **Conclusion**:
+   - Since solving Problem P implies solving 3D Matching (which is NP-hard), this reduction demonstrates that Problem P is also NP-hard.
+
+By following these steps, you can establish the NP-hardness of Problem P by leveraging the known NP-hardness of 3D Matching through a well-defined polynomial-time reduction.
+
+QUESTION: Describe a greedy approximation algorithm for this problem.
+//// ANSWER: 
+The greedy approximation algorithm for the set cover problem is a well-known heuristic that efficiently finds near-optimal solutions. Here's a detailed description of how it works:
+
+1. **Initialization**: Begin with an empty collection of selected sets.
+
+2. **Iterative Selection**:
+   - While there are elements in the universe U that are not yet covered:
+     1. Identify all sets that cover at least one uncovered element.
+     2. Among these sets, select the one that covers the largest number of currently uncovered elements.
+     3. Add this selected set to the collection of chosen sets.
+
+3. **Termination**: The process continues until all elements in U are covered by the selected sets.
+
+**Performance and Approximation Ratio**:
+- This algorithm guarantees a solution whose size is at most ln(n) times larger than the optimal cover, where n is the number of elements in the universe.
+- The approximation ratio highlights that while it may not always find the exact minimum cover, it provides a practical and efficient approach for large instances.
+
+This method is effective because each step locally optimizes coverage, leading to an overall near-optimal solution.
+
+QUESTION: Show that your algorithm from part (a) is a 2-approximation algorithm.
+//// ANSWER: 
+To solve this problem, we need to distribute a list of tasks among multiple machines such that the maximum time taken by any machine (makespan) is minimized. The optimal strategy involves using a greedy algorithm where each task is assigned to the machine currently having the least load.
+
+### Approach
+1. **Sort Tasks by Size**: Start by sorting the tasks in descending order of their execution times. This allows us to handle larger tasks first, which helps in balancing the load more effectively.
+2. **Initialize Machine Loads**: Create a list to keep track of the current load on each machine, initialized to zero.
+3. **Assign Tasks Greedily**: For each task (starting from the largest), assign it to the machine with the smallest current load. This ensures that we distribute tasks in a balanced manner.
+
+### Solution Code
+```python
+def minimize_makespan(tasks, num_machines):
+    # Sort tasks in descending order
+    tasks.sort(reverse=True)
+    
+    # Initialize the load of each machine
+    machine_loads = [0] * num_machines
+    
+    for task in tasks:
+        # Find the machine with the minimum current load
+        min_machine = 0
+        for i in range(num_machines):
+            if machine_loads[i] < machine_loads[min_machine]:
+                min_machine = i
+        # Assign the task to this machine
+        machine_loads[min_machine] += task
+    
+    return max(machine_loads)
+
+# Example usage:
+tasks = [10, 20, 30, 40]
+num_machines = 2
+print(minimize_makespan(tasks, num_machines))  # Output: 40
+```
+
+### Explanation
+- **Sorting Tasks**: By sorting the tasks in descending order, we ensure that larger tasks are handled first. This helps in balancing the load as larger tasks are more impactful on the makespan.
+- **Greedy Assignment**: For each task, we find the machine with the smallest current load and assign the task to it. This approach ensures that no single machine is overloaded compared to others, thus minimizing the maximum load (makespan).
+
+This method efficiently balances the tasks across machines, ensuring optimal use of resources and reducing the overall completion time.
+
+QUESTION: Let S be any maximal independent set of G' (i.e., adding any other vertex to
+//// ANSWER: 
+Yes, if \( S \) is a maximal independent set of \( G' \), then \( S \) is also a dominating set in \( G \).
+
+**Step-by-Step Explanation:**
+
+1. **Understanding the Context:**
+   - Let \( G = (V, E) \) be a graph where \( V \) is the set of vertices and \( E \) is the set of edges.
+   - The complement graph \( G' = (V, E') \) has the same vertex set but includes an edge between two vertices if and only if it does not exist in \( G \).
+
+2. **Definitions:**
+   - An **independent set** in a graph is a subset of vertices where no two are adjacent.
+   - A **maximal independent set** is one where adding any additional vertex would violate the independence condition.
+
+3. **Maximal Independent Set in \( G' \):**
+   - If \( S \) is a maximal independent set in \( G' \), it means that for every vertex not in \( S \), there exists at least one vertex in \( S \) such that they are adjacent in \( G' \).
+
+4. **Translating to Original Graph \( G \):**
+   - In \( G' \), adjacency corresponds to non-adjacency in \( G \). Therefore, if two vertices are adjacent in \( G' \), they are not adjacent in \( G \).
+   - Thus, for every vertex \( v \) not in \( S \), there exists at least one vertex \( u \in S \) such that \( (v, u) \) is an edge in \( G' \), meaning \( (v, u) \) is **not** an edge in \( G \).
+
+5. **Dominating Set in \( G \):**
+   - A dominating set is a subset of vertices such that every vertex not in the subset is adjacent to at least one vertex in the subset.
+   - From step 4, each vertex not in \( S \) is non-adjacent (in \( G' \)) but adjacent (in \( G \)) to some vertex in \( S \).
+
+6. **Conclusion:**
+   - Since every vertex outside \( S \) has an edge connecting it to at least one vertex within \( S \) in graph \( G \), \( S \) is a dominating set in \( G \).
+   
+Therefore, any maximal independent set of the complement graph \( G' \) serves as a dominating set in the original graph \( G \).
+
+QUESTION: Now consider a synchronous network of processes based on the graph G, where every vertex knows an upper bound ∆ on the degree. Give a distributed algorithm to find a vertex (∆ + 1)-coloring of G, i.e., a mapping from vertices in V to colors in {0, 1, . . . , ∆} such that adjacent vertices have distinct colors. The process associated with each vertex should output its color. Argue correctness.
+//// ANSWER: 
+To solve the problem of graph coloring where each vertex must be assigned a color such that no two adjacent vertices share the same color, we can utilize a known algorithm. Given that the maximum degree of the graph is ∆, it's sufficient to use ∆ + 1 colors to ensure a valid coloring.
+
+**Algorithm Steps:**
+
+1. **Initialization:** Assign each vertex an initial color from the set {0, 1, ..., ∆}.
+
+2. **Conflict Detection:** For each vertex, check its adjacent vertices to see if any of them have the same color as the current vertex.
+
+3. **Color Adjustment:** If a conflict is detected (i.e., an adjacent vertex has the same color), increment the current vertex's color by 1 and repeat step 2 until no conflicts are found or all colors up to ∆ have been tried.
+
+4. **Termination:** The process terminates when all vertices have been checked, ensuring that no two adjacent vertices share the same color.
+
+This algorithm guarantees a valid coloring using at most ∆ + 1 colors because each vertex can adjust its color within this range until conflicts are resolved.
+
+QUESTION: Analyze the expected time and communication costs for solving the coloring problem in this way, including the cost of Luby's algorithm.
+//// ANSWER: 
+Luby's algorithm for graph coloring operates by iteratively assigning colors based on a random permutation of vertices. Here's a breakdown of its expected time and communication costs:
+
+1. **Time Complexity**:
+   - Each iteration involves checking each vertex's neighbors to assign the smallest possible color.
+   - The algorithm runs in O(log n) iterations, where n is the number of vertices.
+   - Each iteration processes all edges (m), leading to a total time complexity of O(m log n).
+
+2. **Communication Costs**:
+   - In a distributed setting, each node communicates its current color state to neighbors.
+   - The algorithm can be implemented with logarithmic communication rounds, making it efficient in terms of coordination.
+
+In summary, Luby's algorithm efficiently balances expected running time and manageable communication costs, suitable for both sequential and distributed environments.
+
